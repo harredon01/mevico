@@ -1,0 +1,25 @@
+<ion-header class="section__header">
+    <ion-toolbar>
+        <ion-title>{{ 'PAYMENTS.TITLE' | translate }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="payments">
+    <div class="payments__wrapper">
+        <ion-list>
+            <ion-item-sliding *ngFor="let item of currentItems">
+                <ion-item (click)="openItem(item)">
+                    <h2>{{ 'PAYMENT.STATUS' | translate }}: <span *ngIf="item.status == 'payment_in_bank'">{{ 'PAYMENT.PAYMENT_IN_BANK' | translate }}</span>
+                        <span *ngIf="item.status == 'pending'||item.status == 'payment_created'">{{ 'PAYMENT.PENDING' | translate }}</span> 
+                        <span *ngIf="item.status == 'denied'">{{ 'PAYMENT.DENIED2' | translate }}</span> 
+                        <span *ngIf="item.status == 'approved'">{{ 'PAYMENT.APPROVED2' | translate }}</span> </h2>
+                    <p>{{ 'PAYMENT.ID' | translate }}: {{item.id}}</p>
+                    <p>{{ 'PAYMENT.TOTAL' | translate }}: {{item.total | currency }}</p>
+                    <p>{{ 'PAYMENT.UPDATED_AT' | translate }}: {{item.updated_at | date:'shortDate'}}</p>
+                </ion-item>
+            </ion-item-sliding>
+        </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
+</ion-content>

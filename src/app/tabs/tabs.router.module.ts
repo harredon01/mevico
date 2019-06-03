@@ -35,6 +35,31 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'settings',
+        children: [
+          {
+            path: '',
+            loadChildren: '../settings/settings.module#SettingsPageModule'
+          },
+          {
+            path: 'my-account',
+            loadChildren: '../my-account/my-account.module#MyAccountPageModule'
+          },
+          {
+            path: 'payments',
+            loadChildren: '../payments/payments.module#PaymentsPageModule'
+          },
+          {
+            path: 'addresses',
+            loadChildren: '../addresses/addresses.module#AddressesPageModule'
+          },
+          {
+            path: 'password',
+            loadChildren: '../password/password.module#PasswordPageModule'
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'

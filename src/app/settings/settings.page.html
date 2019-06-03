@@ -1,0 +1,43 @@
+<ion-header class="section__header">
+    <ion-toolbar>
+        <ion-title>{{ 'SETTINGS.TITLE' | translate }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="my-settings">
+    <ion-list class="my-settings__wrapper">
+        <ion-item>
+            
+            <ion-item (click)="openItem('/tabs/settings/my-account')">
+                    <img src="assets/icon/mi-cuenta.svg" />
+                    <h2>{{ 'SETTINGS.MY_ACCOUNT' | translate }}</h2>
+            </ion-item>
+        </ion-item>
+        <ion-item>
+            <ion-item (click)="openItem('/tabs/settings/addresses')">
+                    <img src="assets/icon/mis-direcciones.svg" />
+                    <h2>{{ 'SETTINGS.ADDRESSES' | translate }}</h2>
+            </ion-item>
+        </ion-item>
+        <ion-item>
+            <ion-item (click)="openItem('/tabs/settings/payments')">
+                    <img src="assets/icon/mis-pagos.svg" />
+                    <h2>{{ 'SETTINGS.PAYMENTS' | translate }}</h2>
+            </ion-item>
+        </ion-item>
+        
+        <ion-item>
+            <ion-item (click)="openItem('/tabs/settings/password')">
+                    <img src="assets/icon/contrasena.svg" />
+                    <h2>{{ 'SETTINGS.PASSWORD' | translate }}</h2>
+            </ion-item>
+        </ion-item>
+        <ion-item>
+            <ion-item (click)="logout()">
+                    <img src="assets/icon/cerrar-sesion.svg" />
+                    <h2>{{ 'SETTINGS.LOGOUT' | translate }}</h2>
+            </ion-item>
+        </ion-item>
+    </ion-list>
+
+</ion-content>
