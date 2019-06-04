@@ -87,5 +87,90 @@ account: {
 
   ngOnInit() {
   }
+  doSignup() {
+        this.submitAttempt = true;
+        this.passwordError = false;
+        console.log("Signing up");
+        if (!this.registrationForm.valid) {return;}
+        console.log("Registration valid");
+        if (this.account.password != this.account.password_confirmation) {
+            this.passwordError = true;
+            return;
+        }
+        console.log("Password match");
+        this.showLoader();
+        // Attempt to login in through our User service
+        this.user.signup(this.account).subscribe((resp) => {
+            if (document.URL.startsWith('http')) {
+                this.loadingCtrl.dismiss();
+            } else {
+                this.spinnerDialog.hide();
+            }
+            console.log("Post login", resp);
+            this.user.postLogin().then((value) => {
+                console.log("Post login complete");
+                this.navCtrl.navigateForward('tabs');
+            }, (err) => {
+                console.log("Post login error on registration");
+            });
+        }, (err) => {
+            // Unable to sign up
+            console.log("Error", err);
+            let message = err.error.message;
+            let errorString = "";
+            if (message.email || message == "email_exists") {
+                errorString = this.signupErrorEmailString;
+            }
+            if (message.docNum || message == "id_exists") {
+                errorString = this.signupErrorIdString;
+            }
+            if (message.celphone || message == "cel_exists") {
+                errorString = this.signupErrorCelString;
+            }
+            let toast = this.toastCtrl.create({
+                message: errorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            if (document.URL.startsWith('http')) {
+                this.loadingCtrl.dismiss();
+            } else {
+                this.spinnerDialog.hide();
+            }
+
+        });
+    }
+
+    showLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loading = this.loadingCtrl.create({
+                spinner: 'crescent',
+                message: this.signupStartString,
+                backdropDismiss: true
+            }).then(toast => toast.present());
+        } else {
+            this.spinnerDialog.show(null, this.signupStartString);
+        }
+    }
+    handleRegisError() {
+        if (document.URL.startsWith('http')) {
+            this.loading = this.loadingCtrl.create({
+                spinner: 'crescent',
+                message: this.signupStartString,
+                backdropDismiss: true
+            }).then(toast => toast.present());
+        } else {
+            this.spinnerDialog.show(null, this.signupStartString);
+        }
+    }
+
+    selectType() {
+        console.log("Select type", this.account.docType);
+        if (this.account.docType == "CC" || this.account.docType == "TI" || this.account.docType == "CEL") {
+            this.idType = "tel";
+        } else {
+            this.idType = "text";
+        }
+    }
 
 }

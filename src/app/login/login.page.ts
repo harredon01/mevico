@@ -66,9 +66,7 @@ export class LoginPage implements OnInit {
                 this.userData.setToken(value);
                 this.user.postLogin().then((value) => {
                     if (document.URL.startsWith('http')) {
-                        if (this.loading) {
-                            this.loading.dismiss();
-                        }
+                        this.loadingCtrl.dismiss();
                     } else {
                         this.spinnerDialog.hide();
                     }
@@ -96,9 +94,7 @@ export class LoginPage implements OnInit {
         this.user.login(this.account).subscribe((resp) => {
             this.user.postLogin().then((value) => {
                 if (document.URL.startsWith('http')) {
-                    if (this.loading) {
-                        this.loading.dismiss();
-                    }
+                    this.loadingCtrl.dismiss();
                 } else {
                     this.spinnerDialog.hide();
                 }
@@ -109,9 +105,7 @@ export class LoginPage implements OnInit {
             });
         }, (err) => {
             if (document.URL.startsWith('http')) {
-                if (this.loading) {
-                    this.loading.dismiss();
-                }
+                this.loadingCtrl.dismiss();
             } else {
                 this.spinnerDialog.hide();
             }
@@ -131,9 +125,7 @@ export class LoginPage implements OnInit {
     // Attempt to login in through our User service
     _loadUserData() {
         if (document.URL.startsWith('http')) {
-            if (this.loading) {
-                this.loading.dismiss();
-            }
+            this.loadingCtrl.dismiss();
 
         } else {
             this.spinnerDialog.hide();

@@ -7,6 +7,7 @@ import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
+import { SQLite } from '@ionic-native/sqlite/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
 import {IonicStorageModule} from '@ionic/storage';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
@@ -36,6 +37,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         SplashScreen,
         SpinnerDialog,
         OneSignal,
+        SQLite,
         InAppBrowser,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],

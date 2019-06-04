@@ -73,7 +73,7 @@ export class PasswordPage implements OnInit {
         this.showLoader();
         this.user.updatePassword(this.account).subscribe((resp: any) => {
             if (document.URL.startsWith('http')) {
-                this.loading.dismiss();
+                this.loadingCtrl.dismiss();
             } else {
                 this.spinnerDialog.hide();
             }
@@ -94,7 +94,7 @@ export class PasswordPage implements OnInit {
             }
         }, (err) => {
             if (document.URL.startsWith('http')) {
-                this.loading.dismiss();
+                this.loadingCtrl.dismiss();
             } else {
                 this.spinnerDialog.hide();
             }
@@ -112,8 +112,7 @@ export class PasswordPage implements OnInit {
                 spinner: 'crescent',
                 message: this.passwordUpdateStartString,
                 backdropDismiss: true
-            });
-            this.loading.present();
+            }).then(toast => toast.present());
         } else {
             this.spinnerDialog.show(null, this.passwordUpdateStartString);
         }

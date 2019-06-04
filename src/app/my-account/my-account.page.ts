@@ -127,7 +127,7 @@ export class MyAccountPage implements OnInit {
         this.user.myAccount(this.account).subscribe((resp: any) => {
             console.log("Response my account", resp);
             if (document.URL.startsWith('http')) {
-                this.loading.dismiss();
+                this.loadingCtrl.dismiss();
             } else {
                 this.spinnerDialog.hide();
             }
@@ -145,7 +145,7 @@ export class MyAccountPage implements OnInit {
 
         }, (err) => {
             if (document.URL.startsWith('http')) {
-                this.loading.dismiss();
+                this.loadingCtrl.dismiss();
             } else {
                 this.spinnerDialog.hide();
             }
@@ -160,8 +160,7 @@ export class MyAccountPage implements OnInit {
                 spinner: 'crescent',
                 message: this.updateStartString,
                 backdropDismiss: true
-            });
-            this.loading.present();
+            }).then(toast => toast.present());
         } else {
             this.spinnerDialog.show(null, this.updateStartString);
         }
@@ -172,8 +171,7 @@ export class MyAccountPage implements OnInit {
             this.loading = this.loadingCtrl.create({
                 spinner: 'crescent',
                 backdropDismiss: true
-            });
-            this.loading.present();
+            }).then(toast => toast.present());
         } else {
             this.spinnerDialog.show();
         }

@@ -11,7 +11,8 @@ const routes: Routes = [
   { path: 'addresses', loadChildren: './addresses/addresses.module#AddressesPageModule' },
   { path: 'payments', loadChildren: './payments/payments.module#PaymentsPageModule' },
   { path: 'password', loadChildren: './password/password.module#PasswordPageModule' },
-  { path: 'payment-detail', loadChildren: './payment-detail/payment-detail.module#PaymentDetailPageModule' }
+  { path: 'payment-detail', loadChildren: './payment-detail/payment-detail.module#PaymentDetailPageModule' },
+  { path: 'address-create', loadChildren: './address-create/address-create.module#AddressCreatePageModule' }
 ];
 
 @NgModule({

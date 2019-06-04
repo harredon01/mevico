@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
+import {Payment} from '../models/payment';
+import {TranslateService} from '@ngx-translate/core';
+import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
+import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {BillingService} from '../services/billing/billing.service';
+import {OrderDataService} from '../services/order-data/order-data.service';
+import {ParamsService} from '../services/params/params.service';
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.page.html',
@@ -7,9 +13,117 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaymentsPage implements OnInit {
 
-  constructor() { }
+  currentItems: any[];
+    private paymentsErrorString: string;
+    private paymentsGetStartString: string;
+    page: any;
+    loadMore: boolean;
+    loading: any;
 
-  ngOnInit() {
-  }
+
+    constructor(public navCtrl: NavController,
+        public billing: BillingService,
+        public params: ParamsService,
+        public orderData: OrderDataService,
+        public toastCtrl: ToastController,
+        public modalCtrl: ModalController,
+        public loadingCtrl: LoadingController,
+        public translateService: TranslateService,
+        private spinnerDialog: SpinnerDialog) {
+        this.translateService.get('PAYMENTS.ERROR_GET').subscribe((value) => {
+            this.paymentsErrorString = value;
+        });
+        this.translateService.get('PAYMENTS.GET_START').subscribe((value) => {
+            this.paymentsGetStartString = value;
+        });
+
+        this.loadMore = true;
+
+    }
+    ngOnInit() {
+    }
+
+    /**
+     * The view loaded, let's query our items for the list
+     */
+    /**
+       * The view loaded, let's query our items for the list
+       */
+    ionViewDidEnter() {
+        this.page = 0;
+        this.getItems();
+        this.currentItems = [];
+    }
+
+    doInfinite(infiniteScroll) {
+        console.log('Begin async operation');
+        if (this.loadMore) {
+            this.loadMore = false;
+            setTimeout(() => {
+                this.getItems();
+                console.log('Async operation has ended');
+                infiniteScroll.complete();
+            }, 500);
+        } else {
+            infiniteScroll.complete();
+        }
+
+    }
+    /**
+     * Navigate to the detail page for this item.
+     */
+    getItems() {
+        this.page++;
+        this.showLoader();
+        let query = "page=" + this.page + "&includes=order.items,order.orderConditions";
+        this.billing.getPayments(query).subscribe((data: any) => {
+            if (document.URL.startsWith('http')) {
+                this.loadingCtrl.dismiss();
+            } else {
+                this.spinnerDialog.hide();
+            }
+            console.log("after get Deliveries");
+            let results = data.data;
+            if (data.page == data.last_page) {
+                this.loadMore = false;
+            }
+            for (let one in results) {
+                let container = this.orderData.buildPayment(results[one]);
+                this.currentItems.push(container);
+            }
+            console.log(JSON.stringify(data));
+        }, (err) => {
+            if (document.URL.startsWith('http')) {
+                this.loadingCtrl.dismiss();
+            } else {
+                this.spinnerDialog.hide();
+            }
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+                message: this.paymentsErrorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+        });
+    }
+
+    /**
+     * Navigate to the detail page for this item.
+     */
+    openItem(item: Payment) {
+        this.params.setParams({"item":item})
+        this.navCtrl.navigateForward('tabs/settings/payments/'+item.id);
+    }
+    showLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loading = this.loadingCtrl.create({
+                spinner: 'crescent',
+                message: this.paymentsGetStartString,
+                backdropDismiss: true
+            }).then(toast => toast.present());
+        } else {
+            this.spinnerDialog.show(null, this.paymentsGetStartString);
+        }
+    }
 
 }

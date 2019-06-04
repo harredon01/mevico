@@ -5,8 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 import { Routes, RouterModule } from '@angular/router';
 
-import { IonicModule } from '@ionic/angular';
-
 import { SettingsPage } from './settings.page';
 
 const routes: Routes = [
