@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Payment} from '../models/payment';
+import {Payment} from '../../models/payment';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
-import {BillingService} from '../services/billing/billing.service';
-import {OrderDataService} from '../services/order-data/order-data.service';
-import {ParamsService} from '../services/params/params.service';
+import {BillingService} from '../../services/billing/billing.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
+import {ParamsService} from '../../services/params/params.service';
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.page.html',

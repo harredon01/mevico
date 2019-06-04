@@ -4,8 +4,8 @@ import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 
-import {UserService} from '../services/user/user.service';
-import {UserDataService} from '../services/user-data/user-data.service';
+import {UserService} from '../../services/user/user.service';
+import {UserDataService} from '../../services/user-data/user-data.service';
 @Component({
   selector: 'app-my-account',
   templateUrl: './my-account.page.html',

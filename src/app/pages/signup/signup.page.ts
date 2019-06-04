@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {NavController, ToastController, LoadingController} from '@ionic/angular';
 
-import {UserService} from '../services/user/user.service';
+import {UserService} from '../../services/user/user.service';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',

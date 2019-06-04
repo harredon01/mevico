@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Address} from '../models/address';
+import {Address} from '../../models/address';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, LoadingController, ModalController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
-import {ParamsService} from '../services/params/params.service';
-import {AddressesService} from '../services/addresses/addresses.service';
-import {MapDataService} from '../services/map-data/map-data.service';
+import {ParamsService} from '../../services/params/params.service';
+import {AddressesService} from '../../services/addresses/addresses.service';
+import {MapDataService} from '../../services/map-data/map-data.service';
 import {AddressCreatePage} from '../address-create/address-create.page';
 @Component({
     selector: 'app-addresses',

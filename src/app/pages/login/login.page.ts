@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
-
-import {UserService} from '../services/user/user.service';
-import {UserDataService} from '../services/user-data/user-data.service';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
+import {UserService} from '../../services/user/user.service';
+import {UserDataService} from '../../services/user-data/user-data.service';
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.page.html',

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController} from '@ionic/angular';
 
-import {UserService} from '../services/user/user.service';
+import {UserService} from '../../services/user/user.service';
 
 @Component({
   selector: 'app-settings',
