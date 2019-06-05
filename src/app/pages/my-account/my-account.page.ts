@@ -117,6 +117,13 @@ export class MyAccountPage implements OnInit {
             }
         });
     }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
     
     ngOnInit() {
   }
@@ -126,11 +133,7 @@ export class MyAccountPage implements OnInit {
         // Attempt to login in through our User service
         this.user.myAccount(this.account).subscribe((resp: any) => {
             console.log("Response my account", resp);
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             if (resp.status == "success") {
                 this.userData._user = resp.user;
 
@@ -144,11 +147,7 @@ export class MyAccountPage implements OnInit {
             }
 
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to sign up
 
         });

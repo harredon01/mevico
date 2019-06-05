@@ -54,6 +54,13 @@ export class LoginPage implements OnInit {
         });
         this.checkLogIn();
     }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
 
     ngOnInit() {
     }
@@ -65,11 +72,7 @@ export class LoginPage implements OnInit {
             if (value) {
                 this.userData.setToken(value);
                 this.user.postLogin().then((value) => {
-                    if (document.URL.startsWith('http')) {
-                        this.loadingCtrl.dismiss();
-                    } else {
-                        this.spinnerDialog.hide();
-                    }
+                    this.dismissLoader();
                     this.navCtrl.navigateRoot("tabs");
                 }, (err) => {
                     this._loadUserData();
@@ -93,22 +96,14 @@ export class LoginPage implements OnInit {
         this.showLoaderEmpty();
         this.user.login(this.account).subscribe((resp) => {
             this.user.postLogin().then((value) => {
-                if (document.URL.startsWith('http')) {
-                    this.loadingCtrl.dismiss();
-                } else {
-                    this.spinnerDialog.hide();
-                }
+                this.dismissLoader();
                 console.log("Post login complete");
                 this.navCtrl.navigateRoot("tabs");
             }, (err) => {
                 console.log("Post login error on registration");
             });
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.loginErrorString,
@@ -124,12 +119,7 @@ export class LoginPage implements OnInit {
     }
     // Attempt to login in through our User service
     _loadUserData() {
-        if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
-
-        } else {
-            this.spinnerDialog.hide();
-        }
+        this.dismissLoader();
         this.userData.getUsername().then((value) => {
             console.log("getUsername", value);
             if (value) {

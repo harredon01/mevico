@@ -54,6 +54,13 @@ export class PasswordPage implements OnInit {
             password: ['', Validators.required],
         });
     }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
 
     /**
            * Send a POST request to our signup endpoint with the data
@@ -72,11 +79,7 @@ export class PasswordPage implements OnInit {
         console.log("Password match");
         this.showLoader();
         this.user.updatePassword(this.account).subscribe((resp: any) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             console.log("savePassword result", resp);
             if (resp.status == "success") {
                 let toast = this.toastCtrl.create({
@@ -93,11 +96,7 @@ export class PasswordPage implements OnInit {
                 }).then(toast => toast.present());
             }
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             let toast = this.toastCtrl.create({
                 message: this.passwordErrorStringSave,
                 duration: 3000,

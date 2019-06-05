@@ -69,6 +69,13 @@ export class PaymentsPage implements OnInit {
         }
 
     }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
     /**
      * Navigate to the detail page for this item.
      */
@@ -77,11 +84,7 @@ export class PaymentsPage implements OnInit {
         this.showLoader();
         let query = "page=" + this.page + "&includes=order.items,order.orderConditions";
         this.billing.getPayments(query).subscribe((data: any) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             console.log("after get Deliveries");
             let results = data.data;
             if (data.page == data.last_page) {
@@ -93,11 +96,7 @@ export class PaymentsPage implements OnInit {
             }
             console.log(JSON.stringify(data));
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.paymentsErrorString,

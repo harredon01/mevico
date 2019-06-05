@@ -87,6 +87,13 @@ account: {
 
   ngOnInit() {
   }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
   doSignup() {
         this.submitAttempt = true;
         this.passwordError = false;
@@ -101,11 +108,7 @@ account: {
         this.showLoader();
         // Attempt to login in through our User service
         this.user.signup(this.account).subscribe((resp) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             console.log("Post login", resp);
             this.user.postLogin().then((value) => {
                 console.log("Post login complete");
@@ -132,11 +135,7 @@ account: {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
 
         });
     }

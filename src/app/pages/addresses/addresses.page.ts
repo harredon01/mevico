@@ -81,6 +81,13 @@ export class AddressesPage implements OnInit {
             this.spinnerDialog.show();
         }
     }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
 
     /**
      * The view loaded, let's query our items for the list
@@ -89,11 +96,7 @@ export class AddressesPage implements OnInit {
         this.showLoader();
         this.currentItems = [];
         this.addresses.getAddresses().subscribe((data: any) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             console.log("after get addresses");
             let results = data.addresses;
             for (let one in results) {
@@ -102,11 +105,7 @@ export class AddressesPage implements OnInit {
             }
             console.log(JSON.stringify(data));
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.addressErrorString,
@@ -162,22 +161,14 @@ export class AddressesPage implements OnInit {
     deleteAddress(item) {
 
         this.addresses.deleteAddress(item.id).subscribe((resp: any) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             if (resp.status == "success") {
                 this.currentItems.splice(this.currentItems.indexOf(item), 1);
             }
 
             //this.navCtrl.push(MainPage);
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.addressErrorStringSave,

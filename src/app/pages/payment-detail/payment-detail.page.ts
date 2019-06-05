@@ -84,6 +84,13 @@ export class PaymentDetailPage implements OnInit {
         this.loadPayment();
 
     }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
     loadPayment() {
         var result = this.navParams.get('item');
         if (result) {
@@ -101,11 +108,7 @@ export class PaymentDetailPage implements OnInit {
                 this.showLoader();
                 let query = "id=" + paymentId + "&includes=order.items,order.orderConditions";
                 this.billing.getPayments(query).subscribe((data: any) => {
-                    if (document.URL.startsWith('http')) {
-                        this.loadingCtrl.dismiss();
-                    } else {
-                        this.spinnerDialog.hide();
-                    }
+                    this.dismissLoader();
                     console.log("after get Deliveries");
                     let results = data.data;
                     for (let one in results) {
@@ -116,11 +119,7 @@ export class PaymentDetailPage implements OnInit {
                     }
                     console.log(JSON.stringify(data));
                 }, (err) => {
-                    if (document.URL.startsWith('http')) {
-                        this.loadingCtrl.dismiss();
-                    } else {
-                        this.spinnerDialog.hide();
-                    }
+                    this.dismissLoader();
                     // Unable to log in
                     let toast = this.toastCtrl.create({
                         message: this.paymentsErrorString,
@@ -147,21 +146,13 @@ export class PaymentDetailPage implements OnInit {
         }
         this.showLoader2()
         this.orderProvider.setOrderRecurringType(this.item.order.id, container).subscribe((data: any) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             console.log("after setOrderRecurringType");
             let result = data.order;
             this.item.order = <Order> result;
             console.log(JSON.stringify(data));
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.paymentsErrorChangeString,
@@ -173,11 +164,7 @@ export class PaymentDetailPage implements OnInit {
     addTransactionCosts(paymentId) {
         this.showLoader2()
         this.billing.addTransactionCosts(paymentId).subscribe((data: any) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             if (data.status == "success") {
                 console.log("after addTransactionCosts");
                 this.item = this.orderData.buildPayment(data.payment);
@@ -191,11 +178,7 @@ export class PaymentDetailPage implements OnInit {
 
             console.log(JSON.stringify(data));
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.paymentsErrorChangeString,
@@ -229,22 +212,14 @@ export class PaymentDetailPage implements OnInit {
     retryPayment(item: Payment) {
         this.showLoader();
         this.billing.retryPayment(item.id).subscribe((data: any) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             if (data.status == "success") {
                 this.orderData.payment = data.payment;
                 this.retryPaymentModal();
                 console.log(JSON.stringify(data));
             }
             else {
-                if (document.URL.startsWith('http')) {
-                    this.loadingCtrl.dismiss();
-                } else {
-                    this.spinnerDialog.hide();
-                }
+                this.dismissLoader();
                 // Unable to log in
                 var toast = this.toastCtrl.create({
                     message: this.paymentsErrorString,
@@ -253,11 +228,7 @@ export class PaymentDetailPage implements OnInit {
                 }).then(toast => toast.present());
             }
         }, function (err) {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             var toast = this.toastCtrl.create({
                 message: this.paymentsErrorString,
@@ -270,11 +241,7 @@ export class PaymentDetailPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     transactionResponse(transaction) {
-        if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
-        } else {
-            this.spinnerDialog.hide();
-        }
+        this.dismissLoader();
         console.log("after payCreditCard");
         this.orderData.clearOrder();
         this.params.setParams({
@@ -295,11 +262,7 @@ export class PaymentDetailPage implements OnInit {
             let transaction = data.response.transactionResponse;
             this.transactionResponse(transaction);
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.paymentsErrorPayString,
@@ -326,11 +289,7 @@ export class PaymentDetailPage implements OnInit {
         };
         console.log("before payCreditCard token", container);
         this.billing.payInBank(container).subscribe((data: any) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             if (data.status == "success") {
 
                 console.log("after payInBank");
@@ -350,11 +309,7 @@ export class PaymentDetailPage implements OnInit {
             }
 
         }, (err) => {
-            if (document.URL.startsWith('http')) {
-                this.loadingCtrl.dismiss();
-            } else {
-                this.spinnerDialog.hide();
-            }
+            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.paymentsErrorPayString,
