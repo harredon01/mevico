@@ -1,0 +1,136 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start" *ngIf="!showPayment">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ 'CHECKOUT_PREPARE.TITLE' | translate }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="checkout-prepare">
+    <div class="checkout-prepare--wrapper">
+        <p class="checkout-prepare__description" *ngIf="!showPayment">{{ 'CHECKOUT_PREPARE.DESCRIPTION' | translate }}</p>
+        <div *ngIf="!showPayment"> 
+            <ion-grid>
+                <div class="checkout-prepare__items" *ngFor="let item of currentItems">
+                     <div class="checkout__item"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}}</div>
+                    <div class="checkout__item"><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</div>
+                    <div class="checkout__item"><strong>{{ 'CART_ITEM.PRICE' | translate }}: </strong> {{item.price| currency}}</div>
+
+                    <div class="checkout__item"><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumWithConditions| currency}}</div>
+                    <div class="checkout__item"><div class="content-increment-product">
+                            <ion-button outline style="font-size:20px;" (click)="reduceCartItem(item)">-</ion-button>
+                            <label> {{item.quantity}}</label>
+                            <ion-button outline style="font-size:20px;" (click)="increaseCartItem(item)">+</ion-button>
+                        </div> 
+                    </div> 
+                    <!--div class="checkout__item checkout__item--delete">
+                        <span (click)="deleteItem(item)">
+                            Eliminar
+                        </span>
+                    </div-->
+                </div>
+            </ion-grid>
+            <ion-grid>
+                <div class="checkout-prepare__items" *ngFor="let item of conditions">
+                     <div class="checkout__item">{{item.getName}}</div>
+                    <div class="checkout__item"> <strong>{{ 'CART_COND.TOTAL' | translate }}: </strong>{{item.total| currency}}</div>
+                </div>
+            </ion-grid>
+            <p><strong>Total:</strong> {{total | currency }}</p>
+            <p><strong>Numero Total Productos:</strong>{{totalItems}}</p>
+            <br/>
+            <div *ngIf="payers.length>0">
+                <h2>{{ 'CHECKOUT_PREPARE.PAYERS_TITLE' | translate }}</h2>
+                <p *ngIf="merchant == '1299'">{{ 'CHECKOUT_PREPARE.PAYERS_MEALS' | translate }}</p>
+                <p *ngIf="merchant != '1299'">{{ 'CHECKOUT_PREPARE.PAYERS' | translate }}</p>
+                <ion-list>
+                    <ion-item *ngFor="let item of payers">
+                        <h2>{{item.email}}</h2>
+                    </ion-item>
+                </ion-list>
+            </div>
+
+            <div *ngIf="showPayers">
+                <ion-list>
+                    <ion-item>
+                        <ion-label>{{ 'CHECKOUT_PREPARE.SPLIT' | translate }}</ion-label>
+                        <ion-checkbox [(ngModel)]="split"></ion-checkbox>
+                    </ion-item>
+                </ion-list>
+                <p><strong>{{ 'CHECKOUT_PREPARE.SPLIT_DESC' | translate }}</strong></p>
+            </div>
+            <ion-item *ngIf="hasSavedCard && merchant == '1299'">
+                <ion-label>{{ 'CHECKOUT_PREPARE.RECURRING' | translate }}</ion-label>
+                <ion-checkbox [(ngModel)]="recurring" ></ion-checkbox>
+            </ion-item>
+            <p *ngIf="hasSavedCard && merchant == '1299'">{{ 'CHECKOUT_PREPARE.RECURRING_DESC' | translate }}</p>
+            <ion-item *ngIf="requiresDelivery">
+                <ion-label style="color:#990000">{{ 'CHECKOUT_PREPARE.DELIVERY_DATE' | translate }}</ion-label>
+            </ion-item>
+            <ion-item *ngIf="requiresDelivery">
+                <ion-datetime displayFormat="MMM,DD YYYY" placeholder="{{ 'CHECKOUT_PREPARE.DATE' | translate }}" [min]="deliveryRule" pickerFormat="MMM DD YYYY" [(ngModel)]="delivery" (ngModelChange)="selectDeliveryDate()">
+                </ion-datetime>
+            </ion-item>
+            <ion-item *ngIf="requiresDelivery">
+                <ion-datetime placeholder="{{ 'CHECKOUT_PREPARE.TIME' | translate }}" displayFormat="hh:mm A" pickerFormat="hh:mm A" [(ngModel)]="delivery2" (ngModelChange)="selectDeliveryDate()">
+                </ion-datetime>
+            </ion-item>
+
+            <div class="coupon">
+                <input placeholder="{{ 'CHECKOUT_PREPARE.COUPON' | translate }}" [(ngModel)]="coupon"/>
+                <button item-right (click)="addCoupon()">{{ 'INPUTS.SUBMIT' | translate }}</button>
+            </div>
+            <ion-button class="btn-secondary" (click)="prepareOrder()">{{ 'CHECKOUT_PREPARE.CONTINUE' | translate }}</ion-button>
+            <ion-button class="btn-primary" *ngIf="showSplit && merchant != '1299'" (click)="addPayers(-1)">{{ 'CHECKOUT_PREPARE.SHARE' | translate }}</ion-button>
+        </div>
+
+        <div  *ngIf="showPayment">
+            <ion-card >        
+                <ion-card-header class="product-header-information">            
+                    <span>{{ 'CHECKOUT_PREPARE.COMPLETE' | translate }}</span>        
+                </ion-card-header>        
+                <ion-card-content>
+                    <p>{{ 'CHECKOUT_PREPARE.ORDER_TOTAL' | translate }} {{order.total | currency }}</p>
+                    <div *ngIf="paymentMethod !='IN_BANK'">
+                        <p>{{ 'CHECKOUT_PREPARE.YOUR_TOTAL' | translate }}: {{payment.subtotal | currency }}</p>    
+                        <p>{{ 'PAYMENT.TRANSACTION_COST' | translate }}: {{payment.transaction_cost | currency }}</p>    
+                        <p>{{ 'PAYMENT.TOTAL' | translate }}: {{payment.total | currency }}</p>  
+                    </div>
+                    <div *ngIf="paymentMethod =='IN_BANK'">
+                        <p>{{ 'CHECKOUT_PREPARE.YOUR_TOTAL' | translate }}: {{payment.subtotal | currency }}</p> 
+                    </div>                                       
+                </ion-card-content>
+            </ion-card> 
+            <p class="checkout-prepare__description">{{ 'CHECKOUT_PREPARE.DESCRIPTION2' | translate }}</p>
+            <p class="checkout-prepare__description"><strong>{{ 'CHECKOUT_PREPARE.DESCRIPTION3' | translate }}</strong></p>
+            <ion-list>
+                <ion-radio-group [(ngModel)]="paymentMethod">
+                    <ion-item>
+                        <ion-label>{{ 'CHECKOUT_PREPARE.CC' | translate }}</ion-label>
+                        <ion-radio slot="start" value="CC" checked></ion-radio>
+                    </ion-item>
+                    <ion-item *ngIf="hasSavedCard">
+                        <ion-label>{{ 'CHECKOUT_PREPARE.QUICK' | translate }}</ion-label>
+                        <ion-radio slot="start" value="QUICK"></ion-radio>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'CHECKOUT_PREPARE.DEBIT' | translate }}</ion-label>
+                        <ion-radio slot="start" value="Banks" ></ion-radio>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'CHECKOUT_PREPARE.IN_BANK' | translate }}</ion-label>
+                        <ion-radio slot="start" value="IN_BANK" ></ion-radio>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'CHECKOUT_PREPARE.CASH' | translate }}</ion-label>
+                        <ion-radio slot="start" value="Cash" ></ion-radio>
+                    </ion-item>
+                </ion-radio-group>
+            </ion-list>
+
+            <ion-button class="btn-secondary" (click)="selectPaymentOption()">Continuar</ion-button>
+        </div>
+
+    </div>
+</ion-content>

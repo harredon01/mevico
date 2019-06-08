@@ -1,5 +1,8 @@
 <ion-header class="section__header">    
-    <ion-toolbar hideBackButton="{{backButton}}">        
+    <ion-toolbar>   
+        <ion-buttons slot="start" *ngIf="backButton">
+            <ion-back-button defaultHref="tabs/settings/payments"></ion-back-button>
+        </ion-buttons>
         <ion-title>{{ 'PAYMENT_DETAIL.TITLE' | translate }}: {{ item.id }}</ion-title>    
     </ion-toolbar>
 </ion-header>

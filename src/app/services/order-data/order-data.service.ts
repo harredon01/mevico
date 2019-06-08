@@ -38,13 +38,13 @@ export class OrderDataService {
     }
     getStep2(method: any) {
         if (method == "CC") {
-            return "CheckoutBuyerPage";
+            return "tabs/payu/credit/buyer";
         }
         if (method == "Cash") {
-            return "CheckoutCashPage";
+            return "tabs/payu/cash";
         }
         if (method == "Banks") {
-            return "CheckoutBanksPage";
+            return "tabs/payu/banks";
         }
     }
     buildPayment(container: any) {

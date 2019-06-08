@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, NavParams, ModalController, ToastController, LoadingController} from '@ionic/angular';
+import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {ActivatedRoute} from '@angular/router';
 import {BillingService} from '../../services/billing/billing.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {OrderService} from '../../services/order/order.service';
@@ -30,18 +31,18 @@ export class PaymentDetailPage implements OnInit {
     loading: any;
 
     constructor(public navCtrl: NavController,
-        public navParams: NavParams,
         public orderData: OrderDataService,
         public userData: UserDataService,
         public params: ParamsService,
         public orderProvider: OrderService,
+        private activatedRoute: ActivatedRoute,
         public toastCtrl: ToastController,
         private spinnerDialog: SpinnerDialog,
         public loadingCtrl: LoadingController,
         public modalCtrl: ModalController,
         public translateService: TranslateService,
         public billing: BillingService) {
-        this.backButton = false;
+        this.backButton = true;
         let order = new Order({"items": []});
         this.item = new Payment({
             "status": "",
@@ -69,9 +70,10 @@ export class PaymentDetailPage implements OnInit {
             this.paymentsChangeStartString = value;
         });
         console.log("backButton", this.backButton);
-        console.log("newPayment", this.navParams.get('newPayment'));
-        if (this.navParams.get('newPayment')) {
-            this.backButton = true;
+        let paramSent = this.params.getParams();
+        console.log("newPayment", paramSent.newPayment);
+        if (paramSent.newPayment) {
+            this.backButton = false;
         }
         this.hasSavedCard = false;
         this.newPayment = false;
@@ -92,7 +94,8 @@ export class PaymentDetailPage implements OnInit {
         }
     }
     loadPayment() {
-        var result = this.navParams.get('item');
+        let paramSent = this.params.getParams();
+        var result = paramSent.item;
         if (result) {
             this.item = result;
             if (this.item.order.recurring) {
@@ -100,10 +103,10 @@ export class PaymentDetailPage implements OnInit {
             }
 
         } else {
-            let paymentId = this.navParams.get('objectId');
+            let paymentId = this.activatedRoute.snapshot.paramMap.get('objectId');
             if (paymentId) {
-                if (this.navParams.get('newPayment')) {
-                    this.newPayment = this.navParams.get('newPayment');
+                if (paramSent.newPayment) {
+                    this.newPayment = paramSent.newPayment;
                 }
                 this.showLoader();
                 let query = "id=" + paymentId + "&includes=order.items,order.orderConditions";
@@ -298,7 +301,7 @@ export class PaymentDetailPage implements OnInit {
                     objectId: data.payment.id,
                     newPayment: true
                 });
-                this.navCtrl.navigateForward('tabs/settings/payments/'+data.payment.id);
+                this.navCtrl.navigateForward('tabs/settings/payments/' + data.payment.id);
             } else {
                 // Unable to log in
                 let toast = this.toastCtrl.create({

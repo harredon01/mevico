@@ -6,6 +6,18 @@ const routes: Routes = [
     {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'},
     {path: 'signup', loadChildren: './pages/signup/signup.module#SignupPageModule'},
     {path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule'},
+  { path: 'checkout-buyer', loadChildren: './pages/checkout-buyer/checkout-buyer.module#CheckoutBuyerPageModule' },
+  { path: 'checkout-cash', loadChildren: './pages/checkout-cash/checkout-cash.module#CheckoutCashPageModule' },
+  { path: 'checkout-banks', loadChildren: './pages/checkout-banks/checkout-banks.module#CheckoutBanksPageModule' },
+  { path: 'checkout-payer', loadChildren: './pages/checkout-payer/checkout-payer.module#CheckoutPayerPageModule' },
+  { path: 'checkout-card', loadChildren: './pages/checkout-card/checkout-card.module#CheckoutCardPageModule' },
+  { path: 'checkout-prepare', loadChildren: './pages/checkout-prepare/checkout-prepare.module#CheckoutPreparePageModule' },
+  { path: 'buyer-select', loadChildren: './pages/buyer-select/buyer-select.module#BuyerSelectPageModule' },
+  { path: 'payu-complete', loadChildren: './pages/payu-complete/payu-complete.module#PayuCompletePageModule' },
+  { path: 'map', loadChildren: './pages/map/map.module#MapPageModule' },
+  { path: 'cart', loadChildren: './pages/cart/cart.module#CartPageModule' },
+  { path: 'chat-room', loadChildren: './pages/chat-room/chat-room.module#ChatRoomPageModule' },
+  { path: 'comments', loadChildren: './pages/comments/comments.module#CommentsPageModule' },
 ];
 
 @NgModule({

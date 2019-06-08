@@ -5,24 +5,24 @@ import { Routes, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicModule } from '@ionic/angular';
 
-import { PaymentDetailPage } from './payment-detail.page';
+import { CartPage } from './cart.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: PaymentDetailPage
+    component: CartPage
   }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
     FormsModule,
     IonicModule,
-    TranslateModule,
-    ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PaymentDetailPage]
+  declarations: [CartPage]
 })
-export class PaymentDetailPageModule {}
+export class CartPageModule {}
