@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NavController, ToastController, LoadingController, ModalController, AlertController, IonContent} from '@ionic/angular';
+import {NavController, ToastController, LoadingController, ModalController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {TranslateService} from '@ngx-translate/core';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {BillingService} from '../../services/billing/billing.service';
-import {TranslateService} from '@ngx-translate/core';
+
 
 @Component({
     selector: 'app-checkout-banks',

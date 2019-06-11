@@ -66,11 +66,11 @@
                 <ion-checkbox [(ngModel)]="card.save_card" formControlName="save_card"></ion-checkbox>
             </ion-item>
             <ion-item>
-                <ion-button full >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
+                <ion-button expand="full" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
             </ion-item>
 
         </ion-list>
     </form>
-    <ion-button full (click)="payToken()" *ngIf="useToken">Usar tarjeta guardada</ion-button>
-    <ion-button full (click)="useOld()" *ngIf="useToken">Usar nueva tarjeta</ion-button>
+    <ion-button expand="full" (click)="payToken()" *ngIf="useToken">Usar tarjeta guardada</ion-button>
+    <ion-button expand="full" (click)="useOld()" *ngIf="useToken">Usar nueva tarjeta</ion-button>
 </ion-content>

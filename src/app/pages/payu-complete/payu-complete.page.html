@@ -31,7 +31,7 @@
             <p *ngIf="transaction.operationDate"><b>{{ 'PAYU_COMPLETE.TRANSACTION_DATE' | translate }}:</b> {{transaction.operationDate}}</p>
             <p *ngIf="transaction.state=='DECLINED'"><strong>{{ 'PAYU_COMPLETE.TRANSACTION_RETRY' | translate }}</strong></p>
             <br/>
-            <ion-button round (click)="returnHome()">Volver</ion-button>
+            <ion-button shape="round" (click)="returnHome()">Volver</ion-button>
         </ion-card-content>
     </ion-card>  
     

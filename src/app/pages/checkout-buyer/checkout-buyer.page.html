@@ -26,9 +26,7 @@
                 </ion-item>
             </ion-item-sliding>
         </ion-list>
-        <ion-button class="btn-primary" *ngIf="!showAddressCard" round (click)="createAddress()">{{
-            'INPUTS.CREATE_ADDRESS' |
-            translate }}</ion-button>
+        <ion-button class="btn-primary" *ngIf="!showAddressCard" shape="round" (click)="createAddress()">{{'INPUTS.CREATE_ADDRESS' |translate }}</ion-button>
         <ion-card *ngIf="showAddressCard">
             <ion-item class="checkout-shipping__item">
                 <p class="checkout-shipping__description">{{ 'CHECKOUT_BUYER.SELECTED' | translate }}</p>
@@ -45,9 +43,7 @@
                 <p>{{selectedAddress.countryName}}</p>
             </ion-card-content>
         </ion-card>
-        <ion-button class="btn-primary" round (click)="continuePayer()" *ngIf="showAddressCard">{{
-            'INPUTS.CONTINUE' | translate }}</ion-button>
-        <ion-button class="btn-secondary" round (click)="changeAddress()" *ngIf="showAddressCard">{{
-            'INPUTS.CHANGE_ADDRESS' | translate }}</ion-button>
+        <ion-button class="btn-primary" round (click)="continuePayer()" *ngIf="showAddressCard">{{'INPUTS.CONTINUE' | translate }}</ion-button>
+        <ion-button class="btn-secondary" round (click)="changeAddress()" *ngIf="showAddressCard">{{'INPUTS.CHANGE_ADDRESS' | translate }}</ion-button>
     </div>
 </ion-content>

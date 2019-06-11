@@ -35,10 +35,10 @@
             </ion-item-sliding>
         </ion-list>
 
-        <ion-button class="checkout-shipping__create" *ngIf="!showAddressCard" round (click)="createAddress()">{{
+        <ion-button class="checkout-shipping__create" *ngIf="!showAddressCard" shape="round" (click)="createAddress()">{{
             'INPUTS.CREATE_ADDRESS' | translate }}</ion-button>
-        <ion-button round class="btn-primary" (click)="changeAddress()" *ngIf="showAddressCard">{{ 'INPUTS.CHANGE_ADDRESS' |
+        <ion-button shape="round" class="btn-primary" (click)="changeAddress()" *ngIf="showAddressCard">{{ 'INPUTS.CHANGE_ADDRESS' |
                 translate }}</ion-button>
-        <ion-button round class="btn-secondary" (click)="prepareOrder()" *ngIf="showAddressCard"> {{ 'INPUTS.CONTINUE' | translate }}</ion-button>
+        <ion-button shape="round" class="btn-secondary" (click)="prepareOrder()" *ngIf="showAddressCard"> {{ 'INPUTS.CONTINUE' | translate }}</ion-button>
     </div>
 </ion-content>

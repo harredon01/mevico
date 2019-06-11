@@ -21,7 +21,7 @@
                 </ion-item>
             </ion-item-sliding>
         </ion-list>
-        <ion-button class="btn-primary" *ngIf="!showAddressCard" round (click)="createAddress()">Crear Dirección</ion-button>
+        <ion-button class="btn-primary" *ngIf="!showAddressCard" shape="round" (click)="createAddress()">Crear Dirección</ion-button>
         <ion-card *ngIf="showAddressCard">
             <ion-item class="checkout-shipping__item">
                 <p class="checkout-shipping__description">{{ 'CHECKOUT_BUYER.SELECTED' | translate }}</p>
@@ -70,7 +70,7 @@
                 <ion-item *ngIf="!payerForm.controls.payer_email.valid  && (payerForm.controls.payer_email.dirty || submitAttempt)">
                     <p>{{ 'USER.EMAIL_ERROR' | translate }}</p>
                 </ion-item>
-                <ion-button class="btn-primary" full>{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
+                <ion-button class="btn-primary" expand="full">{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
             </ion-list>
         </form>
     </div>

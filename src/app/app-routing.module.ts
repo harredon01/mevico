@@ -18,6 +18,11 @@ const routes: Routes = [
   { path: 'cart', loadChildren: './pages/cart/cart.module#CartPageModule' },
   { path: 'chat-room', loadChildren: './pages/chat-room/chat-room.module#ChatRoomPageModule' },
   { path: 'comments', loadChildren: './pages/comments/comments.module#CommentsPageModule' },
+  { path: 'merchant-categories', loadChildren: './pages/merchant-categories/merchant-categories.module#MerchantCategoriesPageModule' },
+  { path: 'merchant-listing', loadChildren: './pages/merchant-listing/merchant-listing.module#MerchantListingPageModule' },
+  { path: 'merchant-detail', loadChildren: './pages/merchant-detail/merchant-detail.module#MerchantDetailPageModule' },
+  { path: 'search-filtering', loadChildren: './pages/search-filtering/search-filtering.module#SearchFilteringPageModule' },
+  { path: 'merchant-products', loadChildren: './pages/merchant-products/merchant-products.module#MerchantProductsPageModule' },
 ];
 
 @NgModule({

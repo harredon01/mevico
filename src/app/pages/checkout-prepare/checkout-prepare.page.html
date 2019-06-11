@@ -19,9 +19,9 @@
 
                     <div class="checkout__item"><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumWithConditions| currency}}</div>
                     <div class="checkout__item"><div class="content-increment-product">
-                            <ion-button outline style="font-size:20px;" (click)="reduceCartItem(item)">-</ion-button>
+                            <ion-button fill="outline" style="font-size:20px;" (click)="reduceCartItem(item)">-</ion-button>
                             <label> {{item.quantity}}</label>
-                            <ion-button outline style="font-size:20px;" (click)="increaseCartItem(item)">+</ion-button>
+                            <ion-button fill="outline" style="font-size:20px;" (click)="increaseCartItem(item)">+</ion-button>
                         </div> 
                     </div> 
                     <!--div class="checkout__item checkout__item--delete">
