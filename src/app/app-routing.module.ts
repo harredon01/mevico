@@ -23,6 +23,12 @@ const routes: Routes = [
   { path: 'merchant-detail', loadChildren: './pages/merchant-detail/merchant-detail.module#MerchantDetailPageModule' },
   { path: 'search-filtering', loadChildren: './pages/search-filtering/search-filtering.module#SearchFilteringPageModule' },
   { path: 'merchant-products', loadChildren: './pages/merchant-products/merchant-products.module#MerchantProductsPageModule' },
+  { path: 'booking', loadChildren: './pages/booking/booking.module#BookingPageModule' },
+  { path: 'booking-list', loadChildren: './pages/booking-list/booking-list.module#BookingListPageModule' },
+  { path: 'booking-detail', loadChildren: './pages/booking-detail/booking-detail.module#BookingDetailPageModule' },
+  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
+  { path: 'routes', loadChildren: './pages/routes/routes.module#RoutesPageModule' },
+  { path: 'route-detail', loadChildren: './pages/route-detail/route-detail.module#RouteDetailPageModule' },
 ];
 
 @NgModule({

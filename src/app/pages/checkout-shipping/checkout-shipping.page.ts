@@ -56,13 +56,6 @@ export class CheckoutShippingPage implements OnInit {
             this.addressSaveStartString = value;
         });
     }
-    dismissLoader() {
-        if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
-        } else {
-            this.spinnerDialog.hide();
-        }
-    }
 
     saveShipping(item: Address) {
         console.log("SaveShipping", item);
@@ -103,6 +96,13 @@ export class CheckoutShippingPage implements OnInit {
         //        this.showAddressCard = true;
         //        this.orderData.shippingAddress = item;
         //this.navCtrl.push("CheckoutBuyerPage");
+    }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
     }
 
     showLoader() {
