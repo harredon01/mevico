@@ -51,7 +51,6 @@ export class TrackingService {
         });
         BackgroundGeolocation.onGeofence(geofence => {
             console.log('[geofence] ', geofence.identifier, geofence.action);
-            this.geofenceTriggered(geofence.identifier, geofence.action);
             this.events.publish('location:onGeofence', geofence);
         });
         // 2.  Configure the plugin with #ready
@@ -102,21 +101,6 @@ export class TrackingService {
     }
     removeGeofences() {
         BackgroundGeolocation.removeGeofences();
-    }
-    geofenceTriggered(identifier, action) {
-        let endpoint = '/basilikum';
-        let data = {"stop": identifier, "action": action};
-        let seq = this.api.post(endpoint, data);
-        seq.subscribe((data: any) => {
-            console.log("after geofenceTriggered");
-            console.log(JSON.stringify(data));
-            return data;
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
-        return seq;
     }
     createGeofence(latitude: any, longitude: any, objectId: any) {
         BackgroundGeolocation.addGeofence({

@@ -5,5 +5,9 @@
 </ion-header>
 
 <ion-content>
-
+<ion-list>
+  <ion-item  *ngFor="let item of currentItems" (click)="openItem(item)">
+    <ion-label>{{item.id}} {{item.provider}} {{item.status}}</ion-label>
+  </ion-item>
+</ion-list>
 </ion-content>

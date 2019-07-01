@@ -8,29 +8,43 @@ const routes: Routes = [
         component: TabsPage,
         children: [
             {
-                path: 'tab1',
+                path: 'home',
                 children: [
                     {
                         path: '',
-                        loadChildren: '../tab1/tab1.module#Tab1PageModule'
+                        loadChildren: '../home/home.module#HomePageModule'
                     }
                 ]
             },
             {
-                path: 'tab2',
+                path: 'routes',
                 children: [
                     {
                         path: '',
-                        loadChildren: '../tab2/tab2.module#Tab2PageModule'
+                        loadChildren: '../routes/routes.module#RoutesPageModule'
+                    },
+                    {
+                        path: ':objectId',
+                        loadChildren: '../route-detail/route-detail.module#RouteDetailPageModule'
                     }
                 ]
             },
             {
-                path: 'tab3',
+                path: 'categories',
                 children: [
                     {
                         path: '',
-                        loadChildren: '../tab3/tab3.module#Tab3PageModule'
+                        loadChildren: '../merchant-categories/merchant-categories.module#MerchantCategoriesPageModule'
+                    },
+                    {
+                        path: ':objectId',
+                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                        children: [
+                            {
+                                path: '',
+                                loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule'
+                            }
+                        ]
                     }
                 ]
             },
@@ -117,14 +131,14 @@ const routes: Routes = [
             },
             {
                 path: '',
-                redirectTo: '/tabs/tab1',
+                redirectTo: '/tabs/home',
                 pathMatch: 'full'
             }
         ]
     },
     {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/home',
         pathMatch: 'full'
     }
 ];

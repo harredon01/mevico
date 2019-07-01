@@ -91,5 +91,11 @@
     <plugin name="onesignal-cordova-plugin" spec="2.4.7" />
     <allow-navigation href="http://localhost:8100" sessionid="511739d8" />
     <plugin name="cordova-sqlite-storage" spec="3.2.0" />
+    <plugin name="cordova-background-geolocation-lt" spec="3.0.7">
+        <variable name="GOOGLE_API_VERSION" value="16.+" />
+        <variable name="APPCOMPAT_VERSION" value="27.+" />
+        <variable name="OKHTTP_VERSION" value="3.12.+" />
+        <variable name="EVENTBUS_VERSION" value="3.0.0" />
+    </plugin>
     <engine name="android" spec="7.1.4" />
 </widget>

@@ -34,7 +34,6 @@ export class UserDataService {
     setToken(token: any) {
         this._headers = this._headers.set('Authorization', 'Bearer ' + token);
         this._headers = this._headers.set('X-Auth-Token', token);
-        this._user.token = token;
         this.storage.set('token', token);
         //    let seq = this.api.post('login', accountInfo).share();
         //

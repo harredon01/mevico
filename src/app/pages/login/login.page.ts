@@ -16,8 +16,8 @@ export class LoginPage implements OnInit {
     // If you're using the username field with or without email, make
     // sure to add it to the type
     account: {username: string, password: string, remember: boolean} = {
-        username: '',
-        password: '',
+        username: 'harredon01@gmail.com',
+        password: '123456',
         remember: true
     };
     public downloadProgress = 0;

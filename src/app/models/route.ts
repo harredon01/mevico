@@ -9,22 +9,12 @@
  */
 export class Route {
     id: any;
-    name: string;
-    city: string;
-    address: string;
-    notes: string;
-    type: string;
-    postal: string;
-    phone: string;
-    lat: any;
-    long: any;
-    city_id: any;
-    cityName: any;
-    region_id: any;
-    regionName: any;
-    country: any;
-    countryName: any;
-    countryCode: any;
+    status: string;
+    description: string;
+    provider: string;
+    address: any;
+    stops: [];
+
 
   constructor(fields: any) {
     // Quick and dirty extend/assign fields to this model
