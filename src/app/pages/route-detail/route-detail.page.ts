@@ -118,7 +118,7 @@ export class RouteDetailPage implements OnInit {
         this.events.subscribe('location:onGeofence', (geofence) => {
             if (geofence.action == "ENTER") {
                 this.stopArrived(geofence.identifier);
-            } else {
+            } else if (geofence.action == "EXIT") {
                 this.stopComplete(geofence.identifier);
             }
         });
@@ -128,6 +128,10 @@ export class RouteDetailPage implements OnInit {
         let params = {"route_id": route_id};
         this.routingService.startRoute(params).subscribe((data: any) => {
             this.dismissLoader();
+            for(let item in this.route.stops){
+                let stop:any = this.route.stops[item];
+                this.trackingService.createGeofence(stop.address.lat,stop.address.long,stop.id);
+            }
             console.log("after startRoute");
             console.log(JSON.stringify(data));
         }, (err) => {
@@ -194,8 +198,9 @@ export class RouteDetailPage implements OnInit {
     routeComplete(route_id) {
         this.showLoader();
         let params = {"route_id": route_id};
-        this.routingService.stopFailed(params).subscribe((data: any) => {
+        this.routingService.completeRoute(params).subscribe((data: any) => {
             this.dismissLoader();
+            this.trackingService.removeGeofences();
             console.log("after routeComplete");
             console.log(JSON.stringify(data));
         }, (err) => {
