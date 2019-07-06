@@ -5,14 +5,14 @@ import {NavController, ModalController, ToastController, LoadingController} from
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';
 @Component({
-    selector: 'app-merchant-categories',
-    templateUrl: './merchant-categories.page.html',
-    styleUrls: ['./merchant-categories.page.scss'],
+    selector: 'app-merchant-search',
+    templateUrl: './merchant-search.page.html',
+    styleUrls: ['./merchant-search.page.scss'],
 })
-export class MerchantCategoriesPage implements OnInit {
+export class MerchantSearchPage implements OnInit {
     location: string = "n1";
-    categoriesErrorGet: string = "";
-    items: any[];
+    categoriesErrorGet:string = "";
+    items:any[];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
         public params: ParamsService,
@@ -37,7 +37,7 @@ export class MerchantCategoriesPage implements OnInit {
         this.categories.getCategories(query).subscribe((data: any) => {
             this.dismissLoader();
             console.log("after getCategories");
-            this.items = data.categories;
+            this.items = data.data;
             console.log(JSON.stringify(data));
         }, (err) => {
             this.dismissLoader();
@@ -49,21 +49,14 @@ export class MerchantCategoriesPage implements OnInit {
             }).then(toast => toast.present());
         });
     }
-    /**
-     * Navigate to the detail page for this item.
-     */
-    openItem(item: any) {
-        this.params.setParams({"item":item});
-        this.navCtrl.navigateForward('tabs/categories/'+item.id); 
-    }
     searchItems(ev: any) {
-        // set val to the value of the searchbar
-        const val = ev.target.value;
-        // if the value is an empty string don't filter the items
-        if (val && val.trim() != '') {
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
 
-        }
     }
+  }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
             this.loadingCtrl.dismiss();
@@ -75,6 +68,7 @@ export class MerchantCategoriesPage implements OnInit {
         if (document.URL.startsWith('http')) {
             this.loadingCtrl.create({
                 spinner: 'crescent',
+                message: this.categoriesErrorGet,
                 backdropDismiss: true
             }).then(toast => toast.present());
         } else {

@@ -7,8 +7,8 @@ import {Router} from '@angular/router';
     providedIn: 'root'
 })
 export class ApiService {
-    url: string = 'https://lonchis.com.co/api';
-    urlsite: string = 'https://lonchis.com.co';
+    url: string = 'https://dev.lonchis.com.co/api';
+    urlsite: string = 'https://dev.lonchis.com.co';
     constructor(public http: HttpClient,
         private router: Router,
         private navCtrl:NavController,

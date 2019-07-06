@@ -113,7 +113,7 @@ export class LoginPage implements OnInit {
         });
     }
     forgotPass() {
-        const browser = this.iab.create("https://lonchis.com.co/password/reset");
+        const browser = this.iab.create("https://dev.lonchis.com.co/password/reset");
         browser.on('exit').subscribe(event => {
         });
     }

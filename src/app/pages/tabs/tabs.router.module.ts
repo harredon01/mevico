@@ -37,12 +37,32 @@ const routes: Routes = [
                         loadChildren: '../merchant-categories/merchant-categories.module#MerchantCategoriesPageModule'
                     },
                     {
-                        path: ':objectId',
-                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                        path: ':categoryId',
                         children: [
                             {
                                 path: '',
-                                loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule'
+                                loadChildren: '../merchant-listing/merchant-listing.module#MerchantListingPageModule',
+                            },
+                            {
+                                path: 'merchant/:objectId',
+                                children: [
+                                    {
+                                        path: '',
+                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                    },
+                                    {
+                                        path: 'products',
+                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                    },
+                                    {
+                                        path: 'bookings',
+                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                    },
+                                    {
+                                        path: 'ratings',
+                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                    }
+                                ]
                             }
                         ]
                     }

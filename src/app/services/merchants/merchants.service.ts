@@ -52,7 +52,7 @@ export class MerchantsService {
         return seq;
     }
     getMerchant(merchantId:string) {
-        let url = "/merchant/"+merchantId;
+        let url = "/merchants/"+merchantId;
         let seq = this.api.get(url);
         seq.subscribe((data: any) => {
             console.log("after get merchant");

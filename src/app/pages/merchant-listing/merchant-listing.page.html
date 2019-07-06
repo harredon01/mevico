@@ -2,9 +2,7 @@
     <ion-toolbar>
         <ion-title>
             <ion-select [(ngModel)]="category" interface="popover" style="padding-left: 0;">
-                <ion-select-option value="a1">Cardiologist</ion-select-option>
-                <ion-select-option value="a2">Orthalmologist</ion-select-option>
-                <ion-select-option value="a3">Dermatologist</ion-select-option>
+                <ion-select-option value="{{category.id}}" *ngFor="let category of categoryItems">{{category.name}}</ion-select-option>
             </ion-select>
             <span class="location"><small margin-right>Location</small>
             <ion-select [(ngModel)]="location" interface="popover" class="location">
@@ -26,24 +24,16 @@
 </ion-header>
 
 <ion-content class="bg-light">
-    <ion-card>
+    <ion-card *ngFor="let item of merchants">
         <ion-item>
             <ion-avatar item-start>
-                <img src="assets/imgs/profile1.png">
+                <img [src]="item.icon">
             </ion-avatar>
-            <h2>Dr. Josephan Williamson</h2>
-            <p>Cardiac Surgeon</p>
-            <ion-button clear class="btn success" (click)="merchantDetail()">Book</ion-button>
+            <h2>{{item.name}}</h2>
+            <p>{{item.type}}</p>
+            <ion-button clear class="btn success" (click)="openItem(item)">View</ion-button>
         </ion-item>
-        <ion-card-content>
-            At apple hospital, Walter street, Wallington
-            <ion-scroll scrollX="true" style="height:60px;white-space: nowrap;">
-                <img src="assets/imgs/img-1.png">
-                <img src="assets/imgs/img-2.png">
-                <img src="assets/imgs/img-3.png">
-                <img src="assets/imgs/img-4.png">
-                <img src="assets/imgs/img-5.png">
-            </ion-scroll>
+        <ion-card-content [innerHtml]="item.description" >
         </ion-card-content>
 
         <ion-row class="about-row">
@@ -51,7 +41,7 @@
                 Experience <strong>22 Years</strong>
             </ion-col>
             <ion-col center text-center>
-                Fee <strong>$30</strong>
+                Fee <strong>{{item.unit_cost | currency}}</strong>
             </ion-col>
             <ion-col size="5" center text-right>
                 Feedback
@@ -60,85 +50,10 @@
                 <ion-icon name="md-star" class="active"></ion-icon>
                 <ion-icon name="md-star" class="active"></ion-icon>
                 <ion-icon name="md-star"></ion-icon>
-                <span>&nbsp;&nbsp;(123)</span>
             </ion-col>
         </ion-row>
     </ion-card>
-    <ion-card>
-        <ion-item>
-            <ion-avatar item-start>
-                <img src="assets/imgs/profile2.png">
-            </ion-avatar>
-            <h2>Dr. Josephan Williamson</h2>
-            <p>Cardiac Surgeon</p>
-            <ion-button clear class="btn success" (click)="merchantDetail()">Book</ion-button>
-        </ion-item>
-        <ion-card-content>
-            At apple hospital, Walter street, Wallington,New york
-            <ion-scroll scrollX="true" style="height:60px;white-space: nowrap;">
-                <img src="assets/imgs/img-1.png">
-                <img src="assets/imgs/img-2.png">
-                <img src="assets/imgs/img-3.png">
-                <img src="assets/imgs/img-4.png">
-                <img src="assets/imgs/img-5.png">
-            </ion-scroll>
-        </ion-card-content>
-        <ion-row class="about-row">
-            <ion-col size="5" center text-left>
-                Experience <strong>22 Years</strong>
-            </ion-col>
-            <ion-col center text-center>
-                Fee <strong>$30</strong>
-            </ion-col>
-            <ion-col size="5" center text-right>
-                Feedback
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star"></ion-icon>
-                <span>&nbsp;&nbsp;(123)</span>
-            </ion-col>
-        </ion-row>
-    </ion-card>
-    <ion-card>
-        <ion-item>
-            <ion-avatar item-start>
-                <img src="assets/imgs/profile3.png">
-            </ion-avatar>
-            <h2>Dr. Josephan Williamson</h2>
-            <p>Cardiac Surgeon</p>
-            <ion-button clear class="btn success" (click)="merchantDetail()">Book</ion-button>
-        </ion-item>
-        <ion-card-content>
-            At apple hospital, Walter street, Wallington,New york
-            <ion-scroll scrollX="true" style="height:60px;white-space: nowrap;">
-                <img src="assets/imgs/img-1.png">
-                <img src="assets/imgs/img-2.png">
-                <img src="assets/imgs/img-3.png">
-                <img src="assets/imgs/img-4.png">
-                <img src="assets/imgs/img-5.png">
-            </ion-scroll>
-        </ion-card-content>
-        <ion-row class="about-row">
-            <ion-col size="5" center text-left>
-                Experience <strong>22 Years</strong>
-            </ion-col>
-            <ion-col center text-center>
-                Fee <strong>$30</strong>
-            </ion-col>
-            <ion-col size="5" center text-right>
-                Feedback
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star"></ion-icon>
-                <span>&nbsp;&nbsp;(123)</span>
-            </ion-col>
-        </ion-row>
-    </ion-card>
-    <ion-card>
+    <!--ion-card>
         <ion-item>
             <ion-avatar item-start>
                 <img src="assets/imgs/profile4.png">
@@ -174,5 +89,5 @@
                 <span>&nbsp;&nbsp;(123)</span>
             </ion-col>
         </ion-row>
-    </ion-card>
+    </ion-card-->
 </ion-content>
