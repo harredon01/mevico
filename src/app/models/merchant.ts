@@ -17,6 +17,9 @@ export class Merchant {
     longitude: any;
     latitude: any;
     item_id: any;
+    availabilities: any[];
+    ratings: any[];
+    files: any[];
 
   constructor(fields: any) {
     // Quick and dirty extend/assign fields to this model
