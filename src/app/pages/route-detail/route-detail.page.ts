@@ -32,13 +32,12 @@ export class RouteDetailPage implements OnInit {
         public trackingService: TrackingService) {
         let paramSent = this.params.getParams();
         this.route = paramSent.item;
-        if(this.route.stops[1]){
-            
-            let stop:any = this.route.stops[1];
-            let delivery = stop.deliveries[0];
-            console.log("Getting articles",delivery.delivery);
-            let date = new Date(delivery.delivery);
-            this.getArticles(date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + date.getDate());
+        if(this.route.stops.length > 1){
+//            let stop:any = this.route.stops[1];
+//            let delivery = stop.deliveries[0];
+//            console.log("Getting articles",delivery.delivery);
+//            let date = new Date(delivery.delivery);
+//            this.getArticles(date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + date.getDate());
         }
         console.log("Route", this.route);
         this.translateService.get('ROUTING.ERROR_ROUTE_START').subscribe(function (value) {

@@ -16,11 +16,14 @@
     <div class="doctor-detail">
         <img src="assets/imgs/profile4.png">
         <div>
-            <h2 class="text-white">Dr.Joseph Williamson</h2>
-            <p class="text-white">Cardiac Surgen</p>
-            <h3>MBBS, MCH - Cardio Therecic & Vascular Surgery, FRCS Surgery</h3>
+            <h2 class="text-white">{{merchant.name}}</h2>
+            <p class="text-white">{{merchant.type}}</p>
+            <h3>{{merchant.description}}</h3>
+            
         </div>
     </div>
+    <ion-button full class="btn success" (click)="showProducts()" ><ion-icon name="cart"></ion-icon>Store</ion-button>
+    <ion-button full class="btn success" (click)="addfeedback()" ><ion-icon name="star-half"></ion-icon>Feedback</ion-button>
     <div class="defult-tab bg-white">
         <ion-segment [(ngModel)]="doctor" padding-left padding-right>
             <ion-segment-button value="about" class="text-white">
@@ -48,35 +51,28 @@
                         <div>
                             <ion-icon name="md-thumbs-up"></ion-icon>
                             <p>Feedback</p>
-                            <h2>4.9
+                            <h2>{{merchant.rating}}
                                 <ion-icon name="md-star" class="active"></ion-icon>
                                 <ion-icon name="md-star" class="active"></ion-icon>
                                 <ion-icon name="md-star" class="active"></ion-icon>
                                 <ion-icon name="md-star" class="active"></ion-icon>
                                 <ion-icon name="md-star"></ion-icon>
-                                <span>(124)</span>
+                                <span>({{merchant.rating_count}})</span>
                             </h2>
                         </div>
                     </ion-col>
-                    <ion-col size="6">
+                    <ion-col size="6" *ngIf="merchant.availabilities.length>0">
                         <div>
                             <ion-icon name="logo-usd"></ion-icon>
                             <p>Consultancy fees</p>
-                            <h2>$28</h2>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <ion-icon name="md-time"></ion-icon>
-                            <p>Availability</p>
-                            <h2>Available at 012:00 to 13:00</h2>
+                            <h2>${{ merchant.unit_cost | currency }}</h2>
                         </div>
                     </ion-col>
                 </ion-row>
             </div>
             <div class="bg-white overview">
                 <p class="text-danger header">Address</p>
-                <p class="header"><strong>Apple Hospital, Water street, Wallington, New York. </strong></p>
+                <p class="header"><strong>{{merchant.address}}</strong></p>
                 <div class="map-location">
                     <img src="assets/imgs/map-location.png" style="position: absolute;height: 100%;bottom: 0;z-index: 0;">
                     <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/profile3.png"></div>
@@ -192,34 +188,16 @@
                 </ion-row>
                 <br>
             </div>
-            <div class="bg-white overview practics">
+            <div class="bg-white overview practics" *ngIf="merchant.availabilities.length>0">
                 <p class="text-danger header">Available Timings</p>
                 <ion-row>
-                    <ion-col size="6">
-                        <h5>Mon<span float-right>12:00 to 13:00</span></h5>
-                    </ion-col>
-                    <ion-col size="6">
-                        <h5>Tue<span float-right>12:00 to 13:00</span></h5>
-                    </ion-col>
-                    <ion-col size="6">
-                        <h5>Wed<span float-right>12:00 to 13:00</span></h5>
-                    </ion-col>
-                    <ion-col size="6">
-                        <h5>Thu<span float-right>12:00 to 13:00</span></h5>
-                    </ion-col>
-                    <ion-col size="6">
-                        <h5>Fri<span float-right>Closed</span></h5>
-                    </ion-col>
-                    <ion-col size="6">
-                        <h5>Sat<span float-right>12:00 to 13:00</span></h5>
-                    </ion-col>
-                    <ion-col size="6">
-                        <h5>Sun<span float-right>Closed</span></h5>
+                    <ion-col size="6" *ngFor="let availability of merchant.availabilities">
+                        <h5>{{availability.range}}<span float-right>{{availability.from}} to {{availability.to}}</span></h5>
                     </ion-col>
                 </ion-row>
             </div>
             <br><br>
-            <ion-button full class="btn success fixed" (click)="appointmentbook()"><ion-icon name="md-calendar"></ion-icon>Book Appointment now</ion-button>
+            <ion-button full class="btn success fixed" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0"><ion-icon name="md-calendar"></ion-icon>Book Appointment now</ion-button>
         </ion-list>
         <ion-list *ngSwitchCase="'feedback'">
 
@@ -227,18 +205,18 @@
                 <ion-row>
                     <ion-col size="6">
                         <div class="rate">
-                            <span>Overall</span>
+                            <span>Overall {{merchant.rating}}</span>
                             <ion-icon name="md-star" class="active"></ion-icon>
                             <ion-icon name="md-star" class="active"></ion-icon>
                             <ion-icon name="md-star" class="active"></ion-icon>
                             <ion-icon name="md-star" class="active"></ion-icon>
                             <ion-icon name="md-star"></ion-icon>
-                            <span>(124)</span>
+                            <span>({{merchant.rating_count}})</span>
                         </div>
                     </ion-col>
                     <ion-col size="6" style="padding-right: 0;">
                         <div class="rate">
-                            <span>Short By</span>
+                            <span>Sort By</span>
                             <ion-select [(ngModel)]="Short" interface="popover" class="location">
                                 <ion-select-option value="n1">Recent</ion-select-option>
                                 <ion-select-option value="n2">Oldest</ion-select-option>
@@ -248,90 +226,27 @@
                 </ion-row>
             </div>
 
-            <ion-card>
+            <ion-card *ngFor="let rating of merchant.ratings">
                 <ion-item>
                     <ion-avatar item-start>
                         <img src="assets/imgs/profile1.png">
                     </ion-avatar>
-                    <h2><span>To</span> Dr. Josephan Williamson</h2>
-                    <p><span>Visited For</span> Cardiac Surgeon</p>
+                    <h2><span>To</span> {{merchant.name}}</h2>
                     <div class="rate">
-                        <strong>4.5</strong>
+                        <strong>{{rating.rating}}</strong>
                         <ion-icon name="md-star" class="active"></ion-icon>
                         <ion-icon name="md-star" class="active"></ion-icon>
                         <ion-icon name="md-star" class="active"></ion-icon>
                         <ion-icon name="md-star" class="active"></ion-icon>
                         <ion-icon name="md-star"></ion-icon>
-                        <span>20 Dec 2017</span>
+                        <span>{{rating.updated_at | date}}</span>
                     </div>
                 </ion-item>
                 <ion-card-content>
-                    Components allow you to quickly construct an interface for your app. Ionic comes with a number of components, including modals, popups, and cards.
+                    {{rating.comment}}
                 </ion-card-content>
             </ion-card>
-            <ion-card>
-                <ion-item>
-                    <ion-avatar item-start>
-                        <img src="assets/imgs/profile1.png">
-                    </ion-avatar>
-                    <h2><span>To</span> Dr. Josephan Williamson</h2>
-                    <p><span>Visited For</span> Cardiac Surgeon</p>
-                    <div class="rate">
-                        <strong>4.5</strong>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star"></ion-icon>
-                        <span>20 Dec 2017</span>
-                    </div>
-                </ion-item>
-                <ion-card-content>
-                    Components allow you to quickly construct an interface for your app. Ionic comes with a number of components, including modals, popups, and cards.
-                </ion-card-content>
-            </ion-card>
-            <ion-card>
-                <ion-item>
-                    <ion-avatar item-start>
-                        <img src="assets/imgs/profile1.png">
-                    </ion-avatar>
-                    <h2><span>To</span> Dr. Josephan Williamson</h2>
-                    <p><span>Visited For</span> Cardiac Surgeon</p>
-                    <div class="rate">
-                        <strong>4.5</strong>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star"></ion-icon>
-                        <span>20 Dec 2017</span>
-                    </div>
-                </ion-item>
-                <ion-card-content>
-                    Components allow you to quickly construct an interface for your app. Ionic comes with a number of components, including modals, popups, and cards.
-                </ion-card-content>
-            </ion-card>
-            <ion-card>
-                <ion-item>
-                    <ion-avatar item-start>
-                        <img src="assets/imgs/profile1.png">
-                    </ion-avatar>
-                    <h2><span>To</span> Dr. Josephan Williamson</h2>
-                    <p><span>Visited For</span> Cardiac Surgeon</p>
-                    <div class="rate">
-                        <strong>4.5</strong>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star" class="active"></ion-icon>
-                        <ion-icon name="md-star"></ion-icon>
-                        <span>20 Dec 2017</span>
-                    </div>
-                </ion-item>
-                <ion-card-content>
-                    Components allow you to quickly construct an interface for your app. Ionic comes with a number of components, including modals, popups, and cards.
-                </ion-card-content>
-            </ion-card><br><br>
+            <br><br>
             <ion-button full class="btn success fixed" (click)="addfeedback()"><ion-icon name="md-thumbs-up"></ion-icon>Give Feedback</ion-button>
         </ion-list>
     </div>

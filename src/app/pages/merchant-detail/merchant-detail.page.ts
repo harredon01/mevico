@@ -12,16 +12,22 @@ import {Merchant} from '../../models/merchant';
 export class MerchantDetailPage implements OnInit {
     doctor: string = "about";
     Short: string = "n1";
+    category: string = "";
     merchant: Merchant;
 
     constructor(public navCtrl: NavController, public activatedRoute: ActivatedRoute, public merchantsServ: MerchantsService, public params: ParamsService) {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
+        
         this.getMerchant(merchantId);
     }
     
     getMerchant(merchantId) {
         this.merchantsServ.getMerchant(merchantId).subscribe((data: any) => {
-            this.merchant = data;
+            let container = data.merchant;
+            container.availabilities = data.availabilities;
+            container.ratings = data.ratings;
+            container.files = data.files;
+            this.merchant = new Merchant(container);
         }, (err) => {
             console.log("Error getMerchant");
         });
@@ -33,7 +39,18 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id
         };
         this.params.setParams(params);
-        this.navCtrl.navigateForward('tabs/merchants/'+this.merchant.id+"/feedback");
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/feedback");
+    }
+    showProducts() {
+        let params = {
+            "type": "Merchant",
+            "objectId": this.merchant.id
+        };
+        this.params.setParams(params);
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/products");
     }
     appointmentbook() {
         let params = {
@@ -42,7 +59,8 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id
         }
         this.params.setParams(params);
-        this.navCtrl.navigateForward('tabs/merchants/'+this.merchant.id+"/booking");
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/booking");
     }
     
     ngOnInit() {

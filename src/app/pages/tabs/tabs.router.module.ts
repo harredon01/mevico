@@ -52,15 +52,15 @@ const routes: Routes = [
                                     },
                                     {
                                         path: 'products',
-                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                        loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
                                     },
                                     {
                                         path: 'bookings',
-                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                        loadChildren: '../booking/booking.module#BookingPageModule',
                                     },
                                     {
                                         path: 'ratings',
-                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                        loadChildren: '../comments/comments.module#CommentsPageModule',
                                     }
                                 ]
                             }

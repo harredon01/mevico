@@ -16,38 +16,48 @@
 </ion-header>
 
 <ion-content class="bg-light">
-    <div class="calender-container">
+    <div class="calender-container" *ngIf="!dateSelected">
         <div class="calander">
             <div class="calander-row">
-                <div class="day active"><span>MON</span>12</div>
-                <div class="day"><span>TUE</span>13</div>
-                <div class="day"><span>WED</span>14</div>
-                <div class="day"><span>THU</span>15</div>
-                <div class="day"><span>FRI</span>16</div>
-                <div class="day"><span>SAT</span>17</div>
-                <div class="day"><span>SUN</span>18</div>
+                <div class="day active" *ngFor="let item of availableDates"><span>{{item | date :'E'}}</span>{{item | date :'d'}}</div>
             </div>
         </div>
     </div>
-    <div class="icon-calander">
+    <div class="icon-calander" *ngIf="!dateSelected">
         <ion-icon name="md-calendar" class="text-success"></ion-icon>
     </div>
-    <div padding>
+    <div padding *ngIf="dateSelected">
         <p>Available Times</p>
         <div class="timeing">
             <ion-row>
-                <ion-col col-3><span>01:30 PM</span></ion-col>
-                <ion-col col-3><span>01:30 PM</span></ion-col>
-                <ion-col col-3><span>01:30 PM</span></ion-col>
-                <ion-col col-3><span>01:30 PM</span></ion-col>
-                <ion-col col-3><span>01:30 PM</span></ion-col>
-                <ion-col col-3><span>01:30 PM</span></ion-col>
-                <ion-col col-3><span>01:30 PM</span></ion-col>
-                <ion-col col-3><span>01:30 PM</span></ion-col>
+                <ion-col col-3 *ngFor="let item of availabilitiesDate"><span>{{item.from}}-{{item.to}}</span></ion-col>
+            </ion-row>
+        </div>
+        <p>Occupied Slots</p>
+        <div class="timeing">
+            <ion-row>
+                <ion-col col-3 *ngFor="let item of selectedSpots"><span>{{item.starts_at | date :'h:mm A'}}-{{item.ends_at | date :'h:mm A'}}</span></ion-col>
             </ion-row>
         </div>
         <p>Appointment for...</p>
         <div class="difault-form">
+            <ion-item>
+                <ion-label>Start Time</ion-label>
+                <ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z" [(ngModel)]="startDate" (ionChange)="selectStart()"></ion-datetime>
+            </ion-item>
+            <ion-item>
+                <ion-label>End Time</ion-label>
+                <p>{{item.endDate | date :'h:mm A'}}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label>Cantidad</ion-label>
+                <ion-select placeholder="Select One" [(ngModel)]="amount">
+                    <ion-select-option value="1">1</ion-select-option>
+                    <ion-select-option value="2">2</ion-select-option>
+                    <ion-select-option value="3">3</ion-select-option>
+                    <ion-select-option value="4">4</ion-select-option>
+                </ion-select>
+            </ion-item>
             <ion-item class="bg-light">
                 <ion-input type="text" placeholder="Full Name"></ion-input>
             </ion-item>
@@ -55,7 +65,8 @@
                 <ion-input type="password" placeholder="Phone Number"></ion-input>
             </ion-item>
             <br>
-            <button ion-button full class="btn success fixed" (click)="chatwithdoctor()">Confirm Appointment</button>
+            <button ion-button full class="btn success fixed" (click)="createBooking()">Seleccionar cita</button>
+            <button ion-button full class="btn success fixed" (click)="returnDates()">Back</button>
         </div>
     </div>
 </ion-content>

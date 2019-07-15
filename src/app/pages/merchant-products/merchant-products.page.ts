@@ -96,14 +96,13 @@ export class MerchantProductsPage implements OnInit {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
-
     }
     addCart(item: any) {
         this.addCartItem(item);
     }
     showLoader() {
         if (document.URL.startsWith('http')) {
-            this.loading = this.loadingCtrl.create({
+            this.loadingCtrl.create({
                 spinner: 'crescent',
                 backdropDismiss: true
             }).then(toast => toast.present());
@@ -258,7 +257,7 @@ export class MerchantProductsPage implements OnInit {
     }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
-            this.loading.dismiss();
+            this.loadingCtrl.dismiss();
         } else {
             this.spinnerDialog.hide();
         }
@@ -267,7 +266,7 @@ export class MerchantProductsPage implements OnInit {
         this.dismissLoader();
         //this.navCtrl.push(MainPage);
         // Unable to log in
-        let toast = this.toastCtrl.create({
+        this.toastCtrl.create({
             message: this.cartErrorString,
             duration: 3000,
             position: 'top'

@@ -81,7 +81,7 @@ export class MerchantListingPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     openItem(item: Merchant) {
-        this.params.setParams({"item":item});
+        this.params.setParams({"item":item,"category":this.category});
         console.log("Entering merchant",item.id);
         this.navCtrl.navigateForward('tabs/categories/'+this.category+'/merchant/'+item.id); 
     }

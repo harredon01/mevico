@@ -1,9 +1,86 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>merchant-products</ion-title>
-  </ion-toolbar>
+<ion-header class="section__header">
+    <ion-navbar>
+        <ion-title>{{ 'PRODUCTS.TITLE' | translate }}</ion-title>
+        <div class="content-car">
+            <div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div>
+            <button ion-button icon-only clear (click)="openCart()"></button>
+        </div>
+    </ion-navbar>
 </ion-header>
 
-<ion-content>
 
+<ion-content class="product">
+    <ion-card class="product-header product-header---main">
+        <ion-card-header class="product-header__information">
+            <span>{{merchantObj.merchant_name}}</span>
+        </ion-card-header>
+        <img [src]="merchantObj.src"/>
+        <ion-card-content class="product-header__content">
+
+            <p [innerHtml]="merchantObj.merchant_description"  class="hide-text merchant" [ngClass]="{'show' : merchantObj.merchant_description_more}">
+        </p>
+        <button class="btn-secondary view" (click)="showMoreM(merchantObj)">{{  merchantObj.merchant_description_more ? showLessText: showMoreText}}
+        </button>
+    </ion-card-content>
+</ion-card>
+<div *ngFor="let cat of categories">
+    <h2 style="margin-left: 15px;" (click)="showMoreCat(cat)">{{cat.name}}</h2>
+    <div *ngIf="cat.more">
+        <ion-card class="product__item" *ngFor="let item of cat.products">
+                  <ion-card-header class="product-header__information" (click)="showMoreItem(item)">
+                <span>{{item.name}}</span>
+            </ion-card-header>
+            <ion-card-content *ngIf="item.more">
+                <ion-slides>
+                    <ion-slide *ngFor="let img of item.imgs">
+                        <img [src]="img.file" class="image--large " alt="starters-html.jpg" style="max-height: 10em; width:100%;">
+                    </ion-slide>
+                </ion-slides>
+                <div [innerHtml]="item.description" class="hide-text" [ngClass]="{'show' : item.description_more}"></div>
+                <button class="btn-secondary" (click)="showMore(item)" *ngIf="merchant==1299" >{{  item.description_more ? showLessText: showMoreText}}
+                </button>
+                <ion-item *ngIf="item.type == 'meal-plan'"> 
+                    <ion-label>{{ 'PRODUCTS.MEALS_PEOPLE' | translate }}</ion-label> 
+                    <ion-select [(ngModel)]="item.variant_id" [disabled]="item.inCart" (ionChange)="selectVariant(item)">
+                        <ion-option *ngFor="let variant of item.variants" [value]='variant.id'>{{variant.description}} -
+                            {{variant.unitPrice | currency }}</ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item *ngIf="item.type == 'meal-plan'">
+                    <ion-label>{{ 'PRODUCTS.MEALS_AMOUNT' | translate }}</ion-label>
+                    <ion-select [(ngModel)]="item.amount"  (ionChange)="calculateTotals()" >
+                        <ion-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item *ngIf="item.type == 'delivery' || item.type == 'catering' || item.type == 'deposit'">
+                    <ion-label>{{ 'PRODUCTS.AMOUNT' | translate }}</ion-label>
+                    <ion-select [(ngModel)]="item.amount"  (ionChange)="calculateTotals()" >
+                        <ion-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item *ngIf="item.type == 'delivery' || item.type == 'catering' || item.type == 'deposit'">
+                    <ion-label>{{ 'PRODUCTS.PRICE' | translate }} {{item.unitPrice | currency }}</ion-label>
+                </ion-item>
+                <ion-item *ngIf="item.type == 'meal-plan'">
+                    <ion-label>{{ 'PRODUCTS.MEALS_AMOUNT_TOTAL' | translate }}: {{item.unitLunches*item.amount }}</ion-label>
+                </ion-item>
+                <ion-item *ngIf="item.type == 'meal-plan'">
+                    <ion-label>{{ 'PRODUCTS.MEALS_PRICE_PERSON' | translate }}: {{item.unitPrice | currency }}</ion-label>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label><strong>{{ 'PRODUCTS.TOTAL' | translate }}</strong> {{item.subtotal | currency }}</ion-label>
+                </ion-item>
+
+                <button ion-button color="secondary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</button>
+                <button ion-button color="secondary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</button>
+                <div class="content-increment-product" *ngIf="item.inCart">
+                    <button ion-button outline style="font-size:20px;" (click)="reduceCartItem(item)">-</button>
+                    <label> {{item.amount}}</label>
+                    <button ion-button outline style="font-size:20px;" (click)="increaseCartItem(item)">+</button>
+                </div> 
+            </ion-card-content>
+        </ion-card>
+    </div>
+</div>
 </ion-content>

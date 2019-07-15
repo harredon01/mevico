@@ -31,8 +31,8 @@ export class CommentsPage implements OnInit {
         public translateService: TranslateService) {
         //this.objectO = this.navParams.get('objectO');
         let paramsSent = this.params.getParams();
-        this.comment.object_id = paramsSent.object_id;
-        this.comment.type = paramsSent.type_object;
+        this.comment.object_id = paramsSent.objectId;
+        this.comment.type = paramsSent.type;
         this.translateService.get('COMMENTS.SAVE_RATING_ERROR').subscribe((value) => {
             this.commentErrorString = value;
         })
