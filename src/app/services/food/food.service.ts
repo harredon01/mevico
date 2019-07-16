@@ -21,4 +21,15 @@ export class FoodService {
         });
         return seq;
     }
+    getRouteInfo(delivery) {
+      let seq = this.api.get(`/food/route_detail/`+delivery);
+      seq.subscribe((data: any) => {
+        return data;
+      }, err => {
+        console.error('ERROR', err);
+        this.api.handleError(err);
+      });
+
+      return seq;
+  }
 }

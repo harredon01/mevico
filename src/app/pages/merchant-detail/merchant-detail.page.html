@@ -22,8 +22,8 @@
             
         </div>
     </div>
-    <ion-button full class="btn success" (click)="showProducts()" ><ion-icon name="cart"></ion-icon>Store</ion-button>
-    <ion-button full class="btn success" (click)="addfeedback()" ><ion-icon name="star-half"></ion-icon>Feedback</ion-button>
+    <ion-button class="btn success" (click)="showProducts()" ><ion-icon name="cart"></ion-icon>Store</ion-button>
+    <ion-button class="btn success" (click)="addfeedback()" ><ion-icon name="star-half"></ion-icon>Feedback</ion-button>
     <div class="defult-tab bg-white">
         <ion-segment [(ngModel)]="doctor" padding-left padding-right>
             <ion-segment-button value="about" class="text-white">
@@ -197,7 +197,7 @@
                 </ion-row>
             </div>
             <br><br>
-            <ion-button full class="btn success fixed" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0"><ion-icon name="md-calendar"></ion-icon>Book Appointment now</ion-button>
+            <ion-button expand="full" class="btn success fixed" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0"><ion-icon name="md-calendar"></ion-icon>Book Appointment now</ion-button>
         </ion-list>
         <ion-list *ngSwitchCase="'feedback'">
 
@@ -247,7 +247,7 @@
                 </ion-card-content>
             </ion-card>
             <br><br>
-            <ion-button full class="btn success fixed" (click)="addfeedback()"><ion-icon name="md-thumbs-up"></ion-icon>Give Feedback</ion-button>
+            <ion-button expand="full" class="btn success fixed" (click)="addfeedback()"><ion-icon name="md-thumbs-up"></ion-icon>Give Feedback</ion-button>
         </ion-list>
     </div>
 

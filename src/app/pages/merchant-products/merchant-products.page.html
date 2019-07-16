@@ -1,11 +1,11 @@
 <ion-header class="section__header">
-    <ion-navbar>
+    <ion-toolbar>
         <ion-title>{{ 'PRODUCTS.TITLE' | translate }}</ion-title>
         <div class="content-car">
-            <div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div>
-            <button ion-button icon-only clear (click)="openCart()"></button>
+            <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
+            <ion-button icon-only clear (click)="openCart()"></ion-button>
         </div>
-    </ion-navbar>
+    </ion-toolbar>
 </ion-header>
 
 
@@ -42,20 +42,20 @@
                 <ion-item *ngIf="item.type == 'meal-plan'"> 
                     <ion-label>{{ 'PRODUCTS.MEALS_PEOPLE' | translate }}</ion-label> 
                     <ion-select [(ngModel)]="item.variant_id" [disabled]="item.inCart" (ionChange)="selectVariant(item)">
-                        <ion-option *ngFor="let variant of item.variants" [value]='variant.id'>{{variant.description}} -
-                            {{variant.unitPrice | currency }}</ion-option>
+                        <ion-select-option *ngFor="let variant of item.variants" [value]='variant.id'>{{variant.description}} -
+                            {{variant.unitPrice | currency }}</ion-select-option>
                     </ion-select>
                 </ion-item>
                 <ion-item *ngIf="item.type == 'meal-plan'">
                     <ion-label>{{ 'PRODUCTS.MEALS_AMOUNT' | translate }}</ion-label>
                     <ion-select [(ngModel)]="item.amount"  (ionChange)="calculateTotals()" >
-                        <ion-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-option>
+                        <ion-select-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-select-option>
                     </ion-select>
                 </ion-item>
                 <ion-item *ngIf="item.type == 'delivery' || item.type == 'catering' || item.type == 'deposit'">
                     <ion-label>{{ 'PRODUCTS.AMOUNT' | translate }}</ion-label>
                     <ion-select [(ngModel)]="item.amount"  (ionChange)="calculateTotals()" >
-                        <ion-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-option>
+                        <ion-select-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-select-option>
                     </ion-select>
                 </ion-item>
                 <ion-item *ngIf="item.type == 'delivery' || item.type == 'catering' || item.type == 'deposit'">
@@ -72,12 +72,12 @@
                     <ion-label><strong>{{ 'PRODUCTS.TOTAL' | translate }}</strong> {{item.subtotal | currency }}</ion-label>
                 </ion-item>
 
-                <button ion-button color="secondary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</button>
-                <button ion-button color="secondary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</button>
+                <ion-button color="secondary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</ion-button>
+                <ion-button color="secondary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</ion-button>
                 <div class="content-increment-product" *ngIf="item.inCart">
-                    <button ion-button outline style="font-size:20px;" (click)="reduceCartItem(item)">-</button>
+                    <ion-button outline style="font-size:20px;" (click)="reduceCartItem(item)">-</ion-button>
                     <label> {{item.amount}}</label>
-                    <button ion-button outline style="font-size:20px;" (click)="increaseCartItem(item)">+</button>
+                    <ion-button outline style="font-size:20px;" (click)="increaseCartItem(item)">+</ion-button>
                 </div> 
             </ion-card-content>
         </ion-card>

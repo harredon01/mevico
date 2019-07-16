@@ -1,9 +1,9 @@
 <ion-header>
-    <ion-navbar>
+    <ion-toolbar>
         <ion-title>
             Select Date & Time
         </ion-title>
-    </ion-navbar>
+    </ion-toolbar>
     <ion-card>
         <ion-item>
             <ion-avatar item-start>
@@ -30,13 +30,13 @@
         <p>Available Times</p>
         <div class="timeing">
             <ion-row>
-                <ion-col col-3 *ngFor="let item of availabilitiesDate"><span>{{item.from}}-{{item.to}}</span></ion-col>
+                <ion-col size="3" *ngFor="let item of availabilitiesDate"><span>{{item.from}}-{{item.to}}</span></ion-col>
             </ion-row>
         </div>
         <p>Occupied Slots</p>
         <div class="timeing">
             <ion-row>
-                <ion-col col-3 *ngFor="let item of selectedSpots"><span>{{item.starts_at | date :'h:mm A'}}-{{item.ends_at | date :'h:mm A'}}</span></ion-col>
+                <ion-col size="3" *ngFor="let item of selectedSpots"><span>{{item.starts_at | date :'h:mm A'}}-{{item.ends_at | date :'h:mm A'}}</span></ion-col>
             </ion-row>
         </div>
         <p>Appointment for...</p>
@@ -65,8 +65,8 @@
                 <ion-input type="password" placeholder="Phone Number"></ion-input>
             </ion-item>
             <br>
-            <button ion-button full class="btn success fixed" (click)="createBooking()">Seleccionar cita</button>
-            <button ion-button full class="btn success fixed" (click)="returnDates()">Back</button>
+            <ion-button full class="btn success fixed" (click)="createBooking()">Seleccionar cita</ion-button>
+            <ion-button full class="btn success fixed" (click)="returnDates()">Back</ion-button>
         </div>
     </div>
 </ion-content>

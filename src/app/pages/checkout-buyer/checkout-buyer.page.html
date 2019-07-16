@@ -43,7 +43,7 @@
                 <p>{{selectedAddress.countryName}}</p>
             </ion-card-content>
         </ion-card>
-        <ion-button class="btn-primary" round (click)="continuePayer()" *ngIf="showAddressCard">{{'INPUTS.CONTINUE' | translate }}</ion-button>
-        <ion-button class="btn-secondary" round (click)="changeAddress()" *ngIf="showAddressCard">{{'INPUTS.CHANGE_ADDRESS' | translate }}</ion-button>
+        <ion-button class="btn-primary" shape="round" (click)="continuePayer()" *ngIf="showAddressCard">{{'INPUTS.CONTINUE' | translate }}</ion-button>
+        <ion-button class="btn-secondary" shape="round" (click)="changeAddress()" *ngIf="showAddressCard">{{'INPUTS.CHANGE_ADDRESS' | translate }}</ion-button>
     </div>
 </ion-content>

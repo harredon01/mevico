@@ -98,4 +98,9 @@
         <variable name="EVENTBUS_VERSION" value="3.0.0" />
     </plugin>
     <engine name="android" spec="7.1.4" />
+    <plugin name="cordova-plugin-geolocation" spec="^4.0.2" />
+    <plugin name="cordova-plugin-googlemaps" spec="^2.6.2">
+        <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
+    </plugin>
 </widget>

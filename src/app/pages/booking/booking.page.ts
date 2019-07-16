@@ -10,13 +10,13 @@ import {BookingService} from '../../services/booking/booking.service';
     styleUrls: ['./booking.page.scss'],
 })
 export class BookingPage implements OnInit {
-    availableDays: any[];
-    availableDates: Date[];
-    selectedSpots: any[];
-    availabilities: any[];
+    availableDays: any[]=[];
+    availableDates: Date[]=[];
+    selectedSpots: any[]=[];
+    availabilities: any[]=[];
     dateSelected: boolean = false;
-    availabilitiesDate: any[];
-    weekday: any[];
+    availabilitiesDate: any[]=[];
+    weekday: any[]=[];
     typeObj: string;
     objectId: string;
     selectedDate: Date;

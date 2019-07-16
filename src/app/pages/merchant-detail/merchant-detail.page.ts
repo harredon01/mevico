@@ -41,7 +41,7 @@ export class MerchantDetailPage implements OnInit {
         this.params.setParams(params);
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
         
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/feedback");
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/ratings");
     }
     showProducts() {
         let params = {
@@ -60,7 +60,7 @@ export class MerchantDetailPage implements OnInit {
         }
         this.params.setParams(params);
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/booking");
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/bookings");
     }
     
     ngOnInit() {
