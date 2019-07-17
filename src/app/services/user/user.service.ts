@@ -155,23 +155,7 @@ export class UserService {
         return seq;
     }
 
-    /**
-     * Send a POST request to our login endpoint with the data
-     * the user entered on the form.
-     */
-    updatePassword(passwordData: any) {
-        let seq = this.api.post('/user/change_password', passwordData);
-        seq.subscribe((data: any) => {
-            console.log("after update password");
-            console.log(JSON.stringify(data));
-            return data;
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
-
-        return seq; 
-    }
+    
     /**
          * Send a POST request to our signup endpoint with the data
          * the user entered on the form.

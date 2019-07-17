@@ -4,7 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 
-import {UserService} from '../../services/user/user.service';
+import {AuthService} from '../../services/auth/auth.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 @Component({
     selector: 'app-password',
@@ -35,7 +35,7 @@ export class PasswordPage implements OnInit {
         formBuilder: FormBuilder,
         public toastCtrl: ToastController,
         public navCtrl: NavController,
-        public user: UserService,
+        public auth: AuthService,
         public loadingCtrl: LoadingController,
         public translateService: TranslateService,
         private spinnerDialog: SpinnerDialog) {
@@ -78,7 +78,7 @@ export class PasswordPage implements OnInit {
         }
         console.log("Password match");
         this.showLoader();
-        this.user.updatePassword(this.account).subscribe((resp: any) => {
+        this.auth.updatePassword(this.account).subscribe((resp: any) => {
             this.dismissLoader();
             console.log("savePassword result", resp);
             if (resp.status == "success") {

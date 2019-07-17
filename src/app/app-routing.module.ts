@@ -29,6 +29,8 @@ const routes: Routes = [
   { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
   { path: 'routes', loadChildren: './pages/routes/routes.module#RoutesPageModule' },
   { path: 'route-detail', loadChildren: './pages/route-detail/route-detail.module#RouteDetailPageModule' },
+  { path: 'medical', loadChildren: './pages/medical/medical.module#MedicalPageModule' },
+  { path: 'codes', loadChildren: './pages/codes/codes.module#CodesPageModule' },
 ];
 
 @NgModule({

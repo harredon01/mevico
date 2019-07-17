@@ -374,12 +374,7 @@ export class MapPage implements OnInit {
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
         if (data) {
-            if (this.mapData.activeId == "-1" || this.mapData.activeId == "1") {
-                this.navCtrl.parent.select(3);
-            } else if (this.mapData.activeId == "0") {
-                this.mapData.createdAddress = data;
-                this.navCtrl.parent.select(0);
-            }
+            this.navCtrl.back();
             this.clearMap();
             console.log("Process complete, address created", data);
         }
@@ -395,7 +390,7 @@ export class MapPage implements OnInit {
     cancel() {
         console.log("Cancel");
         this.mapData.newAddressMarker.setVisible(false);
-        this.navCtrl.parent.select(0);
+        this.navCtrl.back();
     }
     handleUserActive() {
         let container = this.mapData.getItemUser(this.mapData.activeId, "Shared");

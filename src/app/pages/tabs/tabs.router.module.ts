@@ -144,6 +144,14 @@ const routes: Routes = [
                         loadChildren: '../addresses/addresses.module#AddressesPageModule'
                     },
                     {
+                        path: 'medical',
+                        loadChildren: '../medical/medical.module#MedicalPageModule'
+                    },
+                    {
+                        path: 'codes',
+                        loadChildren: '../codes/codes.module#CodesPageModule'
+                    },
+                    {
                         path: 'password',
                         loadChildren: '../password/password.module#PasswordPageModule'
                     }
