@@ -39,10 +39,14 @@ export class BookingPage implements OnInit {
         this.weekday[6] = "saturday";
         let paramsArrived = this.params.getParams();
         this.availabilities = paramsArrived.availabilities;
+        console.log("Availabilities",this.availabilities);
         this.typeObj = paramsArrived.type;
         this.objectId = paramsArrived.objectId;
         this.getAvailableDates(this.availabilities);
+        console.log("Get availableDays",this.availableDays);
+        
         this.getDates();
+        console.log("Get availableDates",this.availableDates);
     }
 
     ngOnInit() {
@@ -76,7 +80,7 @@ export class BookingPage implements OnInit {
 
     checkAvailableDays(day: string) {
         for (let item in this.availableDays) {
-            if (this.availableDays[item].range == day) {
+            if (this.availableDays[item] == day) {
                 return true;
             }
         }
@@ -88,7 +92,8 @@ export class BookingPage implements OnInit {
         for (let i = 0; i < 31; i++) {
             let day = myDate.getDay();
             if (this.checkAvailableDays(this.weekday[day])) {
-                this.availableDates.push(myDate);
+                let container = new Date(myDate.getTime());
+                this.availableDates.push(container);
             }
             myDate.setDate(myDate.getDate() + 1);
         }
@@ -111,7 +116,7 @@ export class BookingPage implements OnInit {
             "from":strDate,
             "to":endDate,
             "type": this.typeObj,
-            "objectId": this.objectId,
+            "object_id": this.objectId,
         };
         this.booking.getBookingsObject( params).subscribe((data: any) => {
             this.selectedSpots = data.data;
@@ -122,10 +127,11 @@ export class BookingPage implements OnInit {
         let day = selectedDate.getDay();
         this.availabilitiesDate = [];
         for (let item in this.availabilities) {
-            if (this.availableDays[item].range == this.weekday[day]) {
-                this.availabilitiesDate.push(this.weekday[day]);
+            if (this.availabilities[item].range == this.weekday[day]) {
+                this.availabilitiesDate.push((this.availabilities[item]));
             }
         }
+        console.log("Availabilities",this.availabilitiesDate);
     }
     showLoader() {
         if (document.URL.startsWith('http')) {

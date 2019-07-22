@@ -19,7 +19,7 @@
     <div class="calender-container" *ngIf="!dateSelected">
         <div class="calander">
             <div class="calander-row">
-                <div class="day active" *ngFor="let item of availableDates"><span>{{item | date :'E'}}</span>{{item | date :'d'}}</div>
+                <div class="day active" *ngFor="let item of availableDates" (click)="selectDate(item)"><span>{{item | date :'E'}}</span>{{item | date :'d'}}</div>
             </div>
         </div>
     </div>
@@ -46,8 +46,7 @@
                 <ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z" [(ngModel)]="startDate" (ionChange)="selectStart()"></ion-datetime>
             </ion-item>
             <ion-item>
-                <ion-label>End Time</ion-label>
-                <p>{{item.endDate | date :'h:mm A'}}</p>
+                <p>End Time: {{item.endDate | date :'h:mm A'}}</p>
             </ion-item>
             <ion-item>
                 <ion-label>Cantidad</ion-label>

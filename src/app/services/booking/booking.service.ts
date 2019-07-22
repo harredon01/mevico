@@ -6,9 +6,9 @@ import {ApiService} from '../api/api.service';
 export class BookingService {
 
     constructor(public api: ApiService) {}
-    getBookingsObject(objectId: any) {
-        let endpoint = '/bookings/'+objectId;
-        let seq = this.api.get(endpoint);
+    getBookingsObject(objectB: any) {
+        let endpoint = '/bookings';
+        let seq = this.api.get(endpoint,objectB);
         seq.subscribe((data: any) => {
             console.log("after getBookingsObject");
             console.log(JSON.stringify(data));

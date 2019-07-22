@@ -31,6 +31,7 @@ const routes: Routes = [
   { path: 'route-detail', loadChildren: './pages/route-detail/route-detail.module#RouteDetailPageModule' },
   { path: 'medical', loadChildren: './pages/medical/medical.module#MedicalPageModule' },
   { path: 'codes', loadChildren: './pages/codes/codes.module#CodesPageModule' },
+  { path: 'video', loadChildren: './pages/video/video.module#VideoPageModule' },
 ];
 
 @NgModule({
