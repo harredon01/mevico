@@ -17,7 +17,7 @@ export class MerchantDetailPage implements OnInit {
 
     constructor(public navCtrl: NavController, public activatedRoute: ActivatedRoute, public merchantsServ: MerchantsService, public params: ParamsService) {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
-        
+        this.merchant = new Merchant({"availabilities":[]});
         this.getMerchant(merchantId);
     }
     

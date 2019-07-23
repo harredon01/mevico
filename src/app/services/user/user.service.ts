@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
 import {UserDataService} from '../user-data/user-data.service';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
-
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
@@ -12,7 +13,8 @@ export class UserService {
 
     constructor(public api: ApiService,
         public userData: UserDataService,
-        private oneSignal: OneSignal) {
+        private oneSignal: OneSignal,
+        private http: HttpClient) {
 
     }
     /**
@@ -80,21 +82,17 @@ export class UserService {
      * Send a POST request to our login endpoint with the data
      * the user entered on the form.
      */
+
     getUser() {
-
-        let seq = this.api.get('/user');
-
-        seq.subscribe((data: any) => {
-
-            console.log("after get user");
-            console.log(JSON.stringify(data));
-            return data;
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
-
-        return seq;
+        let url = '/user';
+        return this.http.get<any>(this.api.url + url, this.api.buildHeaders(null)).pipe(
+            map(model => {
+                return model;
+            }, err => {
+                console.error('ERROR', err);
+                this.api.handleError(err);
+            })
+        );
     }
 
     /**
@@ -155,7 +153,7 @@ export class UserService {
         return seq;
     }
 
-    
+
     /**
          * Send a POST request to our signup endpoint with the data
          * the user entered on the form.
@@ -188,7 +186,7 @@ export class UserService {
         seq.subscribe((res: any) => {
             console.log("after signup");
             console.log(JSON.stringify(res));
-            
+
             // If the API returned a successful response, mark the user as logged in
             if (res.status == 'success') {
                 accountInfo.remember = true;
@@ -223,7 +221,7 @@ export class UserService {
      * Log the user out, which forgets the session
      */
     logout() {
-        
+
         let seq = this.api.get('/auth/logout');
         seq.subscribe((res: any) => {
             let container = {"status": 401};

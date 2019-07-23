@@ -22,7 +22,9 @@ export class BookingPage implements OnInit {
     selectedDate: Date;
     startDate: Date;
     endDate: Date;
-    amount: any;
+    startDateS: any;
+    amount: any="1";
+    submitted: boolean=false;
 
     constructor(public params: ParamsService, public booking: BookingService,
         public toastCtrl: ToastController,
@@ -51,18 +53,23 @@ export class BookingPage implements OnInit {
 
     ngOnInit() {
     }
-    makeBooking(merchantId) {
-        this.showLoader();
-        let strDate = this.startDate.getFullYear()+"-"+(this.startDate.getMonth()+1)+"-"+this.startDate.getDate()+" 00:00:00";
-        let endDate = this.endDate.getFullYear()+"-"+(this.endDate.getMonth()+1)+"-"+this.endDate.getDate()+" 23:59:59";
+    createBooking() {
+        if (this.submitted){
+            return true;
+        }
+        this.submitted = true;
+        this.showLoader(); 
+        let strDate = this.startDate.getFullYear()+"-"+(this.startDate.getMonth()+1)+"-"+this.startDate.getDate() + " " + this.endDate.getHours() + ":" + this.endDate.getMinutes()+":00";
+        let endDate = this.endDate.getFullYear() + "-" + (this.endDate.getMonth() + 1) + "-" + this.endDate.getDate() + " " + this.endDate.getHours() + ":" + this.endDate.getMinutes()+":00";
         let data = {
             "type": this.typeObj,
-            "objectId": this.objectId,
+            "object_id": this.objectId,
             "from":this.startDate,
             "to":this.endDate
         };
         this.booking.addBookingObject( data).subscribe((data: any) => {
             this.dismissLoader();
+            this.submitted = false;
         }, (err) => {
             console.log("Error addBookingObject");
             this.dismissLoader();
@@ -102,10 +109,12 @@ export class BookingPage implements OnInit {
         this.dateSelected = false;
     }
     selectStart() {
+        this.startDate = new Date(this.startDateS);
         this.endDate = this.startDate;
-        this.endDate.setHours( this.startDate.getHours() + this.amount );
+        this.endDate.setHours( this.startDate.getHours() + parseInt(this.amount) );
     }
     selectDate(selectedDate: Date){
+        console.log("select date"); 
         this.showLoader();
         this.startDate = selectedDate;
         this.endDate = selectedDate;

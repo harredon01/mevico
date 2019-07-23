@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {UserDataService} from '../user-data/user-data.service';
 import { NavController } from '@ionic/angular';
+import { Observable, of } from 'rxjs';
 import {Router} from '@angular/router';
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ export class ApiService {
         public userData: UserDataService) {
     }
 
-    get(endpoint: string, params?: any, reqOpts?: any) {
+    get(endpoint: string, params?: any, reqOpts?: any) : Observable<any>  {
         if (!reqOpts) {
             reqOpts = {
                 params: new HttpParams()
@@ -47,7 +48,7 @@ export class ApiService {
         //return this.http.post(this.url + '/' + endpoint, body, reqOpts);
     }
 
-    post(endpoint: string, body: any, reqOpts?: any) {
+    post(endpoint: string, body: any, reqOpts?: any) : Observable<any> {
         console.log("body", body);
 
         console.log("Endopoint", endpoint);

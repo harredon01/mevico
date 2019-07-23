@@ -43,10 +43,10 @@
         <div class="difault-form">
             <ion-item>
                 <ion-label>Start Time</ion-label>
-                <ion-datetime display-format="h:mm A" picker-format="h:mm A" value="1990-02-19T07:43Z" [(ngModel)]="startDate" (ionChange)="selectStart()"></ion-datetime>
+                <ion-datetime display-format="h:mm A" picker-format="h:mm A" [(ngModel)]="startDateS" (ionChange)="selectStart()"></ion-datetime>
             </ion-item>
             <ion-item>
-                <p>End Time: {{item.endDate | date :'h:mm A'}}</p>
+                <p>End Time: {{endDate | date :'h:mm A'}}</p>
             </ion-item>
             <ion-item>
                 <ion-label>Cantidad</ion-label>
@@ -57,15 +57,13 @@
                     <ion-select-option value="4">4</ion-select-option>
                 </ion-select>
             </ion-item>
-            <ion-item class="bg-light">
-                <ion-input type="text" placeholder="Full Name"></ion-input>
+            <br>  
+            <ion-item>
+                <ion-button full class="btn success" (tap)="createBooking()">Seleccionar cita</ion-button>
             </ion-item>
-            <ion-item class="bg-light">
-                <ion-input type="password" placeholder="Phone Number"></ion-input>
+            <ion-item> 
+                <ion-button full class="btn success" (tap)="returnDates()">Back</ion-button>
             </ion-item>
-            <br>
-            <ion-button full class="btn success fixed" (click)="createBooking()">Seleccionar cita</ion-button>
-            <ion-button full class="btn success fixed" (click)="returnDates()">Back</ion-button>
         </div>
     </div>
 </ion-content>
