@@ -53,15 +53,6 @@ export class ChatService {
     getServerChats() {
         let url = "/messages/received";
         let seq = this.api.get(url);
-        seq.subscribe((data: any) => {
-            console.log("after get getServerChats",data);
-            return data;
-
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
     getServerChatDetail(where?: any) {
@@ -70,27 +61,11 @@ export class ChatService {
             url = url + "?" + where;
         }
         let seq = this.api.get(url);
-        seq.subscribe((data: any) => {
-            console.log("after get getServerChatDetail",data);
-            return data;
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
     getSupportAgent(typeAgent,objectId) {
         let url = "/messages/support/" + typeAgent + "/" + objectId;
         let seq = this.api.get(url);
-        seq.subscribe((data: any) => {
-            console.log("after get getSupportAgent",data);
-            return data;
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
     saveMessage(message: any) {

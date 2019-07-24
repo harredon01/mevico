@@ -22,26 +22,7 @@ export class UserService {
      * the user entered on the form.
      */
     login(accountInfo: any) {
-        accountInfo.client_id = 1;
-        accountInfo.client_secret = "nuoLagU2jqmzWqN6zHMEo82vNhiFpbsBsqcs2DPt";
-        accountInfo.grant_type = "password";
-        accountInfo.scope = "*";
         let seq = this.api.post('/oauth/token', accountInfo);
-
-        seq.subscribe((data: any) => {
-
-            console.log("after auth");
-            console.log(JSON.stringify(data));
-            // If the API returned a successful response, mark the user as logged in
-            if (data.access_token) {
-                this._loggedIn(data, accountInfo);
-            } else {
-            }
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
-
         return seq;
     }
     postLogin() {
@@ -102,17 +83,6 @@ export class UserService {
     checkCredits(credits: any) {
 
         let seq = this.api.post('/user/credits', credits);
-
-        seq.subscribe((data: any) => {
-
-            console.log("after checkcredits");
-            console.log(JSON.stringify(data));
-            return data;
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
-
         return seq;
     }
     /**
@@ -142,14 +112,6 @@ export class UserService {
      */
     getUserByEmail(email: any) {
         let seq = this.api.get('/contact/email/' + email);
-        seq.subscribe((data: any) => {
-            console.log("after getUserByEmail");
-            console.log(JSON.stringify(data));
-            return data;
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
 
@@ -181,22 +143,6 @@ export class UserService {
         console.log("Signup");
         console.log(JSON.stringify(accountInfo));
         let seq = this.api.post('/auth/register', accountInfo);
-        console.log("seq");
-        console.log(JSON.stringify(seq));
-        seq.subscribe((res: any) => {
-            console.log("after signup");
-            console.log(JSON.stringify(res));
-
-            // If the API returned a successful response, mark the user as logged in
-            if (res.status == 'success') {
-                accountInfo.remember = true;
-                this._loggedIn(res, accountInfo);
-            }
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
-
         return seq;
     }
     /**
@@ -205,15 +151,6 @@ export class UserService {
      */
     myAccount(accountInfo: any) {
         let seq = this.api.post('/user', accountInfo);
-
-        seq.subscribe((res: any) => {
-            // If the API returned a successful response, mark the user as logged in
-            return res;
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
-
         return seq;
     }
 

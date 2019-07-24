@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
-
+import {ApiService} from '../../services/api/api.service';
 import {UserService} from '../../services/user/user.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 @Component({
@@ -54,6 +54,7 @@ export class MyAccountPage implements OnInit {
         public user: UserService,
         public userData: UserDataService,
         public toastCtrl: ToastController,
+        public api: ApiService,
         public loadingCtrl: LoadingController,
         public translateService: TranslateService,
         public formBuilder: FormBuilder, private spinnerDialog: SpinnerDialog) {
@@ -95,6 +96,7 @@ export class MyAccountPage implements OnInit {
                     duration: 3000,
                     position: 'top'
                 }).then(toast => toast.present());
+                this.api.handleError(err);
             });
         }
 
@@ -148,6 +150,7 @@ export class MyAccountPage implements OnInit {
 
         }, (err) => {
             this.dismissLoader();
+            this.api.handleError(err);
             // Unable to sign up
 
         });

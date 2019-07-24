@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, LoadingController} from '@ionic/angular';
+import {NavController, ToastController, LoadingController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';
+import {ApiService} from '../../services/api/api.service';
 import {BookingService} from '../../services/booking/booking.service';
 @Component({
     selector: 'app-booking',
@@ -10,25 +11,30 @@ import {BookingService} from '../../services/booking/booking.service';
     styleUrls: ['./booking.page.scss'],
 })
 export class BookingPage implements OnInit {
-    availableDays: any[]=[];
-    availableDates: Date[]=[];
-    selectedSpots: any[]=[];
-    availabilities: any[]=[];
+    availableDays: any[] = [];
+    availableDates: Date[] = [];
+    selectedSpots: any[] = [];
+    availabilities: any[] = [];
     dateSelected: boolean = false;
-    availabilitiesDate: any[]=[];
-    weekday: any[]=[];
+    availabilitiesDate: any[] = [];
+    weekday: any[] = [];
     typeObj: string;
+    notAvailable: string;
+    success: string;
     objectId: string;
     selectedDate: Date;
     startDate: Date;
     endDate: Date;
     startDateS: any;
-    amount: any="1";
-    submitted: boolean=false;
+    amount: any = "1";
+    submitted: boolean = false;
 
     constructor(public params: ParamsService, public booking: BookingService,
         public toastCtrl: ToastController,
         public loadingCtrl: LoadingController,
+        public navCtrl: NavController,
+        public api: ApiService,
+        public alertsCtrl: AlertController,
         public translateService: TranslateService,
         private spinnerDialog: SpinnerDialog) {
         this.weekday = new Array(7);
@@ -41,39 +47,77 @@ export class BookingPage implements OnInit {
         this.weekday[6] = "saturday";
         let paramsArrived = this.params.getParams();
         this.availabilities = paramsArrived.availabilities;
-        console.log("Availabilities",this.availabilities);
+        console.log("Availabilities", this.availabilities);
         this.typeObj = paramsArrived.type;
         this.objectId = paramsArrived.objectId;
         this.getAvailableDates(this.availabilities);
-        console.log("Get availableDays",this.availableDays);
-        
+        console.log("Get availableDays", this.availableDays);
+        this.translateService.get('BOOKING.NOT_AVAILABLE').subscribe(function (value) {
+            this.notAvailable = value;
+        });
+        this.translateService.get('BOOKING.SUCCESS').subscribe(function (value) {
+            this.success = value;
+        });
         this.getDates();
-        console.log("Get availableDates",this.availableDates);
+        console.log("Get availableDates", this.availableDates);
     }
 
     ngOnInit() {
     }
     createBooking() {
-        if (this.submitted){
+        if (this.submitted) {
             return true;
         }
         this.submitted = true;
-        this.showLoader(); 
-        let strDate = this.startDate.getFullYear()+"-"+(this.startDate.getMonth()+1)+"-"+this.startDate.getDate() + " " + this.endDate.getHours() + ":" + this.endDate.getMinutes()+":00";
-        let endDate = this.endDate.getFullYear() + "-" + (this.endDate.getMonth() + 1) + "-" + this.endDate.getDate() + " " + this.endDate.getHours() + ":" + this.endDate.getMinutes()+":00";
+        this.showLoader();
+        let strDate = this.startDate.getFullYear() + "-" + (this.startDate.getMonth() + 1) + "-" + this.startDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
+        let ndDate = this.startDate.getFullYear() + "-" + (this.startDate.getMonth() + 1) + "-" + this.startDate.getDate() + " " + (this.startDate.getHours()+ + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
         let data = {
             "type": this.typeObj,
             "object_id": this.objectId,
-            "from":this.startDate,
-            "to":this.endDate
+            "from": strDate,
+            "to": ndDate
         };
-        this.booking.addBookingObject( data).subscribe((data: any) => {
+        console.log("Start", this.startDate);
+        console.log("data", data);
+        this.booking.addBookingObject(data).subscribe((data: any) => {
             this.dismissLoader();
             this.submitted = false;
+            this.presentAlertConfirm(data);
         }, (err) => {
             console.log("Error addBookingObject");
             this.dismissLoader();
+            this.api.handleError(err);
         });
+    }
+
+    async presentAlertConfirm(resp: any) {
+        let message = "";
+        let button: any = {};
+        if (resp.status == "success") {
+            message = this.success;
+            let button = {
+                text: 'Ok',
+                handler: () => {
+                    this.navCtrl.back();
+                }
+            }
+        } else {
+            message = this.notAvailable;
+            let button = {
+                text: 'Ok',
+                handler: () => {
+                    console.log('Confirm Okay');
+                }
+            }
+        }
+        const alert = await this.alertsCtrl.create({
+            message: message,
+            buttons: [
+                button
+            ]
+        });
+        await alert.present();
     }
 
     getAvailableDates(availabilities: any) {
@@ -110,28 +154,29 @@ export class BookingPage implements OnInit {
     }
     selectStart() {
         this.startDate = new Date(this.startDateS);
-        this.endDate = this.startDate;
-        this.endDate.setHours( this.startDate.getHours() + parseInt(this.amount) );
+        this.endDate = new Date(this.startDateS);
+        this.endDate.setHours(this.startDate.getHours() + parseInt(this.amount));
     }
-    selectDate(selectedDate: Date){
-        console.log("select date"); 
+    selectDate(selectedDate: Date) {
+        console.log("select date");
         this.showLoader();
         this.startDate = selectedDate;
         this.endDate = selectedDate;
         this.dateSelected = true;
-        let strDate = selectedDate.getFullYear()+"-"+(selectedDate.getMonth()+1)+"-"+selectedDate.getDate()+" 00:00:00";
-        let endDate = selectedDate.getFullYear()+"-"+(selectedDate.getMonth()+1)+"-"+selectedDate.getDate()+" 23:59:59";
+        let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + " 00:00:00";
+        let endDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + " 23:59:59";
         let params = {
-            "from":strDate,
-            "to":endDate,
+            "from": strDate,
+            "to": endDate,
             "type": this.typeObj,
             "object_id": this.objectId,
         };
-        this.booking.getBookingsObject( params).subscribe((data: any) => {
+        this.booking.getBookingsObject(params).subscribe((data: any) => {
             this.selectedSpots = data.data;
             this.dismissLoader();
         }, (err) => {
             console.log("Error addBookingObject");
+            this.api.handleError(err);
         });
         let day = selectedDate.getDay();
         this.availabilitiesDate = [];
@@ -140,7 +185,7 @@ export class BookingPage implements OnInit {
                 this.availabilitiesDate.push((this.availabilities[item]));
             }
         }
-        console.log("Availabilities",this.availabilitiesDate);
+        console.log("Availabilities", this.availabilitiesDate);
     }
     showLoader() {
         if (document.URL.startsWith('http')) {

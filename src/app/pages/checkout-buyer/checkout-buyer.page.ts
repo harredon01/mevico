@@ -9,6 +9,7 @@ import {AddressesService} from '../../services/addresses/addresses.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserService} from '../../services/user/user.service';
 import {AddressCreatePage} from '../address-create/address-create.page';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-checkout-buyer',
     templateUrl: './checkout-buyer.page.html',
@@ -42,6 +43,7 @@ export class CheckoutBuyerPage implements OnInit {
 
     constructor(public navCtrl: NavController,
         public user: UserService,
+        public api: ApiService,
         public params: ParamsService,
         public alertCtrl: AlertController,
         public mapData: MapDataService,
@@ -133,6 +135,7 @@ export class CheckoutBuyerPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
 
     }

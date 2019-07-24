@@ -15,12 +15,14 @@ export class LocationsService {
                     this.getSharedLocations(page, resp).subscribe((data) => {
                         resolve(data);
                     }, (err) => {
+                    this.api.handleError(err);
                         console.log("getSharedLocation Error", err);
                     });
                 } else {
                     this.getSharedLocations(page, "0").subscribe((data) => {
                         resolve(data);
                     }, (err) => {
+                    this.api.handleError(err);
                         console.log("getSharedLocation Error", err);
                     });
                 }
@@ -29,6 +31,7 @@ export class LocationsService {
                 this.getSharedLocations(page, "0").subscribe((data) => {
                     resolve(data);
                 }, (err) => {
+                this.api.handleError(err);
                     console.log("getSharedLocation Error", err);
                 });
             });
@@ -41,32 +44,11 @@ export class LocationsService {
             url = url + "?page=" + page + "&id_after=" + id_after;
         }
         let seq = this.api.get(url);
-
-        seq.subscribe((data: any) => {
-            console.log("after get locations");
-            console.log(JSON.stringify(data));
-            return data;
-
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
     getActivePolygons(merchantId: any) {
         let url = "/coverage?merchant_id=" + merchantId;
         let seq = this.api.get(url);
-        seq.subscribe((data: any) => {
-            console.log("after get active routes");
-            console.log(JSON.stringify(data));
-            return data;
-
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
 
@@ -74,15 +56,6 @@ export class LocationsService {
         let endpoint = "/merchants/nearby_all";
         let data = {lat: latit, long: longit, radius: radius};
         let seq = this.api.get(endpoint, data);
-        seq.subscribe((data: any) => {
-            console.log("after get locations");
-            console.log(JSON.stringify(data));
-            return data;
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
     getTrip(user_id: any, trip: any) {
@@ -92,11 +65,7 @@ export class LocationsService {
         console.log(trip);
         let page = 1;
         console.log(page);
-        this.getTripSet(user_id, trip, page).subscribe((resp) => {
-
-        }, (err) => {
-
-        });
+        this.getTripSet(user_id, trip, page);
     }
 
     getTripSet(user_id: any, trip: any, page: any) {

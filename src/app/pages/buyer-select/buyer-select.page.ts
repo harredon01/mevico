@@ -4,6 +4,7 @@ import {NavController, ToastController, LoadingController,ModalController } from
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {TranslateService} from '@ngx-translate/core'; 
 import {ParamsService} from '../../services/params/params.service';
+import {ApiService} from '../../services/api/api.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {UserService} from '../../services/user/user.service';
 @Component({
@@ -33,6 +34,7 @@ export class BuyerSelectPage implements OnInit {
         public toastCtrl: ToastController,
         public user: UserService,
         public fb: FormBuilder,
+        public api: ApiService,
         public orderData: OrderDataService,
         public translateService: TranslateService,
         public params: ParamsService,
@@ -161,6 +163,7 @@ export class BuyerSelectPage implements OnInit {
             }
         }, (err) => {
             this.dismissLoader();
+            this.api.handleError(err);
         });
 
     }

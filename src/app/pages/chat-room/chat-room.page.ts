@@ -5,6 +5,7 @@ import {NavController, ToastController, LoadingController,Events,AlertController
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {ChatService} from '../../services/chat/chat.service';
+import {ApiService} from '../../services/api/api.service';
 import {ParamsService} from '../../services/params/params.service';
 import { Router } from '@angular/router';
 @Component({
@@ -36,6 +37,7 @@ export class ChatRoomPage implements OnInit {
         public loadingCtrl: LoadingController,
         private cdr: ChangeDetectorRef,
         public toastCtrl: ToastController,
+        public api: ApiService,
         public navCtrl: NavController,
         public router:Router,
         public userData: UserDataService,
@@ -159,6 +161,7 @@ export class ChatRoomPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     getSupportAgent(typeObject, objectId) {
@@ -187,6 +190,7 @@ export class ChatRoomPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     doInfinite(infiniteScroll) {

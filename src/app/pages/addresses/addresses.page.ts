@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Address} from '../../models/address';
 import {TranslateService} from '@ngx-translate/core';
+import {ApiService} from '../../services/api/api.service';
 import {NavController, ToastController, LoadingController, ModalController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';
@@ -22,6 +23,7 @@ export class AddressesPage implements OnInit {
     constructor(public navCtrl: NavController,
         public addresses: AddressesService,
         public toastCtrl: ToastController,
+        public api: ApiService,
         public modalCtrl: ModalController,
         public mapData: MapDataService,
         public params: ParamsService,
@@ -112,6 +114,7 @@ export class AddressesPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     async addBillingAddress() {
@@ -175,6 +178,7 @@ export class AddressesPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 

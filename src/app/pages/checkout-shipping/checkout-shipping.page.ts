@@ -9,6 +9,7 @@ import {MapDataService} from '../../services/map-data/map-data.service';
 import {OrderService} from '../../services/order/order.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserService} from '../../services/user/user.service';
+import {ApiService} from '../../services/api/api.service';
 import { ActivatedRoute } from '@angular/router';
 @Component({
     selector: 'app-checkout-shipping',
@@ -35,6 +36,7 @@ export class CheckoutShippingPage implements OnInit {
         public translateService: TranslateService,
         public addresses: AddressesService,
         public order: OrderService,
+        public api: ApiService,
         public orderData: OrderDataService,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog,
@@ -81,6 +83,7 @@ export class CheckoutShippingPage implements OnInit {
             console.log(JSON.stringify(data));
         }, (err) => {
             this.dismissLoader();
+            this.api.handleError(err);
             // Unable to log in
 
         });
@@ -183,6 +186,7 @@ export class CheckoutShippingPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     changeAddress() {

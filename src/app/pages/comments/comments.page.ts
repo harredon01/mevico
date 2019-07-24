@@ -3,6 +3,7 @@ import {NavController, ToastController } from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 import {RatingsService} from '../../services/ratings/ratings.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {ApiService} from '../../services/api/api.service';
 import {ParamsService} from '../../services/params/params.service';
 @Component({
     selector: 'app-comments',
@@ -26,6 +27,7 @@ export class CommentsPage implements OnInit {
 
     constructor(public navCtrl: NavController,
         public params: ParamsService,
+        public api: ApiService,
         public ratings: RatingsService,
         public toastCtrl: ToastController,
         public translateService: TranslateService) {
@@ -53,6 +55,7 @@ export class CommentsPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 

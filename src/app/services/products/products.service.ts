@@ -13,15 +13,6 @@ export class ProductsService {
     getProductsMerchant(merchant: string, page: string) {
         let endpoint = '/products/merchant/' + merchant + "/" + page;
         let seq = this.api.get(endpoint);
-        seq.subscribe((data: any) => {
-            console.log("after get products");
-            console.log(JSON.stringify(data));
-            return data;
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
 
     }

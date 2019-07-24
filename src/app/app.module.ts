@@ -14,6 +14,8 @@ import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {AppComponent} from './app.component';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {AppRoutingModule} from './app-routing.module';
+import {CartPageModule} from './pages/cart/cart.module'
+import {AddressCreatePageModule} from './pages/address-create/address-create.module'
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
@@ -31,7 +33,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         }),
         IonicModule.forRoot(),
         IonicStorageModule.forRoot(),
-        AppRoutingModule],
+        AppRoutingModule,
+        CartPageModule,
+        AddressCreatePageModule],
     providers: [
         StatusBar,
         SplashScreen,

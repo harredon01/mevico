@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController} from '@ionic/angular';
-
+import {ApiService} from '../../services/api/api.service';
 import {AuthService} from '../../services/auth/auth.service';
 @Component({
     selector: 'app-codes',
@@ -13,7 +13,7 @@ export class CodesPage implements OnInit {
     valid: boolean;
     codesSuccess: string = "";
     codeError: string = "";
-    constructor(public auth: AuthService, public navCtrl: NavController, public toastCtrl: ToastController, public translateService: TranslateService) {
+    constructor(public auth: AuthService, public navCtrl: NavController, public toastCtrl: ToastController,public api: ApiService, public translateService: TranslateService) {
         this.translateService.get('MEDICAL.SUCCESS').subscribe((value) => {
             this.codesSuccess = value;
         });
@@ -44,6 +44,7 @@ export class CodesPage implements OnInit {
         }, (err) => {
             console.error('ERR', err);
             console.log(JSON.stringify(err));
+            this.api.handleError(err);
             // err.status will contain the status code
         });
         // console.log( this.data );
@@ -62,6 +63,7 @@ export class CodesPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 

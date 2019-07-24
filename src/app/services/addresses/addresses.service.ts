@@ -13,16 +13,6 @@ export class AddressesService {
             url = url + "?" + where;
         }
         let seq = this.api.get(url);
-
-        seq.subscribe((data: any) => {
-            console.log("after get Addresses",data);
-            return data;
-
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
 
@@ -32,28 +22,10 @@ export class AddressesService {
    */
   saveAddress(address: any) {
     let seq = this.api.post('/addresses', address);
-
-    seq.subscribe((res: any) => {
-        console.log("after Save Address",res);
-        return res;
-    }, err => {
-      console.error('ERROR', err);
-      this.api.handleError(err);
-    });
-
     return seq;
   }
   deleteAddress(address_id: string) {
     let seq = this.api.delete('/addresses/'+address_id );
-
-    seq.subscribe((res: any) => {
-        console.log("after Delete address",res);
-        return res;
-    }, err => {
-      console.error('ERROR', err);
-      this.api.handleError(err);
-    });
-
     return seq;
   }
 }

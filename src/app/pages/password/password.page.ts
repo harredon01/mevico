@@ -5,7 +5,7 @@ import {NavController, ToastController, LoadingController} from '@ionic/angular'
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 
 import {AuthService} from '../../services/auth/auth.service';
-import {UserDataService} from '../../services/user-data/user-data.service';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-password',
     templateUrl: './password.page.html',
@@ -37,6 +37,7 @@ export class PasswordPage implements OnInit {
         public navCtrl: NavController,
         public auth: AuthService,
         public loadingCtrl: LoadingController,
+        public api: ApiService,
         public translateService: TranslateService,
         private spinnerDialog: SpinnerDialog) {
         this.translateService.get('PASSWORD_UPDATE.ERROR_UPDATE').subscribe((value) => {
@@ -102,6 +103,7 @@ export class PasswordPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 

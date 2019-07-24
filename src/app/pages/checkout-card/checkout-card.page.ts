@@ -5,6 +5,7 @@ import {ParamsService} from '../../services/params/params.service';
 import {AddressCreatePage} from '../address-create/address-create.page';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {ApiService} from '../../services/api/api.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {BillingService} from '../../services/billing/billing.service';
@@ -53,6 +54,7 @@ export class CheckoutCardPage implements OnInit {
         public modalCtrl: ModalController,
         public billing: BillingService,
         public toastCtrl: ToastController,
+        public api: ApiService,
         public translateService: TranslateService,
         public formBuilder: FormBuilder,
         public loadingCtrl: LoadingController,
@@ -170,7 +172,7 @@ export class CheckoutCardPage implements OnInit {
             }
 
         }, (err) => {
-
+            this.api.handleError(err);
         });
     }
     dismissLoader() {
@@ -252,6 +254,7 @@ export class CheckoutCardPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     payToken(method) {
@@ -292,6 +295,7 @@ export class CheckoutCardPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     useOld() {

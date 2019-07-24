@@ -12,6 +12,7 @@ import {UserDataService} from '../../services/user-data/user-data.service';
 import {CartService} from '../../services/cart/cart.service';
 import {BillingService} from '../../services/billing/billing.service';
 import {BuyerSelectPage} from '../buyer-select/buyer-select.page';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-checkout-prepare',
     templateUrl: './checkout-prepare.page.html',
@@ -62,6 +63,7 @@ export class CheckoutPreparePage implements OnInit {
         public cartProvider: CartService,
         public orderData: OrderDataService,
         public userData: UserDataService,
+        public api: ApiService,
         public user: UserService,
         public events: Events,
         public orderProvider: OrderService,
@@ -138,6 +140,7 @@ export class CheckoutPreparePage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
         let endDate = new Date();
         endDate.setDate(endDate.getDate() + 1);
@@ -231,6 +234,7 @@ export class CheckoutPreparePage implements OnInit {
                     duration: 3000,
                     position: 'top'
                 }).then(toast => toast.present());
+                this.api.handleError(err);
             });
         }
 
@@ -265,6 +269,7 @@ export class CheckoutPreparePage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     openSupport() {
@@ -326,6 +331,7 @@ export class CheckoutPreparePage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     /**
@@ -394,6 +400,7 @@ export class CheckoutPreparePage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     setDiscounts() {
@@ -410,6 +417,7 @@ export class CheckoutPreparePage implements OnInit {
             this.dismissLoader();
             console.log("getCartError", err);
             this.orderData.cartData = null;
+            this.api.handleError(err);
         });
     }
     async addPayers(missing: any) {
@@ -497,6 +505,7 @@ export class CheckoutPreparePage implements OnInit {
             }, (err) => {
                 //this.navCtrl.push(MainPage);
                 // Unable to log in
+                this.api.handleError(err);
                 let toast = this.toastCtrl.create({
                     message: this.cartErrorString,
                     duration: 3000,
@@ -525,6 +534,7 @@ export class CheckoutPreparePage implements OnInit {
                     duration: 3000,
                     position: 'top'
                 }).then(toast => toast.present());
+                this.api.handleError(err);
                 resolve(null);
             });
         });
@@ -595,6 +605,7 @@ export class CheckoutPreparePage implements OnInit {
             this.dismissLoader();
             console.log("getCartError", err);
             this.orderData.cartData = null;
+            this.api.handleError(err);
         });
     }
 
@@ -608,6 +619,7 @@ export class CheckoutPreparePage implements OnInit {
         }, (err) => {
             console.log("getCartError", err);
             this.orderData.cartData = null;
+            this.api.handleError(err);
         });
     }
 
@@ -760,6 +772,7 @@ export class CheckoutPreparePage implements OnInit {
 
                 }, (err) => {
                     this.handleServerCartError();
+                    this.api.handleError(err);
                     resolve(null);
                 });
             } else {
@@ -773,6 +786,7 @@ export class CheckoutPreparePage implements OnInit {
                     //this.navCtrl.push(MainPage);
                 }, (err) => {
                     this.handleServerCartError();
+                    this.api.handleError(err);
                     resolve(null);
                 });
             }
@@ -793,6 +807,7 @@ export class CheckoutPreparePage implements OnInit {
             }
         }, (err) => {
             this.handleServerCartError();
+            this.api.handleError(err);
         });
     }
 

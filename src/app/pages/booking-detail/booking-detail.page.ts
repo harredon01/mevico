@@ -3,6 +3,7 @@ import {BookingService} from '../../services/booking/booking.service';
 import {NavController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Booking} from '../../models/booking';
+import {ApiService} from '../../services/api/api.service';
 import { ActivatedRoute } from '@angular/router';
 import {ParamsService} from '../../services/params/params.service';
 @Component({
@@ -16,6 +17,7 @@ private mainBooking: Booking;
         public activatedRoute:ActivatedRoute,
         public params: ParamsService,
         public navCtrl: NavController,
+        public api: ApiService,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
     ) {}
@@ -32,6 +34,7 @@ private mainBooking: Booking;
         }, (err) => {
             console.log("Error cancelBooking");
             this.dismissLoader();
+            this.api.handleError(err);
         });
   }
   dismissLoader() {

@@ -5,6 +5,7 @@ import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {UserService} from '../../services/user/user.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
+import {ApiService} from '../../services/api/api.service';
 
 @Component({
     selector: 'app-login',
@@ -15,10 +16,14 @@ export class LoginPage implements OnInit {
     // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
-    account: {username: string, password: string, remember: boolean} = {
-        username: 'harredon01@gmail.com',
-        password: '123456',
-        remember: true
+    account: {username: string, password: string, client_secret: string, grant_type: string, scope: string, remember: boolean, client_id: any} = {
+        username: '',
+        password: '',
+        client_secret: "nuoLagU2jqmzWqN6zHMEo82vNhiFpbsBsqcs2DPt",
+        grant_type: 'password',
+        scope: "*",
+        remember: true,
+        client_id: 1
     };
     public downloadProgress = 0;
     loading: any;
@@ -33,6 +38,7 @@ export class LoginPage implements OnInit {
     constructor(public spinnerDialog: SpinnerDialog,
         public navCtrl: NavController,
         public user: UserService,
+        public api: ApiService,
         public loadingCtrl: LoadingController,
         public userData: UserDataService,
         public iab: InAppBrowser,
@@ -94,7 +100,10 @@ export class LoginPage implements OnInit {
     doLogin() {
         console.log("doLogin");
         this.showLoaderEmpty();
-        this.user.login(this.account).subscribe((resp) => {
+        this.user.login(this.account).subscribe((data) => {
+            if (data.access_token) {
+                this.user._loggedIn(data, this.account);
+            }
             this.user.postLogin().then((value) => {
                 this.dismissLoader();
                 console.log("Post login complete");
@@ -110,6 +119,7 @@ export class LoginPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     forgotPass() {

@@ -5,7 +5,7 @@ import {NavController, ModalController, ToastController, LoadingController} from
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-merchant-categories',
     templateUrl: './merchant-categories.page.html',
@@ -18,8 +18,8 @@ export class MerchantCategoriesPage implements OnInit {
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
         public params: ParamsService,
-        public http: HttpClient,
         public userData: UserDataService,
+        public api: ApiService,
         public toastCtrl: ToastController,
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
@@ -31,19 +31,6 @@ export class MerchantCategoriesPage implements OnInit {
             this.categoriesErrorGet = value;
         });
         this.getItems();
-    }
-    buildHeaders(reqOpts) {
-        if (reqOpts) {
-            console.log("Entrada 1");
-            reqOpts.headers = this.userData._headers;
-        } else {
-            console.log("Entrada 2");
-            reqOpts = {
-                headers: this.userData._headers
-            };
-        }
-        return reqOpts;
-        //return this.http.post(this.url + '/' + endpoint, body, reqOpts);
     }
     /**
        * Navigate to the detail page for this item.
@@ -64,13 +51,8 @@ export class MerchantCategoriesPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
-    }
-    getItems2() {
-        let reqOpts = this.buildHeaders(null);
-        this.http.get("https://dev.lonchis.com.co/api/categories/merchant", reqOpts).subscribe((response) => {
-    console.log(response);
-});
     }
     /**
      * Navigate to the detail page for this item.

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Route} from '../../models/route';
 import {NavController, ModalController, ToastController, Events, LoadingController} from '@ionic/angular';
+import {ApiService} from '../../services/api/api.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {RoutingService} from '../../services/routing/routing.service';
 import {ParamsService} from '../../services/params/params.service';
@@ -26,6 +27,7 @@ export class RouteDetailPage implements OnInit {
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog,
         public routingService: RoutingService,
+        public api: ApiService,
         public foodService: FoodService,
         public params: ParamsService,
         public events: Events,
@@ -105,9 +107,8 @@ export class RouteDetailPage implements OnInit {
                 this.listArticles[item].attributes = JSON.parse(this.listArticles[item].attributes);
             }
             this.replaceFood();
-        },
-            function (data) {
-
+        }, (err) => {
+                this.api.handleError(err);
             });
     }
 
@@ -141,6 +142,7 @@ export class RouteDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     stopArrived(stop_id) {
@@ -158,6 +160,7 @@ export class RouteDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     stopFailed( user_id) {
@@ -175,6 +178,7 @@ export class RouteDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     stopComplete(stop_id) {
@@ -192,6 +196,7 @@ export class RouteDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     routeComplete(route_id) {
@@ -210,6 +215,7 @@ export class RouteDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     showLoader() {

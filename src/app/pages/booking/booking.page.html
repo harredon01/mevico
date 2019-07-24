@@ -46,11 +46,11 @@
                 <ion-datetime display-format="h:mm A" picker-format="h:mm A" [(ngModel)]="startDateS" (ionChange)="selectStart()"></ion-datetime>
             </ion-item>
             <ion-item>
-                <p>End Time: {{endDate | date :'h:mm A'}}</p>
+                <p>End Time: {{endDate | date :'h:mm a'}}</p>
             </ion-item>
             <ion-item>
                 <ion-label>Cantidad</ion-label>
-                <ion-select placeholder="Select One" [(ngModel)]="amount">
+                <ion-select placeholder="Select One" [(ngModel)]="amount" (ionChange)="selectStart()">
                     <ion-select-option value="1">1</ion-select-option>
                     <ion-select-option value="2">2</ion-select-option>
                     <ion-select-option value="3">3</ion-select-option>
@@ -58,12 +58,7 @@
                 </ion-select>
             </ion-item>
             <br>  
-            <ion-item>
-                <ion-button full class="btn success" (tap)="createBooking()">Seleccionar cita</ion-button>
-            </ion-item>
-            <ion-item> 
-                <ion-button full class="btn success" (tap)="returnDates()">Back</ion-button>
-            </ion-item>
+            <ion-button full class="btn success" (click)="returnDates()">Back</ion-button><ion-button full class="btn success" (click)="createBooking()">Seleccionar cita</ion-button>
         </div>
     </div>
 </ion-content>

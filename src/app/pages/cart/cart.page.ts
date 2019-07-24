@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ModalController, NavController, ToastController, Events, LoadingController} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 import {OrderDataService} from '../../services/order-data/order-data.service';
+import {ApiService} from '../../services/api/api.service';
 import {Item} from '../../models/item';
 import {CartService} from '../../services/cart/cart.service';
 @Component({
-  selector: 'app-cart',
-  templateUrl: './cart.page.html',
-  styleUrls: ['./cart.page.scss'],
+    selector: 'app-cart',
+    templateUrl: './cart.page.html',
+    styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-
-  currentItems: Item[];
+    currentItems: Item[];
     loading: any;
     // Our translated text strings
     private cartErrorString: string;
@@ -25,6 +25,7 @@ export class CartPage implements OnInit {
     constructor(public navCtrl: NavController,
         public cart: CartService,
         public events: Events,
+        public api: ApiService,
         private spinnerDialog: SpinnerDialog,
         public loadingCtrl: LoadingController,
         public modalCtrl: ModalController,
@@ -148,6 +149,7 @@ export class CartPage implements OnInit {
                 }, (err) => {
                     this.handleServerCartError();
                     resolve(null);
+                    this.api.handleError(err);
                 });
             } else {
                 this.cart.addCartItem(container).subscribe((resp: any) => {
@@ -161,6 +163,7 @@ export class CartPage implements OnInit {
                     //this.navCtrl.push(MainPage);
                 }, (err) => {
                     this.handleServerCartError();
+                    this.api.handleError(err);
                     resolve(null);
                 });
             }
@@ -190,6 +193,7 @@ export class CartPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     /**
@@ -245,6 +249,7 @@ export class CartPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 
@@ -271,7 +276,7 @@ export class CartPage implements OnInit {
         this.modalCtrl.dismiss("Close");
     }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }

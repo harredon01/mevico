@@ -4,6 +4,7 @@ import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {NavController, ModalController, NavParams, AlertController, Platform, LoadingController, Events} from '@ionic/angular';
 import {MapService} from '../../services/map/map.service';
 import {MapDataService} from '../../services/map-data/map-data.service';
+import {ApiService} from '../../services/api/api.service';
 import {FoodService} from '../../services/food/food.service';
 import {LocationsService} from '../../services/locations/locations.service';
 import {AddressCreatePage} from '../address-create/address-create.page'
@@ -29,6 +30,7 @@ export class MapPage implements OnInit {
         public food: FoodService,
         private cdr: ChangeDetectorRef,
         public modalCtrl: ModalController,
+        public api: ApiService,
         public mapData: MapDataService,
         public translateService: TranslateService,
         public navParams: NavParams,
@@ -222,6 +224,7 @@ export class MapPage implements OnInit {
 
         }, (err) => {
             this.dismissLoader();
+            this.api.handleError(err);
         });
     }
 
@@ -255,6 +258,7 @@ export class MapPage implements OnInit {
                 }
             }, (err) => {
                 this.buildMapStatus();
+                this.api.handleError(err);
                 console.log("getSharedLocation Error", err);
             });
         }
@@ -328,6 +332,7 @@ export class MapPage implements OnInit {
                     this.dismissLoader();
                     this.mapData.map.setVisible(true);
                     console.log("getActiveRoutes Error", err);
+                    this.api.handleError(err);
                 });
             } else {
                 this.mapData.newAddressMarker.setVisible(true);

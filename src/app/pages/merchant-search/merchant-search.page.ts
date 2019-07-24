@@ -4,6 +4,7 @@ import {CategoriesService} from '../../services/categories/categories.service';
 import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-merchant-search',
     templateUrl: './merchant-search.page.html',
@@ -17,6 +18,7 @@ export class MerchantSearchPage implements OnInit {
         public categories: CategoriesService,
         public params: ParamsService,
         public toastCtrl: ToastController,
+        public api: ApiService,
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
         public translateService: TranslateService,
@@ -47,6 +49,7 @@ export class MerchantSearchPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     searchItems(ev: any) {

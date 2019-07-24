@@ -3,6 +3,7 @@ import {Route} from '../../models/route';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {ApiService} from '../../services/api/api.service';
 import {RoutingService} from '../../services/routing/routing.service';
 import {ParamsService} from '../../services/params/params.service';
 @Component({
@@ -20,6 +21,7 @@ export class RoutesPage implements OnInit {
         public toastCtrl: ToastController,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog,
+        public api: ApiService,
         public routingService: RoutingService,
         public params: ParamsService) {
         this.translateService.get('ROUTING.ERROR_ROUTE_GET').subscribe(function (value) {
@@ -87,6 +89,7 @@ export class RoutesPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 

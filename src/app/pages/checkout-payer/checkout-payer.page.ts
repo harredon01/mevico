@@ -10,6 +10,7 @@ import {UserDataService} from '../../services/user-data/user-data.service';
 import {BillingService} from '../../services/billing/billing.service';
 import {AddressesService} from '../../services/addresses/addresses.service';
 import {AddressCreatePage} from '../address-create/address-create.page';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-checkout-payer',
     templateUrl: './checkout-payer.page.html',
@@ -42,6 +43,7 @@ export class CheckoutPayerPage implements OnInit {
         public userData: UserDataService,
         public billing: BillingService,
         public alertCtrl: AlertController,
+        public api: ApiService,
         public params: ParamsService,
         public orderData: OrderDataService,
         public modalCtrl: ModalController,
@@ -73,6 +75,9 @@ export class CheckoutPayerPage implements OnInit {
                     this.showPromptToken(value);
                 }
             }
+        }, (err) => {
+            console.log("Error",err)
+            this.api.handleError(err);
         });
     }
 

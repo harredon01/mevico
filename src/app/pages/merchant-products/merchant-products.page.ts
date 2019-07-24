@@ -8,8 +8,8 @@ import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {CartService} from '../../services/cart/cart.service';
 import {Product} from '../../models/product';
-import {AddressCreatePage} from '../address-create/address-create.page';
-
+import {CartPage} from '../cart/cart.page';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-merchant-products',
     templateUrl: './merchant-products.page.html',
@@ -46,6 +46,7 @@ export class MerchantProductsPage implements OnInit {
     constructor(public navCtrl: NavController,
         public productsServ: ProductsService,
         public toastCtrl: ToastController,
+        public api: ApiService,
         public modalCtrl: ModalController,
         public alertCtrl: AlertController,
         private spinnerDialog: SpinnerDialog,
@@ -165,6 +166,7 @@ export class MerchantProductsPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     showMore(item: any) {
@@ -301,6 +303,7 @@ export class MerchantProductsPage implements OnInit {
 
                 }, (err) => {
                     this.handleServerCartError();
+                    this.api.handleError(err);
                     resolve(null);
                 });
             } else {
@@ -315,6 +318,7 @@ export class MerchantProductsPage implements OnInit {
                     //this.navCtrl.push(MainPage);
                 }, (err) => {
                     this.handleServerCartError();
+                    this.api.handleError(err);
                     resolve(null);
                 });
             }
@@ -404,6 +408,7 @@ export class MerchantProductsPage implements OnInit {
                 //this.createSlides();
             }
         }, (err) => {
+            this.api.handleError(err);
             // Unable to log in
         });
     }
@@ -411,7 +416,7 @@ export class MerchantProductsPage implements OnInit {
         let container = {cart: this.orderData.cartData};
         console.log("Opening Cart", container);
         let addModal = await this.modalCtrl.create({
-            component: AddressCreatePage,
+            component: CartPage,
             componentProps: container
         });
         await addModal.present();
@@ -419,7 +424,7 @@ export class MerchantProductsPage implements OnInit {
         if (data == "Checkout") {
             console.log("User: ", this.userData._user);
             this.params.setParams({"merchant_id": this.merchant});
-                this.navCtrl.navigateForward('tabs/checkout/shipping');
+            this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
         }
     }
 

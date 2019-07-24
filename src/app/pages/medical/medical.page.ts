@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, IonContent, ToastController} from '@ionic/angular';
-
+import {ApiService} from '../../services/api/api.service';
 import {AuthService} from '../../services/auth/auth.service';
 @Component({
     selector: 'app-medical',
@@ -29,7 +29,7 @@ export class MedicalPage implements OnInit {
         {name: "+", value: "+"},
         {name: "-", value: "-"}
     ];
-    constructor(public auth: AuthService, public navCtrl: NavController, public toastCtrl: ToastController, public translateService: TranslateService) {
+    constructor(public auth: AuthService, public navCtrl: NavController, public toastCtrl: ToastController,public api: ApiService, public translateService: TranslateService) {
         this.translateService.get('MEDICAL.SUCCESS').subscribe((value) => {
             this.medicalSuccess = value;
         });
@@ -72,6 +72,7 @@ export class MedicalPage implements OnInit {
         }, (err) => {
             console.error('ERR', err);
             console.log(JSON.stringify(err));
+            this.api.handleError(err);
             // err.status will contain the status code
         });
         // console.log( this.data );
@@ -93,6 +94,7 @@ export class MedicalPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 }

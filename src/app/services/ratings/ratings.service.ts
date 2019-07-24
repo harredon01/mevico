@@ -13,16 +13,6 @@ export class RatingsService {
             url = url + "?" + where;
         }
         let seq = this.api.get(url);
-
-        seq.subscribe((data: any) => {
-            console.log("after get Ratings",data);
-            return data;
-
-            // If the API returned a successful response, mark the user as logged in
-        }, err => {
-            console.error('ERROR', err);
-            this.api.handleError(err);
-        });
         return seq;
     }
 
@@ -32,15 +22,6 @@ export class RatingsService {
    */
   postRating(accountInfo: any) {
     let seq = this.api.post('/ratings', accountInfo);
-
-    seq.subscribe((res: any) => {
-        console.log("after post Ratings",res);
-        return res;
-    }, err => {
-      console.error('ERROR', err);
-      this.api.handleError(err);
-    });
-
     return seq;
   }
 }

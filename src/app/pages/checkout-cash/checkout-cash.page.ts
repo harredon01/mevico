@@ -3,6 +3,7 @@ import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NavController, ToastController, LoadingController, ModalController, AlertController, IonContent} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {ApiService} from '../../services/api/api.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {BillingService} from '../../services/billing/billing.service';
@@ -42,6 +43,7 @@ export class CheckoutCashPage implements OnInit {
         public billing: BillingService,
         public iab: InAppBrowser,
         public userData: UserDataService,
+        public api: ApiService,
         public modalCtrl: ModalController,
         public alertCtrl: AlertController,
         public formBuilder: FormBuilder,
@@ -171,6 +173,7 @@ export class CheckoutCashPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 

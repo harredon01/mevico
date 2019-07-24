@@ -3,7 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {NavController, ToastController, LoadingController} from '@ionic/angular';
-
+import {ApiService} from '../../services/api/api.service';
 import {UserService} from '../../services/user/user.service';
 @Component({
   selector: 'app-signup',
@@ -24,7 +24,8 @@ account: {
         language: string,
         city_id: number,
         region_id: number
-        country_id: number
+        country_id: number,
+        remember:boolean
     } = {
             firstName: '',
             lastName: '',
@@ -38,7 +39,8 @@ account: {
             language: 'es',
             city_id: 524,
             region_id: 11,
-            country_id: 1
+            country_id: 1,
+            remember:true
         };
 
     registrationForm: FormGroup;
@@ -55,6 +57,7 @@ account: {
   constructor(public navCtrl: NavController,
         public user: UserService,
         public toastCtrl: ToastController,
+        public api: ApiService,
         public loadingCtrl: LoadingController,
         public translateService: TranslateService,
         public formBuilder: FormBuilder, private spinnerDialog: SpinnerDialog) {
@@ -107,7 +110,11 @@ account: {
         console.log("Password match");
         this.showLoader();
         // Attempt to login in through our User service
-        this.user.signup(this.account).subscribe((resp) => {
+        this.user.signup(this.account).subscribe((resp:any) => {
+            if (resp.status == 'success') {
+                this.account.remember = true;
+                this.user._loggedIn(resp, this.account);
+            }
             this.dismissLoader();
             console.log("Post login", resp);
             this.user.postLogin().then((value) => {
@@ -136,7 +143,7 @@ account: {
                 position: 'top'
             }).then(toast => toast.present());
             this.dismissLoader();
-
+            this.api.handleError(err);
         });
     }
 

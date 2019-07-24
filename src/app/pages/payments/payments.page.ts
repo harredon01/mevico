@@ -6,6 +6,7 @@ import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {BillingService} from '../../services/billing/billing.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ParamsService} from '../../services/params/params.service';
+import {ApiService} from '../../services/api/api.service';
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.page.html',
@@ -24,6 +25,7 @@ export class PaymentsPage implements OnInit {
     constructor(public navCtrl: NavController,
         public billing: BillingService,
         public params: ParamsService,
+        public api: ApiService,
         public orderData: OrderDataService,
         public toastCtrl: ToastController,
         public modalCtrl: ModalController,
@@ -103,6 +105,7 @@ export class PaymentsPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 

@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
 import {Merchant} from '../../models/merchant';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-merchant-detail',
     templateUrl: './merchant-detail.page.html',
@@ -15,7 +16,7 @@ export class MerchantDetailPage implements OnInit {
     category: string = "";
     merchant: Merchant;
 
-    constructor(public navCtrl: NavController, public activatedRoute: ActivatedRoute, public merchantsServ: MerchantsService, public params: ParamsService) {
+    constructor(public navCtrl: NavController, public activatedRoute: ActivatedRoute,public api: ApiService, public merchantsServ: MerchantsService, public params: ParamsService) {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
         this.merchant = new Merchant({"availabilities":[]});
         this.getMerchant(merchantId);
@@ -30,6 +31,7 @@ export class MerchantDetailPage implements OnInit {
             this.merchant = new Merchant(container);
         }, (err) => {
             console.log("Error getMerchant");
+            this.api.handleError(err);
         });
     }
 

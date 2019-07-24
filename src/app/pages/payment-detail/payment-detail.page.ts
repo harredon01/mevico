@@ -10,6 +10,7 @@ import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {Payment} from '../../models/payment';
 import {Order} from '../../models/order';
+import {ApiService} from '../../services/api/api.service';
 import {Tab2Page as RetryPaymentPage} from '../tab2/tab2.page';
 @Component({
     selector: 'app-payment-detail',
@@ -34,6 +35,7 @@ export class PaymentDetailPage implements OnInit {
         public orderData: OrderDataService,
         public userData: UserDataService,
         public params: ParamsService,
+        public api: ApiService,
         public orderProvider: OrderService,
         private activatedRoute: ActivatedRoute,
         public toastCtrl: ToastController,
@@ -129,6 +131,7 @@ export class PaymentDetailPage implements OnInit {
                         duration: 3000,
                         position: 'top'
                     }).then(toast => toast.present());
+                    this.api.handleError(err);
                 });
             }
 
@@ -162,6 +165,7 @@ export class PaymentDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     addTransactionCosts(paymentId) {
@@ -188,6 +192,7 @@ export class PaymentDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     async retryPaymentModal() {
@@ -230,7 +235,7 @@ export class PaymentDetailPage implements OnInit {
                     position: 'top'
                 }).then(toast => toast.present());
             }
-        }, function (err) {
+        }, (err) => {
             this.dismissLoader();
             // Unable to log in
             var toast = this.toastCtrl.create({
@@ -238,6 +243,7 @@ export class PaymentDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     };
     /**
@@ -272,6 +278,7 @@ export class PaymentDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     };
     showLoader() {
@@ -319,6 +326,7 @@ export class PaymentDetailPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     showLoader2() {

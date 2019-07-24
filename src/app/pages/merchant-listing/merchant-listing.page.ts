@@ -8,6 +8,7 @@ import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {Merchant} from '../../models/merchant';
+import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-merchant-listing',
     templateUrl: './merchant-listing.page.html',
@@ -32,6 +33,7 @@ export class MerchantListingPage implements OnInit {
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
         public translateService: TranslateService,
+        public api: ApiService,
         private spinnerDialog: SpinnerDialog) {
         this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
     }
@@ -59,22 +61,20 @@ export class MerchantListingPage implements OnInit {
         }
     }
     getItems() {
-        this.showLoader();
         let query = "merchants";
         this.categories.getCategories(query).subscribe((data: any) => {
-            this.dismissLoader();
             console.log("after getCategories");
             this.categoryItems = data.categories;
             this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
             console.log(JSON.stringify(data));
         }, (err) => {
-            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.categoriesErrorGet,
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     /**
@@ -90,6 +90,7 @@ export class MerchantListingPage implements OnInit {
         this.page++;
         let query = "page=" + this.page + "&category_id="+this.category;
         this.merchantsServ.getMerchants(query).subscribe((data: any) => {
+            data.data = this.merchantsServ.prepareObjects(data.data);
             let results = data.data;
             if (data.page == data.last_page) {
                 this.loadMore = false;
@@ -109,6 +110,7 @@ export class MerchantListingPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 

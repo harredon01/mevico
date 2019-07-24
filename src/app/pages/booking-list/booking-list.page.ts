@@ -3,6 +3,7 @@ import {BookingService} from '../../services/booking/booking.service';
 import {NavController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Booking} from '../../models/booking';
+import {ApiService} from '../../services/api/api.service';
 import {ActivatedRoute} from '@angular/router';
 import {ParamsService} from '../../services/params/params.service';
 @Component({
@@ -16,6 +17,7 @@ export class BookingListPage implements OnInit {
     constructor(public booking: BookingService,
         public activatedRoute:ActivatedRoute,
         public params: ParamsService,
+        public api: ApiService,
         public navCtrl: NavController,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
@@ -33,6 +35,7 @@ export class BookingListPage implements OnInit {
         }, (err) => {
             console.log("Error getBookings");
             this.dismissLoader();
+            this.api.handleError(err);
         });
     }
     openBooking(booking:Booking){

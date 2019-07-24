@@ -4,10 +4,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NavController, ToastController, LoadingController, ModalController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {TranslateService} from '@ngx-translate/core';
+import {ApiService} from '../../services/api/api.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {BillingService} from '../../services/billing/billing.service';
-
 
 @Component({
     selector: 'app-checkout-banks',
@@ -56,6 +56,7 @@ export class CheckoutBanksPage implements OnInit {
         public billing: BillingService,
         public userData: UserDataService,
         public modalCtrl: ModalController,
+        public api: ApiService,
         public alertCtrl: AlertController,
         public toastCtrl: ToastController,
         public translateService: TranslateService,
@@ -179,6 +180,7 @@ export class CheckoutBanksPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
 
@@ -262,6 +264,7 @@ export class CheckoutBanksPage implements OnInit {
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
+            this.api.handleError(err);
         });
     }
     mockData() {
