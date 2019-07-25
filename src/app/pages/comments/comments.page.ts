@@ -14,6 +14,7 @@ export class CommentsPage implements OnInit {
     // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
+    items: any[] = [];
     comment: {comment: string, rating: any, object_id: number, type: string} = {
         comment: 'Dejanos tu comentario de la entrega',
         rating: '5',
@@ -58,8 +59,31 @@ export class CommentsPage implements OnInit {
             this.api.handleError(err);
         });
     }
+    
+    // Attempt to login in through our User service
+    getComments() {
+        let container = {
+            "object_id":this.comment.object_id,
+            "type":this.comment.type
+        };
+        let url = "object_id="+this.comment.object_id+"&type="+this.comment.type;
+        this.ratings.getRatings(url).subscribe((resp) => {
+            //this.navCtrl.push(MainPage);
+            
+        }, (err) => {
+            //this.navCtrl.push(MainPage);
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+                message: this.commentErrorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
+    }
 
     ngOnInit() {
+        this.getComments();
     }
 
 }
