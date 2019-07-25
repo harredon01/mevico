@@ -5,7 +5,6 @@ import {TranslateService} from '@ngx-translate/core';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ApiService} from '../../services/api/api.service';
 import {Item} from '../../models/item';
-import {CartService} from '../../services/cart/cart.service';
 @Component({
     selector: 'app-cart',
     templateUrl: './cart.page.html',
@@ -23,7 +22,6 @@ export class CartPage implements OnInit {
     public total: any;
 
     constructor(public navCtrl: NavController,
-        public cart: CartService,
         public events: Events,
         public api: ApiService,
         private spinnerDialog: SpinnerDialog,
@@ -43,6 +41,7 @@ export class CartPage implements OnInit {
             this.cartUpdate = value;
         })
         this.loadCart();
+
 
     }
 
@@ -131,7 +130,8 @@ export class CartPage implements OnInit {
             };
             console.log("Add cart item", container);
             if (container.item_id) {
-                this.cart.updateCartItem(container).subscribe((resp: any) => {
+                let seq = this.api.post('/cart/update', container);
+                seq.subscribe((resp: any) => {
                     console.log("updateCartItem", resp);
                     if (resp.status == "success") {
                         this.handleCartSuccess(resp, item);
@@ -152,7 +152,8 @@ export class CartPage implements OnInit {
                     this.api.handleError(err);
                 });
             } else {
-                this.cart.addCartItem(container).subscribe((resp: any) => {
+                let seq = this.api.post('/cart/add', container);
+                seq.subscribe((resp: any) => {
                     if (resp.status == "success") {
                         this.handleCartSuccess(resp, item);
                     } else {
@@ -176,7 +177,8 @@ export class CartPage implements OnInit {
     deleteItem(item) {
         this.showLoader();
         item.quantity = 0;
-        this.cart.updateCartItem(item).subscribe((resp: any) => {
+        let seq = this.api.post('/cart/update', item);
+        seq.subscribe((resp: any) => {
             if (resp.status == "success") {
                 this.orderData.cartData = resp.cart;
                 this.loadCart();
@@ -229,7 +231,8 @@ export class CartPage implements OnInit {
      */
     clearCart() {
         this.showLoader();
-        this.cart.clearCart().subscribe((resp) => {
+        let seq = this.api.post('/cart/clear', {});
+        seq.subscribe((resp) => {
             this.orderData.cartData = {};
             this.orderData.shippingAddress = null;
             this.orderData.cartData.items = [];
