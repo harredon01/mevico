@@ -163,11 +163,10 @@ export class BookingPage implements OnInit {
         this.startDate = selectedDate;
         this.endDate = selectedDate;
         this.dateSelected = true;
-        let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + " 00:00:00";
-        let endDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + " 23:59:59";
+        let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate();
         let params = {
             "from": strDate,
-            "to": endDate,
+            "query": "day",
             "type": this.typeObj,
             "object_id": this.objectId,
         };
