@@ -3,7 +3,7 @@
         <ion-title>{{ 'ADDRESS_CREATE.TITLE' | translate }}</ion-title>
         <ion-buttons class="my-addresses__button my-addresses__button--left" slot="secondary">
             <ion-button (click)="cancel()">
-                    <span color="primary" showWhen="ios">
+                <span color="primary" showWhen="ios">
                     {{ 'CANCEL_BUTTON' | translate }}
                 </span>
                 <ion-icon class="close-button" name="md-close" showWhen="android,windows"></ion-icon>
@@ -11,7 +11,7 @@
         </ion-buttons>
         <ion-buttons class="my-addresses__button my-addresses__button--right" slot="primary">
             <ion-button (click)="done()" [disabled]="!isReadyToSave" strong>
-                    <span class="done-button" color="primary"></span>
+                <span class="done-button" color="primary"></span>
                 <ion-icon name="md-checkmark" showWhen="core,android,windows"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -21,7 +21,7 @@
 
 <ion-content class="my-addresses">
     <div class="my-addresses__wrapper">
-        <form *ngIf="form" [formGroup]="form" (ngSubmit)="saveAddress()">
+        <form [formGroup]="form" (ngSubmit)="done()">
             <input type="hidden" formControlName="lat" />
             <input type="hidden" formControlName="long" />
             <input type="hidden" formControlName="address_id" />
@@ -69,9 +69,8 @@
                 <ion-item *ngIf="!form.controls.phone.valid  && (form.controls.phone.dirty || submitAttempt)">
                     <p>{{ 'ADDRESS_FIELDS.PHONE_ERROR' | translate }}</p>
                 </ion-item>
-
-                <ion-item  class="form__item button-wrapper">
-                    <button class="btn-secondary" type="submit" (click)="done()">{{ 'INPUTS.SUBMIT' | translate }}</button>
+                <ion-item>
+                    <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
                 </ion-item>
             </ion-list>
         </form>

@@ -6,6 +6,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
@@ -40,6 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         StatusBar,
         SplashScreen,
         SpinnerDialog,
+        Geolocation,
         OneSignal,
         SQLite,
         InAppBrowser,

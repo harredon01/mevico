@@ -1,11 +1,12 @@
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
-import {NavController, ModalController, NavParams, AlertController, Platform, LoadingController, Events} from '@ionic/angular';
+import {NavController, ModalController, AlertController, Platform, LoadingController, Events} from '@ionic/angular';
 import {MapService} from '../../services/map/map.service';
 import {MapDataService} from '../../services/map-data/map-data.service';
 import {ApiService} from '../../services/api/api.service';
 import {FoodService} from '../../services/food/food.service';
+import {ParamsService} from '../../services/params/params.service';
 import {LocationsService} from '../../services/locations/locations.service';
 import {AddressCreatePage} from '../address-create/address-create.page'
 @Component({
@@ -33,7 +34,7 @@ export class MapPage implements OnInit {
         public api: ApiService,
         public mapData: MapDataService,
         public translateService: TranslateService,
-        public navParams: NavParams,
+        public params: ParamsService,
         public loadingCtrl: LoadingController,
         private spinnerDialog: SpinnerDialog,
         public events: Events,
@@ -73,6 +74,9 @@ export class MapPage implements OnInit {
             this.dismissLoader();
             this.cdr.detectChanges();
         });
+        this.showLoader()
+        console.log("ionViewDidLoad map page");
+        this.mapData.map = this.map.createMap();
     }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
@@ -81,30 +85,12 @@ export class MapPage implements OnInit {
             this.spinnerDialog.hide();
         }
     }
-    ionViewDidLoad() {
-        this.showLoader()
-        console.log("ionViewDidLoad map page");
-        this.mapData.map = this.map.createMap();
-        document.getElementsByClassName("app-root")[0].setAttribute("style", "opacity:0.9");
-    }
-    ionViewWillLeave() {
+    ionViewDidLeave() {
         this.mapActive = false;
+        this.cdr.detach();
         console.log("Looks like I'm about to leave :(");
     }
     ionViewDidEnter() {
-        setTimeout(function () {document.getElementsByClassName("app-root")[0].setAttribute("style", "opacity:1");}, 1500);
-        setTimeout(function () {
-            document.getElementsByClassName("app-root")[0].setAttribute("style", "opacity:0.99");
-            document.getElementsByClassName("app-root")[0].setAttribute("style", "opacity:1");
-        }, 2000);
-        setTimeout(function () {
-            document.getElementsByClassName("app-root")[0].setAttribute("style", "opacity:0.99");
-            document.getElementsByClassName("app-root")[0].setAttribute("style", "opacity:1");
-        }, 2500);
-        setTimeout(function () {
-            document.getElementsByClassName("app-root")[0].setAttribute("style", "opacity:0.99");
-            document.getElementsByClassName("app-root")[0].setAttribute("style", "opacity:1");
-        }, 3000);
         if (this.mapLoaded) {
             this.buildMapStatus();
         } else if (!this.mapData.map) {

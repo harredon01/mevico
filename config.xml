@@ -3,7 +3,7 @@
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -99,7 +99,6 @@
         <variable name="OKHTTP_VERSION" value="3.12.+" />
         <variable name="EVENTBUS_VERSION" value="3.0.0" />
     </plugin>
-    <engine name="android" spec="7.1.4" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.2" />
     <plugin name="cordova-plugin-googlemaps" spec="^2.6.2">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyDDwPkLjnHj9rZ7M1hk9Z7HMi-ENu47sm4" />
@@ -108,4 +107,5 @@
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
     </plugin>
     <plugin name="cordova-plugin-opentok" spec="^3.4.3" />
+    <engine name="android" spec="7.1.4" />
 </widget>
