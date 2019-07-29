@@ -65,7 +65,16 @@ const routes: Routes = [
                                     },
                                     {
                                         path: 'bookings',
-                                        loadChildren: '../booking/booking.module#BookingPageModule',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: '../booking/booking.module#BookingPageModule',
+                                            },
+                                            {
+                                                path: ':bookingId',
+                                                loadChildren: '../booking-detail/booking-detail.module#BookingDetailPageModule',
+                                            }
+                                        ]
                                     },
                                     {
                                         path: 'ratings',
@@ -163,7 +172,20 @@ const routes: Routes = [
                     {
                         path: 'password',
                         loadChildren: '../password/password.module#PasswordPageModule'
-                    }
+                    },
+                    {
+                        path: 'bookings',
+                        children: [
+                            {
+                                path: '',
+                                loadChildren: '../booking/booking.module#BookingPageModule',
+                            },
+                            {
+                                path: ':bookingId',
+                                loadChildren: '../booking-detail/booking-detail.module#BookingDetailPageModule',
+                            }
+                        ]
+                    },
                 ]
             },
             {

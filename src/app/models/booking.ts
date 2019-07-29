@@ -8,12 +8,16 @@
  * that something that fits your app as well.
  */
 export class Booking {
-    name: string;
-    image: string;
-    description: string;
-    recipe_type: string;
-    facts: string;
-    date: string;
+    id: any;
+    starts_at: any;
+    ends_at: any;
+    price: any;
+    quantity: any;
+    total_paid: any;
+    options: any;
+    notes: any;
+    customer:any;
+    bookable:any;
     constructor(fields: any) {
         // Quick and dirty extend/assign fields to this model
         for (const f in fields) {

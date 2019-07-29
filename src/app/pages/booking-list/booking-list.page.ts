@@ -17,6 +17,7 @@ export class BookingListPage implements OnInit {
     private typeObj:any;
     private page:any = 0;
     private query: string = "";
+    private queryMod: string = "";
     private target: string = "";
     private queries:any[] = [];
     constructor(public booking: BookingService,
@@ -33,18 +34,18 @@ export class BookingListPage implements OnInit {
         this.objectId = this.activatedRoute.snapshot.paramMap.get('object_id');
         this.query = this.target+"_upcoming";
         this.queries = ["unpaid","upcoming","unapproved","past"];
+        this.queryMod="upcoming";
     }
 
     ngOnInit() {
         this.getBookings();
     }
     
-    selectQuery(query) {
+    selectQuery() {
         this.page = 0;
         this.bookings = [];
-        this.query = this.target+"_"+query;
+        this.query = this.target + "_" + this.queryMod;
         this.getBookings();
-        
     }
 
     getBookings() {
@@ -60,6 +61,8 @@ export class BookingListPage implements OnInit {
         this.booking.getBookingsObject( container).subscribe((data: any) => {
             let results = data.data;
             for(let item in results){
+                results[item].starts_at = new Date(results[item].starts_at);
+                results[item].ends_at = new Date(results[item].ends_at);
                 let newBooking = new Booking(results[item]);
                 this.bookings.push(newBooking);
             }
@@ -79,7 +82,7 @@ export class BookingListPage implements OnInit {
             let category = this.activatedRoute.snapshot.paramMap.get('category_id');
             this.navCtrl.navigateForward('tabs/categories/'+category+'/merchants/'+this.objectId+'/bookings/'+booking.id );
         } else {
-            this.navCtrl.navigateForward('tabs/bookings/'+booking.id );
+            this.navCtrl.navigateForward('tabs/settings/bookings/'+booking.id );
         }
         
     }

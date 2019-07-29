@@ -1,33 +1,34 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>
-            My Appointment
+            My Appointments
         </ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content class="bg-light">
-    <p class="heading">Upcoming Appointments</p>
+    <ion-list>
+        <ion-list-header>{{queryMod}}</ion-list-header>
+
+        <ion-item>
+            <ion-label>Filter</ion-label>
+            <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">
+                <ion-select-option *ngFor="let item of queries" value="item">{{item}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
     <ion-list class="doctor-list">
-        <ion-row class="bg-white" (click)="appointmentdetail()">
+        <ion-row class="bg-white" (click)="openBooking(booking)" *ngFor="let booking of bookings">
             <ion-col text-center class="date">
-                <small>WED</small>
-                <strong class="text-danger">12</strong>
-                <small>12:00</small>
+                <small>{{booking.starts_at | date :'EE'}}</small>
+                <strong class="text-danger">{{booking.starts_at | date :'d'}}</strong>
+                <small>{{booking.starts_at | date :'h:mm A'}}</small>
             </ion-col>
             <ion-col>
                 <ion-card>
                     <ion-item>
-                        <ion-avatar item-start>
-                            <img src="assets/imgs/profile1.png">
-                        </ion-avatar>
-                        <h2>Dr. Josephan Williamson</h2>
-                        <p>Cardiac Surgeon</p>
-                        <ion-icon name="md-more"></ion-icon>
+                        <h2>{{booking.customer.firstName}} {{booking.customer.lastName}}</h2>
                     </ion-item>
-                    <ion-card-content>
-                        At apple hospital, Walter street, Wallington
-                    </ion-card-content>
                 </ion-card>
             </ion-col>
         </ion-row>
