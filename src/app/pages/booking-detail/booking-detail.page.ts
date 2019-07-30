@@ -40,10 +40,10 @@ export class BookingDetailPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    approveBooking() {
+    changeStatusBooking() {
         this.showLoader();
-        let container = {"object_id": this.mainBooking.id};
-        this.booking.approveBookingObject(container).subscribe((data: any) => {
+        let container = {"object_id": this.mainBooking.id,"status":"approve"};
+        this.booking.changeStatusBookingObject(container).subscribe((data: any) => {
             let result = data.booking;
             result.starts_at = new Date(result.starts_at);
             result.ends_at = new Date(result.ends_at);
