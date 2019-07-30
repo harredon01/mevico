@@ -45,6 +45,17 @@ export class MerchantDetailPage implements OnInit {
         
         this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/ratings");
     }
+    myBookings() {
+        let params = {
+            "type": "Merchant",
+            "objectId": this.merchant.id,
+            "target":"bookable"
+        };
+        this.params.setParams(params);
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/bookings");
+    }
     showProducts() {
         let params = {
             "type": "Merchant",

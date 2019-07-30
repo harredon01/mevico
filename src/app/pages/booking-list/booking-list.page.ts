@@ -31,7 +31,7 @@ export class BookingListPage implements OnInit {
         let paramsObj:any = this.params.getParams();
         this.typeObj = paramsObj.type;
         this.target = paramsObj.target;
-        this.objectId = this.activatedRoute.snapshot.paramMap.get('object_id');
+        this.objectId = paramsObj.objectId;
         this.query = this.target+"_upcoming";
         this.queries = ["unpaid","upcoming","unapproved","past"];
         this.queryMod="upcoming";

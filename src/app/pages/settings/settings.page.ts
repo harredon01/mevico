@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController} from '@ionic/angular';
-
+import {ParamsService} from '../../services/params/params.service';
 import {UserService} from '../../services/user/user.service';
 
 @Component({
@@ -13,11 +13,16 @@ export class SettingsPage implements OnInit {
 
   constructor(public navCtrl: NavController,
         public user: UserService,
+        public params: ParamsService,
         public translate: TranslateService) {
     }
 ngOnInit() {
   }
     openItem(item: any) {
+        if(item=="/tabs/settings/bookings"){
+            let params ={"type":"Merchant","objectId":-1,"targer":"customer"};
+            this.params.setParams(params);
+        }
         this.navCtrl.navigateForward(item);
     }
     logout() {

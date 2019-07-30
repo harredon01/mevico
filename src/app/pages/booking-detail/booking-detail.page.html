@@ -8,14 +8,6 @@
 
 <ion-content class="bg-light">
     <ion-card>
-        <ion-item>
-            <ion-avatar item-start>
-                <img src="assets/imgs/profile1.png">
-            </ion-avatar>
-            <h2>Dr. Josephan Williamson</h2>
-            <p>Cardiac Surgeon</p>
-            <span class="text-danger">Cancel</span>
-        </ion-item>
         <ion-card-content>
             <ion-row class="appot-detail">
                 <ion-col class="icon">
@@ -23,8 +15,7 @@
                 </ion-col>
                 <ion-col class="detail">
                     <small>Appointment date & time</small>
-                    <strong>12 March,12:00 noon</strong>
-                    <span>in 3 days</span>
+                    <strong>{{ booking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
                 </ion-col>
                 <ion-col class="option text-success">Reschedule</ion-col>
             </ion-row>
@@ -48,8 +39,7 @@
                 </ion-col>
                 <ion-col class="detail">
                     <small>Appointment booked for</small>
-                    <strong>Email Johnson</strong>
-                    <span>908765435</span>
+                    <strong>{{booking.customer.firstName}} {{booking.customer.lastName}}</strong>
                 </ion-col>
             </ion-row>
             <ion-row class="appot-detail">
@@ -58,7 +48,7 @@
                 </ion-col>
                 <ion-col class="detail">
                     <small>Appointment number</small>
-                    <strong>66554492</strong>
+                    <strong>{{booking.id}}</strong>
                     <span>Just forreference purpose</span>
                 </ion-col>
             </ion-row>
