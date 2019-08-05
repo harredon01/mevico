@@ -16,8 +16,13 @@ export class BookingService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
-    approveBookingObject(data: any) {
-        let endpoint = '/bookings/approve';
+    changeStatusBookingObject(data: any) {
+        let endpoint = '/bookings/status';
+        let seq = this.api.post(endpoint, data);
+        return seq;
+    }
+    recheduleBookingObject(data: any) {
+        let endpoint = '/bookings/schedule';
         let seq = this.api.post(endpoint, data);
         return seq;
     }
