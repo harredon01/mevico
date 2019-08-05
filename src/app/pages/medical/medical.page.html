@@ -11,7 +11,7 @@
             <p>{{ 'MEDICAL.SHEET1_DESC' | translate }}</p>
             <ion-item >
                 <ion-label>{{ 'INPUTS.PASSWORD' | translate }}</ion-label>
-                <ion-input [(ngModel)]="data.password" type="password"></ion-checkbox>
+                <ion-input [(ngModel)]="data.password" type="password"></ion-input>
             </ion-item>
             <ion-item>
                 <ion-button expand="full" (click)="verify()">{{ 'INPUTS.CHECK' | translate}}</ion-button>
@@ -92,8 +92,8 @@
                     <ion-list>
                         <ion-item >
                             <ion-label>{{ 'MEDICAL.GENDER' | translate }}</ion-label>
-                            <ion-select [(ngModel)]="data.gender">
-                                <ion-select-option *ngFor="x in genders" value="{{x.value}}">{{x.name}}</ion-select-option>
+                            <ion-select [(ngModel)]="data.gender" >
+                                <ion-select-option *ngFor="let x of genders" value="{{x.value}}">{{x.name}}</ion-select-option>
                             </ion-select>
                         </ion-item>
                         <ion-item >
@@ -106,21 +106,6 @@
                                    placeholder="yy" name="birthYear" required>
                         </ion-item>
                     </ion-list>
-                    <p style="color:red" *ngIf="(myForm.expMonth.$dirty && myForm.expMonth.$invalid) || submitted && myForm.expMonth.$invalid">
-                       <span *ngIf="submitted && myForm.expMonth.$error.required">{{ 'SOURCES_PAYU.EXP_MONTH_ERROR'| translate }}<br/></span>
-                        <span *ngIf="submitted && myForm.expMonth.$error.minlength">{{ 'SOURCES_PAYU.EXP_MONTH_LENGTH_ERROR'| translate }}<br/></span>
-                        <span *ngIf="submitted && myForm.expMonth.$error.pattern">{{ 'SOURCES_PAYU.DIGIT_ERROR' | translate }}
-                            <br/></span>
-                        <span *ngIf="submitted && myForm.expMonth.$error.maxlength">{{ 'SOURCES_PAYU.EXP_MONTH_LENGTH_ERROR'| translate }}<br/></span>
-                        <span *ngIf="submitted && myForm.expMonth.$error.invalid">{{ 'SOURCES_PAYU.EXPDATE_INVALID' | translate }}<br/></span>
-                    </p>
-                    <p style="color:red" *ngIf="(myForm.expYear.$dirty && myForm.expYear.$invalid) || submitted && myForm.expYear.$invalid">
-                       <span *ngIf="submitted && myForm.expYear.$error.required">{{ 'SOURCES_PAYU.EXP_YEAR_ERROR'| translate }}<br/></span>
-                        <span *ngIf="submitted && myForm.expYear.$error.pattern">{{ 'SOURCES_PAYU.DIGIT_ERROR' | translate }}
-                            <br/></span>
-                        <span *ngIf="submitted && myForm.expYear.$error.minlength">{{ 'SOURCES_PAYU.EXP_MONTH_LENGTH_ERROR' | translate }}<br/></span>
-                        <span *ngIf="submitted && myForm.expYear.$error.maxlength">{{ 'SOURCES_PAYU.EXP_MONTH_LENGTH_ERROR'| translate }}<br/></span>
-                    </p>
                     <ion-item>
                         <ion-label>{{ 'MEDICAL.WEIGHT' | translate }}</ion-label>
                         <ion-input type="text" [(ngModel)]="data.weight"></ion-input>
@@ -128,13 +113,13 @@
                     <ion-item >
                         <ion-label>{{ 'MEDICAL.BLOOD' | translate }}</ion-label>
                         <ion-select [(ngModel)]="data.blood_type">
-                            <ion-select-option *ngFor="blood in bloods" value="{{blood.value}}">{{blood.name}}</ion-select-option>
+                            <ion-select-option *ngFor="let blood of bloods" value="{{blood.value}}">{{blood.name}}</ion-select-option>
                         </ion-select>
                     </ion-item>
                     <ion-item >
                         <ion-label>{{ 'MEDICAL.ANTIGEN' | translate }}</ion-label>
                         <ion-select [(ngModel)]="data.antigen">
-                            <ion-select-option *ngFor="antigen in antigens" value="{{antigen.value}}">{{antigen.name}}</ion-select-option>
+                            <ion-select-option *ngFor="let antigen of antigens" value="{{antigen.value}}">{{antigen.name}}</ion-select-option>
                         </ion-select>
                     </ion-item>
                     <ion-item>

@@ -13,7 +13,7 @@
         <ion-item>
             <ion-label>Filter</ion-label>
             <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">
-                <ion-select-option *ngFor="let item of queries" value="item">{{item}}</ion-select-option>
+                <ion-select-option *ngFor="let item of queries" value="{{item}}">{{item}}</ion-select-option>
             </ion-select>
         </ion-item>
     </ion-list>
@@ -26,12 +26,14 @@
             </ion-col>
             <ion-col>
                 <ion-card>
-                    <ion-item>
+                    <ion-item *ngIf="target=='bookable'">
                         <h2>{{booking.customer.firstName}} {{booking.customer.lastName}}</h2>
+                    </ion-item>
+                    <ion-item *ngIf="target=='customer'">
+                        <h2>{{booking.bookable.name}}</h2>
                     </ion-item>
                 </ion-card>
             </ion-col>
         </ion-row>
     </ion-list>
-    <p class="heading">Past Appointments</p>
 </ion-content>

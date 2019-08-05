@@ -8,24 +8,24 @@ import {AuthService} from '../../services/auth/auth.service';
     templateUrl: './medical.page.html',
     styleUrls: ['./medical.page.scss'],
 })
-export class MedicalPage implements OnInit {
+export class MedicalPage implements OnInit { 
     @ViewChild(IonContent) content: IonContent;
-    data: any = {};
-    showForm = false;
-    medicalSuccess:string = "";
-    medicalError:string = "";
-    showProfile = false;
-    genders = [
+    private data: any = {};
+    private showForm = false;
+    private medicalSuccess:string = "";
+    private medicalError:string = "";
+    private showProfile = false;
+    private genders:any[] = [
         {name: "M", value: "m"},
         {name: "F", value: "f"}
     ];
-    bloods = [
+    private bloods:any[] = [
         {name: "A", value: "a"},
         {name: "O", value: "o"},
         {name: "B", value: "b"},
         {name: "AB", value: "ab"}
     ];
-    antigens = [
+    private antigens:any[] = [
         {name: "+", value: "+"},
         {name: "-", value: "-"}
     ];

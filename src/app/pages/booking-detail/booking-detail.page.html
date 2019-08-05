@@ -15,7 +15,7 @@
                 </ion-col>
                 <ion-col class="detail">
                     <small>Appointment date & time</small>
-                    <strong>{{ booking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
+                    <strong>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
                 </ion-col>
                 <ion-col class="option text-success">Reschedule</ion-col>
             </ion-row>
@@ -37,9 +37,13 @@
                 <ion-col class="icon">
                     <ion-icon name="md-clipboard" class="text-danger"></ion-icon>
                 </ion-col>
-                <ion-col class="detail">
+                <ion-col class="detail" *ngIf="mainBooking.customer">
+                    <small>Appointment booked By</small>
+                    <strong>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</strong>
+                </ion-col>
+                <ion-col class="detail" *ngIf="mainBooking.bookable">
                     <small>Appointment booked for</small>
-                    <strong>{{booking.customer.firstName}} {{booking.customer.lastName}}</strong>
+                    <strong>{{mainBooking.bookable.name}}</strong>
                 </ion-col>
             </ion-row>
             <ion-row class="appot-detail">
@@ -48,7 +52,7 @@
                 </ion-col>
                 <ion-col class="detail">
                     <small>Appointment number</small>
-                    <strong>{{booking.id}}</strong>
+                    <strong>{{mainBooking.id}}</strong>
                     <span>Just forreference purpose</span>
                 </ion-col>
             </ion-row>

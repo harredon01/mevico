@@ -68,7 +68,7 @@ const routes: Routes = [
                                         children: [
                                             {
                                                 path: '',
-                                                loadChildren: '../booking/booking.module#BookingPageModule',
+                                                loadChildren: '../booking-list/booking-list.module#BookingListPageModule',
                                             },
                                             {
                                                 path: ':bookingId',
@@ -178,7 +178,7 @@ const routes: Routes = [
                         children: [
                             {
                                 path: '',
-                                loadChildren: '../booking/booking.module#BookingPageModule',
+                                loadChildren: '../booking-list/booking-list.module#BookingListPageModule',
                             },
                             {
                                 path: ':bookingId',
