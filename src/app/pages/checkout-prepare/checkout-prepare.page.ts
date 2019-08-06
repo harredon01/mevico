@@ -153,12 +153,14 @@ export class CheckoutPreparePage implements OnInit {
         this.conditions = [];
         this.payers = [];
         let paramsSent = this.params.getParams();
-        let isMeal = paramsSent.is_meal;
-        console.log("Is meal", isMeal);
-        if (isMeal == 0) {
-            this.showSplit = true;
-
+        if(paramsSent.is_meal){
+            let isMeal = paramsSent.is_meal;
+            console.log("Is meal", isMeal);
+            if (isMeal == 0) {
+                this.showSplit = true;
+            }
         }
+        
         if (this.orderData.currentOrder) {
             this.orderData.loadSavedPayers(this.orderData.currentOrder.id).then((value) => {
                 if (this.orderData.payers.length > 0) {
@@ -255,7 +257,7 @@ export class CheckoutPreparePage implements OnInit {
         let container = {
             quick: true,
             payment_id: this.orderData.payment.id,
-            platform: "Food"
+            platform: "Booking"
         };
         console.log("before payCreditCard token", container);
         this.billing.payCreditCard(container).subscribe((data: any) => {
@@ -275,7 +277,7 @@ export class CheckoutPreparePage implements OnInit {
     openSupport() {
         this.params.setParams({
             type: "platform",
-            objectId: "food"
+            objectId: "booking"
         })
         this.navCtrl.navigateForward('tabs/settings/addresses/');
     }
@@ -296,7 +298,7 @@ export class CheckoutPreparePage implements OnInit {
             "order_id": this.orderData.currentOrder.id,
             "payers": payers,
             "split_order": this.split,
-            "platform": "Food",
+            "platform": "Booking",
             "recurring": this.recurring,
             "recurring_type": recurring_type,
             "recurring_value": recurring_value,
@@ -368,7 +370,7 @@ export class CheckoutPreparePage implements OnInit {
             "payers": payers,
             "delivery_date": this.delivery,
             "split_order": this.split,
-            "platform": "Food",
+            "platform": "Booking",
             "recurring": this.recurring,
             "recurring_type": recurring_type,
             "recurring_value": recurring_value,
@@ -587,7 +589,7 @@ export class CheckoutPreparePage implements OnInit {
         for (let item in payersContainer) {
             payers.push(payersContainer[item].user_id);
         }
-        let data = {"payers": payers, "platform": "Food"};
+        let data = {"payers": payers, "platform": "Booking"};
         this.orderProvider.checkOrder(this.orderData.currentOrder.id, data).subscribe((resp: any) => {
             if (resp) {
                 console.log("setDiscounts", resp);

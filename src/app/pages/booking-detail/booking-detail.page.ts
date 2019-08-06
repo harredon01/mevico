@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {BookingService} from '../../services/booking/booking.service';
-import {NavController, LoadingController} from '@ionic/angular';
+import {NavController, LoadingController, ModalController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Booking} from '../../models/booking';
 import {ApiService} from '../../services/api/api.service';
+import {CartService} from '../../services/cart/cart.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
+import {CartPage} from '../cart/cart.page';
 import {ActivatedRoute} from '@angular/router';
 import {ParamsService} from '../../services/params/params.service';
 @Component({
@@ -15,8 +18,11 @@ export class BookingDetailPage implements OnInit {
     private mainBooking: Booking;
     constructor(public booking: BookingService,
         public activatedRoute: ActivatedRoute,
+        public orderData: OrderDataService,
         public params: ParamsService,
+        public cart: CartService,
         public navCtrl: NavController,
+        public modalCtrl: ModalController,
         public api: ApiService,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
@@ -42,7 +48,7 @@ export class BookingDetailPage implements OnInit {
     }
     changeStatusBooking() {
         this.showLoader();
-        let container = {"object_id": this.mainBooking.id,"status":"approve"};
+        let container = {"object_id": this.mainBooking.id, "status": "approve"};
         this.booking.changeStatusBookingObject(container).subscribe((data: any) => {
             let result = data.booking;
             result.starts_at = new Date(result.starts_at);
@@ -60,6 +66,36 @@ export class BookingDetailPage implements OnInit {
             this.loadingCtrl.dismiss();
         } else {
             this.spinnerDialog.hide();
+        }
+    }
+    payBooking() {
+        let item = {
+            "name": "Booking appointment for: " + this.mainBooking.bookable.name,
+            "price": this.mainBooking.price,
+            "quantity": this.mainBooking.quantity,
+            "tax": 0,
+            "cost": 0
+        };
+        this.cart.addCustomCartItem(item).subscribe((data: any) => {
+            this.orderData.cartData = data.cart;
+        }, (err) => {
+            console.log("Error addCustomCartItem");
+            this.api.handleError(err);
+        });
+    }
+    
+    async openCart() {
+        let container = {cart: this.orderData.cartData};
+        console.log("Opening Cart", container);
+        let addModal = await this.modalCtrl.create({
+            component: CartPage,
+            componentProps: container
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        if (data == "Checkout") {
+            this.params.setParams({"merchant_id": 1});
+            this.navCtrl.navigateForward('tabs/checkout/prepare');
         }
     }
 

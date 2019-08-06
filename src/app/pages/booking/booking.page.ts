@@ -3,7 +3,9 @@ import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, LoadingController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';
+import {CartService} from '../../services/cart/cart.service';
 import {ApiService} from '../../services/api/api.service';
+import {Merchant} from '../../models/merchant';
 import {BookingService} from '../../services/booking/booking.service';
 @Component({
     selector: 'app-booking',
@@ -19,6 +21,7 @@ export class BookingPage implements OnInit {
     availabilitiesDate: any[] = [];
     weekday: any[] = [];
     typeObj: string;
+    merchant: Merchant;
     notAvailable: string;
     success: string;
     objectId: string;
@@ -34,6 +37,7 @@ export class BookingPage implements OnInit {
         public loadingCtrl: LoadingController,
         public navCtrl: NavController,
         public api: ApiService,
+        public cart: CartService,
         public alertsCtrl: AlertController,
         public translateService: TranslateService,
         private spinnerDialog: SpinnerDialog) {
@@ -46,6 +50,7 @@ export class BookingPage implements OnInit {
         this.weekday[5] = "friday";
         this.weekday[6] = "saturday";
         let paramsArrived = this.params.getParams();
+        this.merchant = paramsArrived.merchant;
         this.availabilities = paramsArrived.availabilities;
         console.log("Availabilities", this.availabilities);
         this.typeObj = paramsArrived.type;
@@ -71,7 +76,7 @@ export class BookingPage implements OnInit {
         this.submitted = true;
         this.showLoader();
         let strDate = this.startDate.getFullYear() + "-" + (this.startDate.getMonth() + 1) + "-" + this.startDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
-        let ndDate = this.startDate.getFullYear() + "-" + (this.startDate.getMonth() + 1) + "-" + this.startDate.getDate() + " " + (this.startDate.getHours()+ + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
+        let ndDate = this.startDate.getFullYear() + "-" + (this.startDate.getMonth() + 1) + "-" + this.startDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
         let data = {
             "type": this.typeObj,
             "object_id": this.objectId,
@@ -82,8 +87,24 @@ export class BookingPage implements OnInit {
         console.log("data", data);
         this.booking.addBookingObject(data).subscribe((data: any) => {
             this.dismissLoader();
+
             this.submitted = false;
             this.presentAlertConfirm(data);
+            if (data.status == "success") {
+                let booking = data.booking;
+                let item = {
+                    "name": "Booking appointment for: " + this.merchant.name,
+                    "price": booking.price,
+                    "quantity": booking.quantity,
+                    "tax": 0,
+                    "cost": 0
+                };
+                this.cart.addCustomCartItem(item).subscribe((data: any) => {
+                }, (err) => {
+                    console.log("Error addCustomCartItem");
+                    this.api.handleError(err);
+                });
+            }
         }, (err) => {
             console.log("Error addBookingObject");
             this.dismissLoader();

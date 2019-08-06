@@ -28,6 +28,14 @@ export class CartService {
         return seq;
     }
     /**
+      * Send a POST request to our signup endpoint with the data
+      * the user entered on the form.
+      */
+    addCustomCartItem(item: any) {
+        let seq = this.api.post('/cart/add/custom', item);
+        return seq;
+    }
+    /**
      * Send a POST request to our signup endpoint with the data
      * the user entered on the form.
      */
