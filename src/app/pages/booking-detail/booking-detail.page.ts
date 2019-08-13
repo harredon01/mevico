@@ -46,9 +46,9 @@ export class BookingDetailPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    changeStatusBooking() {
+    changeStatusBooking(status) {
         this.showLoader();
-        let container = {"object_id": this.mainBooking.id, "status": "approve"};
+        let container = {"object_id": this.mainBooking.id, "status": status};
         this.booking.changeStatusBookingObject(container).subscribe((data: any) => {
             let result = data.booking;
             result.starts_at = new Date(result.starts_at);
@@ -69,15 +69,21 @@ export class BookingDetailPage implements OnInit {
         }
     }
     payBooking() {
+        let extras = {
+            "type":"Booking",
+            "id":this.mainBooking.id,
+        }
         let item = {
             "name": "Booking appointment for: " + this.mainBooking.bookable.name,
             "price": this.mainBooking.price,
             "quantity": this.mainBooking.quantity,
             "tax": 0,
-            "cost": 0
+            "cost": 0,
+            "extras":extras
         };
         this.cart.addCustomCartItem(item).subscribe((data: any) => {
             this.orderData.cartData = data.cart;
+            this.openCart();
         }, (err) => {
             console.log("Error addCustomCartItem");
             this.api.handleError(err);

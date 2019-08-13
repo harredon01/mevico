@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, LoadingController, AlertController} from '@ionic/angular';
+import {NavController, ToastController, LoadingController, AlertController,ModalController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';
 import {CartService} from '../../services/cart/cart.service';
 import {ApiService} from '../../services/api/api.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
 import {Merchant} from '../../models/merchant';
 import {BookingService} from '../../services/booking/booking.service';
 @Component({
@@ -37,6 +38,8 @@ export class BookingPage implements OnInit {
         public loadingCtrl: LoadingController,
         public navCtrl: NavController,
         public api: ApiService,
+        public orderData: OrderDataService,
+        public modalCtrl: ModalController,
         public cart: CartService,
         public alertsCtrl: AlertController,
         public translateService: TranslateService,
@@ -92,14 +95,21 @@ export class BookingPage implements OnInit {
             this.presentAlertConfirm(data);
             if (data.status == "success") {
                 let booking = data.booking;
+                let extras = {
+                    "type":"Booking",
+                    "id":booking.id,
+                }
                 let item = {
-                    "name": "Booking appointment for: " + this.merchant.name,
+                    "name": "Booking appointment for: " + booking.bookable.name,
                     "price": booking.price,
                     "quantity": booking.quantity,
                     "tax": 0,
-                    "cost": 0
+                    "cost": 0,
+                    "extras":extras
                 };
                 this.cart.addCustomCartItem(item).subscribe((data: any) => {
+                    this.orderData.cartData = data.cart;
+                    this.openCart();
                 }, (err) => {
                     console.log("Error addCustomCartItem");
                     this.api.handleError(err);
@@ -110,6 +120,21 @@ export class BookingPage implements OnInit {
             this.dismissLoader();
             this.api.handleError(err);
         });
+    }
+    
+    async openCart() {
+        let container = {cart: this.orderData.cartData};
+        console.log("Opening Cart", container);
+        let addModal = await this.modalCtrl.create({
+            component: CartPage,
+            componentProps: container
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        if (data == "Checkout") {
+            this.params.setParams({"merchant_id": 1});
+            this.navCtrl.navigateForward('tabs/checkout/prepare');
+        }
     }
 
     async presentAlertConfirm(resp: any) {

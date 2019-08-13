@@ -58,5 +58,6 @@
             </ion-row>
         </ion-card-content>
     </ion-card>
-    <div class="fix-btn"><ion-button full class="btn success">Get Direction</ion-button></div>
+    <div ><ion-button *ngIf="mainBooking.customer && mainBooking.total_paid==0" full class="btn success" (click)="changeStatusBooking('approved')">Approve</ion-button></div>
+    <div ><ion-button *ngIf="mainBooking.bookable && mainBooking.total_paid==-1" full class="btn success"  (click)="payBooking()">Pay</ion-button></div>
 </ion-content>

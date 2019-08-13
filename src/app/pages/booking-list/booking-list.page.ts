@@ -50,12 +50,14 @@ export class BookingListPage implements OnInit {
 
     getBookings() {
         this.showLoader();
-        this.page++;
+        this.page++; 
+        let selectedDate = new Date();
+        let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate();
         let container = {
             "query": this.query,
             "type": this.typeObj,
             "object_id":this.objectId,
-            "from":new Date(),
+            "from":strDate,
             "page":this.page
         };
         this.booking.getBookingsObject( container).subscribe((data: any) => {
@@ -77,10 +79,9 @@ export class BookingListPage implements OnInit {
     openBooking(booking:Booking){
         let param = {"booking":booking};
         this.params.setParams(param);
-        
         if(this.target == "bookable"){
-            let category = this.activatedRoute.snapshot.paramMap.get('category_id');
-            this.navCtrl.navigateForward('tabs/categories/'+category+'/merchants/'+this.objectId+'/bookings/'+booking.id );
+            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+            this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.objectId+'/bookings/'+booking.id );
         } else {
             this.navCtrl.navigateForward('tabs/settings/bookings/'+booking.id );
         }
