@@ -32,6 +32,10 @@ const routes: Routes = [
   { path: 'medical', loadChildren: './pages/medical/medical.module#MedicalPageModule' },
   { path: 'codes', loadChildren: './pages/codes/codes.module#CodesPageModule' },
   { path: 'video', loadChildren: './pages/video/video.module#VideoPageModule' },
+  { path: 'contacts', loadChildren: './pages/contacts/contacts.module#ContactsPageModule' },
+  { path: 'contact-detail', loadChildren: './pages/contact-detail/contact-detail.module#ContactDetailPageModule' },
+  { path: 'groups', loadChildren: './pages/groups/groups.module#GroupsPageModule' },
+  { path: 'group-detail', loadChildren: './pages/group-detail/group-detail.module#GroupDetailPageModule' },
 ];
 
 @NgModule({
