@@ -5,18 +5,18 @@
                 <ion-select-option value="{{category.id}}" *ngFor="let category of categoryItems">{{category.name}}</ion-select-option>
             </ion-select>
             <span class="location"><small margin-right>Location</small>
-            <ion-select [(ngModel)]="location" interface="popover" class="location">
-                <ion-select-option value="b1">Wallington</ion-select-option>
-                <ion-select-option value="b2">Nerobi</ion-select-option>
-                <ion-select-option value="b3">Central Park</ion-select-option>
-              </ion-select>
+                <ion-select [(ngModel)]="location" interface="popover" class="location">
+                    <ion-select-option value="b1">Wallington</ion-select-option>
+                    <ion-select-option value="b2">Nerobi</ion-select-option>
+                    <ion-select-option value="b3">Central Park</ion-select-option>
+                </ion-select>
             </span>
         </ion-title>
     </ion-toolbar>
     <div class="filter" padding>
         <ion-row>
             <ion-col size="4" class="text-danger" text-left (click)="filter()">
-                <ion-icon name="md-funnel"></ion-icon>Filter</ion-col>
+                     <ion-icon name="md-funnel"></ion-icon>Filter</ion-col>
             <ion-col size="4" text-center>234 result found</ion-col>
             <ion-col size="4" class="text-danger" text-right (click)="map()">View in map</ion-col>
         </ion-row>
@@ -24,71 +24,41 @@
 </ion-header>
 
 <ion-content class="bg-light">
-    <ion-card *ngFor="let item of merchants">
-        <ion-item>
-            <ion-avatar item-start>
-                <img [src]="item.icon">
-            </ion-avatar>
-            <h2>{{item.name}}</h2>
-            <p>{{item.type}}</p>
-            <ion-button clear class="btn success" (click)="openItem(item)">View</ion-button>
-        </ion-item>
-        <ion-card-content [innerHtml]="item.description" >
-        </ion-card-content>
+    <ion-list>
+        <ion-card *ngFor="let item of merchants">
+            <ion-item>
+                <ion-avatar item-start>
+                    <img [src]="item.icon">
+                </ion-avatar>
+                <h2>{{item.name}}</h2>
+                <p>{{item.type}}</p>
+                <ion-button clear class="btn success" (click)="openItem(item)">View</ion-button>
+            </ion-item>
+            <ion-card-content [innerHtml]="item.description" >
+            </ion-card-content>
 
-        <ion-row class="about-row">
-            <ion-col size="5" center text-left>
-                Experience <strong>22 Years</strong>
-            </ion-col>
-            <ion-col center text-center>
-                Fee <strong>{{item.unit_cost | currency}}</strong>
-            </ion-col>
-            <ion-col size="5" center text-right>
-                Feedback
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star"></ion-icon>
-                <span>&nbsp;&nbsp;({{item.rating_count }})</span>
-            </ion-col>
-        </ion-row>
-    </ion-card>
-    <!--ion-card>
-        <ion-item>
-            <ion-avatar item-start>
-                <img src="assets/imgs/profile4.png">
-            </ion-avatar>
-            <h2>Dr. Josephan Williamson</h2>
-            <p>Cardiac Surgeon</p>
-            <ion-button clear class="btn success">Book</ion-button>
-        </ion-item>
-        <ion-card-content>
-            At apple hospital, Walter street, Wallington,New york
-            <ion-scroll scrollX="true" style="height:60px;white-space: nowrap;">
-                <img src="assets/imgs/img-1.png">
-                <img src="assets/imgs/img-2.png">
-                <img src="assets/imgs/img-3.png">
-                <img src="assets/imgs/img-4.png">
-                <img src="assets/imgs/img-5.png">
-            </ion-scroll>
-        </ion-card-content>
-        <ion-row class="about-row">
-            <ion-col size="5" center text-left>
-                Experience <strong>22 Years</strong>
-            </ion-col>
-            <ion-col center text-center>
-                Fee <strong>$30</strong>
-            </ion-col>
-            <ion-col size="5" center text-right>
-                Feedback
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star" class="active"></ion-icon>
-                <ion-icon name="md-star"></ion-icon>
-                <span>&nbsp;&nbsp;(123)</span>
-            </ion-col>
-        </ion-row>
-    </ion-card-->
+            <ion-row class="about-row">
+                <ion-col size="5" center text-left>
+                    Experience <strong>22 Years</strong>
+                </ion-col>
+                <ion-col center text-center>
+                    Fee <strong>{{item.unit_cost | currency}}</strong>
+                </ion-col>
+                <ion-col size="5" center text-right>
+                    Feedback
+                    <ion-icon name="md-star" class="active"></ion-icon>
+                    <ion-icon name="md-star" class="active"></ion-icon>
+                    <ion-icon name="md-star" class="active"></ion-icon>
+                    <ion-icon name="md-star" class="active"></ion-icon>
+                    <ion-icon name="md-star"></ion-icon>
+                    <span>&nbsp;&nbsp;({{item.rating_count }})</span>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+    </ion-list>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="getMerchants($event)">
+        <ion-infinite-scroll-content
+            loadingSpinner="bubbles">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>

@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
+import {IonInfiniteScroll} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ActivatedRoute} from '@angular/router';
 import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
@@ -15,6 +16,7 @@ import {ApiService} from '../../services/api/api.service';
     styleUrls: ['./merchant-listing.page.scss'],
 })
 export class MerchantListingPage implements OnInit {
+    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     location: string = "b1";
     category: string = "a1";
     merchants: Merchant[] = [];
@@ -57,7 +59,7 @@ export class MerchantListingPage implements OnInit {
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
         if (data) {
-            this.getMerchants();
+            this.getMerchants(null);
         }
     }
     getItems() {
@@ -85,7 +87,7 @@ export class MerchantListingPage implements OnInit {
         console.log("Entering merchant",item.id);
         this.navCtrl.navigateForward('tabs/categories/'+this.category+'/merchant/'+item.id); 
     }
-    getMerchants() {
+    getMerchants(event) {
         this.showLoader();
         this.page++;
         let query = "page=" + this.page + "&category_id="+this.category;
@@ -93,12 +95,15 @@ export class MerchantListingPage implements OnInit {
             data.data = this.merchantsServ.prepareObjects(data.data);
             let results = data.data;
             if (data.page == data.last_page) {
-                this.loadMore = false;
+                this.infiniteScroll.disabled = true;
             }
             for (let one in results) {
                 results[one].id = results[one].merchant_id;
                 let container = new Merchant(results[one]);
                 this.merchants.push(container);
+            }
+            if (event) {
+                event.target.complete();
             }
             this.dismissLoader();
         }, (err) => {
@@ -133,7 +138,7 @@ export class MerchantListingPage implements OnInit {
     }
     categoryFilterChange(){
         this.page = 0;
-        this.getMerchants();
+        this.getMerchants(null);
     }
 
     ngOnInit() {
@@ -145,7 +150,7 @@ export class MerchantListingPage implements OnInit {
             this.merchantsErrorGet = value;
         });
         
-        this.getMerchants();
+        this.getMerchants(null);
         this.getItems();
     }
 

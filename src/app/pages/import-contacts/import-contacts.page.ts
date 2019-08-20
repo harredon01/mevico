@@ -46,13 +46,13 @@ export class ImportContactsPage implements OnInit {
         });
     }
     parsePhone(phone: any) {
-        console.log("parse phone",phone);
+        console.log("parse phone", phone);
         try {
-            let phoneNumber: any = parsePhoneNumberFromString("+"+phone);
-            console.log("parse phone result",phoneNumber);
+            let phoneNumber: any = parsePhoneNumberFromString("+" + phone);
+            console.log("parse phone result", phoneNumber);
             return phoneNumber;
         } catch (error) {
-        console.log("error", error)
+            console.log("error", error)
             if (error instanceof ParseError) {
                 // Not a phone number, non-existent country, etc.
                 console.log(error.message)
@@ -165,26 +165,34 @@ export class ImportContactsPage implements OnInit {
         }
 
     }
-    checkSelection(){
-        console.log("invites",this.invites);
+    checkSelection(contact: any) {
+        let add = true;
+        if (contact.selected) {
+            contact.selected = false;
+            add = false;
+        } else {
+            contact.selected = true;
+        }
+        if (add) {
+            this.invites.push(contact.id);
+        } else {
+            for (let i = 0; i < this.invites.length; i++) {
+                if (this.invites[i] == contact.id) {
+                    this.invites.splice(i, 1);
+                }
+            }
+        }
     }
     addContacts() {
         var finalids = [];
-        var finalSent = [];
         for (let id in this.invites) {
-            for (let contact in this.contacts2) {
-                if (this.contacts2[contact].id == this.invites[id]) {
-                    finalSent.push(this.contacts2[contact]);
-                }
-            }
             if (this.invites[id]) {
                 finalids.push(this.invites[id]);
             }
         }
-        console.log("Start importing",finalids);
+        console.log("Start importing", finalids);
         this.contactsServ.importContacts(finalids).subscribe((resp: any) => {
             console.log("Done importing");
-
             this.navCtrl.back();
         },
             function (data) {

@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
+import {IonInfiniteScroll} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
 import {ContactsService} from '../../services/contacts/contacts.service';
@@ -13,6 +14,7 @@ import {Contact} from '../../models/contact'
     styleUrls: ['./contacts.page.scss'],
 })
 export class ContactsPage implements OnInit {
+    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     contacts: Contact[] = []
     page: any = 0;
     loadMore: boolean = false;
@@ -49,22 +51,25 @@ export class ContactsPage implements OnInit {
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
         if (data) {
-            this.getContacts();
+            this.getContacts(null);
         }
     }
-    getContacts() {
+    getContacts(event) {
         this.showLoader();
         this.page++;
         let query = "page=" + this.page;
         this.contactsServ.getContacts(query).subscribe((data: any) => {
             let results = data.data;
             if (data.page == data.last_page) {
-                this.loadMore = false;
+                this.infiniteScroll.disabled = true;
             }
             for (let one in results) {
                 results[one].id = results[one].contact_id;
                 let container = new Contact(results[one]);
                 this.contacts.push(container);
+            }
+            if (event) {
+                event.target.complete();
             }
             this.dismissLoader();
         }, (err) => {
@@ -131,7 +136,7 @@ export class ContactsPage implements OnInit {
             this.itemsErrorGet = value;
         });
 
-        this.getContacts();
+        this.getContacts(null);
     }
 
 }

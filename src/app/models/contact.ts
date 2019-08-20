@@ -7,6 +7,7 @@ export class Contact {
     avatar: string = '';
     email: string = '';
     phone: string = '';
+    selected:boolean = false;
 
     constructor(fields: any) {
         // Quick and dirty extend/assign fields to this model
