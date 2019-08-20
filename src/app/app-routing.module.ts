@@ -36,6 +36,8 @@ const routes: Routes = [
   { path: 'contact-detail', loadChildren: './pages/contact-detail/contact-detail.module#ContactDetailPageModule' },
   { path: 'groups', loadChildren: './pages/groups/groups.module#GroupsPageModule' },
   { path: 'group-detail', loadChildren: './pages/group-detail/group-detail.module#GroupDetailPageModule' },
+  { path: 'select-contacts', loadChildren: './pages/select-contacts/select-contacts.module#SelectContactsPageModule' },
+  { path: 'import-contacts', loadChildren: './pages/import-contacts/import-contacts.module#ImportContactsPageModule' },
 ];
 
 @NgModule({

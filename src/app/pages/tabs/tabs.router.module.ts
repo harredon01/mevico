@@ -39,6 +39,36 @@ const routes: Routes = [
                 ]
             },
             {
+                path: 'contacts',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../contacts/contacts.module#ContactsPageModule'
+                    },
+                    {
+                        path: 'import',
+                        loadChildren: '../import-contacts/import-contacts.module#ImportContactsPageModule'
+                    },
+                    {
+                        path: ':objectId',
+                        loadChildren: '../contact-detail/contact-detail.module#ContactDetailPageModule'
+                    },
+                    
+                ]
+            },{
+                path: 'groups',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../groups/groups.module#GroupsPageModule'
+                    },
+                    {
+                        path: ':objectId',
+                        loadChildren: '../group-detail/group-detail.module#GroupDetailPageModule'
+                    }
+                ]
+            },
+            {
                 path: 'categories',
                 children: [
                     {

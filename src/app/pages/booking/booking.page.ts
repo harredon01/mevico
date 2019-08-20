@@ -7,6 +7,7 @@ import {CartService} from '../../services/cart/cart.service';
 import {ApiService} from '../../services/api/api.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {Merchant} from '../../models/merchant';
+import {CartPage} from '../cart/cart.page';
 import {BookingService} from '../../services/booking/booking.service';
 @Component({
     selector: 'app-booking',

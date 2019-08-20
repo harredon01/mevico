@@ -105,6 +105,9 @@ export class ContactsPage implements OnInit {
         console.log("Entering Contact",item.id);
         this.navCtrl.navigateForward('tabs/contacts/'+item.id); 
     }
+    importContacts() {
+        this.navCtrl.navigateForward('tabs/contacts/import');
+    }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
             this.loadingCtrl.dismiss();

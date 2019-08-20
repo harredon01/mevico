@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^7.2.2",
     "@angular/platform-browser-dynamic": "^7.2.2",
     "@angular/router": "^7.2.2",
+    "@ionic-native/contacts": "^5.12.0",
     "@ionic-native/core": "^5.10.0",
     "@ionic-native/geolocation": "^5.10.0",
     "@ionic-native/google-maps": "^5.5.0",
@@ -37,6 +38,7 @@
     "cordova-android": "7.1.4",
     "cordova-background-geolocation-lt": "3.0.7",
     "cordova-plugin-background-fetch": "5.5.0",
+    "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-googlemaps": "^2.6.2",
@@ -51,6 +53,7 @@
     "cordova-sqlite-storage": "3.2.0",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
+    "libphonenumber-js": "^1.7.22",
     "onesignal-cordova-plugin": "2.4.7",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
@@ -109,7 +112,8 @@
         "PLAY_SERVICES_VERSION": "15.0.1",
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "cordova-plugin-opentok": {}
+      "cordova-plugin-opentok": {},
+      "cordova-plugin-contacts": {}
     },
     "platforms": [
       "android"
