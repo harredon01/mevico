@@ -130,13 +130,16 @@ export class ContactsPage implements OnInit {
             this.spinnerDialog.show();
         }
     }
-
+    ionViewDidEnter(){
+        this.getContacts(null);
+    }
+    
     ngOnInit() {
         this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
             this.itemsErrorGet = value;
         });
 
-        this.getContacts(null);
+        
     }
 
 }

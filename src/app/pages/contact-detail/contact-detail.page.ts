@@ -25,7 +25,12 @@ private mainContact: Contact;
 
     ngOnInit() {
         let params = this.params.getParams();
-        this.mainContact = params.item;
+        if(params.item){
+            this.mainContact = params.item;
+        } else {
+            this.getContact();
+        }
+        
     }
     updateblockStatus(status:any) {
         let data = {
@@ -37,7 +42,7 @@ private mainContact: Contact;
             this.mainContact.status = status;
             this.dismissLoader();
         }, (err) => {
-            console.log("Error cancelBooking");
+            console.log("Error updateblockStatus");
             this.dismissLoader();
             this.api.handleError(err);
         });
@@ -48,7 +53,19 @@ private mainContact: Contact;
             this.navCtrl.back();
             this.dismissLoader();
         }, (err) => {
-            console.log("Error cancelBooking");
+            console.log("Error deleteContact");
+            this.dismissLoader();
+            this.api.handleError(err);
+        });
+    }
+    getContact() {
+        this.showLoader();
+        let contactId = this.activatedRoute.snapshot.paramMap.get('objectId');
+        this.contacts.getContact(contactId).subscribe((data: any) => {
+            this.mainContact = data;
+            this.dismissLoader();
+        }, (err) => {
+            console.log("Error getContact");
             this.dismissLoader();
             this.api.handleError(err);
         });

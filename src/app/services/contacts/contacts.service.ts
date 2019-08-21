@@ -20,6 +20,11 @@ export class ContactsService {
         let seq = this.api.delete(endpoint );
         return seq;
     }
+    getContact(contactId: any) {
+        let endpoint = '/user/'+contactId;
+        let seq = this.api.get(endpoint );
+        return seq;
+    }
     checkContacts(data: any) {
         let endpoint = '/contacts/check';
         let seq = this.api.post(endpoint, data);

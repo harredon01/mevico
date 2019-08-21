@@ -1,9 +1,32 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>contact-detail</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>contact-detail</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <ion-card>
+        <ion-item>
+            <ion-avatar item-start>
+                <img [src]="">
+            </ion-avatar>
+            <h2>{{mainContact.firstName}} {{mainContact.lastName}}</h2>
+            <p>{{mainContact.email}}</p>
+            <p>{{mainContact.cellphone}}</p>
+            <ion-button clear class="btn success" (click)="openItem(item)">View</ion-button>
+        </ion-item>
 
+
+        <ion-row class="about-row">
+            <ion-col size="5" center text-right>
+                Feedback
+                <ion-icon name="md-star" class="active"></ion-icon>
+                <ion-icon name="md-star" class="active"></ion-icon>
+                <ion-icon name="md-star" class="active"></ion-icon>
+                <ion-icon name="md-star" class="active"></ion-icon>
+                <ion-icon name="md-star"></ion-icon>
+                <span>&nbsp;&nbsp;({{mainContact.rating }})</span>
+            </ion-col>
+        </ion-row>
+    </ion-card>
 </ion-content>
