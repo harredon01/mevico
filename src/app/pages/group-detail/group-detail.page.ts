@@ -6,14 +6,14 @@ import {Group} from '../../models/group';
 import {ApiService} from '../../services/api/api.service';
 import {ActivatedRoute} from '@angular/router';
 import {ParamsService} from '../../services/params/params.service';
-
+import {SelectContactsPage} from '../select-contacts/select-contacts.page'
 @Component({
-  selector: 'app-group-detail',
-  templateUrl: './group-detail.page.html',
-  styleUrls: ['./group-detail.page.scss'],
+    selector: 'app-group-detail',
+    templateUrl: './group-detail.page.html',
+    styleUrls: ['./group-detail.page.scss'],
 })
 export class GroupDetailPage implements OnInit {
-private mainGroup: Group;
+    private mainGroup: Group;
     constructor(public groups: GroupsService,
         public activatedRoute: ActivatedRoute,
         public params: ParamsService,
@@ -39,6 +39,24 @@ private mainGroup: Group;
             this.dismissLoader();
             this.api.handleError(err);
         });
+    }
+    async inviteContacts() {
+        let addModal = await this.modalCtrl.create({
+            component: SelectContactsPage
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        if (data) {
+            this.showLoader();
+            this.groups.inviteUsers(data).subscribe((data: any) => {
+                this.dismissLoader();
+                this.navCtrl.back();
+            }, (err) => {
+                console.log("Error leaveGroup");
+                this.dismissLoader();
+                this.api.handleError(err);
+            });
+        }
     }
     dismissLoader() {
         if (document.URL.startsWith('http')) {

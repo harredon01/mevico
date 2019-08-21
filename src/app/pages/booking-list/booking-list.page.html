@@ -17,6 +17,16 @@
             </ion-select>
         </ion-item>
     </ion-list>
+    <ion-list>
+        <ion-list-header>{{selectedObject.name}}</ion-list-header>
+
+        <ion-item>
+            <ion-label>Filter</ion-label>
+            <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectObject()">
+                <ion-select-option *ngFor="let item of bookingObjects" value="{{item.id}}">{{item.name}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
     <ion-list class="doctor-list">
         <ion-row class="bg-white" (click)="openBooking(booking)" *ngFor="let booking of bookings">
             <ion-col text-center class="date">
