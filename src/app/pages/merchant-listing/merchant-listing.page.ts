@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {IonInfiniteScroll} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ActivatedRoute} from '@angular/router';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
@@ -17,18 +18,22 @@ import {ApiService} from '../../services/api/api.service';
 })
 export class MerchantListingPage implements OnInit {
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-    location: string = "b1";
+    location: any;
+    typeSearch: string = "category";
+    totalResults: any;
+    textSearch: string = "";
     category: string = "a1";
     merchants: Merchant[] = [];
     categoryItems: any[] = [];
-    categoriesErrorGet:string ="";
-    merchantsErrorGet:string ="";
-    page: any=0;
+    categoriesErrorGet: string = "";
+    merchantsErrorGet: string = "";
+    page: any = 0;
     loadMore: boolean;
 
-    constructor(public navCtrl: NavController, 
+    constructor(public navCtrl: NavController,
         private activatedRoute: ActivatedRoute,
         public params: ParamsService,
+        public geolocation: Geolocation,
         public categories: CategoriesService,
         public merchantsServ: MerchantsService,
         public toastCtrl: ToastController,
@@ -83,22 +88,73 @@ export class MerchantListingPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     openItem(item: Merchant) {
-        this.params.setParams({"item":item,"category":this.category});
-        console.log("Entering merchant",item.id);
-        this.navCtrl.navigateForward('tabs/categories/'+this.category+'/merchant/'+item.id); 
+        this.params.setParams({"item": item, "category": this.category});
+        console.log("Entering merchant", item);
+        this.navCtrl.navigateForward('tabs/categories/' + this.category + '/merchant/' + item.id);
+    }
+    /**
+     * Navigate to the detail page for this item.
+     */
+    searchNearby() {
+        this.showLoader();
+        this.geolocation.getCurrentPosition().then((resp) => {
+            console.log("Getting current position after call", resp);
+            // resp.coords.latitude
+            // resp.coords.longitude
+            this.typeSearch = "nearby";
+            this.merchants = [];
+            this.page = 0;
+            this.location = {lat: resp.coords.latitude, long: resp.coords.longitude};
+            this.dismissLoader();
+            this.getMerchants(null);
+        }).catch((error) => {
+            console.log('Error getting location', error);
+
+        });
+    }
+    /**
+     * Navigate to the detail page for this item.
+     */
+    searchText() {
+        if (this.textSearch.length > 0) {
+            this.merchants = [];
+            this.page = 0;
+            this.typeSearch = "text";
+            this.getMerchants(null);
+        }
+    }
+    searchCategory() {
+        this.merchants = [];
+        this.page = 0; 
+        this.typeSearch = "category";
+        this.getMerchants(null);
     }
     getMerchants(event) {
         this.showLoader();
         this.page++;
-        let query = "page=" + this.page + "&category_id="+this.category;
-        this.merchantsServ.getMerchants(query).subscribe((data: any) => {
+        let searchObj = null
+        if (this.typeSearch == "category") {
+            let query = "page=" + this.page + "&category_id=" + this.category;
+            searchObj = this.merchantsServ.getMerchants(query);
+        } else if (this.typeSearch == "text") {
+            searchObj = this.merchantsServ.searchMerchants(this.textSearch + "&page=" + this.page);
+        } else if (this.typeSearch == "nearby") {
+
+            searchObj = this.merchantsServ.getNearbyMerchants(this.location);
+        }
+        searchObj.subscribe((data: any) => {
             data.data = this.merchantsServ.prepareObjects(data.data);
+            if(data.total){
+                this.totalResults = data.total;
+            }
             let results = data.data;
             if (data.page == data.last_page) {
                 this.infiniteScroll.disabled = true;
             }
             for (let one in results) {
-                results[one].id = results[one].merchant_id;
+                if(results[one].merchant_id){
+                    results[one].id = results[one].merchant_id;
+                }
                 let container = new Merchant(results[one]);
                 this.merchants.push(container);
             }
@@ -136,20 +192,20 @@ export class MerchantListingPage implements OnInit {
             this.spinnerDialog.show();
         }
     }
-    categoryFilterChange(){
+    categoryFilterChange() {
         this.page = 0;
         this.getMerchants(null);
     }
 
     ngOnInit() {
-        
+
         this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
             this.categoriesErrorGet = value;
         });
         this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
             this.merchantsErrorGet = value;
         });
-        
+
         this.getMerchants(null);
         this.getItems();
     }

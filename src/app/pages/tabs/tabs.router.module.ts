@@ -94,6 +94,10 @@ const routes: Routes = [
                                         loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
                                     },
                                     {
+                                        path: 'book',
+                                        loadChildren: '../booking/booking.module#BookingPageModule',
+                                    },
+                                    {
                                         path: 'bookings',
                                         children: [
                                             {

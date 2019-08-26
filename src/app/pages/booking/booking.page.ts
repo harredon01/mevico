@@ -99,12 +99,14 @@ export class BookingPage implements OnInit {
                 let extras = {
                     "type":"Booking",
                     "id":booking.id,
+                    "name": "Booking appointment for: " + booking.bookable.name,
                 }
                 let item = {
                     "name": "Booking appointment for: " + booking.bookable.name,
                     "price": booking.price,
                     "quantity": booking.quantity,
                     "tax": 0,
+                    "merchant_id":this.objectId,
                     "cost": 0,
                     "extras":extras
                 };

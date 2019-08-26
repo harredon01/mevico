@@ -1,24 +1,25 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>
-            <ion-select [(ngModel)]="category" interface="popover" style="padding-left: 0;">
+            <ion-select [(ngModel)]="category" interface="popover" style="padding-left: 0;" (ionChange)="searchCategory()">
                 <ion-select-option value="{{category.id}}" *ngFor="let category of categoryItems">{{category.name}}</ion-select-option>
             </ion-select>
-            <span class="location"><small margin-right>Location</small>
+            <!--span class="location"><small margin-right>Location</small>
                 <ion-select [(ngModel)]="location" interface="popover" class="location">
                     <ion-select-option value="b1">Wallington</ion-select-option>
                     <ion-select-option value="b2">Nerobi</ion-select-option>
                     <ion-select-option value="b3">Central Park</ion-select-option>
                 </ion-select>
-            </span>
+            </span-->
         </ion-title>
+        <ion-searchbar [(ngModel)]="textSearch" placeholder="Search..." debounce="1500" (ionChange)="searchText()"></ion-searchbar>
     </ion-toolbar>
     <div class="filter" padding>
         <ion-row>
-            <ion-col size="4" class="text-danger" text-left (click)="filter()">
-                     <ion-icon name="md-funnel"></ion-icon>Filter</ion-col>
-            <ion-col size="4" text-center>234 result found</ion-col>
-            <ion-col size="4" class="text-danger" text-right (click)="map()">View in map</ion-col>
+            <!--ion-col size="4" class="text-danger" text-left (click)="filter()">
+                     <ion-icon name="md-funnel"></ion-icon>Filter</ion-col-->
+            <ion-col size="4" text-center>{{totalResults}} result found</ion-col>
+            <ion-col size="4" class="text-danger" text-right><ion-button clear class="btn success" (click)="searchNearby()">Search Nearby</ion-button></ion-col>
         </ion-row>
     </div>
 </ion-header>

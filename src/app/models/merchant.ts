@@ -17,6 +17,7 @@ export class Merchant {
     longitude: any;
     latitude: any;
     item_id: any;
+    owner: boolean=false;
     availabilities: any[];
     ratings: any[];
     files: any[];

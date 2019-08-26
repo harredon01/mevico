@@ -5,6 +5,7 @@ import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
 import {Merchant} from '../../models/merchant';
 import {ApiService} from '../../services/api/api.service';
+import {UserDataService} from '../../services/user-data/user-data.service'
 @Component({
     selector: 'app-merchant-detail',
     templateUrl: './merchant-detail.page.html',
@@ -16,7 +17,12 @@ export class MerchantDetailPage implements OnInit {
     category: string = "";
     merchant: Merchant;
 
-    constructor(public navCtrl: NavController, public activatedRoute: ActivatedRoute,public api: ApiService, public merchantsServ: MerchantsService, public params: ParamsService) {
+    constructor(public navCtrl: NavController, 
+        public activatedRoute: ActivatedRoute,
+        public api: ApiService, 
+        public userData: UserDataService, 
+        public merchantsServ: MerchantsService, 
+        public params: ParamsService) {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
         this.merchant = new Merchant({"availabilities":[]});
         this.getMerchant(merchantId);
@@ -28,6 +34,9 @@ export class MerchantDetailPage implements OnInit {
             container.availabilities = data.availabilities;
             container.ratings = data.ratings;
             container.files = data.files;
+            if (container.user_id == this.userData._user.id){
+                container.owner = true;
+            }
             this.merchant = new Merchant(container);
         }, (err) => {
             console.log("Error getMerchant");
@@ -73,7 +82,7 @@ export class MerchantDetailPage implements OnInit {
         }
         this.params.setParams(params);
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/bookings");
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/book");
     }
     
     ngOnInit() {

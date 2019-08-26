@@ -72,12 +72,14 @@ export class BookingDetailPage implements OnInit {
         let extras = {
             "type":"Booking",
             "id":this.mainBooking.id,
-        }
+            "name": "Booking appointment for: " + this.mainBooking.bookable.name,
+        } 
         let item = {
             "name": "Booking appointment for: " + this.mainBooking.bookable.name,
             "price": this.mainBooking.price,
             "quantity": this.mainBooking.quantity,
             "tax": 0,
+            "merchant_id":this.mainBooking.bookable.id,
             "cost": 0,
             "extras":extras
         };
