@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, Events} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 import {ParamsService} from '../../services/params/params.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
 @Component({
     selector: 'app-payu-complete',
     templateUrl: './payu-complete.page.html',
@@ -16,6 +17,7 @@ export class PayuCompletePage implements OnInit {
 
     constructor(public navCtrl: NavController,
         public params: ParamsService,
+        public orderData: OrderDataService,
         public events: Events,
         public translateService: TranslateService) {
         let paramsSent = this.params.getParams();
@@ -25,6 +27,7 @@ export class PayuCompletePage implements OnInit {
         }
         if (this.transaction.state == 'APPROVED') {
             let vm = this;
+
             setTimeout(function () {vm.events.publish("home:loadDeliveries");}, 1500);
         }
     }
@@ -39,7 +42,8 @@ export class PayuCompletePage implements OnInit {
        * The view loaded, let's query our items for the list
        */
     returnHome() {
-        this.navCtrl.navigateRoot("tabs");
+        this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
+        this.navCtrl.navigateRoot("tabs/categories")
     }
 
     ngOnInit() {

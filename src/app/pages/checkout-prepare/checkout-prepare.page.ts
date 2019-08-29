@@ -120,6 +120,40 @@ export class CheckoutPreparePage implements OnInit {
         this.translateService.get('CART.ITEM_UPDATED').subscribe((value) => {
             this.cartUpdate = value;
         })
+
+
+    }
+    getOrder() {
+        this.orderProvider.getOrder().subscribe((data: any) => {
+            this.orderData.currentOrder = data.data;
+            this.loadSavedPayers();
+            this.setDiscounts();
+        });
+    }
+    loadSavedPayers() {
+        this.orderData.loadSavedPayers(this.orderData.currentOrder.id).then((value) => {
+            if (this.orderData.payers.length > 0) {
+                this.payers = this.orderData.payers;
+                this.showPayers = true;
+                if (this.showSplit) {
+                    this.split = true;
+                }
+            }
+            console.log("payers", this.payers);
+        });
+        this.setDiscounts();
+    }
+    scrollToTop() {
+        setTimeout(() => {
+            this.content.scrollToTop(300);
+        }, 400);
+
+    }
+    ionViewDidEnter() {
+        this.coupon = "";
+        this.showPayment = false;
+        this.hasSavedCard = false;
+        this.requiresDelivery = false;
         this.user.getUser().subscribe((resp: any) => {
             if (resp) {
                 console.log("getUser", resp);
@@ -153,34 +187,19 @@ export class CheckoutPreparePage implements OnInit {
         this.conditions = [];
         this.payers = [];
         let paramsSent = this.params.getParams();
-        if(paramsSent.is_meal){
+        if (paramsSent.is_meal) {
             let isMeal = paramsSent.is_meal;
             console.log("Is meal", isMeal);
             if (isMeal == 0) {
                 this.showSplit = true;
             }
         }
-        
         if (this.orderData.currentOrder) {
-            this.orderData.loadSavedPayers(this.orderData.currentOrder.id).then((value) => {
-                if (this.orderData.payers.length > 0) {
-                    this.payers = this.orderData.payers;
-                    this.showPayers = true;
-                    if (this.showSplit) {
-                        this.split = true;
-                    }
-                }
-                console.log("payers", this.payers);
-            });
+            this.loadSavedPayers();
             this.setDiscounts();
+        } else {
+            this.getOrder();
         }
-
-    }
-    scrollToTop() {
-        setTimeout(() => {
-            this.content.scrollToTop(300);
-        }, 400);
-
     }
 
 
@@ -193,7 +212,7 @@ export class CheckoutPreparePage implements OnInit {
         } else {
             this.orderData.paymentMethod = option;
             let nextPage = this.orderData.getStep2(option);
-            console.log("Next page",nextPage);
+            console.log("Next page", nextPage);
             this.navCtrl.navigateForward(nextPage);
         }
     }

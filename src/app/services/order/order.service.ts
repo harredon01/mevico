@@ -113,4 +113,13 @@ export class OrderService {
         let seq = this.api.get(url);
         return seq;
     }
+    /**
+     * Send a POST request to our signup endpoint with the data
+     * the user entered on the form.
+     */
+    getOrder() { 
+        let url = '/orders/active';
+        let seq = this.api.get(url);
+        return seq;
+    }
 }
