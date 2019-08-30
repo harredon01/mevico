@@ -47,7 +47,8 @@ export class MerchantDetailPage implements OnInit {
     addfeedback() {
         let params = {
             "type": "Merchant",
-            "objectId": this.merchant.id
+            "objectId": this.merchant.id,
+            "name": this.merchant.name
         };
         this.params.setParams(params);
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId');

@@ -79,8 +79,8 @@ export class BookingPage implements OnInit {
         }
         this.submitted = true;
         this.showLoader();
-        let strDate = this.startDate.getFullYear() + "-" + (this.startDate.getMonth() + 1) + "-" + this.startDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
-        let ndDate = this.startDate.getFullYear() + "-" + (this.startDate.getMonth() + 1) + "-" + this.startDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
+        let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
+        let ndDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
         let data = {
             "type": this.typeObj,
             "object_id": this.objectId,
@@ -207,10 +207,10 @@ export class BookingPage implements OnInit {
         this.endDate.setHours(this.startDate.getHours() + parseInt(this.amount));
     }
     selectDate(selectedDate: Date) {
-        console.log("select date");
+        console.log("select date",selectedDate);
         this.showLoader();
         this.startDate = selectedDate;
-        this.endDate = selectedDate;
+        this.selectedDate = selectedDate;
         this.dateSelected = true;
         let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate();
         let params = {

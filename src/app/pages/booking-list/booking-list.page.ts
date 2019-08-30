@@ -30,12 +30,12 @@ export class BookingListPage implements OnInit {
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
     ) {
-        let user = {"id":-1,"name":"Personal"};
-        this.bookingObjects.push(user);
         let paramsObj: any = this.params.getParams();
         this.typeObj = paramsObj.type;
         this.target = paramsObj.target;
         this.objectId = paramsObj.objectId;
+        this.selectedObject = {"id": paramsObj.objectId, "name": paramsObj.name};
+        this.bookingObjects.push(this.selectedObject);
         this.query = this.target + "_upcoming";
         this.queries = ["unpaid", "upcoming", "unapproved", "past"];
         this.queryMod = "upcoming";
@@ -52,11 +52,11 @@ export class BookingListPage implements OnInit {
         this.query = this.target + "_" + this.queryMod;
         this.getBookings();
     }
-    
+
     selectObject() {
         this.page = 0;
         this.bookings = [];
-        if (this.selectedObject.id == -1 ){
+        if (this.objectId == -1) {
             this.target = "customer";
         } else {
             this.target = "bookable";
@@ -96,8 +96,10 @@ export class BookingListPage implements OnInit {
     getObjectsWithBookingUser() {
         this.booking.getObjectsWithBookingUser().subscribe((data: any) => {
             this.bookingObjects = data.data;
-            for (let item in this.bookingObjects){
-                if (this.bookingObjects[item].id == this.objectId ){
+            let user = {"id": -1, "name": "Personal"};
+            this.bookingObjects.unshift(user);
+            for (let item in this.bookingObjects) {
+                if (this.bookingObjects[item].id == this.objectId) {
                     this.selectedObject = this.bookingObjects[item];
                     break;
                 }

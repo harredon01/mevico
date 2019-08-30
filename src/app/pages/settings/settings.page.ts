@@ -20,7 +20,7 @@ ngOnInit() {
   }
     openItem(item: any) {
         if(item=="/tabs/settings/bookings"){
-            let params ={"type":"Merchant","objectId":-1,"target":"customer"};
+            let params ={"type":"Merchant","objectId":-1,"target":"customer","name":"personal"};
             this.params.setParams(params);
         }
         this.navCtrl.navigateForward(item);
