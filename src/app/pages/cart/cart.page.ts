@@ -261,7 +261,19 @@ export class CartPage implements OnInit {
      */
     checkout() {
         if (this.orderData.cartData.totalItems > 0) {
-            this.modalCtrl.dismiss("Checkout");
+            let hasShippable = false;
+            for (let item in this.currentItems){
+                let container = this.currentItems[item];
+                if(container.attributes.is_shippable==1){
+                    hasShippable = true;
+                }
+            }
+            if (hasShippable){
+                this.modalCtrl.dismiss("Shipping");
+            } else {
+                this.modalCtrl.dismiss("Prepare");
+            }
+            
         } else {
             let toast = this.toastCtrl.create({
                 message: this.cartEmptyString,

@@ -7,6 +7,10 @@
                 <ion-icon name="md-share" item-start></ion-icon>
                 <ion-icon name="md-more" item-start></ion-icon>
             </span>
+            <div class="content-car">
+                <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
+                <ion-button icon-only clear (click)="openCart()"></ion-button>
+            </div>
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -19,7 +23,7 @@
             <h2 class="text-white">{{merchant.name}}</h2>
             <p class="text-white">{{merchant.type}}</p>
             <h3>{{merchant.description}}</h3>
-            
+
         </div>
     </div>myBookings
     <ion-button class="btn success" (click)="showProducts()" ><ion-icon name="cart"></ion-icon>Store</ion-button>
@@ -193,7 +197,7 @@
                 <p class="text-danger header">Available Timings</p>
                 <ion-row>
                     <ion-col size="6" *ngFor="let availability of merchant.availabilities">
-                        <h5>{{availability.range}}<span float-right>{{availability.from}} to {{availability.to}}</span></h5>
+                             <h5>{{availability.range}}<span float-right>{{availability.from}} to {{availability.to}}</span></h5>
                     </ion-col>
                 </ion-row>
             </div>

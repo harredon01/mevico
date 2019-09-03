@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, LoadingController} from '@ionic/angular';
+import {NavController, ToastController, LoadingController,Events} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {UserService} from '../../services/user/user.service';
@@ -39,6 +39,7 @@ export class LoginPage implements OnInit {
         public navCtrl: NavController,
         public user: UserService,
         public api: ApiService,
+        public events:Events,
         public loadingCtrl: LoadingController,
         public userData: UserDataService,
         public iab: InAppBrowser,
@@ -80,6 +81,7 @@ export class LoginPage implements OnInit {
                 this.user.postLogin().then((value) => {
                     this.dismissLoader();
                     this.navCtrl.navigateRoot("tabs");
+                    this.events.publish("authenticated");
                 }, (err) => {
                     this._loadUserData();
                     // Unable to log in
@@ -108,6 +110,7 @@ export class LoginPage implements OnInit {
                 this.dismissLoader();
                 console.log("Post login complete");
                 this.navCtrl.navigateRoot("tabs");
+                this.events.publish("authenticated");
             }, (err) => {
                 console.log("Post login error on registration");
             });

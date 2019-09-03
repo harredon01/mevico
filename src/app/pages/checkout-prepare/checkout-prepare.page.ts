@@ -141,7 +141,6 @@ export class CheckoutPreparePage implements OnInit {
             }
             console.log("payers", this.payers);
         });
-        this.setDiscounts();
     }
     scrollToTop() {
         setTimeout(() => {

@@ -93,7 +93,7 @@ export class BookingPage implements OnInit {
             this.dismissLoader();
 
             this.submitted = false;
-            this.presentAlertConfirm(data);
+            //this.presentAlertConfirm(data);
             if (data.status == "success") {
                 let booking = data.booking;
                 let extras = {
@@ -134,7 +134,10 @@ export class BookingPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
-        if (data == "Checkout") {
+        if (data == "Shipping") {
+            this.params.setParams({"merchant_id": 1});
+            this.navCtrl.navigateForward('tabs/checkout/shipping');
+        }else if (data == "Prepare") {
             this.params.setParams({"merchant_id": 1});
             this.navCtrl.navigateForward('tabs/checkout/prepare');
         }

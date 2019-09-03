@@ -1,3 +1,26 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+    <ion-split-pane>
+
+
+
+        <!-- the main content -->
+        <ion-router-outlet main></ion-router-outlet>
+        <!--  our side menu  -->
+        <ion-menu side="end">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-title>Menu</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-list>
+                    <ion-menu-toggle auto-hide="false" *ngFor="let p of items" (click)="openNotification(p)">
+                        <img src="https://s3.us-east-2.amazonaws.com/gohife/public/icons/{{p.type}}.svg" />
+                        <span>{{p.created_at | date}}</span><br/>
+                        {{p.subject}}
+                    </ion-menu-toggle>
+                </ion-list>
+            </ion-content>
+        </ion-menu>
+    </ion-split-pane>
 </ion-app>

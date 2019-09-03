@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController} from '@ionic/angular';
+import {NavController,ModalController} from '@ionic/angular';
 import {ActivatedRoute} from '@angular/router';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
 import {Merchant} from '../../models/merchant';
+import {CartPage} from '../cart/cart.page';
 import {ApiService} from '../../services/api/api.service';
 import {UserDataService} from '../../services/user-data/user-data.service'
 @Component({
@@ -18,6 +20,8 @@ export class MerchantDetailPage implements OnInit {
     merchant: Merchant;
 
     constructor(public navCtrl: NavController, 
+    public modalCtrl: ModalController, 
+    public orderData: OrderDataService, 
         public activatedRoute: ActivatedRoute,
         public api: ApiService, 
         public userData: UserDataService, 
@@ -26,6 +30,23 @@ export class MerchantDetailPage implements OnInit {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
         this.merchant = new Merchant({"availabilities":[]});
         this.getMerchant(merchantId);
+    }
+    async openCart() {
+        let container = {cart: this.orderData.cartData};
+        console.log("Opening Cart", container);
+        let addModal = await this.modalCtrl.create({
+            component: CartPage,
+            componentProps: container
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        if (data == "Shipping") {
+            this.params.setParams({"merchant_id": 1});
+            this.navCtrl.navigateForward('tabs/checkout/shipping');
+        }else if (data == "Prepare") {
+            this.params.setParams({"merchant_id": 1});
+            this.navCtrl.navigateForward('tabs/checkout/prepare');
+        }
     }
     
     getMerchant(merchantId) {
