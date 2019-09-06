@@ -43,22 +43,15 @@ export class ChatRoomPage implements OnInit {
         public userData: UserDataService,
         public params: ParamsService,
         public events: Events) {
+    }
+    ionViewDidEnter() {
         this.tabBarElement = document.querySelector('#tabs .tabbar');
         let paramSent = this.params.getParams();
         this.friend = paramSent.friend;
-    }
-    ionViewWillEnter() {
         console.log("onPageWillEnter");
         this.events.subscribe('notification:received', (message) => {
-            if (message.type == "user_message") {
-                this.receiveMessage(message);
-            }
-            // user and time are the same arguments passed in `events.publish(user, time)`
+            this.receiveMessage(message);
         });
-        //this.tabBarElement.style.display = 'none';
-
-    }
-    ionViewDidEnter() {
         this.page = 0;
         console.log("using ionViewDidEnter", this.lastId);
         console.log("Friend", this.friend);
@@ -78,18 +71,14 @@ export class ChatRoomPage implements OnInit {
             let objectId = "food";
             this.getSupportAgent(typeObject, objectId);
         }
-
     }
 
-    ionViewWillLeave() {
+    ionViewDidLeave() {
         console.log("onPageWillLeave");
         //this.tabBarElement.style.display = 'flex';
         this.events.unsubscribe('notification:received');
     }
 
-    ionViewDidLoad() {
-
-    }
     checkAddMessage(id) {
         for (let item in this.messages) {
             if (id == this.messages[item].id) {

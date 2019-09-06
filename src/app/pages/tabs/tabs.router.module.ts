@@ -51,11 +51,20 @@ const routes: Routes = [
                     },
                     {
                         path: ':objectId',
-                        loadChildren: '../contact-detail/contact-detail.module#ContactDetailPageModule'
+                        children: [
+                            {
+                                path: '',
+                                loadChildren: '../contact-detail/contact-detail.module#ContactDetailPageModule'
+                            },
+                            {
+                                path: 'chat',
+                                loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                            }
+                        ]
                     },
-                    
+
                 ]
-            },{
+            }, {
                 path: 'groups',
                 children: [
                     {
@@ -64,7 +73,16 @@ const routes: Routes = [
                     },
                     {
                         path: ':objectId',
-                        loadChildren: '../group-detail/group-detail.module#GroupDetailPageModule'
+                        children: [
+                            {
+                                path: '',
+                                loadChildren: '../group-detail/group-detail.module#GroupDetailPageModule'
+                            },
+                            {
+                                path: 'chat',
+                                loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                            }
+                        ]
                     }
                 ]
             },
@@ -92,6 +110,10 @@ const routes: Routes = [
                                     {
                                         path: 'products',
                                         loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
+                                    },
+                                    {
+                                        path: 'chat',
+                                        loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
                                     },
                                     {
                                         path: 'book',
