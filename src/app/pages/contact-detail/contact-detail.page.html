@@ -11,9 +11,15 @@
                 <img [src]="">
             </ion-avatar>
             <h2>{{mainContact.firstName}} {{mainContact.lastName}}</h2>
+        </ion-item>
+        <ion-item>
             <p>{{mainContact.email}}</p>
+        </ion-item>
+        <ion-item>
             <p>{{mainContact.cellphone}}</p>
-            <ion-button clear class="btn success" (click)="openItem(item)">View</ion-button>
+        </ion-item>
+        <ion-item>
+            <ion-button clear class="btn success" (click)="chat()">Chat</ion-button>
         </ion-item>
 
 

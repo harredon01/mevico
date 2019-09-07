@@ -51,6 +51,12 @@
             </ion-item>
         </ion-item>
         <ion-item>
+            <ion-item (click)="openItem('/tabs/settings/chat')">
+                    <img src="assets/icon/contrasena.svg" />
+                    <h2>{{ 'SETTINGS.CHAT' | translate }}</h2>
+            </ion-item>
+        </ion-item>
+        <ion-item>
             <ion-item (click)="logout()">
                     <img src="assets/icon/cerrar-sesion.svg" />
                     <h2>{{ 'SETTINGS.LOGOUT' | translate }}</h2>

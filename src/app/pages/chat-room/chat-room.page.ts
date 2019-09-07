@@ -98,12 +98,15 @@ export class ChatRoomPage implements OnInit {
         this.page++;
         this.showLoader();
         let where = "";
+        if(this.type=="user_message"){
+            where = "type=user&to_id=" + this.objectId + "&page=" + this.page 
+        } else if(this.type=="group_message"){
+            where = "type=group&to_id=" + this.objectId + "&page=" + this.page 
+        }
         if (this.lastId) {
             console.log("using id", this.lastId);
-            where = "type=user&to_id=" + this.objectId + "&page=" + this.page + "&id_after=" + this.lastId;
-        } else {
-            where = "type=user&to_id=" + this.objectId + "&page=" + this.page;
-        }
+            where = where + "&id_after=" + this.lastId;
+        } 
 
         this.chats.getServerChatDetail(where).subscribe((results: any) => {
             this.dismissLoader();

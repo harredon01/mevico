@@ -28,6 +28,9 @@ export class GroupDetailPage implements OnInit {
         let params = this.params.getParams();
         this.mainGroup = params.item;
     }
+    chat() {
+        this.navCtrl.navigateForward('tabs/groups/'+this.mainGroup.id+'/chat'); 
+    }
 
     leaveGroup() {
         this.showLoader();

@@ -226,6 +226,10 @@ const routes: Routes = [
                         loadChildren: '../codes/codes.module#CodesPageModule'
                     },
                     {
+                        path: 'chat',
+                        loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                    },
+                    {
                         path: 'password',
                         loadChildren: '../password/password.module#PasswordPageModule'
                     },
