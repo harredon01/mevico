@@ -23,6 +23,10 @@ ngOnInit() {
             let params ={"type":"Merchant","objectId":-1,"target":"customer","name":"personal"};
             this.params.setParams(params);
         }
+        if(item=="/tabs/settings/chat"){
+            let params ={"type":"platform","objectId":"food","target":"customer","name":"Support"};
+            this.params.setParams(params);
+        }
         this.navCtrl.navigateForward(item);
     }
     logout() {

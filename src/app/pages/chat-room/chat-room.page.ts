@@ -1,6 +1,7 @@
 import {Component, OnInit,ViewChild, ChangeDetectorRef} from '@angular/core';
 import {Friend} from "../../models/friend";
 import {Message} from "../../models/message";
+import { IonInfiniteScroll } from '@ionic/angular';
 import {NavController, ToastController, LoadingController,Events,AlertController, IonContent} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {UserDataService} from '../../services/user-data/user-data.service';
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./chat-room.page.scss'],
 })
 export class ChatRoomPage implements OnInit {
-
+    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     @ViewChild(IonContent) content: IonContent;
     private friend: Friend = new Friend({});
     private messages: Message[] = [];
@@ -67,8 +68,14 @@ export class ChatRoomPage implements OnInit {
             this.objectId = this.friend.id;
             this.getMessages(true);
         } else {
-            let typeObject = "platform";
-            let objectId = "food";
+            let typeObject = paramSent.type;
+            let objectId =  paramSent.objectId;
+            if (typeObject=="group"){
+                this.type = "group_message";
+            } else {
+                this.type = "user_message";
+            }
+            
             this.getSupportAgent(typeObject, objectId);
         }
     }
@@ -103,10 +110,10 @@ export class ChatRoomPage implements OnInit {
         } else if(this.type=="group_message"){
             where = "type=group&to_id=" + this.objectId + "&page=" + this.page 
         }
-        if (this.lastId) {
-            console.log("using id", this.lastId);
-            where = where + "&id_after=" + this.lastId;
-        } 
+//        if (this.lastId) {
+//            console.log("using id", this.lastId);
+//            where = where + "&id_after=" + this.lastId;
+//        } 
 
         this.chats.getServerChatDetail(where).subscribe((results: any) => {
             this.dismissLoader();
@@ -137,8 +144,10 @@ export class ChatRoomPage implements OnInit {
             if (results.page < results.last_page) {
                 this.messagemore = true;
             } else {
+                //this.infiniteScroll.disabled;
                 this.messagemore = false;
             }
+            console.log("Scroll to bottom", scroll);
             if (scroll) {
                 this.scrollToBottom();
             }
@@ -192,17 +201,17 @@ export class ChatRoomPage implements OnInit {
             setTimeout(() => {
                 this.getMessages(false);
                 console.log('Async operation has ended');
-                infiniteScroll.complete();
+                infiniteScroll.target.complete();
             }, 500);
         } else {
-            infiniteScroll.complete();
+            infiniteScroll.target.complete();
         }
 
     }
 
     scrollToBottom() {
         setTimeout(() => {
-            this.content.scrollToBottom(300);
+            //this.content.scrollToBottom(300);
         }, 400);
     }
 
