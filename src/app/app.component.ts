@@ -86,6 +86,17 @@ export class AppComponent {
             this.initTranslate("es");
             this.alerts.setLanguage("es");
         });
+        this.platform.resume.subscribe(() => {
+            if (this.items.length > 0) {
+                let last_notif = this.items[0].notification_id;
+                this.updateAlerts(1, last_notif);
+            } else {
+                this.getAlerts();
+            }
+            console.log('****UserdashboardPage RESUMED****');
+            this.oneSignal.clearOneSignalNotifications();
+            //this.performManualUpdate();
+        });
     }
     private handlerNotifications() {
         this.oneSignal.startInit('c418a5d1-0e20-4504-ba3f-7a521949be49', 'food-1535811427713');
@@ -143,7 +154,7 @@ export class AppComponent {
             });
             console.log("Chat room container", friend);
             this.params.setParams({friend});
-            this.nav.navigateForward('tabs/chat');
+            this.nav.navigateForward('tabs/settings/chat');
         } else if (notification.type == "support_message" || notification.type == "program_reminder") {
             let destinyUrl = notification.payload.utl;
             let destinyPayload = notification.payload.page_payload;

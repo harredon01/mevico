@@ -76,6 +76,16 @@ export class MerchantDetailPage implements OnInit {
         
         this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/ratings");
     }
+    chat() {
+        let params = {
+            "type": "Merchant",
+            "objectId": this.merchant.id,
+            "name": this.merchant.name
+        };
+        this.params.setParams(params);
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/chat");
+    }
     myBookings() {
         let params = {
             "type": "Merchant",
@@ -83,8 +93,7 @@ export class MerchantDetailPage implements OnInit {
             "target":"bookable"
         };
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
         this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/bookings");
     }
     showProducts() {
