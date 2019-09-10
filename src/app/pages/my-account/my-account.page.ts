@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, LoadingController} from '@ionic/angular';
@@ -7,12 +7,12 @@ import {ApiService} from '../../services/api/api.service';
 import {UserService} from '../../services/user/user.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 @Component({
-  selector: 'app-my-account',
-  templateUrl: './my-account.page.html',
-  styleUrls: ['./my-account.page.scss'],
+    selector: 'app-my-account',
+    templateUrl: './my-account.page.html',
+    styleUrls: ['./my-account.page.scss'],
 })
 export class MyAccountPage implements OnInit {
-// The account fields for the login form.
+    // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
     account: {
@@ -43,6 +43,7 @@ export class MyAccountPage implements OnInit {
 
     registrationForm: FormGroup;
     submitAttempt: boolean = false;
+    languageLoaded: boolean = false;
     language: any;
 
     // Our translated text strings
@@ -50,7 +51,7 @@ export class MyAccountPage implements OnInit {
     private updateStartString: string;
     private loginErrorString: string;
     loading: any;
-  constructor(public navCtrl: NavController,
+    constructor(public navCtrl: NavController,
         public user: UserService,
         public userData: UserDataService,
         public toastCtrl: ToastController,
@@ -117,6 +118,10 @@ export class MyAccountPage implements OnInit {
             } else {
                 this.language = "es";
             }
+            let vm = this;
+            setTimeout(function () {
+                vm.languageLoaded = true;
+            }, 1000);
         });
     }
     dismissLoader() {
@@ -126,9 +131,9 @@ export class MyAccountPage implements OnInit {
             this.spinnerDialog.hide();
         }
     }
-    
+
     ngOnInit() {
-  }
+    }
 
     doUpdate() {
         this.showLoader();
@@ -168,24 +173,26 @@ export class MyAccountPage implements OnInit {
         }
     }
     changeLanguage() {
-        console.log("Change language", this.language);
-        if (document.URL.startsWith('http')) {
-            this.loading = this.loadingCtrl.create({
-                spinner: 'crescent',
-                backdropDismiss: true
-            }).then(toast => toast.present());
-        } else {
-            this.spinnerDialog.show();
+        if (this.languageLoaded) {
+            console.log("Change language", this.language);
+            if (document.URL.startsWith('http')) {
+                this.loading = this.loadingCtrl.create({
+                    spinner: 'crescent',
+                    backdropDismiss: true
+                }).then(toast => toast.present());
+            } else {
+                this.spinnerDialog.show();
+            }
+            this.userData.setLanguage(this.language);
+            let vm = this;
+            setTimeout(function () {
+                vm.translateService.use(vm.language);
+                vm.translateService.setDefaultLang(vm.language);
+                window.location.reload();
+            }, 600);
         }
-        this.userData.setLanguage(this.language);
-        let vm = this;
-        setTimeout(function () {
-            vm.translateService.use(vm.language);
-            vm.translateService.setDefaultLang(vm.language);
-            window.location.reload();
-        }, 600);
     }
 
-  
+
 
 }

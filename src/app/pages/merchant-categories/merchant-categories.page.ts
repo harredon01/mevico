@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
-import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
+import {NavController, ModalController, ToastController, LoadingController,Events} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {CartService} from '../../services/cart/cart.service'
+import {OrderDataService} from '../../services/order-data/order-data.service'
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {ApiService} from '../../services/api/api.service';
@@ -24,11 +26,20 @@ export class MerchantCategoriesPage implements OnInit {
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
         public translateService: TranslateService,
-        private spinnerDialog: SpinnerDialog) {}
+        public cartProvider: CartService,
+        public orderData: OrderDataService,
+        private spinnerDialog: SpinnerDialog,
+        public events: Events) {}
 
     ngOnInit() {
         this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
             this.categoriesErrorGet = value;
+        });
+        this.getCart();
+        this.events.publish("authenticated");
+        this.events.subscribe('cart:orderFinished', () => {
+            this.clearCart(); 
+            // user and time are the same arguments passed in `events.publish(user, time)`
         });
         this.getItems();
     }
@@ -85,6 +96,30 @@ export class MerchantCategoriesPage implements OnInit {
         } else {
             this.spinnerDialog.show(null, this.categoriesErrorGet);
         }
+    }
+    getCart() {
+        this.cartProvider.getCheckoutCart().subscribe((resp) => {
+            if (resp) {
+                console.log("getCart", resp);
+                this.orderData.cartData = resp;
+            }
+        }, (err) => {
+            console.log("getCartError", err);
+            this.orderData.cartData = null;
+            this.api.handleError(err);
+        });
+    }
+    clearCart() {
+        this.cartProvider.clearCart().subscribe((resp) => {
+            if (resp) {
+                console.log("clearCart", resp);
+                this.orderData.cartData = null;
+            }
+        }, (err) => {
+            console.log("clearCart", err);
+            this.orderData.cartData = null;
+            this.api.handleError(err);
+        });
     }
 
 }

@@ -40,7 +40,7 @@
                 <button class="btn-secondary" (click)="showMore(item)" *ngIf="merchant==1299" >{{  item.description_more ? showLessText: showMoreText}}
                 </button>
                 <ion-item > 
-                    <ion-label>{{ 'PRODUCTS.MEALS_PEOPLE' | translate }}</ion-label> 
+                    <ion-label>{{ 'PRODUCTS.VARIANTS' | translate }}</ion-label> 
                     <ion-select [(ngModel)]="item.variant_id" [disabled]="item.inCart" (ionChange)="selectVariant(item)">
                         <ion-select-option *ngFor="let variant of item.variants" [value]='variant.id'>{{variant.description}} -
                             {{variant.unitPrice | currency }}</ion-select-option>
