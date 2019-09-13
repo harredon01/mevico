@@ -19,6 +19,7 @@ export class Merchant {
     item_id: any;
     owner: boolean=false;
     availabilities: any[];
+    attributes: any[];
     ratings: any[];
     files: any[];
 

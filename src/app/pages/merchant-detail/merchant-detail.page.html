@@ -46,11 +46,11 @@
             <div class="bg-white overview">
                 <p class="text-danger header">Overview</p>
                 <ion-row>
-                    <ion-col size="6">
-                        <div>
+                    <ion-col size="6" *ngIf="merchant.attributes.experience">
+                        <div *ngFor="let experience of merchant.attributes.experience">
                             <ion-icon name="md-medkit"></ion-icon>
-                            <p>Experience</p>
-                            <h2>18 Years</h2>
+                            <p>{{experience.name}}</p>
+                            <h2>{{experience.years}} Years</h2>
                         </div>
                     </ion-col>
                     <ion-col size="6">
@@ -84,112 +84,26 @@
                     <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/profile3.png"></div>
                 </div>
             </div>
-            <div class="bg-white overview">
+            <div class="bg-white overview" *ngIf="merchant.attributes.services">
                 <p class="text-danger header">Services</p>
                 <ion-row>
-                    <ion-col size="6">
+                    <ion-col size="6" *ngFor="let service of merchant.attributes.services">
                         <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Hypertension Treatment</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Health Checkup (General)</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>COPD Treatment</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Fever Treatment</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Diabetes Managment</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Non Intereventional Cardiology</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>ECG</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Diabetology</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Obesity Treatment</h3>
+                            <img src="{{service.icon}}">
+                            <h3>{{service.name}}</h3>
                         </div>
                     </ion-col>
                 </ion-row>
                 <br>
             </div>
-            <div class="bg-white overview">
+            <div class="bg-white overview" *ngIf="merchant.attributes.specializations">
                 <p class="text-danger header">Specialization</p>
                 <ion-row>
-                    <ion-col size="12">
+                    <ion-col size="12" *ngFor="let specialization of merchant.attributes.specializations">
                         <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Gernal Physican</h3>
+                            <img src="{{specialization.icon}}">
+                            <h3>{{specialization.name}}</h3>
                         </div>
-                    </ion-col>
-                    <ion-col size="12">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Family Physican</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="12">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Cardiologist</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="12">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Consultant Physican</h3>
-                        </div>
-                    </ion-col>
-                    <ion-col size="12">
-                        <div>
-                            <img src="assets/imgs/list-icon.png">
-                            <h3>Diabetologist</h3>
-                        </div>
-                    </ion-col>
-                </ion-row>
-                <br>
-            </div>
-            <div class="bg-white overview practics">
-                <p class="text-danger header">Also Practics at</p>
-                <ion-row>
-                    <ion-col size="12">
-                        <h5>Health Roots Clinics</h5>
-                        <p>1124, Edison Street, Willington, Newyork </p>
-                    </ion-col>
-                    <ion-col size="12">
-                        <h5>Appolo Hospital</h5>
-                        <p>JJ towers, Johnson street, Hemilton, New york.</p>
                     </ion-col>
                 </ion-row>
                 <br>
