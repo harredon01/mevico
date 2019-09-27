@@ -26,6 +26,15 @@ const routes: Routes = [
                 ]
             },
             {
+                path: 'opentok',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../opentok/opentok.module#OpentokPageModule'
+                    }
+                ]
+            },
+            {
                 path: 'routes',
                 children: [
                     {
