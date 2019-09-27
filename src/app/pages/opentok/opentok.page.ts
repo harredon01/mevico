@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
+import {BookingService} from '../../services/booking/booking.service';
+//import * as OT from '@opentok/client';
 declare var OT: any;
 @Component({
     selector: 'app-opentok',
@@ -11,10 +13,13 @@ export class OpentokPage implements OnInit {
     session: any;
     publisher: any;
     apiKey: any;
+    bookingId: any;
     sessionId: string;
     token: string;
 
-    constructor(public navCtrl: NavController, public params: ParamsService) {
+    constructor(public navCtrl: NavController, 
+        public params: ParamsService,
+        public booking: BookingService) {
         this.apiKey = '';
         this.sessionId = '';
         this.token = '';
@@ -26,6 +31,7 @@ export class OpentokPage implements OnInit {
         this.apiKey = params.apiKey;
         this.sessionId = params.sessionId;
         this.token = params.token;
+        this.bookingId = params.bookingId;
     }
 
     startCall() {
@@ -42,6 +48,8 @@ export class OpentokPage implements OnInit {
                 OT.updateViews();
             },
             sessionConnected: (event: any) => {
+                let container = {"booking_id": this.bookingId,"connection_id":this.session.connection.connectionId};
+                this.booking.registerConnection(container);
                 this.session.publish(this.publisher);
             }
         });
