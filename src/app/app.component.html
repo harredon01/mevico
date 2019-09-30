@@ -15,7 +15,7 @@
             <ion-content>
                 <ion-list>
                     <ion-menu-toggle auto-hide="false" *ngFor="let p of items" (click)="openNotification(p)">
-                        <img src="https://s3.us-east-2.amazonaws.com/gohife/public/icons/{{p.type}}.svg" />
+                                     <img width="40" src="https://s3.us-east-2.amazonaws.com/gohife/public/icons/{{p.type}}.svg" />
                         <span>{{p.created_at | date}}</span><br/>
                         {{p.subject}}
                     </ion-menu-toggle>

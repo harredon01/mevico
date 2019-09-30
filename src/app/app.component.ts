@@ -110,6 +110,7 @@ export class AppComponent {
         this.oneSignal.handleNotificationReceived()
             .subscribe(jsonData => {
                 let message = jsonData.payload.additionalData;
+                console.log("Notification received",message);
                 message.subject_es = message.subject;
                 message.created_at.date = message.created_at.date.replace(" ", "T");
                 message.created_at = new Date(message.created_at.date);
@@ -137,6 +138,7 @@ export class AppComponent {
         this.nav.navigateRoot(pageUrl);
     }
     openNotification(notification) {
+        console.log("openNotification",notification);
         // Reset the content nav to have just this page
         // we wouldn't want the back button to show in this scenario
         if (notification.type == "order_status" || notification.type == "payment_status" || notification.type == "split_order_payment" || notification.type == "payment_successful") {

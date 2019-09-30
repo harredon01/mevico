@@ -15,6 +15,7 @@
 
 <ion-content class="bg-light">
     <div class="quick-link bg-white">
+        <ion-button class="button" (click)="openMenu()" expand="block">Notifs</ion-button>
         <p class="text-danger">Categorias</p>
         <ion-list>
             <ion-item (click)="openItem(item)" *ngFor="let item of items">

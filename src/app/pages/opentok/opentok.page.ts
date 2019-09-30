@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {NavController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
 import {BookingService} from '../../services/booking/booking.service';
-//import * as OT from '@opentok/client';
-declare var OT: any;
+import * as OT from '@opentok/client';
+//declare var OT: any;
 @Component({
     selector: 'app-opentok',
     templateUrl: './opentok.page.html',
@@ -17,21 +17,21 @@ export class OpentokPage implements OnInit {
     sessionId: string;
     token: string;
 
-    constructor(public navCtrl: NavController, 
+    constructor(public navCtrl: NavController,
         public params: ParamsService,
         public booking: BookingService) {
-        this.apiKey = '';
+        this.apiKey = '46389642';
         this.sessionId = '';
         this.token = '';
     }
     ngOnInit() {
     }
-    ngOnLoad() {
+    ionViewDidEnter() {
         let params = this.params.getParams();
-        this.apiKey = params.apiKey;
+        console.log("Call params", params);
         this.sessionId = params.sessionId;
         this.token = params.token;
-        this.bookingId = params.bookingId;
+        this.bookingId = params.booking_id;
     }
 
     startCall() {
@@ -41,15 +41,20 @@ export class OpentokPage implements OnInit {
         this.session.on({
             streamCreated: (event: any) => {
                 this.session.subscribe(event.stream, 'subscriber');
-                OT.updateViews();
+
             },
             streamDestroyed: (event: any) => {
                 console.log(`Stream ${event.stream.name} ended because ${event.reason}`);
-                OT.updateViews();
+
             },
             sessionConnected: (event: any) => {
-                let container = {"booking_id": this.bookingId,"connection_id":this.session.connection.connectionId};
-                this.booking.registerConnection(container);
+                let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};
+                this.booking.registerConnection(container).subscribe((resp: any) => {
+                    console.log("Register connection result",resp);
+
+                }, (err) => {
+
+                });;
                 this.session.publish(this.publisher);
             }
         });

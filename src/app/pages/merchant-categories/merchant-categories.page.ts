@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
-import {NavController, ModalController, ToastController, LoadingController,Events} from '@ionic/angular';
+import {NavController, ModalController, ToastController, LoadingController, Events, MenuController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {CartService} from '../../services/cart/cart.service'
 import {OrderDataService} from '../../services/order-data/order-data.service'
@@ -22,6 +22,7 @@ export class MerchantCategoriesPage implements OnInit {
         public params: ParamsService,
         public userData: UserDataService,
         public api: ApiService,
+        public menu: MenuController,
         public toastCtrl: ToastController,
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
@@ -38,7 +39,7 @@ export class MerchantCategoriesPage implements OnInit {
         this.getCart();
         this.events.publish("authenticated");
         this.events.subscribe('cart:orderFinished', () => {
-            this.clearCart(); 
+            this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
         this.getItems();
@@ -69,8 +70,12 @@ export class MerchantCategoriesPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     openItem(item: any) {
-        this.params.setParams({"item":item});
-        this.navCtrl.navigateForward('tabs/categories/'+item.id); 
+        this.params.setParams({"item": item});
+        this.navCtrl.navigateForward('tabs/categories/' + item.id);
+    }
+    openMenu() {
+        this.menu.enable(true, 'end');
+        this.menu.open('end');
     }
     searchItems(ev: any) {
         // set val to the value of the searchbar
