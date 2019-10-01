@@ -40,12 +40,20 @@ export class OpentokPage implements OnInit {
 
         this.session.on({
             streamCreated: (event: any) => {
+                console.log(`Stream created`);
                 this.session.subscribe(event.stream, 'subscriber');
 
             },
             streamDestroyed: (event: any) => {
                 console.log(`Stream ${event.stream.name} ended because ${event.reason}`);
 
+            },
+            connectionCreated: (event: any) => {
+                console.log(`connectionCreated`);
+
+            },
+            connectionDestroyed: (event: any) => {
+                console.log(`connection ended because ${event.reason}`);
             },
             sessionConnected: (event: any) => {
                 let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};

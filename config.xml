@@ -3,7 +3,7 @@
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -107,6 +107,6 @@
     </plugin>
     <plugin name="cordova-plugin-contacts" spec="^3.0.1" />
     <plugin name="onesignal-cordova-plugin" spec="2.4.7" />
-    <plugin name="cordova-plugin-opentok" spec="^3.4.3" />
     <engine name="android" spec="7.1.4" />
+    <plugin name="cordova-plugin-opentok" spec="^3.4.3" />
 </widget>
