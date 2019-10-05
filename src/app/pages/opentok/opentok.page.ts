@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {NavController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
 import {BookingService} from '../../services/booking/booking.service';
-import * as OT from '@opentok/client';
-//declare var OT: any;
+//import * as OT from '@opentok/client';
+declare var OT: any;
 @Component({
     selector: 'app-opentok',
     templateUrl: './opentok.page.html',
@@ -35,9 +35,11 @@ export class OpentokPage implements OnInit {
     }
 
     startCall() {
+        console.log("Starting call",this.apiKey,this.sessionId)
         this.session = OT.initSession(this.apiKey, this.sessionId);
-        this.publisher = OT.initPublisher('publisher');
+        console.log("Session started", this.session)
 
+        this.publisher = OT.initPublisher('publisher');
         this.session.on({
             streamCreated: (event: any) => {
                 console.log(`Stream created`);
@@ -58,7 +60,7 @@ export class OpentokPage implements OnInit {
             sessionConnected: (event: any) => {
                 let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};
                 this.booking.registerConnection(container).subscribe((resp: any) => {
-                    console.log("Register connection result",resp);
+                    console.log("Register connection result", resp);
 
                 }, (err) => {
 
