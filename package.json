@@ -36,7 +36,7 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@opentok/client": "^2.16.3",
-    "cordova-android": "7.1.4",
+    "cordova-android": "^8.1.0",
     "cordova-background-geolocation-lt": "3.0.7",
     "cordova-plugin-background-fetch": "5.5.0",
     "cordova-plugin-contacts": "^3.0.1",
@@ -111,7 +111,9 @@
       "cordova-plugin-geolocation": {},
       "cordova-plugin-googlemaps": {
         "PLAY_SERVICES_VERSION": "15.0.1",
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+        "ANDROID_SUPPORT_V4_VERSION": "27.+",
+        "API_KEY_FOR_ANDROID": "AIzaSyDDwPkLjnHj9rZ7M1hk9Z7HMi-ENu47sm4",
+        "API_KEY_FOR_IOS": "AIzaSyBx9ykkz-m1-E-viMdFUh_Q9g0FaEP-K5I"
       },
       "cordova-plugin-opentok": {},
       "cordova-plugin-contacts": {}

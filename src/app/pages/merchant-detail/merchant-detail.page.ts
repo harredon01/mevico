@@ -28,7 +28,7 @@ export class MerchantDetailPage implements OnInit {
         public merchantsServ: MerchantsService, 
         public params: ParamsService) {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
-        this.merchant = new Merchant({"availabilities":[]});
+        this.merchant = new Merchant({"availabilities":[],"attributes":[]});
         this.getMerchant(merchantId);
     }
     async openCart() {
@@ -59,6 +59,7 @@ export class MerchantDetailPage implements OnInit {
                 container.owner = true;
             }
             this.merchant = new Merchant(container);
+            console.log("attributes",this.merchant.attributes);
         }, (err) => {
             console.log("Error getMerchant");
             this.api.handleError(err);
