@@ -51,13 +51,18 @@
     width: 100%;
     height: 120px;
     position: relative;
-    margin-top: -60px;
+    //Victor
+    // margin-top: -60px;
+    //Fin Victor
     align-items: center;
     padding-right: 20px;
     img {
         width: 95px;
-        height: 95px;
-        margin: 0 20px;
+        height: 95px;        
+        //Victor
+        margin: calc(-50% + 25px) 20px 0;
+        object-fit: cover;
+        //Fin Victor
     }
     h2 {
         font-size: 1.5rem;
@@ -69,7 +74,9 @@
         font-size: 1.2rem;
         font-weight: 300;
         margin: 0;
-        margin-bottom: 30px;
+        //Victor
+        //margin-bottom: 30px;
+        //Fin Victor
     }
     h3 {
         font-size: 1.1rem;

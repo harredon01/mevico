@@ -1,5 +1,8 @@
 <ion-header>
     <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
         <ion-title>
             <ion-select [(ngModel)]="category" interface="popover" style="padding-left: 0;" (ionChange)="searchCategory()">
                 <ion-select-option value="{{category.id}}" *ngFor="let category of categoryItems">{{category.name}}</ion-select-option>

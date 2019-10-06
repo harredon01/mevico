@@ -1,10 +1,11 @@
 <ion-header class="section__header">
     <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
         <ion-title>{{ 'PRODUCTS.TITLE' | translate }}</ion-title>
-        <div class="content-car">
-            <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
-            <ion-button icon-only clear (click)="openCart()"></ion-button>
-        </div>
+        <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
+        <ion-button icon-only clear (click)="openCart()"></ion-button>
     </ion-toolbar>
 </ion-header>
 

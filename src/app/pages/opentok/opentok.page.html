@@ -1,13 +1,16 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>opentok</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>opentok</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <div style="text-align:center">
-    <button (click)="startCall()">Start OpenTok Call</button>
-  </div>
-  <div id="subscriber"></div>
-  <div id="publisher"></div> 
+    <div style="text-align:center">
+        <button (click)="startCall()">Start OpenTok Call</button>
+    </div>
+    <div id="subscriber"></div>
+    <div id="publisher"></div> 
 </ion-content>
