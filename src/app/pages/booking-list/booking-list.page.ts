@@ -71,7 +71,7 @@ export class BookingListPage implements OnInit {
         let selectedDate = new Date();
         let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate();
         let container = {
-            "query": this.query,
+            "query": this.query, 
             "type": this.typeObj,
             "object_id": this.objectId,
             "from": strDate,

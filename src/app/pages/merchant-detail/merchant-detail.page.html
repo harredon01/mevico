@@ -125,7 +125,7 @@
                 </ion-row>
             </div>
             <br><br>
-            <ion-button expand="full" class="btn success fixed" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0"><ion-icon name="md-calendar"></ion-icon>Book Appointment now</ion-button>
+            <ion-button expand="full" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0"><ion-icon name="md-calendar"></ion-icon>Book Appointment now</ion-button>
         </ion-list>
         <ion-list *ngSwitchCase="'feedback'">
 

@@ -480,7 +480,11 @@
         "PASSWORD": "Password",
         "LOGOUT": "Log out",
         "SUPPORT":"Support",
-        "TUTORIAL":"Important Information"
+        "TUTORIAL":"Important Information",
+        "MEDICAL":"My medical profile",
+        "CODES":"My security codes",
+        "BOOKINGS":"Bookings",
+        "CHAT":"Customer Services"
     },
     "SUPPORT": {
         "MESSAGE": "Your message"

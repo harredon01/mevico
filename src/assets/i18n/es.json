@@ -480,7 +480,11 @@
         "PASSWORD": "Contraseña",
         "LOGOUT": "Cerrar Sesión",
         "SUPPORT": "Soporte",
-        "TUTORIAL": "Información importante"
+        "TUTORIAL": "Información importante",
+        "MEDICAL":"Mi perfil médico",
+        "CODES":"Mis códigos de seguridad",
+        "BOOKINGS":"Reservas",
+        "CHAT":"Servicio al cliente"
     },
     "SUPPORT": {
         "MESSAGE": "Tu mensaje"
