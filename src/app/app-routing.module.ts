@@ -39,6 +39,8 @@ const routes: Routes = [
   { path: 'select-contacts', loadChildren: './pages/select-contacts/select-contacts.module#SelectContactsPageModule' },
   { path: 'import-contacts', loadChildren: './pages/import-contacts/import-contacts.module#ImportContactsPageModule' },
   { path: 'opentok', loadChildren: './pages/opentok/opentok.module#OpentokPageModule' },
+  { path: 'items', loadChildren: './pages/items/items.module#ItemsPageModule' },
+  { path: 'item-detail', loadChildren: './pages/item-detail/item-detail.module#ItemDetailPageModule' },
 ];
 
 @NgModule({

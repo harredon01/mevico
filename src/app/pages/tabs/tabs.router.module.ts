@@ -142,6 +142,19 @@ const routes: Routes = [
                                         ]
                                     },
                                     {
+                                        path: 'items',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: '../items/items.module#ItemsPageModule',
+                                            },
+                                            {
+                                                path: ':itemId',
+                                                loadChildren: '../item-detail/item-detail.module#ItemDetailPageModule',
+                                            }
+                                        ]
+                                    },
+                                    {
                                         path: 'ratings',
                                         loadChildren: '../comments/comments.module#CommentsPageModule',
                                     }
@@ -219,6 +232,19 @@ const routes: Routes = [
                             {
                                 path: ':objectId',
                                 loadChildren: '../payment-detail/payment-detail.module#PaymentDetailPageModule'
+                            }
+                        ]
+                    },
+                    {
+                        path: 'items',
+                        children: [
+                            {
+                                path: '',
+                                loadChildren: '../items/items.module#ItemsPageModule'
+                            },
+                            {
+                                path: ':objectId',
+                                loadChildren: '../item-detail/item-detail.module#ItemDetailPageModule'
                             }
                         ]
                     },
