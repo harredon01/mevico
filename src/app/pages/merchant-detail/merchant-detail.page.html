@@ -21,7 +21,7 @@
 <ion-content>
     <img src="assets/imgs/background-1.jpg" style="width: 100%;display: block;">
     <div class="doctor-detail">
-        <img src="assets/imgs/dentist-1.jpg">
+        <img src="{{merchant.icon}}">
         <div>
             <h2 class="text-white">{{merchant.name}}</h2>
             <p class="text-white">{{merchant.type}}</p>
@@ -30,12 +30,29 @@
         </div>
     </div>
     <div class="doctor-detail__booking">
-        <div class="doctor-bookings">myBookings</div>
-        <div class="doctor-detail__buttons">
-            <ion-button class="btn success" (click)="showProducts()" *ngIf="!merchant.owner" ><ion-icon name="cart"></ion-icon>Store</ion-button>
-            <ion-button class="btn success" (click)="chat()" ><ion-icon name="chatbubbles"></ion-icon>Chat</ion-button>
-            <ion-button class="btn success" (click)="myBookings()" *ngIf="merchant.owner"><ion-icon name="calendar"></ion-icon>Mis Reservas</ion-button>
-            <ion-button color="tertiary" class="btn success" (click)="appointmentbook()" *ngIf="!merchant.owner"><ion-icon name="calendar"></ion-icon>Reservar</ion-button>
+        <div class="doctor-menu-title">Menu</div>
+        <div class="doctor-menu-client" *ngIf="!merchant.owner">
+            <ion-list>
+                <ion-item>
+                    <a href="javascript:;" (click)="showProducts()">Productos</a>
+                </ion-item>
+                <ion-item>
+                    <a href="javascript:;" (click)="appointmentbook()">Reservas</a>
+                </ion-item>
+                <ion-item>
+                    <a href="javascript:;" (click)="chat()">Chat</a>
+                </ion-item>
+            </ion-list>
+        </div>
+        <div class="doctor-menu-client" *ngIf="merchant.owner">
+            <ion-list>
+                <ion-item>
+                    <a href="javascript:;" (click)="myItems()">Mis Ordenes</a>
+                </ion-item>
+                <ion-item>
+                    <a href="javascript:;" (click)="myBookings()">Reservas</a>
+                </ion-item>
+            </ion-list>
         </div>
     </div>    
     <div class="defult-tab bg-white">
@@ -96,7 +113,7 @@
                 <p class="text-danger header">Services</p>
                 <ion-row>
                     <ion-col size="6" *ngFor="let service of merchant.attributes.services">
-                        <div>
+                             <div>
                             <img src="{{service.icon}}">
                             <h3>{{service.name}}</h3>
                         </div>
@@ -108,7 +125,7 @@
                 <p class="text-danger header">Specialization</p>
                 <ion-row>
                     <ion-col size="12" *ngFor="let specialization of merchant.attributes.specializations">
-                        <div>
+                             <div>
                             <img src="{{specialization.icon}}">
                             <h3>{{specialization.name}}</h3>
                         </div>

@@ -16,6 +16,7 @@
                 <ion-col class="detail">
                     <small>Appointment date & time</small>
                     <strong>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
+                    <strong>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
                 </ion-col>
                 <ion-col class="option text-success">Reschedule</ion-col>
             </ion-row>
@@ -58,6 +59,6 @@
             </ion-row>
         </ion-card-content>
     </ion-card>
-    <div ><ion-button *ngIf="mainBooking.customer && mainBooking.total_paid==0" full class="btn success" (click)="changeStatusBooking('approved')">Approve</ion-button></div>
-    <div ><ion-button *ngIf="mainBooking.bookable && mainBooking.total_paid==-1" full class="btn success"  (click)="payBooking()">Pay</ion-button></div>
+    <div><ion-button *ngIf="mainBooking.customer && mainBooking.total_paid==-1" full class="btn success" (click)="changeStatusBooking('approved')">Approve</ion-button></div>
+    <div><ion-button *ngIf="mainBooking.bookable && mainBooking.total_paid==0" full class="btn success" (click)="payBooking()">Pay</ion-button></div>
 </ion-content>

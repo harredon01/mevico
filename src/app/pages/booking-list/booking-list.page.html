@@ -32,7 +32,7 @@
     </ion-list>
     <ion-list class="doctor-list">
         <ion-row class="bg-white" (click)="openBooking(booking)" *ngFor="let booking of bookings">
-            <ion-col text-center class="date">
+                 <ion-col text-center class="date">
                 <small>{{booking.starts_at | date :'EE'}}</small>
                 <strong class="text-danger">{{booking.starts_at | date :'d'}}</strong>
                 <small>{{booking.starts_at | date :'h:mm A'}}</small>
@@ -49,4 +49,7 @@
             </ion-col>
         </ion-row>
     </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>

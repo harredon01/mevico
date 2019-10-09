@@ -13,6 +13,7 @@ import {ParamsService} from '../../services/params/params.service';
 })
 export class BookingListPage implements OnInit {
     private bookings: Booking[] = [];
+    private loadMore: boolean = false;
     private bookingObjects: any[] = [];
     private objectId: any;
     private selectedObject: any;
@@ -79,13 +80,17 @@ export class BookingListPage implements OnInit {
         };
         this.booking.getBookingsObject(container).subscribe((data: any) => {
             let results = data.data;
+            if (data.page == data.last_page) {
+                this.loadMore = false;
+            } else {
+                this.loadMore = true;
+            }
             for (let item in results) {
                 results[item].starts_at = new Date(results[item].starts_at);
                 results[item].ends_at = new Date(results[item].ends_at);
                 let newBooking = new Booking(results[item]);
                 this.bookings.push(newBooking);
             }
-            this.bookings = data.data;
             this.dismissLoader();
         }, (err) => {
             console.log("Error getBookings");
@@ -118,7 +123,6 @@ export class BookingListPage implements OnInit {
         } else {
             this.navCtrl.navigateForward('tabs/settings/bookings/' + booking.id);
         }
-
     }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
@@ -136,6 +140,19 @@ export class BookingListPage implements OnInit {
             }).then(toast => toast.present());
         } else {
             this.spinnerDialog.show();
+        }
+    }
+    doInfinite(infiniteScroll) {
+        console.log('Begin async operation');
+        if (this.loadMore) {
+            this.loadMore = false;
+            setTimeout(() => {
+                this.getBookings();
+                console.log('Async operation has ended');
+                infiniteScroll.complete();
+            }, 500);
+        } else {
+            infiniteScroll.complete();
         }
     }
 

@@ -69,7 +69,6 @@ export class PaymentsPage implements OnInit {
         } else {
             infiniteScroll.complete();
         }
-
     }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
