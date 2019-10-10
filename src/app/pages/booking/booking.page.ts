@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, LoadingController, AlertController,ModalController} from '@ionic/angular';
+import {NavController, ToastController, LoadingController, AlertController, ModalController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';
 import {CartService} from '../../services/cart/cart.service';
@@ -95,28 +95,32 @@ export class BookingPage implements OnInit {
             this.submitted = false;
             //this.presentAlertConfirm(data);
             if (data.status == "success") {
-                let booking = data.booking;
-                let extras = {
-                    "type":"Booking",
-                    "id":booking.id,
-                    "name": "Booking appointment for: " + booking.bookable.name,
+                if (data.requires_auth) {
+                    this.presentAlertConfirm();
+                } else {
+                    let booking = data.booking;
+                    let extras = {
+                        "type": "Booking",
+                        "id": booking.id,
+                        "name": "Booking appointment for: " + booking.bookable.name,
+                    }
+                    let item = {
+                        "name": "Booking appointment for: " + booking.bookable.name,
+                        "price": booking.price,
+                        "quantity": booking.quantity,
+                        "tax": 0,
+                        "merchant_id": this.objectId,
+                        "cost": 0,
+                        "extras": extras
+                    };
+                    this.cart.addCustomCartItem(item).subscribe((data: any) => {
+                        this.orderData.cartData = data.cart;
+                        this.openCart();
+                    }, (err) => {
+                        console.log("Error addCustomCartItem");
+                        this.api.handleError(err);
+                    });
                 }
-                let item = {
-                    "name": "Booking appointment for: " + booking.bookable.name,
-                    "price": booking.price,
-                    "quantity": booking.quantity,
-                    "tax": 0,
-                    "merchant_id":this.objectId,
-                    "cost": 0,
-                    "extras":extras
-                };
-                this.cart.addCustomCartItem(item).subscribe((data: any) => {
-                    this.orderData.cartData = data.cart;
-                    this.openCart();
-                }, (err) => {
-                    console.log("Error addCustomCartItem");
-                    this.api.handleError(err);
-                });
             }
         }, (err) => {
             console.log("Error addBookingObject");
@@ -124,7 +128,7 @@ export class BookingPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    
+
     async openCart() {
         let container = {cart: this.orderData.cartData};
         console.log("Opening Cart", container);
@@ -136,35 +140,22 @@ export class BookingPage implements OnInit {
         const {data} = await addModal.onDidDismiss();
         if (data == "Shipping") {
             this.params.setParams({"merchant_id": this.objectId});
-            this.navCtrl.navigateForward('tabs/checkout/shipping/'+this.objectId);
-        }else if (data == "Prepare") {
+            this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.objectId);
+        } else if (data == "Prepare") {
             this.params.setParams({"merchant_id": this.objectId});
             this.navCtrl.navigateForward('tabs/checkout/prepare');
         }
     }
 
-    async presentAlertConfirm(resp: any) {
-        let message = "";
-        let button: any = {};
-        if (resp.status == "success") {
-            message = this.success;
-            let button = {
-                text: 'Ok',
-                handler: () => {
-                    this.navCtrl.back();
-                }
-            }
-        } else {
-            message = this.notAvailable;
-            let button = {
-                text: 'Ok',
-                handler: () => {
-                    console.log('Confirm Okay');
-                }
+    async presentAlertConfirm() {
+        let button = {
+            text: 'Ok',
+            handler: () => {
+                console.log('Confirm Okay');
             }
         }
         const alert = await this.alertsCtrl.create({
-            message: message,
+            message: this.notAvailable,
             buttons: [
                 button
             ]
@@ -210,7 +201,7 @@ export class BookingPage implements OnInit {
         this.endDate.setHours(this.startDate.getHours() + parseInt(this.amount));
     }
     selectDate(selectedDate: Date) {
-        console.log("select date",selectedDate);
+        console.log("select date", selectedDate);
         this.showLoader();
         this.startDate = selectedDate;
         this.selectedDate = selectedDate;
