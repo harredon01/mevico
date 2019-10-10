@@ -157,11 +157,14 @@ export class CheckoutShippingPage implements OnInit {
         console.log("createAddress");
     }
     prepareOrder() {
+        console.log("Prepare order");
         let isMeal = 0;
         if (this.merchant == 1299) {
             isMeal = 1;
         }
-        this.params.setParams({"is_meal": isMeal})
+        let params = {"is_meal": isMeal,"merchant_id": this.merchant};
+        console.log("Prepare order",params);
+        this.params.setParams(params)
         this.navCtrl.navigateForward('tabs/checkout/prepare');
     }
     getAddresses() {

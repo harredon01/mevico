@@ -41,10 +41,10 @@ export class MerchantDetailPage implements OnInit {
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
         if (data == "Shipping") {
-            this.params.setParams({"merchant_id": 1});
-            this.navCtrl.navigateForward('tabs/checkout/shipping');
+            this.params.setParams({"merchant_id": this.merchant.id});
+            this.navCtrl.navigateForward('tabs/checkout/shipping/'+this.merchant.id);
         }else if (data == "Prepare") {
-            this.params.setParams({"merchant_id": 1});
+            this.params.setParams({"merchant_id": this.merchant.id});
             this.navCtrl.navigateForward('tabs/checkout/prepare');
         }
     }

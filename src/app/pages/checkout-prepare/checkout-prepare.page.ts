@@ -27,12 +27,12 @@ export class CheckoutPreparePage implements OnInit {
     merchant: any;
     hasSavedCard: boolean;
     requiresDelivery: boolean;
-    currentItems: Item[];
-    conditions: any[];
+    currentItems: Item[]=[];
+    conditions: any[]=[];
     payment: Payment;
     order: any;
     coupon: any;
-    payers: any[];
+    payers: any[]=[];
     // Our translated text strings
     private cartErrorString: string;
     private couponErrorString: string;
