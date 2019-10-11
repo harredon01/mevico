@@ -33,6 +33,7 @@
     <ion-list class="doctor-list">
         <ion-row class="bg-white" (click)="openBooking(booking)" *ngFor="let booking of bookings">
                  <ion-col text-center class="date">
+                     <strong class="text-danger">{{booking.id }}</strong>
                 <small>{{booking.starts_at | date :'EE'}}</small>
                 <strong class="text-danger">{{booking.starts_at | date :'d'}}</strong>
                 <small>{{booking.starts_at | date :'h:mm A'}}</small>

@@ -149,10 +149,10 @@ export class BookingListPage implements OnInit {
             setTimeout(() => {
                 this.getBookings();
                 console.log('Async operation has ended');
-                infiniteScroll.complete();
+                infiniteScroll.target.complete();
             }, 500);
         } else {
-            infiniteScroll.complete();
+            infiniteScroll.target.complete();
         }
     }
 
