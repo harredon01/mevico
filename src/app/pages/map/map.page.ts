@@ -333,6 +333,13 @@ export class MapPage implements OnInit {
             this.map.triggerDragend(this.mapData.newAddressMarker);
         }
     }
+    handleLocationActive() {
+        console.log("handleAddressActive", this.mapData.activeId);
+        this.mapData.newAddressMarker.setDraggable(true);
+        this.mapData.newAddressMarker.setVisible(true);
+        this.dismissLoader();
+        this.getMyLocationAddressPostal();
+    }
     async completeAddressData() {
         console.log("completeAddressData", this.mapData.address);
         let container;
@@ -369,8 +376,10 @@ export class MapPage implements OnInit {
             this.clearMap();
             console.log("Process complete, address created", data);
         }
-
-
+    }
+    locationConfirmed() {
+        this.navCtrl.back();
+        this.clearMap();
     }
     clearMap() {
         this.mapData.hideAll();

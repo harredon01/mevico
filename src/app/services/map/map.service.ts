@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {MapDataService} from '../map-data/map-data.service';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {Events} from '@ionic/angular';
@@ -17,10 +17,10 @@ import {
     Marker
 } from '@ionic-native/google-maps/ngx';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MapService {
-infoWindow: HtmlInfoWindow;
+    infoWindow: HtmlInfoWindow;
     constructor(public mapData: MapDataService,
         private geolocation: Geolocation,
         public events: Events) {
@@ -47,7 +47,7 @@ infoWindow: HtmlInfoWindow;
         let createdmap = GoogleMaps.create('map_canvas', mapOptions);
         createdmap.on(GoogleMapsEvent.MAP_CLICK).subscribe((params: any[]) => {
             console.log("Map clicked", params[0]);
-            if (this.mapData.activeType == "Address") {
+            if (this.mapData.activeType == "Address" || this.mapData.activeType == "Location") {
                 console.log("Map active ");
                 this.setMarkerPosition(params[0].lat, params[0].lng, this.mapData.newAddressMarker);
                 this.triggerDragend(this.mapData.newAddressMarker);
@@ -178,17 +178,23 @@ infoWindow: HtmlInfoWindow;
             .subscribe(() => {
                 let markerlatlong = container.getPosition();
                 console.log("address marker being dragged", markerlatlong);
-                if (this.mapData.merchantId) {
-                    let result = this.checkIfInRoute(markerlatlong.lat, markerlatlong.lng);
-                    if (result) {
-                        this.shippingAddressInCoverage(markerlatlong);
+                if (this.mapData.activeType == "Address") {
+                    if (this.mapData.merchantId) {
+                        let result = this.checkIfInRoute(markerlatlong.lat, markerlatlong.lng);
+                        if (result) {
+                            this.shippingAddressInCoverage(markerlatlong);
+                        } else {
+                            this.events.publish('map:shippingAddressNotInCoverage');
+                            console.log("Address not in coverage");
+                        }
                     } else {
-                        this.events.publish('map:shippingAddressNotInCoverage');
-                        console.log("Address not in coverage");
+                        this.shippingAddressInCoverage(markerlatlong);
                     }
-                } else {
-                    this.shippingAddressInCoverage(markerlatlong);
+                } else if (this.mapData.activeType == "Location") {
+                    this.mapData.address.lat = markerlatlong.lat;
+                    this.mapData.address.long = markerlatlong.lng;
                 }
+
             });
         container.on(GoogleMapsEvent.MARKER_DRAG_START)
             .subscribe(() => {
