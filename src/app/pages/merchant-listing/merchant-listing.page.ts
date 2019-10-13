@@ -5,6 +5,7 @@ import {IonInfiniteScroll} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ActivatedRoute} from '@angular/router';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
+import {MapDataService} from '../../services/map-data/map-data.service';
 import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
@@ -34,6 +35,7 @@ export class MerchantListingPage implements OnInit {
         private activatedRoute: ActivatedRoute,
         public params: ParamsService,
         public geolocation: Geolocation,
+        public mapData: MapDataService,
         public categories: CategoriesService,
         public merchantsServ: MerchantsService,
         public toastCtrl: ToastController,
@@ -111,6 +113,17 @@ export class MerchantListingPage implements OnInit {
             console.log('Error getting location', error);
 
         });
+    }
+    /**
+     * Prompt the user to add a new item. This shows our ItemCreatePage in a
+     * modal and then adds the new item to our data source if the user created one.
+     */
+    changeSearchAddress() {
+        this.mapData.hideAll();
+        this.mapData.activeType = "Location";
+        this.mapData.activeId = "-1";
+        this.mapData.merchantId = null;
+        this.navCtrl.navigateForward('tabs/map');
     }
     /**
      * Navigate to the detail page for this item.
