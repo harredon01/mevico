@@ -34,13 +34,13 @@
         <div class="doctor-menu-client" *ngIf="!merchant.owner">
             <ion-list>
                 <ion-item>
-                    <a href="javascript:;" (click)="showProducts()">Productos</a>
+                    <ion-button (click)="showProducts()">Productos</ion-button>
                 </ion-item>
                 <ion-item>
-                    <a href="javascript:;" (click)="appointmentbook()">Reservas</a>
+                    <ion-button (click)="appointmentbook()">Reservas</ion-button>
                 </ion-item>
                 <ion-item>
-                    <a href="javascript:;" (click)="chat()">Chat</a>
+                    <ion-button (click)="chat()">Chat</ion-button>
                 </ion-item>
             </ion-list>
         </div>

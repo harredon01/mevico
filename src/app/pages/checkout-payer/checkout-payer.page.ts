@@ -54,6 +54,7 @@ export class CheckoutPayerPage implements OnInit {
         public loadingCtrl: LoadingController,
         private spinnerDialog: SpinnerDialog) {
         this.showAddressCard = false;
+        this.v = false;
         this.currentItems = [];
         console.log("user", this.userData._user);
 
@@ -140,7 +141,7 @@ export class CheckoutPayerPage implements OnInit {
         console.log("prefil", this.v);
         console.log("user", this.userData._user);
         let container: any = null;
-        if (this.v) {
+        if (!this.v) {
             container = {
                 payer_name: this.userData._user.firstName + " " + this.userData._user.lastName,
                 payer_email: this.userData._user.email,
@@ -167,6 +168,9 @@ export class CheckoutPayerPage implements OnInit {
      */
     submitPayer() {
         this.submitAttempt = true;
+        console.log("payer",this.payer)
+        console.log("valid",this.payerForm.valid)
+        console.log("value",this.payerForm.value)
         if (!this.payerForm.valid) {return;}
         this.orderData.payerInfo = this.payerForm.value;
         this.checkAdvance();

@@ -73,6 +73,15 @@ export class BookingPage implements OnInit {
 
     ngOnInit() {
     }
+    goBack(){
+        console.log("goBack",this.dateSelected)
+        if(this.dateSelected){
+            this.dateSelected = false;
+        }else {
+            this.navCtrl.back();
+        }
+        
+    }
     createBooking() {
         if (this.submitted) {
             return true;
@@ -89,16 +98,16 @@ export class BookingPage implements OnInit {
         };
         console.log("Start", this.startDate);
         console.log("data", data);
-        this.booking.addBookingObject(data).subscribe((data: any) => {
+        this.booking.addBookingObject(data).subscribe((resp: any) => {
             this.dismissLoader();
-
+            console.log("addBookingObject",resp);
             this.submitted = false;
             //this.presentAlertConfirm(data);
-            if (data.status == "success") {
-                if (data.requires_auth) {
+            if (resp.status == "success") {
+                if (resp.requires_auth) {
                     this.presentAlertConfirm();
                 } else {
-                    let booking = data.booking;
+                    let booking = resp.booking;
                     let extras = {
                         "type": "Booking",
                         "id": booking.id,
