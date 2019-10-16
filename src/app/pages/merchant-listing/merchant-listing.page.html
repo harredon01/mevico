@@ -21,8 +21,8 @@
         <ion-row>
             <!--ion-col size="4" class="text-danger" text-left (click)="filter()">
                      <ion-icon name="md-funnel"></ion-icon>Filter</ion-col-->
-            <ion-col size="4" text-center>{{totalResults}} result found</ion-col>
-            <ion-col size="4" class="text-danger" text-right><ion-button clear class="btn success" (click)="searchNearby()">Search Nearby</ion-button></ion-col>
+            <ion-col size="4" text-center>{{totalResults}} {{ 'MERCHANT_LISTING.RESULTS_FOUND' | translate }}</ion-col>
+            <ion-col size="4" class="text-danger" text-right><ion-button clear class="btn success" (click)="searchNearby()">{{ 'MERCHANT_LISTING.NEARBY' | translate }}</ion-button></ion-col>
         </ion-row>
     </div>
 </ion-header>
@@ -36,20 +36,20 @@
                 </ion-avatar>
                 <h2>{{item.name}}</h2>
                 <p>{{item.type}}</p>
-                <ion-button clear class="btn success" (click)="openItem(item)">View</ion-button>
+                <ion-button clear class="btn success" (click)="openItem(item)">{{ 'MERCHANT_LISTING.VIEW' | translate }}</ion-button>
             </ion-item>
             <ion-card-content [innerHtml]="item.description" >
             </ion-card-content>
 
             <ion-row class="about-row">
                 <ion-col size="5" center text-left>
-                    Experience <strong>22 Years</strong>
+                    {{ 'MERCHANT_LISTING.EXPERIENCE' | translate }} <strong>{{item.attributes.years_experience }} {{ 'MERCHANT_LISTING.YEARS' | translate }}</strong>
                 </ion-col>
                 <ion-col center text-center>
-                    Fee <strong>{{item.unit_cost | currency}}</strong>
+                    {{ 'MERCHANT_LISTING.FEE' | translate }} <strong>{{item.unit_cost | currency}}</strong>
                 </ion-col>
                 <ion-col size="5" center text-right>
-                    Feedback
+                    {{ 'MERCHANT_LISTING.FEEDBACK' | translate }}
                     <ion-icon name="md-star" class="active"></ion-icon>
                     <ion-icon name="md-star" class="active"></ion-icon>
                     <ion-icon name="md-star" class="active"></ion-icon>

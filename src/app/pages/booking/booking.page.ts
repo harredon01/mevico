@@ -25,6 +25,7 @@ export class BookingPage implements OnInit {
     typeObj: string;
     merchant: Merchant;
     notAvailable: string;
+    requiresAuth: string;
     success: string;
     objectId: string;
     selectedDate: Date;
@@ -61,6 +62,9 @@ export class BookingPage implements OnInit {
         this.objectId = paramsArrived.objectId;
         this.getAvailableDates(this.availabilities);
         console.log("Get availableDays", this.availableDays);
+        this.translateService.get('BOOKING.REQUIRES_AUTH').subscribe(function (value) {
+            this.requiresAuth = value;
+        });
         this.translateService.get('BOOKING.NOT_AVAILABLE').subscribe(function (value) {
             this.notAvailable = value;
         });
@@ -105,7 +109,7 @@ export class BookingPage implements OnInit {
             //this.presentAlertConfirm(data);
             if (resp.status == "success") {
                 if (resp.requires_auth) {
-                    this.presentAlertConfirm();
+                    this.presentAlertConfirm(this.notAvailable);
                 } else {
                     let booking = resp.booking;
                     let extras = {
@@ -129,6 +133,10 @@ export class BookingPage implements OnInit {
                         console.log("Error addCustomCartItem");
                         this.api.handleError(err);
                     });
+                }
+            }else {
+                if(resp.message =="Not Available"){
+                    this.presentAlertConfirm(this.notAvailable);
                 }
             }
         }, (err) => {
@@ -156,7 +164,7 @@ export class BookingPage implements OnInit {
         }
     }
 
-    async presentAlertConfirm() {
+    async presentAlertConfirm(message) {
         let button = {
             text: 'Ok',
             handler: () => {
@@ -164,7 +172,7 @@ export class BookingPage implements OnInit {
             }
         }
         const alert = await this.alertsCtrl.create({
-            message: this.notAvailable,
+            message: message,
             buttons: [
                 button
             ]

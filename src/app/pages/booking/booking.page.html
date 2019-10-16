@@ -6,7 +6,7 @@
             </ion-button>
         </ion-buttons>
         <ion-title>
-            Select Date & Time
+            {{ 'BOOKING.TITLE' | translate }}
         </ion-title>
     </ion-toolbar>
     <ion-card>
@@ -32,13 +32,13 @@
         <ion-icon name="md-calendar" class="text-success"></ion-icon>
     </div>
     <div padding *ngIf="dateSelected">
-         <p>Available Times</p>
+         <p>{{ 'BOOKING.AVAILABLE_TIMES' | translate }}:</p>
         <div class="timeing">
             <ion-row>
                 <ion-col *ngFor="let item of availabilitiesDate"><span>{{item.from}}-{{item.to}}</span></ion-col>
             </ion-row>
         </div>
-        <p *ngIf="selectedSpots.length>0">Occupied Slots</p>
+        <p *ngIf="selectedSpots.length>0">{{ 'BOOKING.OCCUPIED_SLOTS' | translate }}</p>
         <div class="timeing">
             <ion-row>
                 <ion-col *ngFor="let item of selectedSpots"><span>{{item.starts_at | date :'h:mm A'}}-{{item.ends_at | date :'h:mm A'}}</span></ion-col>
@@ -47,11 +47,11 @@
         <p>Appointment for...</p>
         <div class="difault-form">
             <ion-item>
-                <ion-label>Start Time</ion-label>
+                <ion-label>{{ 'BOOKING.START_TIME' | translate }}</ion-label>
                 <ion-datetime display-format="h:mm A" picker-format="h:mm A" [(ngModel)]="startDateS" (ionChange)="selectStart()"></ion-datetime>
             </ion-item>
             <ion-item>
-                <ion-label>Hours</ion-label>
+                <ion-label>{{ 'BOOKING.HOURS' | translate }}</ion-label>
                 <ion-select placeholder="Select One" [(ngModel)]="amount" (ionChange)="selectStart()">
                     <ion-select-option value="1">1</ion-select-option>
                     <ion-select-option value="2">2</ion-select-option>
@@ -60,11 +60,11 @@
                 </ion-select>
             </ion-item>
             <ion-item>
-                <p>End Time: {{endDate | date :'h:mm a'}}</p>
+                <p>{{ 'BOOKING.END_TIME' | translate }}: {{endDate | date :'h:mm a'}}</p>
             </ion-item>
             
             <br>  
-            <ion-button full class="btn success" (click)="createBooking()">Seleccionar cita</ion-button>
+            <ion-button full class="btn success" (click)="createBooking()">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
         </div>
     </div>
 </ion-content>

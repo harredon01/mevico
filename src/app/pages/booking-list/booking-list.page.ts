@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {BookingService} from '../../services/booking/booking.service';
 import {NavController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
@@ -27,6 +28,7 @@ export class BookingListPage implements OnInit {
         public activatedRoute: ActivatedRoute,
         public params: ParamsService,
         public api: ApiService,
+        public translateService: TranslateService,
         public navCtrl: NavController,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
@@ -38,7 +40,23 @@ export class BookingListPage implements OnInit {
         this.selectedObject = {"id": paramsObj.objectId, "name": paramsObj.name};
         this.bookingObjects.push(this.selectedObject);
         this.query = this.target + "_upcoming";
-        this.queries = ["unpaid", "upcoming", "unapproved", "past"];
+        this.queries = [];
+        this.translateService.get('BOOKING.UNPAID').subscribe(function (value) {
+            let container ={"name":value,"value":"unpaid"};
+            this.queries.push(container);
+        });
+        this.translateService.get('BOOKING.UPCOMING').subscribe(function (value) {
+            let container ={"name":value,"value":"upcoming"};
+            this.queries.push(container);
+        });
+        this.translateService.get('BOOKING.UNAPPROVED').subscribe(function (value) {
+            let container ={"name":value,"value":"unapproved"};
+            this.queries.push(container);
+        });
+        this.translateService.get('BOOKING.PAST').subscribe(function (value) {
+            let container ={"name":value,"value":"past"};
+            this.queries.push(container);
+        });
         this.queryMod = "upcoming";
     }
 
@@ -108,6 +126,7 @@ export class BookingListPage implements OnInit {
             for (let item in this.bookingObjects) {
                 if (this.bookingObjects[item].id == this.objectId) {
                     this.selectedObject = this.bookingObjects[item];
+                    this.objectId = this.bookingObjects[item].id;
                     break;
                 }
             }

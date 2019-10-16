@@ -4,7 +4,7 @@
             <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>
-            My Appointments
+            {{ 'BOOKING_LIST.TITLE' | translate }}
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -14,9 +14,9 @@
         <ion-list-header>{{queryMod}}</ion-list-header>
 
         <ion-item>
-            <ion-label>Filter</ion-label>
+            <ion-label>{{ 'BOOKING_LIST.RESERVATION_PERIOD' | translate }}</ion-label>
             <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">
-                <ion-select-option *ngFor="let item of queries" value="{{item}}">{{item}}</ion-select-option>
+                <ion-select-option *ngFor="let item of queries" value="{{item.value}}">{{item.name}}</ion-select-option>
             </ion-select>
         </ion-item>
     </ion-list>
@@ -24,7 +24,7 @@
         <ion-list-header>{{selectedObject.name}}</ion-list-header>
 
         <ion-item>
-            <ion-label>Filter</ion-label>
+            <ion-label>{{ 'BOOKING_LIST.RESERVATION_OBJECT' | translate }}</ion-label>
             <ion-select placeholder="Select One" [(ngModel)]="objectId" (ionChange)="selectObject()">
                 <ion-select-option *ngFor="let item of bookingObjects" value="{{item.id}}">{{item.name}}</ion-select-option>
             </ion-select>
@@ -33,7 +33,7 @@
     <ion-list class="doctor-list">
         <ion-row class="bg-white" (click)="openBooking(booking)" *ngFor="let booking of bookings">
                  <ion-col text-center class="date">
-                     <strong class="text-danger">{{booking.id }}</strong>
+                <strong class="text-danger">{{booking.id }}</strong>
                 <small>{{booking.starts_at | date :'EE'}}</small>
                 <strong class="text-danger">{{booking.starts_at | date :'d'}}</strong>
                 <small>{{booking.starts_at | date :'h:mm A'}}</small>

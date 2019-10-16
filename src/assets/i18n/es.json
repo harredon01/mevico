@@ -129,6 +129,29 @@
         "TITLE": "Selecciona dirección de entrega",
         "DESCRIPTION": "Ingresa una dirección"
     },
+    "BOOKING": {
+        "TITLE": "Reservar",
+        "DESCRIPTION": "Ingresa una dirección",
+        "REQUIRES_AUTH":"Hemos enviado tu reserva, debes esperar que sea confirmada para efectuar el pago. Te enviaremos una notificación cuando puedas hacer el pago",
+        "SUCCESS":"Reserva creada exitosamente",
+        "AVAILABLE_TIMES":"Horarios disponibles",
+        "OCCUPIED_SLOTS":"Reservas existentes",
+        "START_TIME":"Inicio",
+        "HOURS":"Horas",
+        "END_TIME":"Fín",
+        "MAKE_RESERVATION":"Seleccionar cita",
+        "NOT_AVAILABLE":"Ese horario no está disponible"
+    },
+    "BOOKING_LIST": {
+        "TITLE": "Mis Reservas",
+        "DESCRIPTION": "Ingresa una dirección",
+        "RESERVATION_OBJECT":"Consultar reservas para",
+        "RESERVATION_PERIOD":"Periodo",
+        "UNPAID":"Sin Pagar",
+        "UPCOMING":"Próximos",
+        "UNAPPROVED":"Pendiente de aprobación",
+        "PAST":"Pasados"
+    },
     "BUYER_SELECT": {
         "TITLE": "Tus amigos",
         "CHECK_ERROR": "Usuario no encontrado",
@@ -364,6 +387,64 @@
         "DELIVERY_NO_ROUTE_TITLE": "Ruta no encontrada",
         "DELIVERY_NO_ROUTE_DESC": "Lo sentimos, esa entrega no tiene ruta.<br/>Comunicate con soporte para cualquier cosa"
     },
+    "MEDICAL": {
+        "TITLE": "Perfil médico",
+        "DESCRIPTION": "Verifica tu identidad para poder ver esta información",
+        "DESCRIPTION2": "Tu perfil médico",
+        "GENDER":"Género",
+        "DOB": "Fecha de nacimiento",
+        "AGE": "Edad",
+        "WEIGHT": "Peso",
+        "BLOOD": "Sangre",
+        "ANTIGEN": "Antígeno",
+        "SURGERY": "Cirugías",
+        "MATERNITY":"Embarazos",
+        "MEDICATIONS": "Medicamentos",
+        "ALERGIES": "Alergias",
+        "IMMUNO": "Immunización",
+        "MEDICAL_ENCOUNTERS": "Enfermedades",
+        "PRESCRIPTIONS": "Prescripciones",
+        "OTHER": "Otros",
+        "EMERGENCY_CONTACT": "Contacto de emergencia",
+        "RELATION": "Parentezco",
+        "PHONE": "Teléfono",
+        "INSURANCE": "EPS"
+    },
+    "MERCHANT_DETAIL": {
+        "TITLE": "Mi cuenta",
+        "DESCRIPTION": "",
+        "MENU": "Menú",
+        "STORE": "Tienda",
+        "BOOKING": "Reservar",
+        "MY_BOOKING": "Mis Reservas",
+        "ITEMS": "Mis entregas",
+        "CHAT": "Chat",
+        "INFO":"Acerca de",
+        "OVERVIEW":"General",
+        "RATINGS":"Calificaciones",
+        "FEEDBACK":"Puntuación",
+        "HOURLY":"Valor /h",
+        "ADDRESS":"Dirección",
+        "SERVICES":"Servicios",
+        "SPECIALIZATIONS":"Especialidades",
+        "AVAILABILITIES":"Horarios disponibles",
+        "BOOK_APPOINTMENT":"Reservar Cita",
+        "SCORE":"Calificación general",
+        "RECENT":"Más reciente",
+        "OLDEST":"Más antiguo",
+        "GIVE_FEEDBACK":"Dar Punctuación"
+    },
+    "MERCHANT_LISTING": {
+        "TITLE": "Mi cuenta",
+        "DESCRIPTION": "",
+        "NEARBY": "Buscar cerca a mí",
+        "RESULTS_FOUND":"Resultados encontrados",
+        "EXPERIENCE": "Experiencia",
+        "YEARS": "AñOS",
+        "VIEW":"Ver",
+        "FEE":"Tarifa",
+        "FEEDBACK":"Calificaciones"
+    },
     "MY_ACCOUNT": {
         "TITLE": "Mi cuenta",
         "DESCRIPTION": "",
@@ -459,7 +540,8 @@
         "AMOUNT": "Cantidad",
         "AMOUNT_CATERING": "Cantidad/p",
         "REQUIRED_ITEM": "Minimo 1 obligatorio",
-        "PRICE": "Precio"
+        "PRICE": "Precio",
+        "VARIANTS":"Opciones"
     },
     "PROGRAM_COMPLETE": {
         "TITLE": "Listo",
@@ -522,7 +604,9 @@
         "CHANGE_ADDRESS": "Cambiar dirección",
         "ACKNOWLEDGE": "Listo",
         "SHOW_MORE": "Ver más",
-        "SHOW_LESS": "Esconder"
+        "SHOW_LESS": "Esconder",
+        "PASSWORD":"Clave",
+        "CHECK":"Verificar"
     },
     "USER": {
         "NAME": "Nombre",
