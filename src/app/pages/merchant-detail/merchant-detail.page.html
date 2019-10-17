@@ -69,15 +69,16 @@
     <div [ngSwitch]="doctor" class="bg-light mb">
         <ion-list *ngSwitchCase="'about'">
             <div class="bg-white overview">
-                <p class="text-danger header">{{ 'MERCHANT_DETAIL.OVERVIEW' | translate }}</p>
+                <p class="text-danger header">{{ 'MERCHANT_DETAIL.EXPERIENCE' | translate }}</p>
                 <ion-row>
-                    <ion-col size="6" *ngIf="merchant.attributes.experience">
+                    <ion-col *ngIf="merchant.attributes.experience">
                         <div *ngFor="let experience of merchant.attributes.experience">
-                            <ion-icon name="md-medkit"></ion-icon>
                             <p>{{experience.name}}</p>
                             <h2>{{experience.years}} Years</h2>
                         </div>
                     </ion-col>
+                    </ion-row>
+                <ion-row>
                     <ion-col size="6">
                         <div>
                             <ion-icon name="md-thumbs-up"></ion-icon>
@@ -94,7 +95,6 @@
                     </ion-col>
                     <ion-col size="6" *ngIf="merchant.availabilities.length>0">
                         <div>
-                            <ion-icon name="logo-usd"></ion-icon>
                             <p>{{ 'MERCHANT_DETAIL.HOURLY' | translate }}</p>
                             <h2>{{ merchant.unit_cost | currency }}</h2>
                         </div>
@@ -105,7 +105,6 @@
                 <p class="text-danger header">{{ 'MERCHANT_DETAIL.ADDRESS' | translate }}</p>
                 <p class="header"><strong>{{merchant.address}}</strong></p>
                 <div class="map-location">
-                    <img src="assets/imgs/map-location.png" style="position: absolute;height: 100%;bottom: 0;z-index: 0;">
                     <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/dentist-1.jpg"></div>
                 </div>
             </div>

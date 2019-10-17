@@ -28,6 +28,9 @@ export class BookingPage implements OnInit {
     requiresAuth: string;
     success: string;
     objectId: string;
+    objectName: string;
+    objectDescription: string;
+    objectIcon: string;
     selectedDate: Date;
     startDate: Date;
     endDate: Date;
@@ -60,6 +63,9 @@ export class BookingPage implements OnInit {
         console.log("Availabilities", this.availabilities);
         this.typeObj = paramsArrived.type;
         this.objectId = paramsArrived.objectId;
+        this.objectName = paramsArrived.objectName;
+        this.objectDescription = paramsArrived.objectDescription;
+        this.objectIcon = paramsArrived.objectIcon;
         this.getAvailableDates(this.availabilities);
         console.log("Get availableDays", this.availableDays);
         this.translateService.get('BOOKING.REQUIRES_AUTH').subscribe(function (value) {

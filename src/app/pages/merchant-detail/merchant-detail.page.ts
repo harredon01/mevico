@@ -91,7 +91,10 @@ export class MerchantDetailPage implements OnInit {
         let params = {
             "type": "Merchant",
             "objectId": this.merchant.id,
-            "target":"bookable"
+            "target":"bookable",
+            "objectName": this.merchant.name,
+            "objectDescription": this.merchant.description,
+            "objectIcon": this.merchant.src
         };
         this.params.setParams(params);
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 

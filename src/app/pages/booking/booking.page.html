@@ -12,10 +12,10 @@
     <ion-card>
         <ion-item>
             <ion-avatar item-start>
-                <img src="assets/imgs/profile1.png">
+                <img [src]="objectIcon">
             </ion-avatar>
-            <h2>Dr. Josephan Williamson</h2>
-            <p>Cardiac Surgeon</p>
+            <h2>{{objectName}}</h2>
+            <p>{{objectDescription}}</p>
         </ion-item>
     </ion-card>
 </ion-header>
@@ -44,7 +44,6 @@
                 <ion-col *ngFor="let item of selectedSpots"><span>{{item.starts_at | date :'h:mm A'}}-{{item.ends_at | date :'h:mm A'}}</span></ion-col>
             </ion-row>
         </div>
-        <p>Appointment for...</p>
         <div class="difault-form">
             <ion-item>
                 <ion-label>{{ 'BOOKING.START_TIME' | translate }}</ion-label>

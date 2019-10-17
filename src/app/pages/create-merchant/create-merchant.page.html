@@ -1,9 +1,75 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>create-merchant</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>{{ 'ADDRESS_CREATE.TITLE' | translate }}</ion-title>
+        <ion-buttons class="my-addresses__button my-addresses__button--left" slot="secondary">
+            <ion-button (click)="cancel()">
+                <span color="primary" showWhen="ios">
+                    {{ 'CANCEL_BUTTON' | translate }}
+                </span>
+                <ion-icon class="close-button" name="md-close" showWhen="android,windows"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons class="my-addresses__button my-addresses__button--right" slot="primary">
+            <ion-button (click)="done()" [disabled]="!isReadyToSave" strong>
+                <span class="done-button" color="primary"></span>
+                <ion-icon name="md-checkmark" showWhen="core,android,windows"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <form [formGroup]="form" (ngSubmit)="done()">
+        <input type="hidden" formControlName="lat" />
+        <input type="hidden" formControlName="long" />
+        <input type="hidden" formControlName="address_id" />
+        <input type="hidden" formControlName="postal" />
+        <ion-list>
+            <ion-item>
+                <p>{{ 'ADDRESS_FIELDS.ADDRESS_CONFIRM' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'ADDRESS_FIELDS.ADDRESS' | translate }}</ion-label>
+                <ion-input type="text" formControlName="address"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!form.controls.address.valid  && (form.controls.address.dirty || submitAttempt)">
+                <p>{{ 'ADDRESS_FIELDS.ADDRESS_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'ADDRESS_FIELDS.POSTAL' | translate }}</ion-label>
+                <ion-input type="text" formControlName="postal"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!form.controls.postal.valid  && (form.controls.postal.dirty || submitAttempt)">
+                <p>{{ 'ADDRESS_FIELDS.POSTAL_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'ADDRESS_FIELDS.NOTES' | translate }}</ion-label>
+                <ion-input type="text" formControlName="notes"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!form.controls.notes.valid  && (form.controls.notes.dirty || submitAttempt)">
+                <p>{{ 'ADDRESS_FIELDS.NOTES_ERROR' | translate }}</p>
+            </ion-item>
 
+
+            <ion-item>
+                <ion-label position="floating">{{ 'ADDRESS_FIELDS.NAME' | translate }}</ion-label>
+                <ion-input type="text" formControlName="name"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!form.controls.name.valid  && (form.controls.name.dirty || submitAttempt)">
+                <p>{{ 'ADDRESS_FIELDS.NAME_ERROR' | translate }}</p>
+            </ion-item>
+
+
+            <ion-item>
+                <ion-label position="floating">{{ 'ADDRESS_FIELDS.PHONE' | translate }}</ion-label>
+                <ion-input type="tel" formControlName="phone"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!form.controls.phone.valid  && (form.controls.phone.dirty || submitAttempt)">
+                <p>{{ 'ADDRESS_FIELDS.PHONE_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
+            </ion-item>
+        </ion-list>
+    </form>
 </ion-content>
