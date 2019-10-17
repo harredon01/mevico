@@ -8,13 +8,19 @@
 </ion-header>
 
 <ion-content>
+    <ion-item>
+        <ion-label>{{ 'BOOKING_LIST.RESERVATION_PERIOD' | translate }}</ion-label>
+        <ion-select placeholder="Select One" [(ngModel)]="status" (ionChange)="selectQuery()">
+            <ion-select-option *ngFor="let item of queries" value="{{item.value}}">{{item.name}}</ion-select-option>
+        </ion-select>
+    </ion-item>
     <ion-list>
         <ion-item-sliding *ngFor="let item of currentItems">
             <ion-item (click)="openItem(item)">
-            <div class="checkout__item"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}}</div>
-            <div class="checkout__item"><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</div>
-            <div class="checkout__item"><strong>{{ 'CART_ITEM.PRICE' | translate }}: </strong> {{item.price | currency }}</div>
-            <div class="checkout__item"><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumWithConditions | currency }}</div>
+                <div class="checkout__item"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}}</div>
+                <div class="checkout__item"><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</div>
+                <div class="checkout__item"><strong>{{ 'CART_ITEM.PRICE' | translate }}: </strong> {{item.price | currency }}</div>
+                <div class="checkout__item"><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumWithConditions | currency }}</div>
             </ion-item>
         </ion-item-sliding>
     </ion-list>

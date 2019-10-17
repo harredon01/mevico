@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ItemsService} from '../../services/items/items.service';
+import {TranslateService} from '@ngx-translate/core';
 import {NavController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Item} from '../../models/item';
@@ -7,33 +8,54 @@ import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../../services/api/api.service';
 import {ParamsService} from '../../services/params/params.service';
 @Component({
-  selector: 'app-items',
-  templateUrl: './items.page.html',
-  styleUrls: ['./items.page.scss'],
+    selector: 'app-items',
+    templateUrl: './items.page.html',
+    styleUrls: ['./items.page.scss'],
 })
 export class ItemsPage implements OnInit {
-private items: Item[] = [];
-private page: any = 0;
-private loadMore: boolean = false;
-  constructor(public itemsServ: ItemsService,
+    private items: Item[] = [];
+    private page: any = 0;
+    private merchant: any;
+    private status: any;
+    private queries: [];
+    private loadMore: boolean = false;
+    constructor(public itemsServ: ItemsService,
         public params: ParamsService,
         public activatedRoute: ActivatedRoute,
         public api: ApiService,
+        public translateService: TranslateService,
         public navCtrl: NavController,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
-    ) { }
+    ) {
+    this.queries = [];
+        this.translateService.get('ITEMS.FULLFILLED').subscribe(function (value) {
+            let container ={"name":"FULFILLED","value":"fulfilled"};
+            this.queries.push(container);
+        });
+        this.translateService.get('ITEMS.UNFULFILLED').subscribe(function (value) {
+            let container ={"name":"UNFULFILLED","value":"unfulfilled"};
+            this.queries.push(container);
+        });
 
-  ngOnInit() {
-      this.getItems();
-  }
-  
-  getItems() {
+        let container = this.params.getParams();
+        this.merchant = container.merchant;
+        this.status = "unfulfilled"
+    }
+
+    ngOnInit() {
+        this.getItems();
+    }
+    selectQuery() {
+        this.page = 0;
+        this.items = [];
+        this.getItems();
+    }
+
+    getItems() {
         this.showLoader();
         this.page++;
-        let selectedDate = new Date();
-        let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate();
-        let where = "";
+        let where = "merchant_id=" + this.merchant+"&status="+this.status+"&page="+this.page;
         this.itemsServ.getItems(where).subscribe((data: any) => {
             let results = data.data;
             if (data.page == data.last_page) {
@@ -72,7 +94,7 @@ private loadMore: boolean = false;
             this.spinnerDialog.show();
         }
     }
-    
+
     doInfinite(infiniteScroll) {
         console.log('Begin async operation');
         if (this.loadMore) {
@@ -86,7 +108,7 @@ private loadMore: boolean = false;
             infiniteScroll.complete();
         }
     }
-    
+
     openBooking(item: Item) {
         let param = {"item": item};
         this.params.setParams(param);

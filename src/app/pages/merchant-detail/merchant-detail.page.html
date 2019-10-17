@@ -47,10 +47,10 @@
         <div class="doctor-menu-client" *ngIf="merchant.owner">
             <ion-list>
                 <ion-item>
-                    <a href="javascript:;" (click)="myItems()">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</a>
+                    <ion-button (click)="myItems()">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
                 </ion-item>
                 <ion-item>
-                    <a href="javascript:;" (click)="myBookings()">{{ 'MERCHANT_DETAIL.MY_BOOKING' | translate }}</a>
+                    <ion-button (click)="myBookings()">{{ 'MERCHANT_DETAIL.MY_BOOKING' | translate }}</ion-button>
                 </ion-item>
             </ion-list>
         </div>
