@@ -56,7 +56,7 @@ export class ItemsPage implements OnInit {
     getItems() {
         this.showLoader();
         this.page++;
-        let where = "merchant_id=" + this.merchant + "&status=" + this.status + "&page=" + this.page;
+        let where = "merchant_id=" + this.merchant + "&fulfillment=" + this.status + "&page=" + this.page+"&paid_status=paid";
         this.itemsServ.getItems(where).subscribe((data: any) => {
             let results = data.data;
             if (data.page == data.last_page) {
