@@ -41,21 +41,22 @@ export class BookingListPage implements OnInit {
         this.bookingObjects.push(this.selectedObject);
         this.query = this.target + "_upcoming";
         this.queries = [];
+        let vm = this;
         this.translateService.get('BOOKING.UNPAID').subscribe(function (value) {
             let container ={"name":value,"value":"unpaid"};
-            this.queries.push(container);
+            vm.queries.push(container);
         });
         this.translateService.get('BOOKING.UPCOMING').subscribe(function (value) {
             let container ={"name":value,"value":"upcoming"};
-            this.queries.push(container);
+            vm.queries.push(container);
         });
         this.translateService.get('BOOKING.UNAPPROVED').subscribe(function (value) {
             let container ={"name":value,"value":"unapproved"};
-            this.queries.push(container);
+            vm.queries.push(container);
         });
         this.translateService.get('BOOKING.PAST').subscribe(function (value) {
             let container ={"name":value,"value":"past"};
-            this.queries.push(container);
+            vm.queries.push(container);
         });
         this.queryMod = "upcoming";
     }

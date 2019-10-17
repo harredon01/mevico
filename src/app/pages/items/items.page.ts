@@ -17,7 +17,7 @@ export class ItemsPage implements OnInit {
     private page: any = 0;
     private merchant: any;
     private status: any;
-    private queries: [];
+    private queries: any[];
     private loadMore: boolean = false;
     constructor(public itemsServ: ItemsService,
         public params: ParamsService,
@@ -28,14 +28,15 @@ export class ItemsPage implements OnInit {
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
     ) {
-    this.queries = [];
+        this.queries = [];
+        let vm = this;
         this.translateService.get('ITEMS.FULLFILLED').subscribe(function (value) {
-            let container ={"name":"FULFILLED","value":"fulfilled"};
-            this.queries.push(container);
+            let container = {"name": "FULFILLED", "value": "fulfilled"};
+            vm.queries.push(container);
         });
         this.translateService.get('ITEMS.UNFULFILLED').subscribe(function (value) {
-            let container ={"name":"UNFULFILLED","value":"unfulfilled"};
-            this.queries.push(container);
+            let container = {"name": "UNFULFILLED", "value": "unfulfilled"};
+            vm.queries.push(container);
         });
 
         let container = this.params.getParams();
@@ -55,7 +56,7 @@ export class ItemsPage implements OnInit {
     getItems() {
         this.showLoader();
         this.page++;
-        let where = "merchant_id=" + this.merchant+"&status="+this.status+"&page="+this.page;
+        let where = "merchant_id=" + this.merchant + "&status=" + this.status + "&page=" + this.page;
         this.itemsServ.getItems(where).subscribe((data: any) => {
             let results = data.data;
             if (data.page == data.last_page) {
