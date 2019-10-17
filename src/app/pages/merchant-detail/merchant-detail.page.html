@@ -3,9 +3,9 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>
+        <ion-title class="ion__title">
             &nbsp;
-            <span>
+            <span class="shareIcons">
                 <ion-icon name="ios-bookmark-outline" item-start></ion-icon>
                 <ion-icon name="md-share" item-start></ion-icon>
                 <ion-icon name="md-more" item-start></ion-icon>
@@ -57,7 +57,7 @@
     </div>    
     <div class="defult-tab bg-white">
         <ion-segment [(ngModel)]="doctor" padding-left padding-right>
-            <ion-segment-button value="about" class="text-white">
+            <ion-segment-button value="about" color="primary" class="text-white">
                 {{ 'MERCHANT_DETAIL.INFO' | translate }}
             </ion-segment-button>
             <ion-segment-button value="feedback" class="text-white">

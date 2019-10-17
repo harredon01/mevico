@@ -286,3 +286,17 @@
         }
     }
 }
+/*Oct*/
+.ion__title{
+    position: relative;
+    text-align: right;
+}
+.content-car, .shareIcons{
+    display: inline-block;
+}
+.shareIcons{
+    position: relative;
+    min-height: 33px;
+    vertical-align: bottom;
+    color: var(--ion-color-primary-shade);
+}
