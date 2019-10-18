@@ -300,3 +300,14 @@
     vertical-align: bottom;
     color: var(--ion-color-primary-shade);
 }
+.doctor-menu-title{
+    display: none;
+}
+.doctor-menu-client a {
+    text-decoration: none;
+    color: var(--ion-color-primary-shade);
+}
+.doctor-menu-client .list-md{
+    display: flex;
+    justify-content: center;
+}
