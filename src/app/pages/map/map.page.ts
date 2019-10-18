@@ -293,12 +293,6 @@ export class MapPage implements OnInit {
             console.log('Error getting location', error);
         });
     }
-    getAddressPostal() {
-        this.map.setMarkerPosition(this.mapData.address.lat, this.mapData.address.long, this.mapData.newAddressMarker);
-        this.map.setCenterMap(this.mapData.address.lat, this.mapData.address.long);
-        this.map.triggerDragend(this.mapData.newAddressMarker);
-        this.mapData.newAddressMarker.setVisible(true);
-    }
 
     handleAddressActive() {
         console.log("handleAddressActive", this.mapData.activeId);

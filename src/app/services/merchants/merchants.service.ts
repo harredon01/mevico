@@ -60,6 +60,14 @@ export class MerchantsService {
         let seq = this.api.get(url);
         return seq;
     }
+    saveMerchant(merchant: any) {
+        let url = "/merchants";
+        if(merchant.id){
+            url = "/merchants/" + merchant.id;
+        }
+        let seq = this.api.post(url,merchant);
+        return seq;
+    }
     getMerchantHash(merchantId: string) {
         let url = "/merchant/hash/" + merchantId;
         let seq = this.api.get(url);

@@ -51,6 +51,21 @@ export class LocationsService {
         let seq = this.api.get(url);
         return seq;
     }
+    getCountries() {
+        let url = "/countries";
+        let seq = this.api.get(url);
+        return seq;
+    }
+    getRegionsCountry(countryId: any) {
+        let url = "/regions?country_id=" + countryId;
+        let seq = this.api.get(url);
+        return seq;
+    }
+    getCitiesRegion(regionId: any) {
+        let url = "/cities?region_id=" + regionId;
+        let seq = this.api.get(url);
+        return seq;
+    }
 
     getReportsMerchantsLocations(latit: any, longit: any, radius: any) {
         let endpoint = "/merchants/nearby_all";
