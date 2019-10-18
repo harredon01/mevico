@@ -185,7 +185,7 @@ export class CreateMerchantPage implements OnInit {
            */
     saveMerchant(merchant: any) {
         this.submitAttempt = true;
-        console.log("saveMerchant",merchant);
+        console.log("saveMerchant", merchant);
         if (!this.form.valid) {return;}
         this.showLoader();
         this.merchants.saveMerchant(merchant).subscribe((resp: any) => {
@@ -194,10 +194,19 @@ export class CreateMerchantPage implements OnInit {
             if (resp.status == "success") {
                 this.done();
             } else {
-                
+                this.toastCtrl.create({
+                    message: this.merchantErrorStringSave,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
             }
         }, (err) => {
             this.dismissLoader();
+            this.toastCtrl.create({
+                message: this.merchantErrorStringSave,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
         });
     }
 

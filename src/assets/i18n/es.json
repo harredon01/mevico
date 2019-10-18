@@ -446,6 +446,26 @@
         "FEE":"Tarifa",
         "FEEDBACK":"Calificaciones"
     },
+    "MERCHANT_CREATE": {
+        "TITLE": "Negocio",
+        "DESCRIPTION": "¿Qué te gustaría crear?",
+        "TYPE": "Tipo de negocio",
+        "NAME":"Nombre",
+        "NAME_ERROR": "Porfavor verifica el nombre",
+        "DESCRIPTION": "Descripción",
+        "DESCRIPTION_ERROR":"Ingresa una descripción",
+        "EMAIL":"Correo",
+        "EMAIL_ERROR":"Ingresa un correo válido",
+        "TELEPHONE": "Teléfono",
+        "TELEPHONE_ERROR":"Ingresa un teléfono",
+        "ADDRESS":"Dirección",
+        "ADDRESS_ERROR":"Ingresa una dirección",
+        "COUNTRY":"País",
+        "COUNTRY_ERROR":"Selecciona un País",
+        "REGION_ERROR":"Selecciona una Región",
+        "CITY_ERROR":"Selecciona una Ciudad",
+        "ERROR_SAVE":"Error actualizando el negocio"
+    },
     "MY_ACCOUNT": {
         "TITLE": "Mi cuenta",
         "DESCRIPTION": "",
