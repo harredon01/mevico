@@ -41,7 +41,8 @@ const routes: Routes = [
   { path: 'opentok', loadChildren: './pages/opentok/opentok.module#OpentokPageModule' },
   { path: 'items', loadChildren: './pages/items/items.module#ItemsPageModule' },
   { path: 'item-detail', loadChildren: './pages/item-detail/item-detail.module#ItemDetailPageModule' },
-  { path: 'create-merchant', loadChildren: './pages/create-merchant/create-merchant.module#CreateMerchantPageModule' },
+  { path: 'create-merchant', loadChildren: './pages/create-merchant/create-merchant.module#CreateMerchantPageModule' },  { path: 'mercado-pago', loadChildren: './pages/mercado-pago/mercado-pago.module#MercadoPagoPageModule' },
+
 ];
 
 @NgModule({

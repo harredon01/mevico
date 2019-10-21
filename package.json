@@ -37,7 +37,7 @@
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
     "@opentok/client": "^2.16.3",
-    "cordova-android": "^8.1.0",
+    "cordova-android": "8.1.0",
     "cordova-background-geolocation-lt": "3.0.7",
     "cordova-ios": "^5.0.1",
     "cordova-plugin-background-fetch": "5.5.0",
