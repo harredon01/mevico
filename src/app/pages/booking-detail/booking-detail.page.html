@@ -12,51 +12,53 @@
 <ion-content class="bg-light">
     <ion-card>
         <ion-card-content>
-            <ion-row class="appot-detail">
-                <ion-col class="icon">
-                    <ion-icon name="md-calendar" class="text-danger"></ion-icon>
-                </ion-col>
-                <ion-col class="detail">
-                    <small>Appointment date & time</small>
-                    <strong>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
-                    <strong>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
-                </ion-col>
-                <ion-col class="option text-success">Reschedule</ion-col>
-            </ion-row>
-            <ion-row class="appot-detail">
-                <ion-col class="icon">
-                    <ion-icon name="ios-pin" class="text-danger"></ion-icon>
-                </ion-col>
-                <ion-col class="detail">
-                    <small>Location</small>
-                    <strong>At Apple Hospital,</strong>
-                    <span>Walter Street, Wallington, New Yoek</span>
-                </ion-col>
-            </ion-row>
+            <ion-grid>
+                <ion-row class="appot-detail">
+                    <ion-col class="icon" size="2">
+                        <ion-icon name="md-calendar" class="text-danger"></ion-icon>
+                    </ion-col>
+                    <ion-col class="detail" size="10">
+                        <span>Appointment date & time</span>
+                        <span>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
+                        <span>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
+                    </ion-col>
+                    <ion-col class="option text-success" size="12">Reschedule</ion-col>
+                </ion-row>
+                <ion-row class="appot-detail">
+                    <ion-col class="icon" size="2">
+                        <ion-icon name="ios-pin" class="text-danger"></ion-icon>
+                    </ion-col>
+                    <ion-col class="detail" size="10">
+                        <span>Location</span>
+                        <span>At Apple Hospital,</span>
+                        <span>Walter Street, Wallington, New Yoek</span>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </ion-card-content>
     </ion-card>
     <ion-card>
         <ion-card-content>
             <ion-row class="appot-detail">
-                <ion-col class="icon">
+                <ion-col class="icon" size="2">
                     <ion-icon name="md-clipboard" class="text-danger"></ion-icon>
                 </ion-col>
-                <ion-col class="detail" *ngIf="mainBooking.customer">
-                    <small>Appointment booked By</small>
-                    <strong>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</strong>
+                <ion-col class="detail" *ngIf="mainBooking.customer" size="10">
+                    <span>Appointment booked By</span>
+                    <span>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</span>
                 </ion-col>
-                <ion-col class="detail" *ngIf="mainBooking.bookable">
-                    <small>Appointment booked for</small>
-                    <strong>{{mainBooking.bookable.name}}</strong>
+                <ion-col class="detail" *ngIf="mainBooking.bookable" size="10">
+                    <span>Appointment booked for</span>
+                    <span>{{mainBooking.bookable.name}}</span>
                 </ion-col>
             </ion-row>
             <ion-row class="appot-detail">
-                <ion-col class="icon">
+                <ion-col class="icon" size="2">
                     <ion-icon name="md-information-circle" class="text-danger"></ion-icon>
                 </ion-col>
-                <ion-col class="detail">
-                    <small>Appointment number</small>
-                    <strong>{{mainBooking.id}}</strong>
+                <ion-col class="detail" size="10">
+                    <span>Appointment number</span>
+                    <span>{{mainBooking.id}}</span>
                     <span>Just forreference purpose</span>
                 </ion-col>
             </ion-row>

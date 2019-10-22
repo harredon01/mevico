@@ -68,3 +68,13 @@ p.heading {
         padding-bottom: 0;
     }
 }
+.doctor-list__container{
+    ion-row{
+        align-items: center;
+    }
+}
+.mainBooking__list{
+    ion-item{
+        padding: 0 1rem
+    }
+}
