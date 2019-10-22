@@ -61,7 +61,10 @@
             <ion-item>
                 <p>{{ 'BOOKING.END_TIME' | translate }}: {{endDate | date :'h:mm a'}}</p>
             </ion-item>
-            
+            <ion-item>
+                <ion-label position="floating">{{ 'BOOKING.ADDRESS' | translate }}</ion-label>
+                <ion-input type="text" [(ngModel)]="atributesCont.address"></ion-input>
+            </ion-item>
             <br>  
             <ion-button full class="btn success" (click)="createBooking()">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
         </div>

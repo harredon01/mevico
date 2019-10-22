@@ -109,7 +109,8 @@ export class BookingListPage implements OnInit {
                 results[item].ends_at = results[item].ends_at.replace(" ", "T");
                 results[item].starts_at = new Date(results[item].starts_at);
                 results[item].ends_at = new Date(results[item].ends_at);
-                let newBooking = new Booking(results[item]);
+                //results[item].options = results[item].options;
+                let newBooking = new Booking(results[item]); 
                 this.bookings.push(newBooking);
             }
             this.dismissLoader();

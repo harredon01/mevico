@@ -132,7 +132,7 @@
     "BOOKING": {
         "TITLE": "Reservar",
         "DESCRIPTION": "Ingresa una dirección",
-        "REQUIRES_AUTH":"Hemos enviado tu reserva, debes esperar que sea confirmada para efectuar el pago. Te enviaremos una notificación cuando puedas hacer el pago",
+        "REQUIRES_AUTH":"Hemos enviado tu reserva, debes esperar que sea confirmada. Te enviaremos una notificación cuando puedas hacer el pago",
         "SUCCESS":"Reserva creada exitosamente",
         "AVAILABLE_TIMES":"Horarios disponibles",
         "OCCUPIED_SLOTS":"Reservas existentes",
@@ -141,6 +141,25 @@
         "END_TIME":"Fín",
         "MAKE_RESERVATION":"Seleccionar cita",
         "NOT_AVAILABLE":"Ese horario no está disponible"
+    },
+    "BOOKING_DETAIL": {
+        "TITLE": "Reserva",
+        "ATTRIBUTES": "Detalles",
+        "BOOKED_BY":"Reserva hecha por: ",
+        "BOOKED_FOR":"Reserva hecha para: ",
+        "APPROVE":"Aprobar",
+        "DENY":"Rechazar",
+        "TOTAL_PAID":"Rechazar",
+        "DELETE":"Borrar",
+        "PAY":"Pagar",
+        "BEGAN":"Empezó",
+        "COMPLETED":"Terminó",
+        "UNAUTHORIZED":"Esperando autorización del vendedor",
+        "UNPAID":"Esperando pago de parte del cliente",
+        "PAID":"Confirmada y pagada",
+        "PRICE":"Precio",
+        "ID_TEXT":"Id de la reserva",
+        "ID_TEXT2":"Solo por referencia"
     },
     "BOOKING_LIST": {
         "TITLE": "Mis Reservas",
@@ -152,6 +171,7 @@
         "UNAPPROVED":"Pendiente de aprobación",
         "PAST":"Pasados"
     },
+    
     "BUYER_SELECT": {
         "TITLE": "Tus amigos",
         "CHECK_ERROR": "Usuario no encontrado",

@@ -27,6 +27,7 @@ export class BookingPage implements OnInit {
     notAvailable: string;
     requiresAuth: string;
     success: string;
+    atributesCont: any;
     objectId: string;
     objectName: string;
     objectDescription: string;
@@ -49,6 +50,7 @@ export class BookingPage implements OnInit {
         public alertsCtrl: AlertController,
         public translateService: TranslateService,
         private spinnerDialog: SpinnerDialog) {
+        this.atributesCont = {};
         this.weekday = new Array(7);
         this.weekday[0] = "sunday";
         this.weekday[1] = "monday";
@@ -68,14 +70,17 @@ export class BookingPage implements OnInit {
         this.objectIcon = paramsArrived.objectIcon;
         this.getAvailableDates(this.availabilities);
         console.log("Get availableDays", this.availableDays);
+        let vm = this
         this.translateService.get('BOOKING.REQUIRES_AUTH').subscribe(function (value) {
-            this.requiresAuth = value;
+            console.log("Req",value);
+            vm.requiresAuth = value;
         });
         this.translateService.get('BOOKING.NOT_AVAILABLE').subscribe(function (value) {
-            this.notAvailable = value;
+            vm.notAvailable = value;
+            console.log("afk",value);
         });
         this.translateService.get('BOOKING.SUCCESS').subscribe(function (value) {
-            this.success = value;
+            vm.success = value;
         });
         this.getDates();
         console.log("Get availableDates", this.availableDates);
@@ -95,7 +100,7 @@ export class BookingPage implements OnInit {
     createBooking() {
         if (this.submitted) {
             return true;
-        }
+        } 
         this.submitted = true;
         this.showLoader();
         let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
@@ -104,7 +109,8 @@ export class BookingPage implements OnInit {
             "type": this.typeObj,
             "object_id": this.objectId,
             "from": strDate,
-            "to": ndDate
+            "to": ndDate,
+            "attributes": this.atributesCont
         };
         console.log("Start", this.startDate);
         console.log("data", data);
@@ -115,7 +121,7 @@ export class BookingPage implements OnInit {
             //this.presentAlertConfirm(data);
             if (resp.status == "success") {
                 if (resp.requires_auth) {
-                    this.presentAlertConfirm(this.notAvailable);
+                    this.presentAlertConfirm(this.requiresAuth);
                 } else {
                     let booking = resp.booking;
                     let extras = {
@@ -151,6 +157,31 @@ export class BookingPage implements OnInit {
             this.api.handleError(err);
         });
     }
+    deleteBooking() {
+        this.showLoader();
+        let data = {
+            "object_id": this.objectId,
+        };
+        console.log("Start", this.startDate);
+        console.log("data", data);
+        this.booking.cancelBookingObject(data).subscribe((resp: any) => {
+            this.dismissLoader();
+            console.log("addBookingObject",resp);
+            this.submitted = false;
+            //this.presentAlertConfirm(data);
+            if (resp.status == "success") {
+                this.navCtrl.back();
+            }else {
+                if(resp.message =="Not Available"){
+                    
+                }
+            }
+        }, (err) => {
+            console.log("Error addBookingObject");
+            this.dismissLoader();
+            this.api.handleError(err);
+        });
+    }
 
     async openCart() {
         let container = {cart: this.orderData.cartData};
@@ -171,6 +202,7 @@ export class BookingPage implements OnInit {
     }
 
     async presentAlertConfirm(message) {
+        console.log("Present alert",message);
         let button = {
             text: 'Ok',
             handler: () => {
