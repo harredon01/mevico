@@ -21,6 +21,25 @@ export class BookingService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
+    getAvailabilitiesObject(where: any) {
+        let url = "/bookings/availabilities";
+
+        if (where) {
+            url = url + "?" + where;
+        }
+        let seq = this.api.get(url);
+        return seq;
+    }
+    saveOrCreateAvailability(data: any) {
+        let endpoint = '/bookings/availabilities';
+        let seq = this.api.post(endpoint, data);
+        return seq;
+    }
+    deleteAvailability(objectId: any) {
+        let endpoint = '/bookings/availabilities/'+objectId;
+        let seq = this.api.post(endpoint,{});
+        return seq;
+    }
     changeStatusBookingObject(data: any) {
         let endpoint = '/bookings/status';
         let seq = this.api.post(endpoint, data);

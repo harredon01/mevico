@@ -1,9 +1,21 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>availabilities</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>availabilities</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-list>
+        <ion-item-sliding *ngFor="let item of currentItems">
+            <ion-item (click)="openItem(item)">
+                <h2>{{ 'PAYMENT.STATUS' | translate }}: <span *ngIf="item.status == 'payment_in_bank'">{{ 'PAYMENT.PAYMENT_IN_BANK' | translate }}</span>
+                <p>{{ 'PAYMENT.ID' | translate }}: {{item.id}}</p>
+                <p>{{ 'PAYMENT.TOTAL' | translate }}: {{item.total | currency }}</p>
+                <p>{{ 'PAYMENT.UPDATED_AT' | translate }}: {{item.updated_at | date:'shortDate'}}</p>
+            </ion-item>
+        </ion-item-sliding>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>
