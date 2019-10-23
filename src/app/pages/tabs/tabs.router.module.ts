@@ -223,6 +223,10 @@ const routes: Routes = [
                         loadChildren: '../my-account/my-account.module#MyAccountPageModule'
                     },
                     {
+                        path: 'mercado-pago',
+                        loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
+                    },
+                    {
                         path: 'payments',
                         children: [
                             {

@@ -14,6 +14,13 @@
             </ion-item>
         </ion-item>
         <ion-item>
+            
+            <ion-item (click)="openItem('/tabs/settings/mercado-pago')">
+                    <img src="assets/icon/mi-cuenta.svg" />
+                    <h2>{{ 'SETTINGS.MERCADO' | translate }}</h2>
+            </ion-item>
+        </ion-item>
+        <ion-item>
             <ion-item (click)="openItem('/tabs/settings/addresses')">
                     <img src="assets/icon/mis-direcciones.svg" />
                     <h2>{{ 'SETTINGS.ADDRESSES' | translate }}</h2>

@@ -14,7 +14,7 @@ import {Contact} from '../../models/contact'
     styleUrls: ['./contacts.page.scss'],
 })
 export class ContactsPage implements OnInit {
-    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+    @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
     contacts: Contact[] = []
     page: any = 0;
     loadMore: boolean = false;

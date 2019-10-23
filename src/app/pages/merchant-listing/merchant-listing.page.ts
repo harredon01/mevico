@@ -18,7 +18,7 @@ import {ApiService} from '../../services/api/api.service';
     styleUrls: ['./merchant-listing.page.scss'],
 })
 export class MerchantListingPage implements OnInit {
-    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+    @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
     location: any;
     typeSearch: string = "category";
     totalResults: any;

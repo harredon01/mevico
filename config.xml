@@ -125,6 +125,6 @@
     <plugin name="onesignal-cordova-plugin" spec="2.4.7" />
     <plugin name="cordova-plugin-opentok" spec="^3.4.3" />
     <allow-navigation href="http://localhost:8101" sessionid="9198a0bd" />
-    <engine name="android" spec="^8.1.0" />
     <engine name="ios" spec="^5.0.1" />
+    <engine name="android" spec="^8.1.0" />
 </widget>
