@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-//import {MercadoPago} from 'mercadopago'
+declare var Mercadopago: any;
 @Component({
     selector: 'app-mercado-pago',
     templateUrl: './mercado-pago.page.html',
@@ -8,18 +8,25 @@ import {Component, OnInit} from '@angular/core';
 export class MercadoPagoPage implements OnInit {
     cardNumber: any;
 
-    constructor(private mercadoPago: any) {
-        this.mercadoPago.configure({
-            sandbox: true,
-            access_token: 'TEST-7257598100783047-102204-48ffa85b3929603acd628a36bbc68c68-273701117'
+    constructor() {
+        this.cardNumber = "4170068810108020"
+        Mercadopago.getIdentificationTypes((status, response) => {
+            if (status !== 200) {
+                console.log("Error")
+            } 
+            console.log("Exito",response)
         });
-        this.mercadoPago.getPaymentMethod({
-                        "bin": "401354"
-                    }).then((value) => {
-                        console.log("value",value)
-                    }).catch((error) => {
-                        console.log("error",error)
-                    });
+    }
+    
+    pay(){
+        var $form = document.querySelector('#pay');
+
+        Mercadopago.createToken($form, (status, response) => {
+            if (status !== 200) {
+                console.log("Error")
+            } 
+            console.log("Exito",response)
+        });
     }
 
     ngOnInit() {
@@ -34,7 +41,7 @@ export class MercadoPagoPage implements OnInit {
 
         if (event.type == "keyup") {
             if (bin.length >= 6) {
-                this.mercadoPago.getPaymentMethod({
+                Mercadopago.getPaymentMethod({
                     "bin": bin
                 }).then((value) => {
 
@@ -45,12 +52,12 @@ export class MercadoPagoPage implements OnInit {
         } else {
             setTimeout(function () {
                 if (bin.length >= 6) {
-                    this.mercadoPago.getPaymentMethod({
+                    Mercadopago.getPaymentMethod({
                         "bin": bin
                     }).then((value) => {
-                        console.log("value",value)
+                        console.log("value", value)
                     }).catch((error) => {
-                        console.log("error",error)
+                        console.log("error", error)
                     });
                 }
             }, 100);
