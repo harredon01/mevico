@@ -1,6 +1,6 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>availabilities</ion-title>
+        <ion-title>{{ 'AVAILABILITIES.TITLE' | translate }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -8,10 +8,15 @@
     <ion-list>
         <ion-item-sliding *ngFor="let item of currentItems">
             <ion-item (click)="openItem(item)">
-                <h2>{{ 'PAYMENT.STATUS' | translate }}: <span *ngIf="item.status == 'payment_in_bank'">{{ 'PAYMENT.PAYMENT_IN_BANK' | translate }}</span>
-                <p>{{ 'PAYMENT.ID' | translate }}: {{item.id}}</p>
-                <p>{{ 'PAYMENT.TOTAL' | translate }}: {{item.total | currency }}</p>
-                <p>{{ 'PAYMENT.UPDATED_AT' | translate }}: {{item.updated_at | date:'shortDate'}}</p>
+                <h2>{{ 'AVAILABILITIES.RANGE' | translate }}: <span *ngIf="item.range == 'sunday'">{{ 'DAYS.SUNDAY' | translate }}</span>
+                <span *ngIf="item.range == 'monday'">{{ 'DAYS.MONDAY' | translate }}</span>
+                <span *ngIf="item.range == 'tuesday'">{{ 'DAYS.TUESDAY' | translate }}</span>
+                <span *ngIf="item.range == 'wednesday'">{{ 'DAYS.WEDNESDAY' | translate }}</span>
+                <span *ngIf="item.range == 'thursday'">{{ 'DAYS.THURSDAY' | translate }}</span>
+                <span *ngIf="item.range == 'friday'">{{ 'DAYS.FRIDAY' | translate }}</span>
+                <span *ngIf="item.range == 'saturday'">{{ 'DAYS.SATURDAY' | translate }}</span></h2>
+                <p>{{ 'AVAILABILITIES.FROM' | translate }}: {{item.from | date:'HH:mm'}}</p>
+                <p>{{ 'AVAILABILITIES.TO' | translate }}: {{item.to | date:'HH:mm'}}</p>
             </ion-item>
         </ion-item-sliding>
     </ion-list>

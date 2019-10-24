@@ -157,6 +157,10 @@ const routes: Routes = [
                                     {
                                         path: 'ratings',
                                         loadChildren: '../comments/comments.module#CommentsPageModule',
+                                    },
+                                    {
+                                        path: 'availabilites',
+                                        loadChildren: '../availabilites/availabilites.module#AvailabilitiesPageModule',
                                     }
                                 ]
                             }

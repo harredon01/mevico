@@ -129,6 +129,22 @@
         "TITLE": "Selecciona dirección de entrega",
         "DESCRIPTION": "Ingresa una dirección"
     },
+    "AVAILABILITIES": {
+        "TITLE": "Disponibilidad de reservas",
+        "RANGE": "Día",
+        "FROM": "Desde",
+        "TO": "Hasta"
+    },
+    "AVAILABILITY_CREATE": {
+        "TITLE": "Editar disponibilidad",
+        "RANGE": "Día",
+        "FROM": "Desde",
+        "TO": "Hasta",
+        "RANGE_ERROR": "Selecciona un día",
+        "FROM_ERROR": "Indica el inicio",
+        "TO_ERROR": "Indica el final",
+        "ERROR_SAVE": "Error guardando la disponibilidad"
+    },
     "BOOKING": {
         "TITLE": "Reservar",
         "DESCRIPTION": "Ingresa una dirección",
@@ -673,5 +689,14 @@
         "DOC_TYPE": "Tipo de documento",
         "DOC_TYPE_ERROR": "verifica el tipo de documento",
         "GET_USER_ERROR": "Error consiguiendo los datos de usuario"
+    },
+    "DAYS": {
+        "MONDAY": "Lunes",
+        "TUESDAY": "Martes",
+        "WEDNESDAY": "Miércoles",
+        "THURSDAY": "Jueves",
+        "FRIDAY": "Viernes",
+        "SATURDAY":"Sábado",
+        "SUNDAY":"Domingo"
     }
 }
