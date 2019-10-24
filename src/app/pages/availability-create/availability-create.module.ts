@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { IonicModule } from '@ionic/angular';
 
-import { MercadoPagoPage } from './mercado-pago.page';
+import { AvailabilityCreatePage } from './availability-create.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: MercadoPagoPage
+    component: AvailabilityCreatePage
   }
 ];
 
@@ -18,11 +18,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    TranslateModule,
-    ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [MercadoPagoPage]
+  declarations: [AvailabilityCreatePage]
 })
-export class MercadoPagoPageModule {}
+export class AvailabilityCreatePageModule {}

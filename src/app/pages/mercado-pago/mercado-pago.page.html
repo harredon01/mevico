@@ -1,48 +1,76 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>mercado-pago</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>mercado-pago</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<form action="" method="post" id="pay" name="pay" (ngSubmit)="pay()" >
-    <fieldset>
-        <ul>
-            <li>
-                <label for="email">Email</label>
-                <input id="email" name="email" value="test_user_19653727@testuser.com" type="email" placeholder="your email"/>
-            </li>
-            <li>
-                <label for="cardNumber">Credit card number:</label>
-                <input type="text" id="cardNumber" [(ngModel)]="cardNumber" [ngModelOptions]="{standalone: true}" data-checkout="cardNumber" placeholder="4509 9535 6623 3704" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
-            </li>
-            <li>
-                <label for="securityCode">Security code:</label>
-                <input type="text" id="securityCode" data-checkout="securityCode" placeholder="123" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
-            </li>
-            <li>
-                <label for="cardExpirationMonth">Expiration month:</label>
-                <input type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth" placeholder="12" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
-            </li>
-            <li>
-                <label for="cardExpirationYear">Expiration year:</label>
-                <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" placeholder="2015" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
-            </li>
-            <li>
-                <label for="cardholderName">Card holder name:</label>
-                <input type="text" id="cardholderName" data-checkout="cardholderName" placeholder="APRO" />
-            </li>
-            <li>
-                <label for="docType">Document type:</label>
-                <select id="docType" data-checkout="docType"></select>
-            </li>
-            <li>
-                <label for="docNumber">Document number:</label>
-                <input type="text" id="docNumber" data-checkout="docNumber" placeholder="12345678" />
-            </li>
-        </ul>
-        <input type="hidden" name="paymentMethodId" />
-        <input type="submit" value="Pay!" />
-    </fieldset>
-</form>
+    <form action="" method="post" id="pay" name="pay" (ngSubmit)="pay()" [formGroup]="payerForm">
+        <fieldset>
+            <ul>
+                <li>
+                    <label for="email">Email</label>
+                    <input id="email" name="email" value="test_user_19653727@testuser.com" type="email" placeholder="your email"/>
+                </li>
+                <li>
+                    <label for="cardNumber">Credit card number:</label>
+                    <input type="tel" id="cardNumber" (keyup)="creditTab($event)" data-checkout="cardNumber" placeholder="4509 9535 6623 3704" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off formControlName="cc_number"/>
+                </li>
+                <li *ngIf="!payerForm.controls.cc_number.valid  && (payerForm.controls.cc_number.dirty || submitAttempt)">
+                    <p>{{ 'CHECKOUT_CARD.PAYER_CC_ERROR' | translate }}</p>
+                </li>
+                <li *ngIf="logo.length>0">
+                    <img [src]="logo">
+                </li>
+                <li>
+                    <label for="cardExpirationMonth">Expiration month:</label>
+
+                    <input (keyup)="keytab($event,2)" [(ngModel)]="month" formControlName="cc_expiration_month" style="width:50px" type="tel" id="cardExpirationMonth" data-checkout="cardExpirationMonth" placeholder="12" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
+                    <input (keyup)="keytab($event,4)" [(ngModel)]="year" formControlName="cc_expiration_year" style="width:50px" type="tel" id="cardExpirationYear" data-checkout="cardExpirationYear" placeholder="2015" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
+                    <input style="width:50px" type="tel" id="securityCode" formControlName="cc_security_code" data-checkout="securityCode" placeholder="CVV" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
+
+                </li>
+                <li *ngIf="!payerForm.controls.cc_expiration_month.valid  && (payerForm.controls.cc_expiration_month.dirty || submitAttempt)">
+                    <p>{{ 'CHECKOUT_CARD.PAYER_EXPIRATION_MONTH_ERROR' | translate }}</p>
+                </li>
+                <li *ngIf="!payerForm.controls.cc_expiration_year.valid  && (payerForm.controls.cc_expiration_year.dirty || submitAttempt)">
+                    <p>{{ 'CHECKOUT_CARD.PAYER_EXPIRATION_YEAR_ERROR' | translate }}</p>
+                </li>
+                <li *ngIf="dateError && submitAttempt">
+                    <p>{{ 'CHECKOUT_CARD.PAYER_DATE_ERROR' | translate }}</p>
+                </li>
+                <li *ngIf="cvvError && submitAttempt">
+                    <p>{{ 'CHECKOUT_CARD.PAYER_CVV_LENGTH_ERROR' | translate }}</p>
+                </li>
+                <li *ngIf="!payerForm.controls.cc_security_code.valid  && (payerForm.controls.cc_security_code.dirty || submitAttempt)">
+                    <p>{{ 'CHECKOUT_CARD.PAYER_CVV_ERROR' | translate }}</p>
+                </li>
+                
+                <li>
+                    <label for="cardholderName">Card holder name:</label>
+                    <input type="text" id="cardholderName" data-checkout="cardholderName" placeholder="APRO" formControlName="cc_name"/>
+                </li>
+                <li *ngIf="!payerForm.controls.cc_name.valid  && (payerForm.controls.cc_name.dirty || submitAttempt)">
+                    <p>{{ 'CHECKOUT_CARD.PAYER_CC_NAME_ERROR' | translate }}</p>
+                </li>
+                <li>
+                    <label for="docType">Document type:</label>
+                    <select id="docType" data-checkout="docType"><option *ngFor="let item of doctypes" [value]='item.id'>{{item.name}}</option></select>
+                </li>
+                <li>
+                    <label for="docType">Installments:</label>
+                    <select [(ngModel)]="installmentsSelected" [ngModelOptions]="{standalone: true}"><option *ngFor="let item of installments" [value]='item.installments'>{{item.recommended_message}}</option></select>
+                </li>
+                <li>
+                    <label for="docNumber">Document number:</label>
+                    <input type="text" id="docNumber" data-checkout="docNumber" placeholder="12345678" />
+                </li>
+                <li>
+                    <p *ngFor="let item of validationErrors">{{item.description}}</p>
+                </li>
+            </ul>
+            <input type="hidden" name="paymentMethodId" [(ngModel)]="paymentMethod" [ngModelOptions]="{standalone: true}"/>
+                   <input type="submit" value="Pay!" />
+        </fieldset>
+    </form>
 </ion-content>
