@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Payment} from '../../models/payment'
+import {ParamsService} from '../../services/params/params.service';
+import {MercadoPagoService} from '../../services/mercado-pago/mercado-pago.service';
 declare var Mercadopago: any;
 @Component({
     selector: 'app-mercado-pago',
@@ -23,7 +25,9 @@ export class MercadoPagoPage implements OnInit {
     dateError: boolean = false;
     cvvError: boolean = false;
 
-    constructor(public formBuilder: FormBuilder, ) {
+    constructor(public formBuilder: FormBuilder, 
+        private params: ParamsService,
+        private mercadoServ: MercadoPagoService) {
         this.payment = new Payment({"total":10000});
         Mercadopago.getIdentificationTypes((status, response) => {
             if (status !== 200) {
