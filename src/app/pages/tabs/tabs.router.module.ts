@@ -159,8 +159,8 @@ const routes: Routes = [
                                         loadChildren: '../comments/comments.module#CommentsPageModule',
                                     },
                                     {
-                                        path: 'availabilites',
-                                        loadChildren: '../availabilites/availabilites.module#AvailabilitiesPageModule',
+                                        path: 'availabilities',
+                                        loadChildren: '../availabilities/availabilities.module#AvailabilitiesPageModule',
                                     }
                                 ]
                             }
