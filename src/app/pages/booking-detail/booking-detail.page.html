@@ -50,11 +50,11 @@
                 <ion-col class="icon">
                     <ion-icon name="md-clipboard" class="text-danger"></ion-icon>
                 </ion-col>
-                <ion-col class="detail" *ngIf="mainBooking.customer">
+                <ion-col class="detail" *ngIf="mainBooking.customer"  size="10">
                     <span>{{ 'BOOKING_DETAIL.BOOKED_BY' | translate }}</span>
                     <span>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</span>
                 </ion-col>
-                <ion-col class="detail" *ngIf="mainBooking.bookable">
+                <ion-col class="detail" *ngIf="mainBooking.bookable" size="10">
                     <span>{{ 'BOOKING_DETAIL.BOOKED_FOR' | translate }}</span>
                     <span>{{mainBooking.bookable.name}}</span>
                 </ion-col>
@@ -63,7 +63,7 @@
                 <ion-col class="icon">
                     <ion-icon name="md-information-circle" class="text-danger"></ion-icon>
                 </ion-col>
-                <ion-col class="detail">
+                <ion-col class="detail" size="10">
                     <span>{{ 'BOOKING_DETAIL.ID_TEXT' | translate }}</span>
                     <span>{{mainBooking.id}}</span>
                     <span>{{ 'BOOKING_DETAIL.ID_TEXT2' | translate }}</span>
