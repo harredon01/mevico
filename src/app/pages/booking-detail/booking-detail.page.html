@@ -18,30 +18,27 @@
 	                    <ion-icon name="md-calendar" class="text-danger"></ion-icon>
 	                </ion-col>
 	                <ion-col class="detail" size="10">
-	                    <small>Appointment date & time</small>
-	                    <strong>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
-	                    <strong>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
+	                    <span>Appointment date & time</span>
+	                    <span>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
+	                    <span>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
 	                </ion-col>
 	            </ion-row>
-	            <ion-col class="detail"*ngIf="mainBooking.total_paid == mainBooking.price" >
-	                <strong>{{ 'BOOKING_DETAIL.PAID' | translate }} </strong>
+	            <ion-col class="detail"*ngIf="mainBooking.total_paid == mainBooking.price" size="10">
+	                <span>{{ 'BOOKING_DETAIL.PAID' | translate }} </span>
 	            </ion-col>
-	            <ion-col class="detail"*ngIf="mainBooking.total_paid == 0" >
-	                <strong>{{ 'BOOKING_DETAIL.UNPAID' | translate }} </strong>
+	            <ion-col class="detail"*ngIf="mainBooking.total_paid == 0" size="10">
+	                <span>{{ 'BOOKING_DETAIL.UNPAID' | translate }} </span>
 	            </ion-col>
-	            <ion-col class="detail"*ngIf="mainBooking.total_paid == -1" >
-	                <strong>{{ 'BOOKING_DETAIL.UNAUTHORIZED' | translate }} </strong>
+	            <ion-col class="detail"*ngIf="mainBooking.total_paid == -1" size="10">
+	                <span>{{ 'BOOKING_DETAIL.UNAUTHORIZED' | translate }} </span>
 	            </ion-col>
-	            <ion-col class="detail" >
-	                <strong>{{ 'BOOKING_DETAIL.PRICE' | translate }}:{{ mainBooking.price | currency }}  </strong>
-	            </ion-col>
-	            <ion-col class="detail" >
-	                <strong>{{ 'BOOKING_DETAIL.ATTRIBUTES' | translate }}</strong>
+	            <ion-col class="detail" size="10">
+	                <span>{{ 'BOOKING_DETAIL.PRICE' | translate }}:{{ mainBooking.price | currency }}  </span>
 	            </ion-col>
 	            <ion-row class="appot-detail" *ngFor="let item of mainBooking.options | keyvalue">
-	                     <ion-col class="detail">
-	                    <small>{{item.key}}</small>
-	                    <strong>{{item.value}}</strong>
+	                     <ion-col class="detail" size="10">
+	                    <span>{{item.key}}</span>
+	                    <span>{{item.value}}</span>
 	                </ion-col>
 	            </ion-row>
             <ion-grid>
@@ -54,12 +51,12 @@
                     <ion-icon name="md-clipboard" class="text-danger"></ion-icon>
                 </ion-col>
                 <ion-col class="detail" *ngIf="mainBooking.customer">
-                    <small>{{ 'BOOKING_DETAIL.BOOKED_BY' | translate }}</small>
-                    <strong>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</strong>
+                    <span>{{ 'BOOKING_DETAIL.BOOKED_BY' | translate }}</span>
+                    <span>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</span>
                 </ion-col>
                 <ion-col class="detail" *ngIf="mainBooking.bookable">
-                    <small>{{ 'BOOKING_DETAIL.BOOKED_FOR' | translate }}</small>
-                    <strong>{{mainBooking.bookable.name}}</strong>
+                    <span>{{ 'BOOKING_DETAIL.BOOKED_FOR' | translate }}</span>
+                    <span>{{mainBooking.bookable.name}}</span>
                 </ion-col>
             </ion-row>
             <ion-row class="appot-detail">
@@ -67,8 +64,8 @@
                     <ion-icon name="md-information-circle" class="text-danger"></ion-icon>
                 </ion-col>
                 <ion-col class="detail">
-                    <small>{{ 'BOOKING_DETAIL.ID_TEXT' | translate }}</small>
-                    <strong>{{mainBooking.id}}</strong>
+                    <span>{{ 'BOOKING_DETAIL.ID_TEXT' | translate }}</span>
+                    <span>{{mainBooking.id}}</span>
                     <span>{{ 'BOOKING_DETAIL.ID_TEXT2' | translate }}</span>
                 </ion-col>
             </ion-row>
