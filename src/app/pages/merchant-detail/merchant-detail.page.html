@@ -106,9 +106,10 @@
             <div class="bg-white overview">
                 <p class="text-danger header">{{ 'MERCHANT_DETAIL.ADDRESS' | translate }}</p>
                 <p class="header"><strong>{{merchant.address}}</strong></p>
-+                <!-- <div class="map-location">//Descomentar cuando lo aclare
+                <!-- <div class="map-location">//Descomentar cuando lo aclare
+                    <img src="assets/imgs/map-location.png" style="position: absolute;height: 100%;bottom: 0;z-index: 0;">
                     <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/dentist-1.jpg"></div>
-+                </div> -->
+                </div> -->
             </div>
             <div class="bg-white overview" *ngIf="merchant.attributes.services">
                 <p class="text-danger header">{{ 'MERCHANT_DETAIL.SERVICES' | translate }}</p>
