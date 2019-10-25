@@ -13,10 +13,10 @@
                 </ion-toolbar>
             </ion-header>
             <ion-content>
-                <ion-list>
+                <ion-list class="menu__toggle">
                     <ion-menu-toggle auto-hide="false" *ngFor="let p of items" (click)="openNotification(p)">
-                                     <img width="40" src="https://s3.us-east-2.amazonaws.com/gohife/public/icons/{{p.type}}.svg" />
-                        <span>{{p.created_at | date}}</span><br/>
+                        <img width="40" src="https://s3.us-east-2.amazonaws.com/gohife/public/icons/{{p.type}}.svg" />
+                        <span class="menu__toggle">{{p.created_at | date}}</span><br/>
                         {{p.subject}}
                     </ion-menu-toggle>
                 </ion-list>

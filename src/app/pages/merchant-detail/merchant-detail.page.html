@@ -65,7 +65,6 @@
             </ion-segment-button>
         </ion-segment>
     </div>
-
     <div [ngSwitch]="doctor" class="bg-light mb">
         <ion-list *ngSwitchCase="'about'">
             <div class="bg-white overview">
@@ -106,7 +105,7 @@
             <div class="bg-white overview">
                 <p class="text-danger header">{{ 'MERCHANT_DETAIL.ADDRESS' | translate }}</p>
                 <p class="header"><strong>{{merchant.address}}</strong></p>
-                <!-- <div class="map-location">//Descomentar cuando lo aclare
+                <!-- <div class="map-location">//Descomentar cuando yo lo aclare
                     <img src="assets/imgs/map-location.png" style="position: absolute;height: 100%;bottom: 0;z-index: 0;">
                     <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/dentist-1.jpg"></div>
                 </div> -->
@@ -155,28 +154,30 @@
         <ion-list *ngSwitchCase="'feedback'">
 
             <div class="bg-white rate-over-all">
-                <ion-row>
-                    <ion-col size="6">
-                        <div class="rate">
-                            <span>{{ 'MERCHANT_DETAIL.SCORE' | translate }} {{merchant.rating}}</span>
-                            <ion-icon name="md-star" class="active"></ion-icon>
-                            <ion-icon name="md-star" class="active"></ion-icon>
-                            <ion-icon name="md-star" class="active"></ion-icon>
-                            <ion-icon name="md-star" class="active"></ion-icon>
-                            <ion-icon name="md-star"></ion-icon>
-                            <span>({{merchant.rating_count}})</span>
-                        </div>
-                    </ion-col>
-                    <ion-col size="6" style="padding-right: 0;">
-                        <div class="rate">
-                            <span>Sort By</span>
-                            <ion-select [(ngModel)]="Short" interface="popover" class="location">
-                                <ion-select-option value="n1">{{ 'MERCHANT_DETAIL.RECENT' | translate }}</ion-select-option>
-                                <ion-select-option value="n2">{{ 'MERCHANT_DETAIL.OLDEST' | translate }}</ion-select-option>
-                            </ion-select>
-                        </div>
-                    </ion-col>
-                </ion-row>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="6">
+                            <div class="rate">
+                                <span>{{ 'MERCHANT_DETAIL.SCORE' | translate }} {{merchant.rating}}</span>
+                                <ion-icon name="md-star" class="active"></ion-icon>
+                                <ion-icon name="md-star" class="active"></ion-icon>
+                                <ion-icon name="md-star" class="active"></ion-icon>
+                                <ion-icon name="md-star" class="active"></ion-icon>
+                                <ion-icon name="md-star"></ion-icon>
+                                <span>({{merchant.rating_count}})</span>
+                            </div>
+                        </ion-col>
+                        <ion-col size="6" style="padding-right: 0;">
+                            <div class="rate">
+                                <span>Sort By</span>
+                                <ion-select [(ngModel)]="Short" interface="popover" class="location">
+                                    <ion-select-option value="n1">{{ 'MERCHANT_DETAIL.RECENT' | translate }}</ion-select-option>
+                                    <ion-select-option value="n2">{{ 'MERCHANT_DETAIL.OLDEST' | translate }}</ion-select-option>
+                                </ion-select>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
             </div>
 
             <ion-card *ngFor="let rating of merchant.ratings">
