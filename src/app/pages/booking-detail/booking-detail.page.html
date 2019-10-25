@@ -12,37 +12,39 @@
 <ion-content class="bg-light">
     <ion-card>
         <ion-card-content>
-            <ion-row class="appot-detail">
-                <ion-col class="icon">
-                    <ion-icon name="md-calendar" class="text-danger"></ion-icon>
-                </ion-col>
-                <ion-col class="detail">
-                    <small>Appointment date & time</small>
-                    <strong>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
-                    <strong>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
-                </ion-col>
-            </ion-row>
-            <ion-col class="detail"*ngIf="mainBooking.total_paid == mainBooking.price" >
-                <strong>{{ 'BOOKING_DETAIL.PAID' | translate }} </strong>
-            </ion-col>
-            <ion-col class="detail"*ngIf="mainBooking.total_paid == 0" >
-                <strong>{{ 'BOOKING_DETAIL.UNPAID' | translate }} </strong>
-            </ion-col>
-            <ion-col class="detail"*ngIf="mainBooking.total_paid == -1" >
-                <strong>{{ 'BOOKING_DETAIL.UNAUTHORIZED' | translate }} </strong>
-            </ion-col>
-            <ion-col class="detail" >
-                <strong>{{ 'BOOKING_DETAIL.PRICE' | translate }}:{{ mainBooking.price | currency }}  </strong>
-            </ion-col>
-            <ion-col class="detail" >
-                <strong>{{ 'BOOKING_DETAIL.ATTRIBUTES' | translate }}</strong>
-            </ion-col>
-            <ion-row class="appot-detail" *ngFor="let item of mainBooking.options | keyvalue">
-                     <ion-col class="detail">
-                    <small>{{item.key}}</small>
-                    <strong>{{item.value}}</strong>
-                </ion-col>
-            </ion-row>
+        	<ion-grid>
+	            <ion-row class="appot-detail">
+	                <ion-col class="icon"  size="2">
+	                    <ion-icon name="md-calendar" class="text-danger"></ion-icon>
+	                </ion-col>
+	                <ion-col class="detail" size="10">
+	                    <small>Appointment date & time</small>
+	                    <strong>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
+	                    <strong>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</strong>
+	                </ion-col>
+	            </ion-row>
+	            <ion-col class="detail"*ngIf="mainBooking.total_paid == mainBooking.price" >
+	                <strong>{{ 'BOOKING_DETAIL.PAID' | translate }} </strong>
+	            </ion-col>
+	            <ion-col class="detail"*ngIf="mainBooking.total_paid == 0" >
+	                <strong>{{ 'BOOKING_DETAIL.UNPAID' | translate }} </strong>
+	            </ion-col>
+	            <ion-col class="detail"*ngIf="mainBooking.total_paid == -1" >
+	                <strong>{{ 'BOOKING_DETAIL.UNAUTHORIZED' | translate }} </strong>
+	            </ion-col>
+	            <ion-col class="detail" >
+	                <strong>{{ 'BOOKING_DETAIL.PRICE' | translate }}:{{ mainBooking.price | currency }}  </strong>
+	            </ion-col>
+	            <ion-col class="detail" >
+	                <strong>{{ 'BOOKING_DETAIL.ATTRIBUTES' | translate }}</strong>
+	            </ion-col>
+	            <ion-row class="appot-detail" *ngFor="let item of mainBooking.options | keyvalue">
+	                     <ion-col class="detail">
+	                    <small>{{item.key}}</small>
+	                    <strong>{{item.value}}</strong>
+	                </ion-col>
+	            </ion-row>
+            <ion-grid>
         </ion-card-content>
     </ion-card>
     <ion-card>
