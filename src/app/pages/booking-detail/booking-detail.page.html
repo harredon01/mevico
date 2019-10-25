@@ -13,15 +13,15 @@
     <ion-card>
         <ion-card-content>
         	<ion-grid>
-	            <ion-row class="appot-detail">
-	                <ion-col class="icon"  size="2">
-	                    <ion-icon name="md-calendar" class="text-danger"></ion-icon>
-	                </ion-col>
++                <ion-row class="appot-detail">
++                    <ion-col class="icon" size="2">
++                        <ion-icon name="md-calendar" class="text-danger"></ion-icon>
++                    </ion-col>
 	                <ion-col class="detail" size="10">
-	                    <span>Appointment date & time</span>
-	                    <span>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
-	                    <span>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
-	                </ion-col>
++                        <span>Appointment date & time</span>
++                        <span>{{ mainBooking.starts_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
++                        <span>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
++                    </ion-col>
 	            </ion-row>
 	            <ion-col class="detail"*ngIf="mainBooking.total_paid == mainBooking.price" size="10">
 	                <span>{{ 'BOOKING_DETAIL.PAID' | translate }} </span>
@@ -47,10 +47,10 @@
     <ion-card>
         <ion-card-content>
             <ion-row class="appot-detail">
-                <ion-col class="icon">
+                <ion-col class="icon" size="2">
                     <ion-icon name="md-clipboard" class="text-danger"></ion-icon>
                 </ion-col>
-                <ion-col class="detail" *ngIf="mainBooking.customer"  size="10">
+                <ion-col class="detail" *ngIf="mainBooking.customer" size="10">
                     <span>{{ 'BOOKING_DETAIL.BOOKED_BY' | translate }}</span>
                     <span>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</span>
                 </ion-col>
@@ -60,7 +60,7 @@
                 </ion-col>
             </ion-row>
             <ion-row class="appot-detail">
-                <ion-col class="icon">
+                <ion-col class="icon" size="2">
                     <ion-icon name="md-information-circle" class="text-danger"></ion-icon>
                 </ion-col>
                 <ion-col class="detail" size="10">
