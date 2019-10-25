@@ -154,6 +154,11 @@
         "OCCUPIED_SLOTS":"Reservas existentes",
         "START_TIME":"Inicio",
         "HOURS":"Horas",
+        "UNPAID":"Pendiente por pagar",
+        "UNAPPROVED":"Pendiente de aprobacion",
+        "UPCOMING":"Proximos",
+        "ADDRESS":"Lugar",
+        "PAST":"Terminados",
         "END_TIME":"Fín",
         "MAKE_RESERVATION":"Seleccionar cita",
         "NOT_AVAILABLE":"Ese horario no está disponible"
