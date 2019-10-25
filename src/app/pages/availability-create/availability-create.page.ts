@@ -149,7 +149,7 @@ export class AvailabilityCreatePage implements OnInit {
             } else {
                 // Unable to log in
                 this.toastCtrl.create({
-                    message: this.addressErrorStringSave,
+                    message: this.availabilityErrorStringSave,
                     duration: 3000,
                     position: 'top'
                 }).then(toast => toast.present());
@@ -157,7 +157,7 @@ export class AvailabilityCreatePage implements OnInit {
         }).catch((error) => {
             console.log('Error saveAvailability', error);
             this.toastCtrl.create({
-                message: this.addressErrorStringSave,
+                message: this.availabilityErrorStringSave,
                 duration: 3000,
                 position: 'top'
             }).then(toast => toast.present());
