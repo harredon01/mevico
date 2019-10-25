@@ -113,35 +113,41 @@
             </div>
             <div class="bg-white overview" *ngIf="merchant.attributes.services">
                 <p class="text-danger header">{{ 'MERCHANT_DETAIL.SERVICES' | translate }}</p>
-                <ion-row>
-                    <ion-col size="6" *ngFor="let service of merchant.attributes.services">
-                             <div>
-                            <img src="{{service.icon}}">
-                            <h3>{{service.name}}</h3>
-                        </div>
-                    </ion-col>
-                </ion-row>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12" *ngFor="let service of merchant.attributes.services">
+                            <div>
+                                <!-- <img src="{{service.icon}}"> -->
+                                <h3>{{service.name}}</h3>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
                 <br>
             </div>
             <div class="bg-white overview" *ngIf="merchant.attributes.specializations">
                 <p class="text-danger header">{{ 'MERCHANT_DETAIL.SPECIALIZATIONS' | translate }}</p>
-                <ion-row>
-                    <ion-col size="12" *ngFor="let specialization of merchant.attributes.specializations">
-                             <div>
-                            <img src="{{specialization.icon}}">
-                            <h3>{{specialization.name}}</h3>
-                        </div>
-                    </ion-col>
-                </ion-row>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12" *ngFor="let specialization of merchant.attributes.specializations">
+                            <div>
+                                <!-- <img src="{{specialization.icon}}"> -->
+                                <h3>{{specialization.name}}</h3>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
                 <br>
             </div>
             <div class="bg-white overview practics" *ngIf="merchant.availabilities.length>0">
                 <p class="text-danger header">{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</p>
-                <ion-row>
-                    <ion-col size="6" *ngFor="let availability of merchant.availabilities">
-                             <h5>{{availability.range}}<span float-right>{{availability.from}} to {{availability.to}}</span></h5>
-                    </ion-col>
-                </ion-row>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12" *ngFor="let availability of merchant.availabilities">
+                                <h5>{{availability.range}}<span float-right>{{availability.from}} to {{availability.to}}</span></h5>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
             </div>
             <br><br>
             <ion-button expand="full" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0"><ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}</ion-button>

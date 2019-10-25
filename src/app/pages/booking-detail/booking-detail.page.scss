@@ -26,8 +26,8 @@
     }
 }
 .appot-detail {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    // padding-top: 15px;
+    // padding-bottom: 15px;
     .col {
         padding: 0;
         &.icon {
@@ -69,4 +69,25 @@
     width: 100%;
     left: 0;
     padding: 0 32px;
+}
+.appot-detail{
+    .icon{
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        color: var(--ion-color-primary); 
+    }
+    .option{
+        padding-left: calc(calc(2 / var(--ion-grid-columns, 12)) * 100%);
+        font-weight: 600;
+        border-bottom: 1px solid #eaeaea;
+        margin-bottom: 1rem;
+    }
+    span{
+        display: block;
+        &:first-child{
+            margin-bottom: .5rem;
+            color: var(--ion-color-primary); 
+        }
+    }
 }
