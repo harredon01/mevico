@@ -21,6 +21,13 @@
             </ion-item>
         </ion-item>
         <ion-item>
+            
+            <ion-item (click)="openItem('/tabs/settings/create-merchant')">
+                    <img src="assets/icon/mi-cuenta.svg" />
+                    <h2>{{ 'SETTINGS.CREATE_MERCHANT' | translate }}</h2>
+            </ion-item>
+        </ion-item>
+        <ion-item>
             <ion-item (click)="openItem('/tabs/settings/addresses')">
                     <img src="assets/icon/mis-direcciones.svg" />
                     <h2>{{ 'SETTINGS.ADDRESSES' | translate }}</h2>

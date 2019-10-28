@@ -7,12 +7,12 @@ export class ImagesService {
 
     constructor(public api: ApiService) {}
     getFiles(data:any) {
-        let endpoint = '/bookings/user';
+        let endpoint = '/imagesapi';
         let seq = this.api.get(endpoint,data);
         return seq;
     }
     deleteFile(data: any) {
-        let endpoint = '/bookings';
+        let endpoint = '/imagesapi/'+data;
         let seq = this.api.delete(endpoint, data);
         return seq;
     }

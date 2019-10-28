@@ -252,6 +252,10 @@ const routes: Routes = [
                         loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
                     },
                     {
+                        path: 'create-merchant',
+                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
+                    },
+                    {
                         path: 'payments',
                         children: [
                             {

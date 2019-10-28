@@ -22,22 +22,28 @@ export class ProductsService {
         return seq;
     }
     saveOrCreateProduct(product: any) {
-        let endpoint = '/products/merchant/';
+        let endpoint = '/products/';
+        if(product.id){
+            endpoint = '/products/'+product.id;
+        }
         let seq = this.api.post(endpoint,product);
         return seq;
     }
     deleteProduct(product: any) {
-        let endpoint = '/products/merchant/';
+        let endpoint = '/products/'+product;
         let seq = this.api.delete(endpoint,product);
         return seq;
     }
     saveOrCreateVariant(variant: any) {
-        let endpoint = '/products/merchant/';
+        let endpoint = '/products/variant';
+        if(variant.id){
+            endpoint = '/products/variant/'+variant.id;
+        }
         let seq = this.api.post(endpoint,variant);
         return seq;
     }
     deleteVariant(variant: any) {
-        let endpoint = '/products/merchant/';
+        let endpoint = '/products/variant/'+variant.id;
         let seq = this.api.delete(endpoint,variant);
         return seq;
     }

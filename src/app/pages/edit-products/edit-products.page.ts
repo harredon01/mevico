@@ -49,6 +49,21 @@ export class EditProductsPage implements OnInit {
         this.translateService.get('AVAILABILITY_CREATE.ERROR_SAVE').subscribe((value) => {
             vm.getProductErrorString = value;
         });
+        this.formP = formBuilder.group({
+            id: [''],
+            name: ['', Validators.required],
+            description: ['', Validators.required]
+        });
+        this.formV = formBuilder.group({
+            id: [''],
+            sku: ['', Validators.required],
+            description: ['', Validators.required],
+            price: ['', Validators.required],
+            tax: [''],
+            cost: ['', Validators.required],
+            sale: ['', Validators.required],
+            quantity: [''],
+        });
     }
 
     ionViewDidEnter() {
@@ -60,6 +75,9 @@ export class EditProductsPage implements OnInit {
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
         let merchantId = this.activatedRoute.snapshot.paramMap.get('merchantId'); 
         this.navCtrl.navigateForward('tabs/categories/' + category + '/merchant/' + merchantId + "/products/images/" + this.product.id);
+    }
+    addVariant() {
+        this.editingVariant = true;
     }
     getItem(productId) {
         this.showLoader();
@@ -186,10 +204,15 @@ export class EditProductsPage implements OnInit {
             this.dismissLoader();
             this.editingVariant = false;
             let variant = data.variant;
+            let found = false;
             for(let item in this.variants){
                 if(this.variants[item].id == variant.id){
                     this.variants[item] = variant;
+                    found = true;
                 }
+            }
+            if(!found){
+                this.variants.push(variant);
             }
             console.log(JSON.stringify(data));
         }, (err) => {

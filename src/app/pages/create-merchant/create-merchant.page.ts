@@ -46,6 +46,7 @@ export class CreateMerchantPage implements OnInit {
         });
         this.getCountries();
         this.form = formBuilder.group({
+            id: [''],
             type: ['', Validators.required],
             name: ['', Validators.required],
             description: ['', Validators.required],
@@ -72,6 +73,7 @@ export class CreateMerchantPage implements OnInit {
         let mapLocation: any = container.mapLocation;
         if (editingMerchant) {
             let container = {
+                id: editingMerchant.id,
                 type: editingMerchant.type,
                 name: editingMerchant.name,
                 description: editingMerchant.description,
@@ -112,6 +114,7 @@ export class CreateMerchantPage implements OnInit {
 
         } else if (mapLocation) {
             let container = {
+                id:"",
                 type: mapLocation.type,
                 name: '',
                 description: '',

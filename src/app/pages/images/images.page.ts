@@ -143,7 +143,7 @@ export class ImagesPage implements OnInit {
             params: params
         }
 
-        fileTransfer.upload(path, '<api endpoint>', options)
+        fileTransfer.upload(path, 'api/imagesapi', options)
             .then((data) => {
                 console.log("Success upload",data)
             }, (err) => {

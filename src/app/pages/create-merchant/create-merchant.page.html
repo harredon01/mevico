@@ -14,6 +14,7 @@
 
 <ion-content>
     <form [formGroup]="form" (ngSubmit)="done()">
+        <input type="hidden" formControlName="id" />
         <input type="hidden" formControlName="lat" />
         <input type="hidden" formControlName="long" />
         <ion-list>
