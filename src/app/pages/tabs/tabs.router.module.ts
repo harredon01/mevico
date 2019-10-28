@@ -126,6 +126,10 @@ const routes: Routes = [
                                             {
                                                 path: ':productId/edit',
                                                 loadChildren: '../edit-products/edit-products.module#EditProductsPageModule',
+                                            },
+                                            {
+                                                path: ':productId/images',
+                                                loadChildren: '../images/images.module#ImagesPageModule',
                                             }
                                         ]
                                     },
@@ -174,6 +178,10 @@ const routes: Routes = [
                                     {
                                         path: 'availabilities',
                                         loadChildren: '../availabilities/availabilities.module#AvailabilitiesPageModule',
+                                    },
+                                    {
+                                        path: 'images',
+                                        loadChildren: '../images/images.module#ImagesPageModule',
                                     }
                                 ]
                             }

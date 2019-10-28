@@ -16,6 +16,31 @@ export class ProductsService {
         return seq;
 
     }
+    getProductSimple(product: string) {
+        let endpoint = '/products/merchant/' + product;
+        let seq = this.api.get(endpoint);
+        return seq;
+    }
+    saveOrCreateProduct(product: any) {
+        let endpoint = '/products/merchant/';
+        let seq = this.api.post(endpoint,product);
+        return seq;
+    }
+    deleteProduct(product: any) {
+        let endpoint = '/products/merchant/';
+        let seq = this.api.delete(endpoint,product);
+        return seq;
+    }
+    saveOrCreateVariant(variant: any) {
+        let endpoint = '/products/merchant/';
+        let seq = this.api.post(endpoint,variant);
+        return seq;
+    }
+    deleteVariant(variant: any) {
+        let endpoint = '/products/merchant/';
+        let seq = this.api.delete(endpoint,variant);
+        return seq;
+    }
     buildProduct(container: any, merchant: any, merchant_id: any) {
         let productInfo = new Product({});
         productInfo.id = container.product_id;
