@@ -35,7 +35,7 @@ export class AvailabilitiesPage implements OnInit {
         this.translateService.get('ADDRESS_FIELDS.ERROR_GET').subscribe((value) => {
             this.availabilityErrorString = value;
         });
-        this.merchant = this.activatedRoute.snapshot.paramMap.get('merchantId');
+        this.merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
 
     }
     ionViewDidEnter() {
@@ -48,7 +48,6 @@ export class AvailabilitiesPage implements OnInit {
         this.page++
         this.showLoader();
         this.currentItems = [];
-        let merchantId = this.activatedRoute.snapshot.paramMap.get('merchantId');
         let where = "merchant_id="+this.merchant+"&page="+this.page;
         this.booking.getAvailabilitiesObject(where).subscribe((data: any) => {
             this.dismissLoader();

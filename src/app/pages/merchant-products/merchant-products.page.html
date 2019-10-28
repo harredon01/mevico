@@ -40,6 +40,8 @@
                 <div [innerHtml]="item.description" class="hide-text" [ngClass]="{'show' : item.description_more}"></div>
                 <button class="btn-secondary" (click)="showMore(item)" *ngIf="merchant==1299" >{{  item.description_more ? showLessText: showMoreText}}
                 </button>
+                <button class="btn-secondary" (click)="editProduct(item.id)" *ngIf="isOwner" >{{ 'INPUTS.EDIT' | translate }}
+                </button>
                 <ion-item > 
                     <ion-label>{{ 'PRODUCTS.VARIANTS' | translate }}</ion-label> 
                     <ion-select [(ngModel)]="item.variant_id" [disabled]="item.inCart" (ionChange)="selectVariant(item)">

@@ -3,6 +3,7 @@ import {NavController, ToastController, ModalController, AlertController, Events
 import {ParamsService} from '../../services/params/params.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {TranslateService} from '@ngx-translate/core';
+import {ActivatedRoute} from '@angular/router';
 import {ProductsService} from '../../services/products/products.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
@@ -19,6 +20,7 @@ export class MerchantProductsPage implements OnInit {
     products: Product[] = [];
     categories: any[] = [];
     options: any[];
+    isOwner:boolean = false;
     slides: any[];
     loading: any;
     merchantObj: {
@@ -44,6 +46,7 @@ export class MerchantProductsPage implements OnInit {
     private minAmount: string;
 
     constructor(public navCtrl: NavController,
+    public activatedRoute: ActivatedRoute,
         public productsServ: ProductsService,
         public toastCtrl: ToastController,
         public api: ApiService,
@@ -82,6 +85,7 @@ export class MerchantProductsPage implements OnInit {
         this.slides = [];
         let paramsSent = this.params.getParams();
         this.merchant = paramsSent.objectId;
+        this.isOwner = paramsSent.owner;
         this.products = [];
         this.possibleAmounts = [];
         this.showLoader();
@@ -100,6 +104,10 @@ export class MerchantProductsPage implements OnInit {
     }
     addCart(item: any) {
         this.addCartItem(item);
+    }
+    editProduct(productId:any) {
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/products/"+productId+"/edit");
     }
     showLoader() {
         if (document.URL.startsWith('http')) {

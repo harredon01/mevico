@@ -118,6 +118,19 @@ const routes: Routes = [
                                     },
                                     {
                                         path: 'products',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
+                                            },
+                                            {
+                                                path: ':productId/edit',
+                                                loadChildren: '../edit-products/edit-products.module#EditProductsPageModule',
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        path: 'products',
                                         loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
                                     },
                                     {
