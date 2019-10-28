@@ -81,6 +81,32 @@ export class ImagesPage implements OnInit {
             this.api.handleError(err);
         });
     }
+    deleteImage(id) {
+        this.showLoader();
+        this.imagesServ.deleteFile(id).subscribe((data: any) => {
+            this.dismissLoader();
+            console.log("after get addresses");
+            let results = data.addresses;
+            for (let one in results) {
+                if(results[one].id == id){
+                    this.images.splice(parseInt(one),1);
+                }
+            }
+            console.log(JSON.stringify(data));
+        }, (err) => {
+            this.dismissLoader();
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+                message: this.getImagesError,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
+    }
+    done(){
+        this.navCtrl.back();
+    }
     openImages() {
         let params = this.params.getParams();
         let container = {
