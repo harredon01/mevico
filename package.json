@@ -25,6 +25,7 @@
     "@ionic-native/file-transfer": "^5.15.1",
     "@ionic-native/geolocation": "^5.15.1",
     "@ionic-native/google-maps": "^5.5.0",
+    "@ionic-native/image-picker": "^5.15.1",
     "@ionic-native/in-app-browser": "^5.15.1",
     "@ionic-native/onesignal": "^5.15.1",
     "@ionic-native/spinner-dialog": "^5.15.1",
@@ -47,6 +48,7 @@
     "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-googlemaps": "^2.6.2",
+    "cordova-plugin-image-picker": "^1.1.3",
     "cordova-plugin-inappbrowser": "3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.1.2",
@@ -54,6 +56,7 @@
     "cordova-plugin-opentok": "^3.4.3",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
+    "cordova-plugin-telerik-imagepicker": "^2.3.3",
     "cordova-plugin-whitelist": "^1.3.4",
     "cordova-sqlite-storage": "3.2.0",
     "core-js": "^2.6.10",
@@ -120,7 +123,8 @@
       },
       "cordova-plugin-contacts": {},
       "cordova-plugin-opentok": {},
-      "cordova-plugin-file-transfer": {}
+      "cordova-plugin-file-transfer": {},
+      "cordova-plugin-telerik-imagepicker": {}
     },
     "platforms": [
       "ios",

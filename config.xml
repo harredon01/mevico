@@ -128,4 +128,6 @@
     <allow-navigation href="http://localhost:8101" sessionid="9198a0bd" />
     <engine name="ios" spec="^5.0.1" />
     <engine name="android" spec="^8.1.0" />
+    <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.3.3" />
+    <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
 </widget>
