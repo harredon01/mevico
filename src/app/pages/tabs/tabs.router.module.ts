@@ -124,11 +124,11 @@ const routes: Routes = [
                                                 loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
                                             },
                                             {
-                                                path: ':productId/edit',
+                                                path: 'edit/:productId',
                                                 loadChildren: '../edit-products/edit-products.module#EditProductsPageModule',
                                             },
                                             {
-                                                path: ':productId/images',
+                                                path: 'images/:productId',
                                                 loadChildren: '../images/images.module#ImagesPageModule',
                                             }
                                         ]

@@ -1,9 +1,132 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>edit-products</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>{{ 'EDIT_PRODUCTS.TITLE' | translate }}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <form [formGroup]="formP" (ngSubmit)="saveProduct()" *ngIf="!editingVariant">
+        <input type="hidden" formControlName="id" />
+        <ion-list>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.NAME' | translate }}</ion-label>
+                <ion-input type="text" formControlName="name"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formP.controls.name.valid  && (formP.controls.name.dirty || submitAttemptP)">
+                <p>{{ 'EDIT_PRODUCTS.NAME_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.DESCRIPTION' | translate }}</ion-label>
+                <ion-input type="text" formControlName="description"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formP.controls.description.valid  && (formP.controls.description.dirty || submitAttemptP)">
+                <p>{{ 'EDIT_PRODUCTS.DESCRIPTION_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
+            </ion-item>
+        </ion-list>
+    </form>
+    <ion-button color="danger" (click)="deleteProduct()">
+        {{ 'DELETE_BUTTON' | translate }}
+    </ion-button>
+    <ion-button color="primart" (click)="editImages()">
+        {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
+    </ion-button>
+    <ion-list *ngIf="!editingVariant">
+        <ion-item-sliding *ngFor="let item of currentItems">
+            <ion-item (click)="editVariant(item)">
+                <h3>{{ 'EDIT_PRODUCTS.SKU' | translate }}: {{item.sku}}</h3>
+                <p>{{ 'EDIT_PRODUCTS.DESCRIPTION' | translate }}: {{item.description}}</p>
+                <p>{{ 'EDIT_PRODUCTS.PRICE' | translate }}: {{item.price | "currency"}}</p>
+                <p>{{ 'EDIT_PRODUCTS.SALE' | translate }}: {{item.sale | "currency"}}</p>
+                <p>{{ 'EDIT_PRODUCTS.TAX' | translate }}: {{item.tax | "currency"}}</p>
+                <p>{{ 'EDIT_PRODUCTS.COST' | translate }}: {{item.cost | "currency"}}</p>
+                <p>{{ 'EDIT_PRODUCTS.QUANTITY' | translate }}: {{item.quantity}}</p>
+                <p *ngIf="item.is_digital">{{ 'EDIT_PRODUCTS.IS_DIGITAL' | translate }}</p>
+                <p *ngIf="item.requires_authorization">{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</p>
+                <p *ngIf="item.is_shippable">{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</p>
+                <p *ngIf="item.is_on_sale">{{ 'EDIT_PRODUCTS.IS_ON_SALE' | translate }}</p>
+                
+            </ion-item>
+            <ion-item-options>  
+                <ion-button color="danger" (click)="deleteVariant(item.id)">
+                    {{ 'DELETE_BUTTON' | translate }}
+                </ion-button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+    <form [formGroup]="formV" (ngSubmit)="saveVariant()" *ngIf="editingVariant">
+        <input type="hidden" formControlName="id" />
+        <ion-list>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.SKU' | translate }}</ion-label>
+                <ion-input type="text" formControlName="sku"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formV.controls.sku.valid  && (formV.controls.sku.dirty || submitAttemptV)">
+                <p>{{ 'EDIT_PRODUCTS.SKU_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.DESCRIPTION2' | translate }}</ion-label>
+                <ion-input type="text" formControlName="description"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formV.controls.description.valid  && (formV.controls.description.dirty || submitAttemptV)">
+                <p>{{ 'EDIT_PRODUCTS.DESCRIPTION2_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.PRICE' | translate }}</ion-label>
+                <ion-input type="tel" formControlName="price"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formV.controls.price.valid  && (formV.controls.price.dirty || submitAttemptV)">
+                <p>{{ 'EDIT_PRODUCTS.PRICE_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.SALE' | translate }}</ion-label>
+                <ion-input type="tel" formControlName="sale"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formV.controls.sale.valid  && (formV.controls.sale.dirty || submitAttemptV)">
+                <p>{{ 'EDIT_PRODUCTS.SALE_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.TAX' | translate }}</ion-label>
+                <ion-input type="tel" formControlName="tax"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formV.controls.tax.valid  && (formV.controls.tax.dirty || submitAttemptV)">
+                <p>{{ 'EDIT_PRODUCTS.TAX_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.COST' | translate }}</ion-label>
+                <ion-input type="tel" formControlName="cost"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formV.controls.cost.valid  && (formV.controls.cost.dirty || submitAttemptV)">
+                <p>{{ 'EDIT_PRODUCTS.COST_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.MIN_QUANTITY' | translate }}</ion-label>
+                <ion-input type="tel" formControlName="min_quantity"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formV.controls.min_quantity.valid  && (formV.controls.min_quantity.dirty || submitAttemptV)">
+                <p>{{ 'EDIT_PRODUCTS.MIN_QUANTITY_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item >
+                <ion-label>{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</ion-label>
+                <ion-checkbox formControlName="requires_authorization"></ion-checkbox>
+            </ion-item>
+            <ion-item >
+                <ion-label>{{ 'EDIT_PRODUCTS.IS_SHIPPABLE' | translate }}</ion-label>
+                <ion-checkbox formControlName="is_shippable"></ion-checkbox>
+            </ion-item>
+            <ion-item >
+                <ion-label>{{ 'EDIT_PRODUCTS.IS_ON_SALE' | translate }}</ion-label>
+                <ion-checkbox formControlName="is_on_sale"></ion-checkbox>
+            </ion-item>
+            <ion-item >
+                <ion-label>{{ 'EDIT_PRODUCTS.IS_DIGITAL' | translate }}</ion-label>
+                <ion-checkbox formControlName="is_digital"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
+            </ion-item>
+        </ion-list>
+    </form>
 </ion-content>

@@ -107,7 +107,7 @@ export class MerchantProductsPage implements OnInit {
     }
     editProduct(productId:any) {
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/products/"+productId+"/edit");
+        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/products/edit/"+productId);
     }
     showLoader() {
         if (document.URL.startsWith('http')) {

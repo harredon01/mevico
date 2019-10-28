@@ -56,6 +56,11 @@ export class EditProductsPage implements OnInit {
         let product = this.activatedRoute.snapshot.paramMap.get('productId');
         this.getItem(product);
     }
+    editImages() {
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
+        let merchantId = this.activatedRoute.snapshot.paramMap.get('merchantId'); 
+        this.navCtrl.navigateForward('tabs/categories/' + category + '/merchant/' + merchantId + "/products/images/" + this.product.id);
+    }
     getItem(productId) {
         this.showLoader();
         this.productsServ.getProductSimple(productId).subscribe((data: any) => {
@@ -131,9 +136,9 @@ export class EditProductsPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    deleteProduct(productId) {
+    deleteProduct() {
         this.showLoader();
-        this.productsServ.deleteProduct(productId).subscribe((data: any) => {
+        this.productsServ.deleteProduct(this.product.id).subscribe((data: any) => {
             this.dismissLoader();
             console.log("after get addresses");
             this.navCtrl.back();
