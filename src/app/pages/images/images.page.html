@@ -1,17 +1,20 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>{{ 'IMAGES.TITLE' | translate }}</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ 'IMAGES.TITLE' | translate }}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <ion-list>
-            <ion-item *ngFor="let item of images">
-                <img [src]="item.file"/>
-                <ion-button color="danger" (click)="deleteImage(item.id)">
-                    {{ 'DELETE_BUTTON' | translate }}
-                </ion-button>
-            </ion-item>
+        <ion-item *ngFor="let item of images">
+            <img [src]="item.file"/>
+            <ion-button color="danger" (click)="deleteImage(item.id)">
+                {{ 'DELETE_BUTTON' | translate }}
+            </ion-button>
+        </ion-item>
     </ion-list>
     <ion-button color="primary" (click)="openImages()">
         {{ 'IMAGES.IMAGE_PICKER' | translate }}
