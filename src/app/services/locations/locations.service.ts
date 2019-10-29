@@ -52,7 +52,7 @@ export class LocationsService {
         return seq;
     }
     getCountries() {
-        let url = "/countries";
+        let url = "/countries?order_by=id,asc";
         let seq = this.api.get(url);
         return seq;
     }

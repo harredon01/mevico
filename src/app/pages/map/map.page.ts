@@ -372,6 +372,12 @@ export class MapPage implements OnInit {
         }
     }
     locationConfirmed() {
+        let params = this.params.getParams();
+        if (!params) {
+            params = {};
+        }
+        params.mapLocation = true;
+        this.params.setParams(params)
         this.navCtrl.back();
         this.clearMap();
     }

@@ -38,10 +38,10 @@
             <ion-item (click)="editVariant(item)">
                 <h3>{{ 'EDIT_PRODUCTS.SKU' | translate }}: {{item.sku}}</h3>
                 <p>{{ 'EDIT_PRODUCTS.DESCRIPTION' | translate }}: {{item.description}}</p>
-                <p>{{ 'EDIT_PRODUCTS.PRICE' | translate }}: {{item.price | "currency"}}</p>
-                <p>{{ 'EDIT_PRODUCTS.SALE' | translate }}: {{item.sale | "currency"}}</p>
-                <p>{{ 'EDIT_PRODUCTS.TAX' | translate }}: {{item.tax | "currency"}}</p>
-                <p>{{ 'EDIT_PRODUCTS.COST' | translate }}: {{item.cost | "currency"}}</p>
+                <p>{{ 'EDIT_PRODUCTS.PRICE' | translate }}: {{item.price | currency}}</p>
+                <p>{{ 'EDIT_PRODUCTS.SALE' | translate }}: {{item.sale | currency}}</p>
+                <p>{{ 'EDIT_PRODUCTS.TAX' | translate }}: {{item.tax | currency}}</p>
+                <p>{{ 'EDIT_PRODUCTS.COST' | translate }}: {{item.cost | currency}}</p>
                 <p>{{ 'EDIT_PRODUCTS.QUANTITY' | translate }}: {{item.quantity}}</p>
                 <p *ngIf="item.is_digital">{{ 'EDIT_PRODUCTS.IS_DIGITAL' | translate }}</p>
                 <p *ngIf="item.requires_authorization">{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</p>

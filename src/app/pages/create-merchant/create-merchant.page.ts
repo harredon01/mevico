@@ -15,9 +15,11 @@ import {MerchantsService} from '../../services/merchants/merchants.service';
 })
 export class CreateMerchantPage implements OnInit {
     isReadyToSave: boolean;
+    locationLoaded: boolean = false;
     item: any;
     loading: any;
     type: any;
+    typeSelected = "";
     country: any;
     region: any;
     countries: any[] = [];
@@ -53,9 +55,9 @@ export class CreateMerchantPage implements OnInit {
             email: ['', Validators.required],
             telephone: ['', Validators.required],
             address: ['', Validators.required],
-            hour: ['', Validators.required],
+            unit_cost: ['', Validators.required],
             booking_requires_auth: [''],
-            product_requires_auth: [''],
+            max_per_hour: [''],
             lat: [''],
             long: [''],
             service1: [''],
@@ -64,80 +66,108 @@ export class CreateMerchantPage implements OnInit {
             specialty1: [''],
             specialty2: [''],
             specialty3: [''],
+            experience1: [''],
+            experience2: [''],
+            experience3: [''],
             city_id: ['', Validators.required],
             region_id: ['', Validators.required],
             country_id: ['', Validators.required],
         });
         let container: any = this.params.getParams();
-        let editingMerchant: any = container.merchant;
-        let mapLocation: any = container.mapLocation;
-        if (editingMerchant) {
-            let container = {
-                id: editingMerchant.id,
-                type: editingMerchant.type,
-                name: editingMerchant.name,
-                description: editingMerchant.description,
-                email: editingMerchant.email,
-                telephone: editingMerchant.telephone,
-                address: editingMerchant.address,
-                hour: editingMerchant.hour,
-                booking_requires_auth: editingMerchant.type,
-                product_requires_auth: editingMerchant.type,
-                lat: editingMerchant.lat,
-                long: editingMerchant.long,
-                service1: '',
-                service2: '',
-                service3: '',
-                specialty1: '',
-                specialty2: '',
-                specialty3: '',
-                city_id: editingMerchant.city_id,
-                region_id: editingMerchant.region_id,
-                country_id: editingMerchant.country_id,
-            };
-            let attributes = editingMerchant.attributes;
-            let services = attributes.services;
-            for (let i = 0; i < services.length; i++) {
-                let indicator = i + 1;
-                let property = "service" + indicator;
-                container[property] = services[i];
+        let merchantLoaded = false;
+        if (container) {
+            let editingMerchant: any = container.merchant;
+            if (editingMerchant) {
+                let container = {
+                    id: editingMerchant.id,
+                    type: editingMerchant.type,
+                    name: editingMerchant.name,
+                    description: editingMerchant.description,
+                    email: editingMerchant.email,
+                    telephone: editingMerchant.telephone,
+                    address: editingMerchant.address,
+                    unit_cost: editingMerchant.hour,
+                    lat: editingMerchant.lat,
+                    long: editingMerchant.long,
+                    city_id: editingMerchant.city_id,
+                    region_id: editingMerchant.region_id,
+                    country_id: editingMerchant.country_id,
+                };
+                let attributes = editingMerchant.attributes;
+                if (attributes.services) {
+                    let services = attributes.services;
+                    for (let i = 0; i < services.length; i++) {
+                        let indicator = i + 1;
+                        let property = "service" + indicator;
+                        container[property] = services[i];
+                    }
+                }
+                if (attributes.specialties) {
+                    let specialties = attributes.specialties;
+                    for (let i = 0; i < specialties.length; i++) {
+                        let indicator = i + 1;
+                        let property = "specialty" + indicator;
+                        container[property] = specialties[i];
+                    }
+                }
+                if (attributes.experience) {
+                    let experience = attributes.experience;
+                    for (let i = 0; i < experience.length; i++) {
+                        let indicator = i + 1;
+                        let property = "experience" + indicator;
+                        container[property] = experience[i];
+                    }
+                }
+                if (attributes.booking_requires_auth) {
+                    container['booking_requires_auth'] = attributes.booking_requires_auth;
+                } else {
+                    container['booking_requires_auth'] = false;
+                }
+                if (attributes.max_per_hour) {
+                    container['max_per_hour'] = attributes.max_per_hour;
+                } else {
+                    container['max_per_hour'] = false;
+                }
+                console.log("Setting form values: ", container);
+                this.isReadyToSave = true;
+                this.form.setValue(container);
+                merchantLoaded = true;
             }
-            let specialties = attributes.specialties;
-            for (let i = 0; i < specialties.length; i++) {
-                let indicator = i + 1;
-                let property = "specialty" + indicator;
-                container[property] = specialties[i];
-            }
-            console.log("Setting form values: ", container);
-            this.isReadyToSave = true;
-            this.form.setValue(container);
-
-        } else if (mapLocation) {
+        }
+        if (!merchantLoaded) {
+            let lat = "";
+            let long = "";
+            let address = "";
             let container = {
-                id:"",
-                type: mapLocation.type,
+                id: "",
+                type: "",
                 name: '',
                 description: '',
                 email: '',
                 telephone: '',
-                address: '',
-                hour: '',
+                address: address,
+                unit_cost: '',
                 booking_requires_auth: '',
-                product_requires_auth: '',
-                lat: this.mapData.address.lat,
-                long: this.mapData.address.long,
+                max_per_hour: '',
+                lat: lat,
+                long: long,
                 service1: '',
                 service2: '',
                 service3: '',
                 specialty1: '',
                 specialty2: '',
                 specialty3: '',
+                experience1: '',
+                experience2: '',
+                experience3: '',
                 city_id: '',
                 region_id: '',
-                country_id: '',
+                country_id: 1,
             };
             console.log("Setting form values2: ", container);
             this.form.setValue(container);
+            this.country = 1
+            this.selectCountry();
         }
 
 
@@ -146,6 +176,26 @@ export class CreateMerchantPage implements OnInit {
             console.log("form change", v);
             this.isReadyToSave = this.form.valid;
         });
+    }
+    ionViewDidEnter() {
+        let container: any = this.params.getParams();
+        if (container){
+            let mapLocation = container.mapLocation;
+            if (mapLocation) {
+                let values = this.form.value;
+                if (this.mapData.address.lat) {
+                    
+                    values.lat = this.mapData.address.lat
+                }
+                if (this.mapData.address.long) {
+                    values.long = this.mapData.address.long
+                }
+                if (this.mapData.address.address) {
+                    values.address = this.mapData.address.address
+                }
+                this.form.setValue(values);
+            }
+        }
     }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
@@ -157,6 +207,7 @@ export class CreateMerchantPage implements OnInit {
     getCountries() {
         this.locations.getCountries().subscribe((resp: any) => {
             this.countries = resp.data;
+            this.country = 1;
             console.log("getCountries result", resp);
 
         }, (err) => {
@@ -195,7 +246,7 @@ export class CreateMerchantPage implements OnInit {
             this.dismissLoader();
             console.log("Save Address result", resp);
             if (resp.status == "success") {
-                this.done();
+                this.navCtrl.back();
             } else {
                 this.toastCtrl.create({
                     message: this.merchantErrorStringSave,

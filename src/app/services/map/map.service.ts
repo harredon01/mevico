@@ -191,8 +191,7 @@ export class MapService {
                         this.shippingAddressInCoverage(markerlatlong);
                     }
                 } else if (this.mapData.activeType == "Location") {
-                    this.mapData.address.lat = markerlatlong.lat;
-                    this.mapData.address.long = markerlatlong.lng;
+                    this.shippingAddressInCoverage(markerlatlong);
                 }
 
             });
