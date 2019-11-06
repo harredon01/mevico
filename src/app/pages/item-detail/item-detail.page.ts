@@ -25,14 +25,18 @@ export class ItemDetailPage implements OnInit {
         public loadingCtrl: LoadingController,
         public modalCtrl: ModalController,
         public translateService: TranslateService) {
+        this.item = new Item({});
         this.translateService.get('ITEMS.ERROR_GET').subscribe(function (value) {
             this.itemsErrorGet = value;
         });
     }
+    ionViewDidEnter() {
+        this.loadItem();
+    }
 
     ngOnInit() {
     }
-    loadPayment() {
+    loadItem() {
         let paramSent = this.params.getParams();
         var result = paramSent.item;
         if (result) {

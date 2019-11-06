@@ -47,7 +47,7 @@ export class PaymentsPage implements OnInit {
 
     /**
      * The view loaded, let's query our items for the list
-     */
+     */ 
     /**
        * The view loaded, let's query our items for the list
        */
@@ -64,10 +64,10 @@ export class PaymentsPage implements OnInit {
             setTimeout(() => {
                 this.getItems();
                 console.log('Async operation has ended');
-                infiniteScroll.complete();
+                infiniteScroll.event.complete();
             }, 500);
         } else {
-            infiniteScroll.complete();
+            infiniteScroll.event.complete();
         }
     }
     dismissLoader() {

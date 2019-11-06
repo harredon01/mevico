@@ -15,7 +15,7 @@
         </ion-select>
     </ion-item>
     <ion-list>
-        <ion-item-sliding *ngFor="let item of currentItems">
+        <ion-item-sliding *ngFor="let item of items">
             <ion-item (click)="openItem(item)">
                 <div class="checkout__item"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}}</div>
                 <div class="checkout__item"><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</div>

@@ -8,6 +8,7 @@ import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {Contacts } from '@ionic-native/contacts/ngx';
+import {FileTransfer} from '@ionic-native/file-transfer/ngx';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
@@ -43,6 +44,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         StatusBar,
         SplashScreen,
         Contacts,
+        FileTransfer,
         SpinnerDialog,
         Geolocation,
         OneSignal,

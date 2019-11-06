@@ -31,11 +31,11 @@ export class ItemsPage implements OnInit {
         this.queries = [];
         let vm = this;
         this.translateService.get('ITEMS.FULLFILLED').subscribe(function (value) {
-            let container = {"name": "FULFILLED", "value": "fulfilled"};
+            let container = {"name": value, "value": "fulfilled"};
             vm.queries.push(container);
         });
         this.translateService.get('ITEMS.UNFULFILLED').subscribe(function (value) {
-            let container = {"name": "UNFULFILLED", "value": "unfulfilled"};
+            let container = {"name": value, "value": "unfulfilled"};
             vm.queries.push(container);
         });
 
@@ -43,8 +43,12 @@ export class ItemsPage implements OnInit {
         this.merchant = container.merchant;
         this.status = "unfulfilled"
     }
-
     ngOnInit() {
+    }
+
+    ionViewDidEnter() {
+        this.page = 0;
+        this.items = [];
         this.getItems();
     }
     selectQuery() {
@@ -56,7 +60,7 @@ export class ItemsPage implements OnInit {
     getItems() {
         this.showLoader();
         this.page++;
-        let where = "merchant_id=" + this.merchant + "&fulfillment=" + this.status + "&page=" + this.page+"&paid_status=paid";
+        let where = "merchant_id=" + this.merchant + "&fulfillment=" + this.status + "&page=" + this.page + "&paid_status=paid";
         this.itemsServ.getItems(where).subscribe((data: any) => {
             let results = data.data;
             if (data.page == data.last_page) {
@@ -67,8 +71,8 @@ export class ItemsPage implements OnInit {
             for (let item in results) {
                 results[item].starts_at = new Date(results[item].starts_at);
                 results[item].ends_at = new Date(results[item].ends_at);
-                let newBooking = new Item(results[item]);
-                this.items.push(newBooking);
+                let newItem = new Item(results[item]);
+                this.items.push(newItem);
             }
             this.dismissLoader();
         }, (err) => {
@@ -103,14 +107,14 @@ export class ItemsPage implements OnInit {
             setTimeout(() => {
                 this.getItems();
                 console.log('Async operation has ended');
-                infiniteScroll.complete();
+                infiniteScroll.target.complete();
             }, 500);
         } else {
-            infiniteScroll.complete();
+            infiniteScroll.target.complete();
         }
     }
 
-    openBooking(item: Item) {
+    openItem(item: Item) {
         let param = {"item": item};
         this.params.setParams(param);
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId');

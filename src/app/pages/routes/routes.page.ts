@@ -54,10 +54,10 @@ export class RoutesPage implements OnInit {
             setTimeout(() => {
                 this.getItems();
                 console.log('Async operation has ended');
-                infiniteScroll.complete();
+                infiniteScroll.event.complete();
             }, 500);
         } else {
-            infiniteScroll.complete();
+            infiniteScroll.event.complete();
         }
 
     }

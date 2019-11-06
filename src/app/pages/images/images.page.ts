@@ -59,7 +59,7 @@ export class ImagesPage implements OnInit {
         let params = this.params.getParams();
         let container = {
             type: params.type,
-            objectId: params.objectId
+            trigger_id: params.objectId
         };
         this.images = [];
         this.imagesServ.getFiles(container).subscribe((data: any) => {
@@ -88,8 +88,8 @@ export class ImagesPage implements OnInit {
             console.log("after get addresses");
             let results = data.addresses;
             for (let one in results) {
-                if(results[one].id == id){
-                    this.images.splice(parseInt(one),1);
+                if (results[one].id == id) {
+                    this.images.splice(parseInt(one), 1);
                 }
             }
             console.log(JSON.stringify(data));
@@ -104,7 +104,7 @@ export class ImagesPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    done(){
+    done() {
         this.navCtrl.back();
     }
     openImages() {
@@ -113,7 +113,7 @@ export class ImagesPage implements OnInit {
             type: params.type,
             objectId: params.objectId
         };
-        const fileTransfer: FileTransferObject = this.transfer.create();
+
         let options = {
             // max width and height to allow the images to be.  Will keep aspect
             // ratio no matter what.  So if both are 800, the returned image
@@ -129,26 +129,39 @@ export class ImagesPage implements OnInit {
             outputType: 0
         };
         this.imagePicker.getPictures(options).then((results) => {
+            const fileTransfer: FileTransferObject = this.transfer.create();
             for (var i = 0; i < results.length; i++) {
                 console.log('Image URI: ' + results[i]);
-                this.upload(fileTransfer, results[i],container);
+                this.upload(fileTransfer, results[i], container);
             }
         }, (err) => {});
     }
-    upload(fileTransfer, path,params) {
-        let options: FileUploadOptions = {
-            fileKey: 'file',
-            fileName: 'image.jpg',
-            headers: this.api.buildHeaders(null),
-            params: params
+    upload(fileTransfer, path, params) {
+        let headers = this.api.buildHeaders(null);
+        headers = headers.headers.normalizedNames;
+        console.log(headers);
+        for (let item in headers) {
+            console.log("Header", headers[item]);
         }
-
-        fileTransfer.upload(path, 'api/imagesapi', options)
-            .then((data) => {
-                console.log("Success upload",data)
-            }, (err) => {
-                console.log("Error upload",err)
-            })
+        let realHeaders = {};
+        headers.forEach(function (value, key, map) {
+            realHeaders[key]=value
+            console.log('key: "' + key + '", value: "' + value + '"');
+        });
+        console.log("Real headers",realHeaders);
+        //        let options: FileUploadOptions = {
+        //            fileKey: 'file',
+        //            fileName: path.substr(path.lastIndexOf('/') + 1),
+        //            headers: headers.headers.normalizedNames,
+        //            params: params
+        //        }
+        //        console.log("upload",path,options);
+        //        fileTransfer.upload(path, this.api.url+'/imagesapi', options)
+        //            .then((data) => {
+        //                console.log("Success upload",data)
+        //            }, (err) => {
+        //                console.log("Error upload",err)
+        //            })
     }
 
 }
