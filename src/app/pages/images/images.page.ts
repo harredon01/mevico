@@ -65,7 +65,7 @@ export class ImagesPage implements OnInit {
         this.imagesServ.getFiles(container).subscribe((data: any) => {
             this.dismissLoader();
             console.log("after get addresses");
-            let results = data.addresses;
+            let results = data.data;
             for (let one in results) {
                 this.images.push(results[one]);
             }
@@ -110,9 +110,12 @@ export class ImagesPage implements OnInit {
     openImages() {
         let params = this.params.getParams();
         let container = {
-            type: params.type,
-            objectId: params.objectId
+//            type: p            arams.type,
+//            intended_id: params.objectId,
+
         };
+        container['type'] = params.type;
+        container['intended_id'] = params.objectId;
 
         let options = {
             // max width and height to allow the images to be.  Will keep aspect
@@ -138,30 +141,33 @@ export class ImagesPage implements OnInit {
     }
     upload(fileTransfer, path, params) {
         let headers = this.api.buildHeaders(null);
-        headers = headers.headers.normalizedNames;
-        console.log(headers);
-        for (let item in headers) {
-            console.log("Header", headers[item]);
-        }
+        headers = headers.headers;
+        params['filetype'] = path.substr(path.lastIndexOf('.') + 1)
+        console.log("Headers", headers.headers);
         let realHeaders = {};
-        headers.forEach(function (value, key, map) {
-            realHeaders[key]=value
-            console.log('key: "' + key + '", value: "' + value + '"');
+        headers.forEach(function (key, value, map) {
+            if (key == "Authorization" || key == "X-Auth-Token") {
+                realHeaders[key] = value;
+                console.log('key: "' + key + '", value: "' + value + '"');
+            }
+
         });
-        console.log("Real headers",realHeaders);
-        //        let options: FileUploadOptions = {
-        //            fileKey: 'file',
-        //            fileName: path.substr(path.lastIndexOf('/') + 1),
-        //            headers: headers.headers.normalizedNames,
-        //            params: params
-        //        }
-        //        console.log("upload",path,options);
-        //        fileTransfer.upload(path, this.api.url+'/imagesapi', options)
-        //            .then((data) => {
-        //                console.log("Success upload",data)
-        //            }, (err) => {
-        //                console.log("Error upload",err)
-        //            })
+        console.log("Headers", realHeaders);
+        let options: FileUploadOptions = {
+            fileKey: 'photo',
+            fileName: path.substr(path.lastIndexOf('/') + 1),
+            headers: realHeaders,
+            params: params
+        }
+        console.log("upload", path, options);
+        fileTransfer.upload(path, this.api.url + '/imagesapi', options)
+            .then((data) => {
+                console.log("Success upload", data)
+                let response = JSON.parse(data.response);
+                this.images.push(response.file);
+            }, (err) => {
+                console.log("Error upload", err)
+            })
     }
 
 }
