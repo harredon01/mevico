@@ -9,6 +9,7 @@ import {MapDataService} from '../../services/map-data/map-data.service';
 import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
+import {UserDataService} from '../../services/user-data/user-data.service';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {Merchant} from '../../models/merchant';
 import {ApiService} from '../../services/api/api.service';
@@ -34,6 +35,7 @@ export class MerchantListingPage implements OnInit {
     constructor(public navCtrl: NavController,
         private activatedRoute: ActivatedRoute,
         public params: ParamsService,
+        public userData:UserDataService,
         public geolocation: Geolocation,
         public mapData: MapDataService,
         public categories: CategoriesService,
@@ -45,6 +47,10 @@ export class MerchantListingPage implements OnInit {
         public api: ApiService,
         private spinnerDialog: SpinnerDialog) {
         this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        let paramsContainer = this.params.getParams();
+        if(paramsContainer.owner){
+            this.typeSearch=="own";
+        }
     }
     async filter() {
         let container;
@@ -152,8 +158,10 @@ export class MerchantListingPage implements OnInit {
         } else if (this.typeSearch == "text") {
             searchObj = this.merchantsServ.searchMerchants(this.textSearch + "&page=" + this.page);
         } else if (this.typeSearch == "nearby") {
-
             searchObj = this.merchantsServ.getNearbyMerchants(this.location);
+        } else if (this.typeSearch == "own") {
+            let query = "page=" + this.page + "&owner_id=" + this.userData._user.id;
+            searchObj = this.merchantsServ.getMerchants(query);
         }
         searchObj.subscribe((data: any) => {
             data.data = this.merchantsServ.prepareObjects(data.data);

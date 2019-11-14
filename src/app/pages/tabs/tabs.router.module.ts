@@ -134,12 +134,12 @@ const routes: Routes = [
                                         ]
                                     },
                                     {
-                                        path: 'products',
-                                        loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
-                                    },
-                                    {
                                         path: 'chat',
                                         loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                                    },
+                                    {
+                                        path: 'edit',
+                                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
                                     },
                                     {
                                         path: 'book',
@@ -278,6 +278,83 @@ const routes: Routes = [
                             {
                                 path: ':objectId',
                                 loadChildren: '../item-detail/item-detail.module#ItemDetailPageModule'
+                            }
+                        ]
+                    },
+                    {
+                        path: 'merchants',
+                        children: [
+                            {
+                                path: '',
+                                loadChildren: '../merchant-listing/merchant-listing.module#MerchantListingPageModule'
+                            },
+                            {
+                                path: ':objectId',
+                                children: [
+                                    {
+                                        path: '',
+                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                    },
+                                    {
+                                        path: 'products',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
+                                            },
+                                            {
+                                                path: 'edit/:productId',
+                                                loadChildren: '../edit-products/edit-products.module#EditProductsPageModule',
+                                            },
+                                            {
+                                                path: 'images/:productId',
+                                                loadChildren: '../images/images.module#ImagesPageModule',
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        path: 'chat',
+                                        loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                                    },
+                                    {
+                                        path: 'edit',
+                                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
+                                    },
+                                    {
+                                        path: 'bookings',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: '../booking-list/booking-list.module#BookingListPageModule',
+                                            },
+                                            {
+                                                path: ':bookingId',
+                                                loadChildren: '../booking-detail/booking-detail.module#BookingDetailPageModule',
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        path: 'items',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: '../items/items.module#ItemsPageModule',
+                                            },
+                                            {
+                                                path: ':itemId',
+                                                loadChildren: '../item-detail/item-detail.module#ItemDetailPageModule',
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        path: 'availabilities',
+                                        loadChildren: '../availabilities/availabilities.module#AvailabilitiesPageModule',
+                                    },
+                                    {
+                                        path: 'images',
+                                        loadChildren: '../images/images.module#ImagesPageModule',
+                                    }
+                                ]
                             }
                         ]
                     },

@@ -27,6 +27,10 @@ ngOnInit() {
             let params ={"type":"platform","objectId":"food","target":"customer","name":"Support"};
             this.params.setParams(params);
         }
+        if(item=="/tabs/settings/merchants"){
+            let params ={"owner":true};
+            this.params.setParams(params);
+        }
         this.navCtrl.navigateForward(item);
     }
     logout() {

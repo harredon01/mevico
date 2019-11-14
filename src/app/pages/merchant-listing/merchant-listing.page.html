@@ -4,7 +4,7 @@
             <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>
-            <ion-select [(ngModel)]="category" interface="popover" style="padding-left: 0;" (ionChange)="searchCategory()">
+            <ion-select [(ngModel)]="category" interface="popover" style="padding-left: 0;" (ionChange)="searchCategory()" *ngIf="typeSearch!='own'">
                 <ion-select-option value="{{category.id}}" *ngFor="let category of categoryItems">{{category.name}}</ion-select-option>
             </ion-select>
             <!--span class="location"><small margin-right>Location</small>
@@ -15,9 +15,9 @@
                 </ion-select>
             </span-->
         </ion-title>
-        <ion-searchbar [(ngModel)]="textSearch" placeholder="Search..." debounce="1500" (ionChange)="searchText()"></ion-searchbar>
+        <ion-searchbar [(ngModel)]="textSearch" placeholder="Search..." debounce="1500" (ionChange)="searchText()" *ngIf="typeSearch=='own'"></ion-searchbar>
     </ion-toolbar>
-    <div class="filter" padding>
+    <div class="filter" *ngIf="typeSearch!='own'" padding>
         <ion-row>
             <!--ion-col size="4" class="text-danger" text-left (click)="filter()">
                      <ion-icon name="md-funnel"></ion-icon>Filter</ion-col-->
