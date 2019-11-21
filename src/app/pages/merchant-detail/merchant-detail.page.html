@@ -25,11 +25,12 @@
         <div>
             <h2 class="text-white">{{merchant.name}}</h2>
             <p class="text-white">{{merchant.type}}</p>
-            <h3>{{merchant.description}}</h3>
+            
 
         </div>
     </div>
     <div class="doctor-detail__booking">
+        <p>{{merchant.description}}</p>
         <div class="doctor-menu-title">{{ 'MERCHANT_DETAIL.MENU' | translate }}</div>
         <div class="doctor-menu-client" *ngIf="!merchant.owner">
             <ion-list>
@@ -60,6 +61,9 @@
                 </ion-item>
                 <ion-item>
                     <ion-button (click)="editMerchant()">{{ 'MERCHANT_DETAIL.EDIT' | translate }}</ion-button>
+                </ion-item>
+                <ion-item>
+                    <ion-button (click)="showProducts()">{{ 'MERCHANT_DETAIL.STORE' | translate }}</ion-button>
                 </ion-item>
             </ion-list>
         </div>

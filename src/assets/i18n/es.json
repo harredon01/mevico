@@ -406,6 +406,11 @@
         "STATUS_COMPLETED": "Califica",
         "STATUS_DEPOSIT": "Depósito"
     },
+    "IMAGES": {
+        "TITLE": "Imágenes",
+        "IMAGE_PICKER": "Mis imágenes",
+        "DONE": "Volver"
+    },
     "LOGIN": {
         "USERNAME": "Correo",
         "PASSWORD": "Contraseña",
@@ -460,6 +465,8 @@
         "MY_BOOKING": "Mis Reservas",
         "ITEMS": "Mis entregas",
         "CHAT": "Chat",
+        "EDIT": "Editar",
+        "IMAGES": "Mis imágenes",
         "INFO":"Acerca de",
         "OVERVIEW":"General",
         "EXPERIENCE":"Experiencia",
@@ -491,6 +498,12 @@
         "TITLE": "Negocio",
         "DESCRIPTION": "¿Qué te gustaría crear?",
         "TYPE": "Tipo de negocio",
+        "BOOKING_REQUIRES_AUTH":"Autorización automática",
+        "BOOKING_REQUIRES_AUTH_DESC":"Quieres autorizar reservas antes de que el usuario pueda pagar?",
+        "HOUR_COST":"Valor /h",
+        "HOUR_COST_DESC":"Ingresa el valor por hora de tu servicio reservable",
+        "MAX_PER_HOUR":"Reservas por hora",
+        "MAX_PER_HOUR_DESC":"Escoge cuantas reservas puedes manejar al tiempo.",
         "NAME":"Nombre",
         "NAME_ERROR": "Porfavor verifica el nombre",
         "DESCRIPTION": "Descripción",
@@ -503,9 +516,20 @@
         "ADDRESS_ERROR":"Ingresa una dirección",
         "COUNTRY":"País",
         "COUNTRY_ERROR":"Selecciona un País",
+        "REGION":"Departamento",
         "REGION_ERROR":"Selecciona una Región",
+        "CITY":"Ciudad",
         "CITY_ERROR":"Selecciona una Ciudad",
-        "ERROR_SAVE":"Error actualizando el negocio"
+        "CITY":"Ciudad",
+        "CITY_ERROR":"Selecciona una Ciudad",
+        "ERROR_SAVE":"Error actualizando el negocio",
+        "SERVICE":"Servicio",
+        "SERVICE_ERROR":"Debes llenar un servicio",
+        "SPECIALTY":"Especialidad",
+        "SPECIALTY_ERROR":"Debes llenar una especialidad",
+        "EXPERIENCE":"Experiencia",
+        "EXPERIENCE_ERROR":"Debes llenar una experiencia"
+        
     },
     "MY_ACCOUNT": {
         "TITLE": "Mi cuenta",
@@ -658,6 +682,7 @@
     "INPUTS": {
         "SUBMIT": "Enviar",
         "UPDATE": "Actualizar",
+        "EDIT": "Editar",
         "CART_OPEN": "Pedidos abiertos",
         "REMEMBER": "Recordarme",
         "MY_DATA": "Usar mis datos",

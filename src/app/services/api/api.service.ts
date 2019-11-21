@@ -36,10 +36,8 @@ export class ApiService {
     }
     buildHeaders(reqOpts) {
         if (reqOpts) {
-            console.log("Entrada 1");
             reqOpts.headers = this.userData._headers;
         } else {
-            console.log("Entrada 2");
             reqOpts = {
                 headers: this.userData._headers
             };

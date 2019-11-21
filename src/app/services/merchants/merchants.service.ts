@@ -43,7 +43,7 @@ export class MerchantsService {
     }
     getNearbyMerchants(data: any) {
         let url = "/merchants/nearby";
-        let seq = this.api.get(url,data);
+        let seq = this.api.get(url, data);
         return seq;
     }
     searchMerchants(search: string) {
@@ -62,10 +62,12 @@ export class MerchantsService {
     }
     saveMerchant(merchant: any) {
         let url = "/merchants";
-        if(merchant.id){
+        if (merchant.id) {
             url = "/merchants/" + merchant.id;
+            let seq = this.api.patch(url, merchant);
+            return seq;
         }
-        let seq = this.api.post(url,merchant);
+        let seq = this.api.post(url, merchant);
         return seq;
     }
     getMerchantHash(merchantId: string) {
