@@ -384,6 +384,14 @@
         "SLIDE_TITLE": "Selecciona el menú del día",
         "SLIDE_DESC": "Vegetariano:Reemplazamos la proteína animal por una vegetal y balanceamos tu plato con granos, verduras y harinas.<br/>Light: En esta opción nos aseguramos que tu plato esté bien balanceado, bajo en grasas y harinas.<br/>Completo: Un plato generoso pero balanceado con proteína, verduras y harinas. "
     },
+    "EDIT_PRODUCTS": {
+        "TITLE": "Imágenes",
+        "IMAGES": "Imágenes",
+        "NAME":"Nombre",
+        "NAME_ERROR": "Porfavor verifica el nombre",
+        "DESCRIPTION": "Descripción",
+        "DESCRIPTION_ERROR":"Ingresa una descripción"
+    },
     "HOME": {
         "TITLE": "Home",
         "NOTIF_TITLE":"Notificaciones",
