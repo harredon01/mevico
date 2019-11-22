@@ -16,6 +16,11 @@ export class BillingService {
         let seq = this.api.post(url, data);
         return seq;
     }
+    completePaidOrder(data: any) {
+        let url = "/billing/complete_paid/Food";
+        let seq = this.api.post(url, data);
+        return seq;
+    }
     retryPayment(payment: string) {
         let url = "/billing/retry/"+payment;
         let data = {};

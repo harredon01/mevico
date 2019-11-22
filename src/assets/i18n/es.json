@@ -619,6 +619,7 @@
         "TRANSACTION_ID": "Id transacción",
         "REFERENCE": "Referencia transacción",
         "TRANSACTION_DATE": "Fecha Transacción",
+        "IS_PAID": "Tu orden ha sido aprobada",
         "TRANSACTION_RETRY": "Puedes re intentar el pago en Configuraciones > Pagos"
     },
     "PRODUCTS": {

@@ -27,12 +27,12 @@ export class CheckoutPreparePage implements OnInit {
     merchant: any;
     hasSavedCard: boolean;
     requiresDelivery: boolean;
-    currentItems: Item[]=[];
-    conditions: any[]=[];
+    currentItems: Item[] = [];
+    conditions: any[] = [];
     payment: Payment;
     order: any;
     coupon: any;
-    payers: any[]=[];
+    payers: any[] = [];
     // Our translated text strings
     private cartErrorString: string;
     private couponErrorString: string;
@@ -280,7 +280,7 @@ export class CheckoutPreparePage implements OnInit {
         console.log("before payCreditCard token", container);
         this.billing.payCreditCard(container).subscribe((data: any) => {
             let transaction = data.response.transactionResponse;
-            this.transactionResponse(transaction);
+            this.transactionResponse(transaction, null);
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
@@ -357,16 +357,27 @@ export class CheckoutPreparePage implements OnInit {
     /**
      * Navigate to the detail page for this item.
      */
-    transactionResponse(transaction) {
+    transactionResponse(transaction, paid) {
         this.dismissLoader();
         console.log("after payCreditCard");
+        let total = this.orderData.currentOrder.total;
         this.orderData.clearOrder();
         let vm = this;
         setTimeout(function () {vm.user.postLogin();}, 1000);
-        this.params.setParams({
-            transaction: transaction
-        });
-
+        let container = null;
+        if (paid) {
+            container = {
+                transaction: transaction,
+                total: total,
+                is_paid: true
+            };
+        } else {
+            container = {
+                transaction: transaction,
+                total: total
+            };
+        }
+        this.params.setParams(container);
         this.navCtrl.navigateForward('tabs/payu/complete');
     }
     prepareOrder() {
@@ -402,8 +413,27 @@ export class CheckoutPreparePage implements OnInit {
                     this.orderData.payment = resp.payment;
                     this.payment = resp.payment;
                     this.order = resp.order;
-                    this.showPayment = true;
-                    this.scrollToTop();
+                    if (this.payment.total == this.payment.transaction_cost) {
+                        let container = {
+                            "payment_id": this.payment.id
+                        }
+                        this.showLoader();
+                        this.billing.completePaidOrder(container).subscribe((resp: any) => {
+                            if (resp.status == "success") {
+                                this.transactionResponse(null, true);
+                            } else {
+                                this.showPayment = true;
+                                this.scrollToTop();
+                            }
+                        }, (err) => {
+                            this.showPayment = true;
+                            this.scrollToTop();
+                            console.log("completePaidOrderError", err);
+                        });
+                    } else {
+                        this.showPayment = true;
+                        this.scrollToTop();
+                    }
                 } else {
                     this.handleCheckError(resp);
                 }
