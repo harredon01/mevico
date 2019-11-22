@@ -67,7 +67,6 @@ export class EditProductsPage implements OnInit {
     }
 
     ionViewDidEnter() {
-        this.showLoader();
         let product = this.activatedRoute.snapshot.paramMap.get('productId');
         this.getItem(product);
     }
@@ -83,10 +82,12 @@ export class EditProductsPage implements OnInit {
         this.showLoader();
         this.productsServ.getProductSimple(productId).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after get addresses");
+            
             let results = data.product;
             this.product = new Product(results);
-            this.variants = results.variants;
+            this.variants = data.variants;
+            console.log("after get getProductSimple",this.product);
+            console.log("after get getProductSimpleV",this.variants);
             let container = {
                 id: this.product.id,
                 name: this.product.name,
@@ -232,7 +233,11 @@ export class EditProductsPage implements OnInit {
             id: variant.id,
             price: variant.price,
             cost: variant.cost,
+            tax: variant.tax,
+            sale: variant.sale,
+            quantity: variant.quantity,
             sku: variant.sku,
+            description: variant.description,
         };
         console.log("Setting form values: ", container);
         this.formV.setValue(container);

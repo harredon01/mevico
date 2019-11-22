@@ -17,7 +17,7 @@ export class ProductsService {
 
     }
     getProductSimple(product: string) {
-        let endpoint = '/products/merchant/' + product+'/1';
+        let endpoint = '/products/' + product;
         let seq = this.api.get(endpoint);
         return seq;
     }

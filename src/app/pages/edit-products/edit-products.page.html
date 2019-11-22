@@ -37,7 +37,7 @@
         {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
     </ion-button>
     <ion-list *ngIf="!editingVariant">
-        <ion-item-sliding *ngFor="let item of currentItems">
+        <ion-item-sliding *ngFor="let item of variants">
             <ion-item (click)="editVariant(item)">
                 <h3>{{ 'EDIT_PRODUCTS.SKU' | translate }}: {{item.sku}}</h3>
                 <p>{{ 'EDIT_PRODUCTS.DESCRIPTION' | translate }}: {{item.description}}</p>
