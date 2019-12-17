@@ -16,9 +16,9 @@
             <p><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</p>
             <p><strong>{{ 'CART_ITEM.PRICE' | translate }}: </strong> {{item.price | currency }}</p>
             <p><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumWithConditions | currency }}</p>
-            <button (click)="retryPayment(item)" *ngIf="item.status != 'approved' && item.status != 'payment_in_bank'">                
-                <h2>{{ 'PAYMENT_DETAIL.RETRY' | translate }}</h2>
-            </button>    
+            <ion-button (click)="fulfillItem(item)">                
+                <h2>{{ 'ITEM_DETAIL.FULFILLED' | translate }}</h2>
+            </ion-button>    
         </ion-card-content>    
     </ion-card>    
 </ion-content>

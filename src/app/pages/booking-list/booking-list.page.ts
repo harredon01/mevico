@@ -43,19 +43,19 @@ export class BookingListPage implements OnInit {
         this.queries = [];
         let vm = this;
         this.translateService.get('BOOKING.UNPAID').subscribe(function (value) {
-            let container ={"name":value,"value":"unpaid"};
+            let container = {"name": value, "value": "unpaid"};
             vm.queries.push(container);
         });
         this.translateService.get('BOOKING.UPCOMING').subscribe(function (value) {
-            let container ={"name":value,"value":"upcoming"};
+            let container = {"name": value, "value": "upcoming"};
             vm.queries.push(container);
         });
         this.translateService.get('BOOKING.UNAPPROVED').subscribe(function (value) {
-            let container ={"name":value,"value":"unapproved"};
+            let container = {"name": value, "value": "unapproved"};
             vm.queries.push(container);
         });
         this.translateService.get('BOOKING.PAST').subscribe(function (value) {
-            let container ={"name":value,"value":"past"};
+            let container = {"name": value, "value": "past"};
             vm.queries.push(container);
         });
         this.queryMod = "upcoming";
@@ -63,7 +63,7 @@ export class BookingListPage implements OnInit {
 
     ngOnInit() {
         this.getBookings();
-        this.getObjectsWithBookingUser();
+        this.getObjectsWithBookingUser(); 
     }
 
     selectQuery() {
@@ -74,6 +74,7 @@ export class BookingListPage implements OnInit {
     }
 
     selectObject() {
+        console.log("Selecting Object");
         this.page = 0;
         this.bookings = [];
         if (this.objectId == -1) {
@@ -82,7 +83,8 @@ export class BookingListPage implements OnInit {
             this.target = "bookable";
         }
         this.query = this.target + "_" + this.queryMod;
-        this.getBookings();
+        this.getBookings(); 
+        this.selectObj();
     }
 
     getBookings() {
@@ -91,7 +93,7 @@ export class BookingListPage implements OnInit {
         let selectedDate = new Date();
         let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate();
         let container = {
-            "query": this.query, 
+            "query": this.query,
             "type": this.typeObj,
             "object_id": this.objectId,
             "from": strDate,
@@ -110,7 +112,7 @@ export class BookingListPage implements OnInit {
                 results[item].starts_at = new Date(results[item].starts_at);
                 results[item].ends_at = new Date(results[item].ends_at);
                 //results[item].options = results[item].options;
-                let newBooking = new Booking(results[item]); 
+                let newBooking = new Booking(results[item]);
                 this.bookings.push(newBooking);
             }
             this.dismissLoader();
@@ -125,13 +127,7 @@ export class BookingListPage implements OnInit {
             this.bookingObjects = data.data;
             let user = {"id": -1, "name": "Personal"};
             this.bookingObjects.unshift(user);
-            for (let item in this.bookingObjects) {
-                if (this.bookingObjects[item].id == this.objectId) {
-                    this.selectedObject = this.bookingObjects[item];
-                    this.objectId = this.bookingObjects[item].id;
-                    break;
-                }
-            }
+            this.selectObj();
         }, (err) => {
             console.log("Error getBookings");
             this.api.handleError(err);
@@ -145,6 +141,15 @@ export class BookingListPage implements OnInit {
             this.navCtrl.navigateForward('tabs/categories/' + category + '/merchant/' + this.objectId + '/bookings/' + booking.id);
         } else {
             this.navCtrl.navigateForward('tabs/settings/bookings/' + booking.id);
+        }
+    }
+    selectObj() {
+        for (let item in this.bookingObjects) {
+            if (this.bookingObjects[item].id == this.objectId) {
+                this.selectedObject = this.bookingObjects[item];
+                //this.objectId = this.bookingObjects[item].id;
+                break;
+            }
         }
     }
     dismissLoader() {

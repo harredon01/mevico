@@ -21,23 +21,19 @@ export class BookingService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
-    getAvailabilitiesObject(where: any) {
-        let url = "/bookings/availabilities";
-
-        if (where) {
-            url = url + "?" + where;
-        }
-        let seq = this.api.get(url);
+    getAvailabilitiesObject(data: any)  {
+        let url = "/availabilities";
+        let seq = this.api.get(url,data);
         return seq;
     }
     saveOrCreateAvailability(data: any) {
-        let endpoint = '/bookings/availabilities';
+        let endpoint = '/availabilities';
         let seq = this.api.post(endpoint, data);
         return seq;
     }
-    deleteAvailability(objectId: any) {
-        let endpoint = '/bookings/availabilities/'+objectId;
-        let seq = this.api.post(endpoint,{});
+    deleteAvailability(data: any) {
+        let endpoint = '/availabilities';
+        let seq = this.api.delete(endpoint,data);
         return seq;
     }
     changeStatusBookingObject(data: any) {

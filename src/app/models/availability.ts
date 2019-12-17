@@ -23,8 +23,8 @@ export class Availability {
     region_id: any;
     regionName: any;
     country: any;
-    countryName: any;
-    countryCode: any;
+    range: any;
+    order: any;
 
   constructor(fields: any) {
     // Quick and dirty extend/assign fields to this model

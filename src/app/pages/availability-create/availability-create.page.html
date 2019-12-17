@@ -3,9 +3,6 @@
         <ion-title>{{ 'AVAILABILITY_CREATE.TITLE' | translate }}</ion-title>
         <ion-buttons class="my-addresses__button my-addresses__button--left" slot="secondary">
             <ion-button (click)="cancel()">
-                <span color="primary" showWhen="ios">
-                    {{ 'CANCEL_BUTTON' | translate }}
-                </span>
                 <ion-icon class="close-button" name="md-close" showWhen="android,windows"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -22,6 +19,7 @@
     <div class="my-addresses__wrapper">
         <form [formGroup]="form" (ngSubmit)="done()">
             <input type="hidden" formControlName="object_id" />
+            <input type="hidden" formControlName="type" />
             <ion-list>
                 <ion-item>
                     <ion-label position="floating">{{ 'AVAILABILITY_CREATE.RANGE' | translate }}</ion-label>

@@ -11,20 +11,18 @@
 
 <ion-content class="bg-light">
     <ion-list class="mainBooking__list">
-        <ion-list-header>{{queryMod}}</ion-list-header>
         <ion-item>
-            <ion-label>{{ 'BOOKING_LIST.RESERVATION_PERIOD' | translate }}</ion-label>
-            <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">
-                <ion-select-option *ngFor="let item of queries" value="{{item.value}}">{{item.name}}</ion-select-option>
+            <ion-label>{{ 'BOOKING_LIST.RESERVATION_OBJECT' | translate }}</ion-label>
+            <ion-select placeholder="selectedObject.name" [(ngModel)]="objectId" (ionChange)="selectObject()"> 
+                <ion-select-option *ngFor="let item of bookingObjects" value="{{item.id}}">{{item.name}}</ion-select-option>
             </ion-select>
         </ion-item>
     </ion-list>
     <ion-list class="mainBooking__list">
-        <ion-list-header>{{selectedObject.name}}</ion-list-header>
         <ion-item>
-            <ion-label>{{ 'BOOKING_LIST.RESERVATION_OBJECT' | translate }}</ion-label>
-            <ion-select placeholder="Select One" [(ngModel)]="objectId" (ionChange)="selectObject()">
-                <ion-select-option *ngFor="let item of bookingObjects" value="{{item.id}}">{{item.name}}</ion-select-option>
+            <ion-label>{{ 'BOOKING_LIST.RESERVATION_PERIOD' | translate }}</ion-label>
+            <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">
+                <ion-select-option *ngFor="let item of queries" value="{{item.value}}">{{item.name}}</ion-select-option>
             </ion-select>
         </ion-item>
     </ion-list>

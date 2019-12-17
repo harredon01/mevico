@@ -16,8 +16,8 @@ import {AvailabilityCreatePage} from '../availability-create/availability-create
 export class AvailabilitiesPage implements OnInit {
     currentItems: Availability[];
     loading: any;
-    merchant:any;
-    page=0;
+    merchant: any;
+    page = 0;
     loadMore = false;
     private availabilityErrorString: string;
     constructor(public navCtrl: NavController,
@@ -39,27 +39,50 @@ export class AvailabilitiesPage implements OnInit {
 
     }
     ionViewDidEnter() {
-        this.showLoader();
         this.currentItems = [];
-        
+
         this.getItems();
+    }
+    setOrder(item) {
+        if (item.range == 'sunday') {
+            item.order = 0;
+        }
+        if (item.range == 'monday') {
+            item.order = 1;
+        }
+        if (item.range == 'tuesday') {
+            item.order = 2;
+        }
+        if (item.range == 'wednesday') {
+            item.order = 3;
+        }
+        if (item.range == 'thursday') {
+            item.order = 4;
+        }
+        if (item.range == 'friday') {
+            item.order = 5;
+        }
+        if (item.range == 'saturday') {
+            item.order = 6;
+        }
+        return item;
     }
     getItems() {
         this.page++
         this.showLoader();
         this.currentItems = [];
-        let where = "merchant_id="+this.merchant+"&page="+this.page;
+        let where = {"type": "Merchant", "object_id": this.merchant};
         this.booking.getAvailabilitiesObject(where).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after get addresses");
+            console.log("after getItems", data);
             let results = data.data;
-            if (data.page == data.last_page) {
-                this.loadMore = false;
-            }
             for (let one in results) {
-                let container = new Availability(results[one])
+
+                let container = new Availability(results[one]);
+                container = this.setOrder(container);
                 this.currentItems.push(container);
             }
+            this.currentItems.sort((a, b) => (a.order > b.order) ? 1 : -1)
             console.log(JSON.stringify(data));
         }, (err) => {
             this.dismissLoader();
@@ -107,8 +130,9 @@ export class AvailabilitiesPage implements OnInit {
     /**
      * Delete an item from the list of items.
      */
-    deleteAddress(item) {
-        this.booking.deleteAvailability(item.id).subscribe((resp: any) => {
+    deleteAvailability(item) {
+        let container = {"id": item.id, "object_id": this.merchant, "type": "Merchant"};
+        this.booking.deleteAvailability(container).subscribe((resp: any) => {
             this.dismissLoader();
             if (resp.status == "success") {
                 this.currentItems.splice(this.currentItems.indexOf(item), 1);
@@ -136,7 +160,9 @@ export class AvailabilitiesPage implements OnInit {
         if (data) {
             console.log("Process complete, address created", data);
             let container = new Availability(data);
+            container = this.setOrder(container);
             this.currentItems.push(container);
+            this.currentItems.sort((a, b) => (a.order > b.order) ? 1 : -1)
 
         }
     }
@@ -144,9 +170,8 @@ export class AvailabilitiesPage implements OnInit {
         this.editAvailability(item);
     }
     createItem() {
-        let merchantId = this.activatedRoute.snapshot.paramMap.get('merchantId');
         let container = {
-            "object_id": merchantId,
+            "object_id": this.merchant,
             "type": "Merchant"
         }
         this.editAvailability(container)

@@ -136,7 +136,7 @@
         "TO": "Hasta"
     },
     "AVAILABILITY_CREATE": {
-        "TITLE": "Editar disponibilidad",
+        "TITLE": "Crear disponibilidad",
         "RANGE": "Día",
         "FROM": "Desde",
         "TO": "Hasta",
@@ -185,7 +185,7 @@
     "BOOKING_LIST": {
         "TITLE": "Mis Reservas",
         "DESCRIPTION": "Ingresa una dirección",
-        "RESERVATION_OBJECT":"Consultar reservas para",
+        "RESERVATION_OBJECT":"Reservas para",
         "RESERVATION_PERIOD":"Periodo",
         "UNPAID":"Sin Pagar",
         "UPCOMING":"Próximos",
@@ -418,6 +418,15 @@
         "TITLE": "Imágenes",
         "IMAGE_PICKER": "Mis imágenes",
         "DONE": "Volver"
+    },
+    "ITEM_DETAIL": {
+        "TITLE": "Item",
+        "FULFILLED": "Entregado"
+    },
+    "ITEMS": {
+        "TITLE": "Items",
+        "FULLFILLED":"Entregado",
+        "UNFULFILLED":"Por entregar"
     },
     "LOGIN": {
         "USERNAME": "Correo",
@@ -691,6 +700,7 @@
     "INPUTS": {
         "SUBMIT": "Enviar",
         "UPDATE": "Actualizar",
+        "DELETE": "Borrar",
         "EDIT": "Editar",
         "CART_OPEN": "Pedidos abiertos",
         "REMEMBER": "Recordarme",

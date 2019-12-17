@@ -66,6 +66,7 @@ export class AvailabilityCreatePage implements OnInit {
             range: ['', Validators.required],
             from: ['', Validators.required],
             to: ['', Validators.required],
+            type: ['', Validators.required],
             object_id: ['']
         });
         let address_id: string = navParams.get('id');
@@ -75,11 +76,23 @@ export class AvailabilityCreatePage implements OnInit {
                 from: navParams.get('from'),
                 to: navParams.get('to'),
                 object_id: navParams.get('object_id'),
+                type: navParams.get('type'),
             };
             console.log("Setting form values: ", container);
             this.isReadyToSave = true;
             this.form.setValue(container);
 
+        } else {
+            let container = {
+                range: "",
+                from: "",
+                to: "",
+                object_id: navParams.get('object_id'),
+                type: navParams.get('type'),
+            };
+            console.log("Setting form values: ", container);
+            this.isReadyToSave = true;
+            this.form.setValue(container);
         }
         // Watch the form for changes, and
         this.form.valueChanges.subscribe((v) => {
@@ -112,7 +125,7 @@ export class AvailabilityCreatePage implements OnInit {
                     this.dismissLoader();
                     console.log("Save Address result", resp);
                     if (resp.status == "success") {
-                        resolve(resp.availability);
+                        resolve(availability);
                     } else {
                         resolve(null);
                     }
