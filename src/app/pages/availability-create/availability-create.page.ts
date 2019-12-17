@@ -121,6 +121,7 @@ export class AvailabilityCreatePage implements OnInit {
             console.log("Save availability", availability);
             if (availability) {
                 this.showLoader();
+                
                 this.booking.saveOrCreateAvailability(availability).subscribe((resp: any) => {
                     this.dismissLoader();
                     console.log("Save Address result", resp);
