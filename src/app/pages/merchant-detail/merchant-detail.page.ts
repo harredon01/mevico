@@ -134,6 +134,12 @@ export class MerchantDetailPage implements OnInit {
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
         this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/edit");
     }
+    ionViewDidEnter() {
+        let container = this.params.getParams();
+        if(container.hasChanged){
+            this.getMerchant(this.merchant.id);
+        }
+    }
     showProducts() {
         let params = {
             "type": "Merchant",

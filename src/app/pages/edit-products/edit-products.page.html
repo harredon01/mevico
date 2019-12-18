@@ -30,34 +30,38 @@
             </ion-item>
         </ion-list>
     </form>
-    <ion-button color="danger" (click)="deleteProduct()">
-        {{ 'DELETE_BUTTON' | translate }}
-    </ion-button>
-    <ion-button color="primary" (click)="editImages()">
+     <ion-button color="primary" (click)="editImages()">
         {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
     </ion-button>
+    <ion-button color="danger" (click)="deleteProduct()">
+        {{ 'INPUTS.DELETE' | translate }}
+    </ion-button>
+    <ion-button color="secondary" (click)="createVariant()">
+        {{ 'EDIT_PRODUCTS.CREATE_VARIANT' | translate }}
+    </ion-button>
+   
     <ion-list *ngIf="!editingVariant">
-        <ion-item-sliding *ngFor="let item of variants">
-            <ion-item (click)="editVariant(item)">
-                <h3>{{ 'EDIT_PRODUCTS.SKU' | translate }}: {{item.sku}}</h3>
-                <p>{{ 'EDIT_PRODUCTS.DESCRIPTION' | translate }}: {{item.description}}</p>
+        <ion-card *ngFor="let item of variants">
+            <ion-item>
+                <h2>{{item.sku}}</h2>
+                <p>{{item.description}}</p>
+            </ion-item>
+            <ion-card-content >
                 <p>{{ 'EDIT_PRODUCTS.PRICE' | translate }}: {{item.price | currency}}</p>
                 <p>{{ 'EDIT_PRODUCTS.SALE' | translate }}: {{item.sale | currency}}</p>
                 <p>{{ 'EDIT_PRODUCTS.TAX' | translate }}: {{item.tax | currency}}</p>
                 <p>{{ 'EDIT_PRODUCTS.COST' | translate }}: {{item.cost | currency}}</p>
                 <p>{{ 'EDIT_PRODUCTS.QUANTITY' | translate }}: {{item.quantity}}</p>
-                <p *ngIf="item.is_digital">{{ 'EDIT_PRODUCTS.IS_DIGITAL' | translate }}</p>
-                <p *ngIf="item.requires_authorization">{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</p>
-                <p *ngIf="item.is_shippable">{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</p>
-                <p *ngIf="item.is_on_sale">{{ 'EDIT_PRODUCTS.IS_ON_SALE' | translate }}</p>
-                
-            </ion-item>
-            <ion-item-options>  
                 <ion-button color="danger" (click)="deleteVariant(item.id)">
-                    {{ 'DELETE_BUTTON' | translate }}
+                    {{ 'INPUTS.DELETE' | translate }}
                 </ion-button>
-            </ion-item-options>
-        </ion-item-sliding>
+                <ion-button color="primary" (click)="editVariant(item)">
+                    {{ 'INPUTS.EDIT' | translate }}
+                </ion-button>
+            </ion-card-content>
+
+
+        </ion-card>
     </ion-list>
     <form [formGroup]="formV" (ngSubmit)="saveVariant()" *ngIf="editingVariant">
         <input type="hidden" formControlName="id" />
@@ -111,6 +115,13 @@
             <ion-item *ngIf="!formV.controls.min_quantity.valid  && (formV.controls.min_quantity.dirty || submitAttemptV)">
                 <p>{{ 'EDIT_PRODUCTS.MIN_QUANTITY_ERROR' | translate }}</p>
             </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'EDIT_PRODUCTS.QUANTITY' | translate }}</ion-label>
+                <ion-input type="tel" formControlName="quantity"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="!formV.controls.quantity.valid  && (formV.controls.quantity.dirty || submitAttemptV)">
+                <p>{{ 'EDIT_PRODUCTS.QUANTITY_ERROR' | translate }}</p>
+            </ion-item>
             <ion-item >
                 <ion-label>{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</ion-label>
                 <ion-checkbox formControlName="requires_authorization"></ion-checkbox>
@@ -129,6 +140,11 @@
             </ion-item>
             <ion-item>
                 <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
+            </ion-item>
+            <ion-item>
+                <ion-button color="primary" (click)="cancelEditVariant()">
+                    {{ 'INPUTS.CANCEL' | translate }}
+                </ion-button>
             </ion-item>
         </ion-list>
     </form>

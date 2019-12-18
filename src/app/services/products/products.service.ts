@@ -23,10 +23,11 @@ export class ProductsService {
     }
     saveOrCreateProduct(product: any) {
         let endpoint = '/products/';
+        let seq = this.api.post(endpoint,product);
         if(product.id){
             endpoint = '/products/'+product.id;
+            seq = this.api.patch(endpoint,product);
         }
-        let seq = this.api.post(endpoint,product);
         return seq;
     }
     deleteProduct(product: any) {
@@ -36,15 +37,17 @@ export class ProductsService {
     }
     saveOrCreateVariant(variant: any) {
         let endpoint = '/products/variant';
+        let seq = this.api.post(endpoint,variant);
         if(variant.id){
             endpoint = '/products/variant/'+variant.id;
+            seq = this.api.patch(endpoint,variant);
         }
-        let seq = this.api.post(endpoint,variant);
+        
         return seq;
     }
     deleteVariant(variant: any) {
-        let endpoint = '/products/variant/'+variant.id;
-        let seq = this.api.delete(endpoint,variant);
+        let endpoint = '/products/variant/'+variant;
+        let seq = this.api.delete(endpoint); 
         return seq;
     }
     buildProduct(container: any, merchant: any, merchant_id: any) {

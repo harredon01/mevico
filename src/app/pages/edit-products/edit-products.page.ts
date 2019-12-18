@@ -57,12 +57,18 @@ export class EditProductsPage implements OnInit {
         this.formV = formBuilder.group({
             id: [''],
             sku: ['', Validators.required],
+            product_id: ['', Validators.required],
             description: ['', Validators.required],
             price: ['', Validators.required],
             tax: [''],
             cost: ['', Validators.required],
             sale: ['', Validators.required],
             quantity: [''],
+            min_quantity: [''],
+            requires_authorization: [''],
+            is_on_sale: [''],
+            is_digital: [''],
+            is_shippable: [''],
         });
     }
 
@@ -127,13 +133,14 @@ export class EditProductsPage implements OnInit {
     }
     saveProduct() {
         this.submitAttemptP = true;
-        console.log("saveavailability");
+        console.log("saveOrCreateProduct");
         if (!this.formP.valid) {return;}
         this.showLoader();
         this.productsServ.saveOrCreateProduct(this.formP.value).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after get addresses");
+            console.log("after saveOrCreateProduct");
             let results = data.product;
+            results.variants = results.product_variants;
             this.product = new Product(results);
             this.variants = results.variants;
             let container = {
@@ -159,7 +166,7 @@ export class EditProductsPage implements OnInit {
         this.showLoader();
         this.productsServ.deleteProduct(this.product.id).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after get addresses");
+            console.log("after deleteProduct");
             this.navCtrl.back();
             console.log(JSON.stringify(data));
         }, (err) => {
@@ -177,8 +184,7 @@ export class EditProductsPage implements OnInit {
         this.showLoader();
         this.productsServ.deleteVariant(variantId).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after get addresses");
-            this.navCtrl.back();
+            console.log("after deleteVariant");
             for(let item in this.variants){
                 if(this.variants[item].id == variantId){
                     this.variants.splice(parseInt(item),1);
@@ -231,16 +237,46 @@ export class EditProductsPage implements OnInit {
         this.editingVariant = true;
         let container = {
             id: variant.id,
+            product_id: variant.product_id,
             price: variant.price,
             cost: variant.cost,
             tax: variant.tax,
             sale: variant.sale,
             quantity: variant.quantity,
+            min_quantity: variant.min_quantity,
             sku: variant.sku,
             description: variant.description,
+            requires_authorization: variant.requires_authorization,
+            is_digital: variant.is_digital,
+            is_shippable: variant.is_shippable,
+            is_on_sale: variant.is_on_sale,
         };
         console.log("Setting form values: ", container);
         this.formV.setValue(container);
+    }
+    createVariant() {
+        this.editingVariant = true;
+        let container = {
+            id: "",
+            product_id: this.product.id,
+            price: "",
+            cost: "",
+            tax: "",
+            sale: "",
+            quantity: "",
+            min_quantity: "",
+            sku: "",
+            description: "",
+            requires_authorization: false,
+            is_digital: false,
+            is_shippable: false,
+            is_on_sale: false,
+        };
+        console.log("Setting form values: ", container);
+        this.formV.setValue(container);
+    }
+    cancelEditVariant( ) {
+        this.editingVariant = false;
     }
 
     ngOnInit() {

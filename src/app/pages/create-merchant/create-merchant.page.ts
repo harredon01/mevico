@@ -289,6 +289,8 @@ export class CreateMerchantPage implements OnInit {
             this.dismissLoader();
             console.log("Save Address result", resp);
             if (resp.status == "success") {
+                let container = {"hasChanged":true};
+                this.params.setParams(container);
                 this.navCtrl.back();
             } else {
                 this.toastCtrl.create({
