@@ -17,6 +17,8 @@ export class MerchantDetailPage implements OnInit {
     doctor: string = "about";
     Short: string = "n1";
     category: string = "";
+    urlSearch: string = "";
+    fromSettings: boolean = false;
     merchant: Merchant;
 
     constructor(public navCtrl: NavController, 
@@ -28,6 +30,15 @@ export class MerchantDetailPage implements OnInit {
         public merchantsServ: MerchantsService, 
         public params: ParamsService) {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
+        let theParams = this.params.getParams();
+        if(theParams.owner){
+            this.urlSearch = "tabs/settings/merchants/"+merchantId;
+            this.fromSettings = true;
+        } else {
+            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+            this.urlSearch = 'tabs/categories/'+category+'/merchant/'+merchantId;
+        }
+        
         this.merchant = new Merchant({"availabilities":[],"attributes":[]});
         this.getMerchant(merchantId);
     }
@@ -72,10 +83,11 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id,
             "name": this.merchant.name
         };
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/ratings");
+        this.navCtrl.navigateForward(this.urlSearch+"/ratings");
     }
     chat() {
         let params = {
@@ -83,9 +95,11 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id,
             "name": this.merchant.name
         };
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/chat");
+        this.navCtrl.navigateForward(this.urlSearch+"/chat");
     }
     myBookings() {
         let params = {
@@ -96,17 +110,21 @@ export class MerchantDetailPage implements OnInit {
             "objectDescription": this.merchant.description,
             "objectIcon": this.merchant.src
         };
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/bookings");
+        this.navCtrl.navigateForward(this.urlSearch+"/bookings");
     }
     myItems() {
         let params = {
             "merchant": this.merchant.id
         };
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/items");
+        this.navCtrl.navigateForward(this.urlSearch+"/items");
     }
     myImages() {
         let params = {
@@ -114,25 +132,31 @@ export class MerchantDetailPage implements OnInit {
             "type":"Merchant",
             "Name":this.merchant.name
         };
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/images");
+        this.navCtrl.navigateForward(this.urlSearch+"/images");
     }
     myAvailabilities() {
         let params = {
             "merchant": this.merchant.id
         };
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/availabilities");
+        this.navCtrl.navigateForward(this.urlSearch+"/availabilities");
     }
     editMerchant() {
         let params = {
             "merchant": this.merchant
         };
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/edit");
+        this.navCtrl.navigateForward(this.urlSearch+"/edit");
     }
     ionViewDidEnter() {
         let container = this.params.getParams();
@@ -146,9 +170,11 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id,
             "owner": this.merchant.owner
         };
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/products");
+        this.navCtrl.navigateForward(this.urlSearch+"/products");
     }
     appointmentbook() {
         let params = {
@@ -156,9 +182,11 @@ export class MerchantDetailPage implements OnInit {
             "type": "Merchant",
             "objectId": this.merchant.id
         }
+        if (this.fromSettings){
+            params["settings"] = true;
+        }
         this.params.setParams(params);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/book");
+        this.navCtrl.navigateForward(this.urlSearch+"/book");
     }
     
     ngOnInit() {

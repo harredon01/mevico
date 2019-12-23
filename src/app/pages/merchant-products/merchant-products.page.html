@@ -11,7 +11,7 @@
 
 
 <ion-content class="product">
-    <ion-card class="product-header product-header---main">
+    <ion-card class="product-header product-header---main"  *ngIf="categories.length > 0">
         <ion-card-header class="product-header__information">
             <span>{{merchantObj.merchant_name}}</span>
         </ion-card-header>
@@ -24,6 +24,8 @@
         </button>
     </ion-card-content>
 </ion-card> 
+<ion-button class="btn-secondary" (click)="editProduct(0)" *ngIf="isOwner" >{{ 'PRODUCTS.NEW_PRODUCT' | translate }}
+</ion-button>
 <div *ngFor="let cat of categories">
     <h2 style="margin-left: 15px;" (click)="showMoreCat(cat)">{{cat.name}}</h2>
     <div *ngIf="cat.more">
@@ -56,8 +58,13 @@
                 <ion-item>
                     <ion-label><strong>{{ 'PRODUCTS.TOTAL' | translate }}</strong> {{item.subtotal | currency }}</ion-label>
                 </ion-item>
-                <ion-button class="btn-secondary" (click)="editProduct(item.id)" *ngIf="isOwner" >{{ 'INPUTS.EDIT' | translate }}
-                </ion-button>
+                <div *ngIf="isOwner">
+                    <ion-button class="btn-secondary" (click)="editProduct(item.id)">{{ 'INPUTS.EDIT' | translate }}
+                    </ion-button>
+                    <ion-button color="primary" (click)="editImages(item.id)">
+                        {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
+                    </ion-button>
+                </div>
                 <div *ngIf="!isOwner">
                     <ion-button color="secondary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</ion-button>
                     <ion-button color="secondary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</ion-button>
@@ -67,6 +74,7 @@
                         <ion-button outline style="font-size:20px;" (click)="increaseCartItem(item)">+</ion-button>
                     </div> 
                 </div>
+
 
             </ion-card-content>
         </ion-card>

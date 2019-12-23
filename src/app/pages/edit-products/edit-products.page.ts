@@ -17,6 +17,7 @@ export class EditProductsPage implements OnInit {
     product: Product;
     loading: any;
     submitAttemptP: boolean;
+    isNew: boolean=false;
     submitAttemptV: boolean;
     editingVariant: boolean;
     variants: any[] = [];
@@ -74,13 +75,16 @@ export class EditProductsPage implements OnInit {
 
     ionViewDidEnter() {
         let product = this.activatedRoute.snapshot.paramMap.get('productId');
-        this.getItem(product);
+        console.log("Getting product",product);
+        let merch = this.activatedRoute.snapshot.paramMap.get('objectId');
+        console.log("Getting merch",merch);
+        if(product!='null'){
+            this.getItem(product);
+        } else {
+            this.isNew = true;
+        }
     }
-    editImages() {
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
-        let merchantId = this.activatedRoute.snapshot.paramMap.get('merchantId'); 
-        this.navCtrl.navigateForward('tabs/categories/' + category + '/merchant/' + merchantId + "/products/images/" + this.product.id);
-    }
+    
     addVariant() {
         this.editingVariant = true;
     }
@@ -136,7 +140,12 @@ export class EditProductsPage implements OnInit {
         console.log("saveOrCreateProduct");
         if (!this.formP.valid) {return;}
         this.showLoader();
-        this.productsServ.saveOrCreateProduct(this.formP.value).subscribe((data: any) => {
+        let container = this.formP.value;
+        if(container.id.length==0){
+            let merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
+            container['merchant_id'] = merchant;
+        }
+        this.productsServ.saveOrCreateProduct(container).subscribe((data: any) => {
             this.dismissLoader();
             console.log("after saveOrCreateProduct");
             let results = data.product;

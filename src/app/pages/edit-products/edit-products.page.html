@@ -30,13 +30,11 @@
             </ion-item>
         </ion-list>
     </form>
-     <ion-button color="primary" (click)="editImages()">
-        {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
-    </ion-button>
-    <ion-button color="danger" (click)="deleteProduct()">
+     
+    <ion-button color="danger" (click)="deleteProduct()" *ngIf="!isNew">
         {{ 'INPUTS.DELETE' | translate }}
     </ion-button>
-    <ion-button color="secondary" (click)="createVariant()">
+    <ion-button color="secondary" (click)="createVariant()" *ngIf="!isNew">
         {{ 'EDIT_PRODUCTS.CREATE_VARIANT' | translate }}
     </ion-button>
    

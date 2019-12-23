@@ -14,8 +14,14 @@
                     <ion-select-option value="b3">Central Park</ion-select-option>
                 </ion-select>
             </span-->
+            
         </ion-title>
-        <ion-searchbar [(ngModel)]="textSearch" placeholder="Search..." debounce="1500" (ionChange)="searchText()" *ngIf="typeSearch=='own'"></ion-searchbar>
+        <ion-buttons class="my-addresses__button my-addresses__button--right" *ngIf="typeSearch=='own'" slot="primary">
+            <ion-button   icon-only (click)="createItem()">
+                         <ion-icon class="add-button" name="add"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-searchbar [(ngModel)]="textSearch" placeholder="Search..." debounce="1500" (ionChange)="searchText()" *ngIf="typeSearch!='own'"></ion-searchbar>
     </ion-toolbar>
     <div class="filter" *ngIf="typeSearch!='own'" padding>
         <ion-row>

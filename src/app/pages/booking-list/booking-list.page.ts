@@ -23,6 +23,7 @@ export class BookingListPage implements OnInit {
     private query: string = "";
     private queryMod: string = "";
     private target: string = "";
+    private urlSearch: string = "";
     private queries: any[] = [];
     constructor(public booking: BookingService,
         public activatedRoute: ActivatedRoute,
@@ -37,6 +38,12 @@ export class BookingListPage implements OnInit {
         this.typeObj = paramsObj.type;
         this.target = paramsObj.target;
         this.objectId = paramsObj.objectId;
+        if(paramsObj.settings){
+            this.urlSearch = "tabs/settings/merchants/"+paramsObj.objectId;
+        } else {
+            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+            this.urlSearch = 'tabs/categories/'+category+'/merchant/'+paramsObj.objectId;
+        }
         this.selectedObject = {"id": paramsObj.objectId, "name": paramsObj.name};
         this.bookingObjects.push(this.selectedObject);
         this.query = this.target + "_upcoming";
@@ -137,8 +144,7 @@ export class BookingListPage implements OnInit {
         let param = {"booking": booking};
         this.params.setParams(param);
         if (this.target == "bookable") {
-            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-            this.navCtrl.navigateForward('tabs/categories/' + category + '/merchant/' + this.objectId + '/bookings/' + booking.id);
+            this.navCtrl.navigateForward(this.urlSearch+ '/bookings/' + booking.id);
         } else {
             this.navCtrl.navigateForward('tabs/settings/bookings/' + booking.id);
         }

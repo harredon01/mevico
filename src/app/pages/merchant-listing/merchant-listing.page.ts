@@ -22,6 +22,7 @@ export class MerchantListingPage implements OnInit {
     @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
     location: any;
     typeSearch: string = "category";
+    urlSearch: string = "";
     totalResults: any;
     textSearch: string = "";
     category: string = "a1";
@@ -49,7 +50,10 @@ export class MerchantListingPage implements OnInit {
         this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
         let paramsContainer = this.params.getParams();
         if(paramsContainer.owner){
-            this.typeSearch=="own";
+            this.typeSearch="own";
+            this.urlSearch = "tabs/settings/merchants/";
+        } else {
+            this.urlSearch = 'tabs/categories/' + this.category + '/merchant/' 
         }
     }
     async filter() {
@@ -96,9 +100,13 @@ export class MerchantListingPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     openItem(item: Merchant) {
-        this.params.setParams({"item": item, "category": this.category});
+        if(this.typeSearch=="own"){
+            this.params.setParams({"item": item, "category": this.category,"owner":true});
+        } else {
+            this.params.setParams({"item": item, "category": this.category});
+        }
         console.log("Entering merchant", item);
-        this.navCtrl.navigateForward('tabs/categories/' + this.category + '/merchant/' + item.id);
+        this.navCtrl.navigateForward(this.urlSearch + item.id);
     }
     /**
      * Navigate to the detail page for this item.

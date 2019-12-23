@@ -16,6 +16,7 @@ export class ItemsPage implements OnInit {
     private items: Item[] = [];
     private page: any = 0;
     private merchant: any;
+    private urlSearch:string="";
     private status: any;
     private queries: any[];
     private loadMore: boolean = false;
@@ -41,6 +42,12 @@ export class ItemsPage implements OnInit {
 
         let container = this.params.getParams();
         this.merchant = container.merchant;
+        if(container.settings){
+            this.urlSearch = "tabs/settings/merchants/"+this.merchant.id;
+        } else {
+            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+            this.urlSearch = 'tabs/categories/'+category+'/merchant/'+this.merchant.id;
+        }
         this.status = "unfulfilled"
     }
     ngOnInit() {
@@ -117,8 +124,6 @@ export class ItemsPage implements OnInit {
     openItem(item: Item) {
         let param = {"item": item};
         this.params.setParams(param);
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        let objectId = this.activatedRoute.snapshot.paramMap.get('objectId');
-        this.navCtrl.navigateForward('tabs/categories/' + category + '/merchant/' + objectId + '/items/' + item.id);
+        this.navCtrl.navigateForward(this.urlSearch + '/items/' + item.id);
     }
 }

@@ -252,10 +252,6 @@ const routes: Routes = [
                         loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
                     },
                     {
-                        path: 'create-merchant',
-                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
-                    },
-                    {
                         path: 'payments',
                         children: [
                             {
@@ -269,24 +265,15 @@ const routes: Routes = [
                         ]
                     },
                     {
-                        path: 'items',
-                        children: [
-                            {
-                                path: '',
-                                loadChildren: '../items/items.module#ItemsPageModule'
-                            },
-                            {
-                                path: ':objectId',
-                                loadChildren: '../item-detail/item-detail.module#ItemDetailPageModule'
-                            }
-                        ]
-                    },
-                    {
                         path: 'merchants',
                         children: [
                             {
                                 path: '',
                                 loadChildren: '../merchant-listing/merchant-listing.module#MerchantListingPageModule'
+                            },
+                            {
+                                path: 'create-merchant',
+                                loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
                             },
                             {
                                 path: ':objectId',

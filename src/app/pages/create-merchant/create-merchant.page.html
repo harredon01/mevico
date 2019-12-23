@@ -25,7 +25,7 @@
             </ion-item>
             <ion-item>
                 <ion-label position="floating">{{ 'MERCHANT_CREATE.TYPE' | translate }}</ion-label>
-                <ion-select placeholder="Que quieres crear" [(ngModel)]="typeSelected" formControlName="type">
+                <ion-select placeholder="Que quieres crear" [(ngModel)]="typeSelected" formControlName="type" (ionChange)="addShippingAddress()" >
                     <ion-select-option value="medical">Doctor</ion-select-option>
                     <ion-select-option value="location">Sitio</ion-select-option>
                 </ion-select>
@@ -58,9 +58,6 @@
                 </ion-item>
                 <ion-item *ngIf="!form.controls.telephone.valid  && (form.controls.telephone.dirty || submitAttempt)">
                     <p>{{ 'MERCHANT_CREATE.TELEPHONE_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-button full (click)="addShippingAddress()" >{{ 'MERCHANT_CREATE.SELECT_ADDRESS' | translate}}</ion-button>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'MERCHANT_CREATE.ADDRESS' | translate }}</ion-label>

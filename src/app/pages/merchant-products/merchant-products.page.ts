@@ -20,6 +20,7 @@ export class MerchantProductsPage implements OnInit {
     products: Product[] = [];
     categories: any[] = [];
     options: any[];
+    urlSearch: string = "";
     isOwner:boolean = false;
     slides: any[];
     loading: any;
@@ -86,6 +87,12 @@ export class MerchantProductsPage implements OnInit {
         let paramsSent = this.params.getParams();
         this.merchant = paramsSent.objectId;
         this.isOwner = paramsSent.owner;
+        if(paramsSent.settings){
+            this.urlSearch = "tabs/settings/merchants/"+this.merchant;
+        } else {
+            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+            this.urlSearch = 'tabs/categories/'+category+'/merchant/'+this.merchant;
+        }
         this.products = [];
         this.possibleAmounts = [];
         this.showLoader();
@@ -106,8 +113,14 @@ export class MerchantProductsPage implements OnInit {
         this.addCartItem(item);
     }
     editProduct(productId:any) {
-        let category = this.activatedRoute.snapshot.paramMap.get('categoryId'); 
-        this.navCtrl.navigateForward('tabs/categories/'+category+'/merchant/'+this.merchant.id+"/products/edit/"+productId);
+        if (productId==0){
+            productId = null;
+        }
+        console.log("Entering edit prod",this.urlSearch+"/products/edit/"+productId);
+        this.navCtrl.navigateForward(this.urlSearch+"/products/edit/"+productId);
+    }
+    editImages(productId:any) {
+        this.navCtrl.navigateForward(this.urlSearch+"/products/images/"+productId);
     }
     showLoader() {
         if (document.URL.startsWith('http')) {
@@ -378,7 +391,7 @@ export class MerchantProductsPage implements OnInit {
     loadProducts() {
 
         this.productsServ.getProductsMerchant(this.merchant, this.page).subscribe((resp) => {
-            if (resp) {
+            if (resp.products_total > 0) {
                 this.categories = this.productsServ.buildProductInformation(resp, this.merchant);
                 this.merchantObj.merchant_name = this.categories[0].products[0].merchant_name;
                 this.merchantObj.merchant_description = this.categories[0].products[0].merchant_description;
@@ -414,6 +427,8 @@ export class MerchantProductsPage implements OnInit {
 
                 this.calculateTotals("load products");
                 //this.createSlides();
+            } else {
+                this.dismissLoader();
             }
         }, (err) => {
             this.api.handleError(err);

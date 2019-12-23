@@ -18,7 +18,7 @@ export class CreateMerchantPage implements OnInit {
     isReadyToSave: boolean;
     locationLoaded: boolean = false;
     item: any;
-    merchant:Merchant;
+    merchant: Merchant;
     loading: any;
     type: any;
     typeSelected = "";
@@ -101,8 +101,8 @@ export class CreateMerchantPage implements OnInit {
                 this.country = editingMerchant.country_id;
                 this.region = editingMerchant.region_id;
                 this.city = editingMerchant.city_id;
-                this.selectCountry(this.region,this.city);
-                this.typeSelected=editingMerchant.type;
+                this.selectCountry(this.region, this.city);
+                this.typeSelected = editingMerchant.type;
                 let attributes = editingMerchant.attributes;
                 let services = [];
                 if (attributes.services) {
@@ -194,7 +194,7 @@ export class CreateMerchantPage implements OnInit {
             console.log("Setting form values2: ", container);
             this.form.setValue(container);
             this.country = 1
-            this.selectCountry(null,null);
+            this.selectCountry(null, null);
         }
 
 
@@ -241,20 +241,20 @@ export class CreateMerchantPage implements OnInit {
 
         });
     }
-    selectCountry(region,city) {
+    selectCountry(region, city) {
         this.showLoader();
-        console.log("selectCountry",region,city);
-        this.form.patchValue({country_id:this.country});
+        console.log("selectCountry", region, city);
+        this.form.patchValue({country_id: this.country});
         this.locations.getRegionsCountry(this.country).subscribe((resp: any) => {
             this.dismissLoader();
             this.region = null;
-            if(region){
+            if (region) {
                 this.region = region;
-                this.form.patchValue({region_id:region});
+                this.form.patchValue({region_id: region});
                 this.cdr.detectChanges();
                 this.selectRegion(city);
             }
-            
+
             console.log("getRegionsCountry result", resp);
             this.regions = resp.data;
         }, (err) => {
@@ -267,9 +267,9 @@ export class CreateMerchantPage implements OnInit {
             this.dismissLoader();
             console.log("getCitiesRegion result", resp);
             this.cities = resp.data;
-            if(city){
+            if (city) {
                 this.city = city;
-                this.form.patchValue({city_id:city});
+                this.form.patchValue({city_id: city});
             }
             this.cdr.detectChanges();
         }, (err) => {
@@ -289,7 +289,7 @@ export class CreateMerchantPage implements OnInit {
             this.dismissLoader();
             console.log("Save Address result", resp);
             if (resp.status == "success") {
-                let container = {"hasChanged":true};
+                let container = {"hasChanged": true};
                 this.params.setParams(container);
                 this.navCtrl.back();
             } else {
@@ -314,11 +314,20 @@ export class CreateMerchantPage implements OnInit {
      * modal and then adds the new item to our data source if the user created one.
      */
     addShippingAddress() {
-        this.mapData.hideAll();
-        this.mapData.activeType = "Location";
-        this.mapData.activeId = "-1";
-        this.mapData.merchantId = null;
-        this.navCtrl.navigateForward('tabs/map');
+        if (this.typeSelected == "location" || this.typeSelected == "medical") {
+            this.mapData.hideAll();
+            this.mapData.activeType = "Location";
+            this.mapData.activeId = "-1";
+            this.mapData.merchantId = null;
+            this.navCtrl.navigateForward('tabs/map');
+        } else {
+            let values = this.form.value;
+            values.address = "";
+            values.lat = 0;
+            values.long = 0;
+            this.form.setValue(values);
+        }
+
     }
 
 
