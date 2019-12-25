@@ -15,6 +15,7 @@ import {FileTransfer, FileUploadOptions, FileTransferObject} from '@ionic-native
 })
 export class ImagesPage implements OnInit {
     images: any[] = [];
+    icon = "";
     getImagesError = "";
     constructor(public navCtrl: NavController,
         public activatedRoute: ActivatedRoute,
@@ -61,6 +62,9 @@ export class ImagesPage implements OnInit {
             type: params.type,
             trigger_id: params.objectId
         };
+        if(params.icon){
+            this.icon = params.icon;
+        }
         this.images = [];
         this.imagesServ.getFiles(container).subscribe((data: any) => {
             this.dismissLoader();
@@ -85,10 +89,9 @@ export class ImagesPage implements OnInit {
         this.showLoader();
         this.imagesServ.deleteFile(id).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after get addresses");
-            let results = data.addresses;
-            for (let one in results) {
-                if (results[one].id == id) {
+            console.log("after delete image");
+            for (let one in this.images) {
+                if (this.images[one].id == id) {
                     this.images.splice(parseInt(one), 1);
                 }
             }
@@ -109,37 +112,48 @@ export class ImagesPage implements OnInit {
     }
     openImages() {
         let params = this.params.getParams();
-        let container = {
-//            type: p            arams.type,
-//            intended_id: params.objectId,
-
-        };
+        let container = {};
         container['type'] = params.type;
         container['intended_id'] = params.objectId;
 
         let options = {
-            // max width and height to allow the images to be.  Will keep aspect
-            // ratio no matter what.  So if both are 800, the returned image
-            // will be at most 800 pixels wide and 800 pixels tall.  If the width is
-            // 800 and height 0 the image will be 800 pixels wide if the source
-            // is at least that wide.
             width: 800,
             height: 800,
-            // output type, defaults to FILE_URIs.
-            // available options are 
-            // window.imagePicker.OutputType.FILE_URI (0) or 
-            // window.imagePicker.OutputType.BASE64_STRING (1)
             outputType: 0
         };
+        this.prepareForUpload(options,container,false);
+    }
+    setAvatar() {
+        let params = this.params.getParams();
+        let container = {};
+        container['type'] = params.type+"_avatar";
+        container['intended_id'] = params.objectId;
+
+        let options = {
+            width: 800,
+            height: 800,
+            maximumImagesCount: 1,
+            outputType: 0
+        };
+        this.prepareForUpload(options,container,true);
+    }
+    prepareForUpload(options,container,avatar) {
+        this.showLoader();
         this.imagePicker.getPictures(options).then((results) => {
+            
             const fileTransfer: FileTransferObject = this.transfer.create();
             for (var i = 0; i < results.length; i++) {
                 console.log('Image URI: ' + results[i]);
-                this.upload(fileTransfer, results[i], container);
+                console.log('Image: ',(i+1),results.length );
+                let last = false;
+                if((i+1)==results.length){
+                    last = true;
+                }
+                this.upload(fileTransfer, results[i], container,last,avatar);
             }
         }, (err) => {});
     }
-    upload(fileTransfer, path, params) {
+    upload(fileTransfer, path, params,last:boolean,avatar:boolean) {
         let headers = this.api.buildHeaders(null);
         headers = headers.headers;
         params['filetype'] = path.substr(path.lastIndexOf('.') + 1)
@@ -162,9 +176,17 @@ export class ImagesPage implements OnInit {
         console.log("upload", path, options);
         fileTransfer.upload(path, this.api.url + '/imagesapi', options)
             .then((data) => {
-                console.log("Success upload", data)
                 let response = JSON.parse(data.response);
-                this.images.push(response.file);
+                console.log("Success upload", response)
+                
+                if(avatar){
+                    this.icon = response.file.file;
+                } else {
+                    this.images.push(response.file);
+                }
+                if(last){
+                    this.dismissLoader();
+                }
             }, (err) => {
                 console.log("Error upload", err)
             })

@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Product} from '../../models/product';
 import {ApiService} from '../api/api.service';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ProductsService {
 
-  products: Product[] = [];
+    products: Product[] = [];
 
     constructor(public api: ApiService) {}
 
@@ -21,40 +21,45 @@ export class ProductsService {
         let seq = this.api.get(endpoint);
         return seq;
     }
+    getProductCategories(merchant_id: string) {
+        let endpoint = '/products/categories/' + merchant_id;
+        let seq = this.api.get(endpoint);
+        return seq;
+    }
     saveOrCreateProduct(product: any) {
-        let endpoint = '/products/';
-        let seq = this.api.post(endpoint,product);
-        if(product.id){
-            endpoint = '/products/'+product.id;
-            seq = this.api.patch(endpoint,product);
+        let endpoint = '/products';
+        let seq = this.api.post(endpoint, product);
+        if (product.id) {
+            endpoint = '/products/' + product.id;
+            seq = this.api.patch(endpoint, product);
         }
         return seq;
     }
     deleteProduct(product: any) {
-        let endpoint = '/products/'+product;
-        let seq = this.api.delete(endpoint,product);
+        let endpoint = '/products/' + product;
+        let seq = this.api.delete(endpoint, product);
         return seq;
     }
     saveOrCreateVariant(variant: any) {
         let endpoint = '/products/variant';
-        let seq = this.api.post(endpoint,variant);
-        if(variant.id){
-            endpoint = '/products/variant/'+variant.id;
-            seq = this.api.patch(endpoint,variant);
+        let seq = this.api.post(endpoint, variant);
+        if (variant.id) {
+            endpoint = '/products/variant/' + variant.id;
+            seq = this.api.patch(endpoint, variant);
         }
-        
+
         return seq;
     }
     deleteVariant(variant: any) {
-        let endpoint = '/products/variant/'+variant;
-        let seq = this.api.delete(endpoint); 
+        let endpoint = '/products/variant/' + variant;
+        let seq = this.api.delete(endpoint);
         return seq;
     }
     buildProduct(container: any, merchant: any, merchant_id: any) {
         let productInfo = new Product({});
-        productInfo.id = container.product_id;
-        productInfo.name = container.prod_name;
-        productInfo.description = container.prod_desc;
+            productInfo.id = container.product_id;
+            productInfo.name = container.prod_name;
+            productInfo.description = container.prod_desc;
         productInfo.description_more = false;
         productInfo.more = false;
         productInfo.type = container.type;
@@ -228,7 +233,7 @@ export class ProductsService {
             }
             console.log('resultbuildCat', resultsCategory);
             return resultsCategory;
-        }
+        } 
         return null;
     }
 }

@@ -17,15 +17,20 @@ export class EditProductsPage implements OnInit {
     product: Product;
     loading: any;
     submitAttemptP: boolean;
-    isNew: boolean=false;
+    isNew: boolean = false;
+    selectingCategory: boolean = true;
     submitAttemptV: boolean;
+    submitAttemptPNew: boolean;
     editingVariant: boolean;
     variants: any[] = [];
+    categories: any[] = [];
     formP: FormGroup;
     formV: FormGroup;
+    formPNew: FormGroup;
     productsErrorStringSave: string = "";
     variantsErrorStringSave: string = "";
     getProductErrorString: string = "";
+    category: string = "";
     constructor(public navCtrl: NavController,
         public activatedRoute: ActivatedRoute,
         public productsServ: ProductsService,
@@ -71,20 +76,39 @@ export class EditProductsPage implements OnInit {
             is_digital: [''],
             is_shippable: [''],
         });
+        this.formPNew = formBuilder.group({
+            category_id: [''],
+            category_name: [''],
+            name: ['', Validators.required],
+            description: ['', Validators.required],
+            sku: ['', Validators.required],
+            description2: ['', Validators.required],
+            price: ['', Validators.required],
+            tax: [''],
+            cost: ['', Validators.required],
+            sale: [''],
+            quantity: [''],
+            min_quantity: [''],
+            requires_authorization: [''],
+            is_on_sale: [''],
+            is_digital: [''],
+            is_shippable: [''],
+        });
     }
 
     ionViewDidEnter() {
         let product = this.activatedRoute.snapshot.paramMap.get('productId');
-        console.log("Getting product",product);
+        console.log("Getting product", product);
         let merch = this.activatedRoute.snapshot.paramMap.get('objectId');
-        console.log("Getting merch",merch);
-        if(product!='null'){
+        console.log("Getting merch", merch);
+        if (product != 'null') {
             this.getItem(product);
         } else {
             this.isNew = true;
+            this.getCategories();
         }
     }
-    
+
     addVariant() {
         this.editingVariant = true;
     }
@@ -92,12 +116,12 @@ export class EditProductsPage implements OnInit {
         this.showLoader();
         this.productsServ.getProductSimple(productId).subscribe((data: any) => {
             this.dismissLoader();
-            
+
             let results = data.product;
             this.product = new Product(results);
             this.variants = data.variants;
-            console.log("after get getProductSimple",this.product);
-            console.log("after get getProductSimpleV",this.variants);
+            console.log("after get getProductSimple", this.product);
+            console.log("after get getProductSimpleV", this.variants);
             let container = {
                 id: this.product.id,
                 name: this.product.name,
@@ -109,6 +133,23 @@ export class EditProductsPage implements OnInit {
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
+            this.toastCtrl.create({
+                message: this.getProductErrorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
+    }
+    getCategories() {
+        this.showLoader();
+        let merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
+        this.productsServ.getProductCategories(merchant).subscribe((data: any) => {
+            this.dismissLoader();
+            console.log(JSON.stringify(data));
+            this.categories = data.data;
+        }, (err) => {
+            this.dismissLoader();
             this.toastCtrl.create({
                 message: this.getProductErrorString,
                 duration: 3000,
@@ -135,31 +176,80 @@ export class EditProductsPage implements OnInit {
             this.spinnerDialog.hide();
         }
     }
+    selectCategory(categoryId) {
+        let container = this.formPNew.value;
+        container.category_id = categoryId;
+        container.requires_authorization = true;
+        container.is_shippable = true;
+        container.is_on_sale = true;
+        container.is_digital = true;
+        this.formPNew.setValue(container);
+        this.selectingCategory = false;
+    }
+    addCategory() {
+        let container = this.formPNew.value;
+        container.category_name = this.category;
+        container.requires_authorization = true;
+        container.is_shippable = true;
+        container.is_on_sale = true;
+        container.is_digital = true;
+        this.formPNew.setValue(container);
+        this.selectingCategory = false;
+    }
     saveProduct() {
         this.submitAttemptP = true;
         console.log("saveOrCreateProduct");
         if (!this.formP.valid) {return;}
         this.showLoader();
         let container = this.formP.value;
-        if(container.id.length==0){
+        if (container.id.length == 0) {
             let merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
             container['merchant_id'] = merchant;
         }
         this.productsServ.saveOrCreateProduct(container).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after saveOrCreateProduct");
-            let results = data.product;
-            results.variants = results.product_variants;
-            this.product = new Product(results);
+            this.filterResults(data);
+        }, (err) => {
+            this.dismissLoader();
+            // Unable to log in
+            this.toastCtrl.create({
+                message: this.productsErrorStringSave,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
+    }
+    filterResults(data: any) {
+        console.log("after saveOrCreateProduct", data);
+        let results = data.product;
+        results.variants = results.product_variants;
+        this.product = new Product(results);
+        if(results.variants){
             this.variants = results.variants;
-            let container = {
-                id: this.product.id,
-                name: this.product.name,
-                description: this.product.description
-            };
-            console.log("Setting form values: ", container);
-            this.formP.setValue(container);
-            console.log(JSON.stringify(data));
+        }
+        
+        let container = {
+            id: this.product.id,
+            name: this.product.name,
+            description: this.product.description
+        };
+        console.log("Setting form values: ", container);
+        this.formP.setValue(container);
+        this.isNew = false;
+    }
+
+    createProduct() {
+        this.submitAttemptPNew = true;
+        console.log("createProduct");
+        if (!this.formPNew.valid) {return;}
+        this.showLoader();
+        let container = this.formPNew.value;
+        let merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
+        container['merchant_id'] = merchant;
+        this.productsServ.saveOrCreateProduct(container).subscribe((data: any) => {
+            this.dismissLoader();
+            this.filterResults(data);
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
@@ -194,9 +284,9 @@ export class EditProductsPage implements OnInit {
         this.productsServ.deleteVariant(variantId).subscribe((data: any) => {
             this.dismissLoader();
             console.log("after deleteVariant");
-            for(let item in this.variants){
-                if(this.variants[item].id == variantId){
-                    this.variants.splice(parseInt(item),1);
+            for (let item in this.variants) {
+                if (this.variants[item].id == variantId) {
+                    this.variants.splice(parseInt(item), 1);
                 }
             }
             console.log(JSON.stringify(data));
@@ -221,13 +311,13 @@ export class EditProductsPage implements OnInit {
             this.editingVariant = false;
             let variant = data.variant;
             let found = false;
-            for(let item in this.variants){
-                if(this.variants[item].id == variant.id){
+            for (let item in this.variants) {
+                if (this.variants[item].id == variant.id) {
                     this.variants[item] = variant;
                     found = true;
                 }
             }
-            if(!found){
+            if (!found) {
                 this.variants.push(variant);
             }
             console.log(JSON.stringify(data));
@@ -284,7 +374,7 @@ export class EditProductsPage implements OnInit {
         console.log("Setting form values: ", container);
         this.formV.setValue(container);
     }
-    cancelEditVariant( ) {
+    cancelEditVariant() {
         this.editingVariant = false;
     }
 

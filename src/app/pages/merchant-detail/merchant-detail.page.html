@@ -25,10 +25,15 @@
         <div>
             <h2 class="text-white">{{merchant.name}}</h2>
             <p class="text-white">{{merchant.type}}</p>
-            
+
 
         </div>
     </div>
+    <ion-slides *ngIf="merchant.files.length>0">
+        <ion-slide *ngFor="let img of merchant.files">
+            <img [src]="img.file" class="image--large " alt="merchant" style="max-height: 10em; width:100%;">
+        </ion-slide>
+    </ion-slides>
     <div class="doctor-detail__booking">
         <p>{{merchant.description}}</p>
         <div class="doctor-menu-title">{{ 'MERCHANT_DETAIL.MENU' | translate }}</div>
@@ -128,7 +133,7 @@
                 <ion-grid>
                     <ion-row>
                         <ion-col size="12" *ngFor="let service of merchant.attributes.services">
-                            <div>
+                                 <div>
                                 <!-- <img src="{{service.icon}}"> -->
                                 <h3>{{service.name}}</h3>
                             </div>
@@ -142,7 +147,7 @@
                 <ion-grid>
                     <ion-row>
                         <ion-col size="12" *ngFor="let specialization of merchant.attributes.specializations">
-                            <div>
+                                 <div>
                                 <!-- <img src="{{specialization.icon}}"> -->
                                 <h3>{{specialization.name}}</h3>
                             </div>
@@ -156,7 +161,7 @@
                 <ion-grid>
                     <ion-row>
                         <ion-col size="12" *ngFor="let availability of merchant.availabilities">
-                                <h5>{{availability.range}}<span float-right>{{availability.from}} to {{availability.to}}</span></h5>
+                                 <h5>{{availability.range}}<span float-right>{{availability.from}} to {{availability.to}}</span></h5>
                         </ion-col>
                     </ion-row>
                 </ion-grid>

@@ -109,6 +109,13 @@ export class MerchantProductsPage implements OnInit {
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
     }
+    ionViewDidEnter() {
+        this.products = [];
+        this.possibleAmounts = [];
+        this.showLoader();
+        this.loadProducts();
+        this.loadOptions();
+    }
     addCart(item: any) {
         this.addCartItem(item);
     }
@@ -120,6 +127,8 @@ export class MerchantProductsPage implements OnInit {
         this.navCtrl.navigateForward(this.urlSearch+"/products/edit/"+productId);
     }
     editImages(productId:any) {
+        let container = {"type":"Product","objectId":productId};
+        this.params.setParams(container);
         this.navCtrl.navigateForward(this.urlSearch+"/products/images/"+productId);
     }
     showLoader() {
@@ -393,6 +402,7 @@ export class MerchantProductsPage implements OnInit {
         this.productsServ.getProductsMerchant(this.merchant, this.page).subscribe((resp) => {
             if (resp.products_total > 0) {
                 this.categories = this.productsServ.buildProductInformation(resp, this.merchant);
+                console.log("Result build product",this.categories);
                 this.merchantObj.merchant_name = this.categories[0].products[0].merchant_name;
                 this.merchantObj.merchant_description = this.categories[0].products[0].merchant_description;
                 this.merchantObj.src = this.categories[0].products[0].src;

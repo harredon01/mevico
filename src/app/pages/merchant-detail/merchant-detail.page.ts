@@ -39,7 +39,7 @@ export class MerchantDetailPage implements OnInit {
             this.urlSearch = 'tabs/categories/'+category+'/merchant/'+merchantId;
         }
         
-        this.merchant = new Merchant({"availabilities":[],"attributes":[]});
+        this.merchant = new Merchant({"availabilities":[],"attributes":[],"files":[]});
         this.getMerchant(merchantId);
     }
     async openCart() {
@@ -127,10 +127,15 @@ export class MerchantDetailPage implements OnInit {
         this.navCtrl.navigateForward(this.urlSearch+"/items");
     }
     myImages() {
+        let icon = this.merchant.icon;
+        if(!icon){
+            icon="https://gohife.s3.us-east-2.amazonaws.com/public/icons/avatar.png";
+        }
         let params = {
             "objectId": this.merchant.id,
             "type":"Merchant",
-            "Name":this.merchant.name
+            "Name":this.merchant.name,
+            "icon": icon
         };
         if (this.fromSettings){
             params["settings"] = true;
