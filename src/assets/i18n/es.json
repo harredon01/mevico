@@ -161,7 +161,8 @@
         "PAST":"Terminados",
         "END_TIME":"Fín",
         "MAKE_RESERVATION":"Seleccionar cita",
-        "NOT_AVAILABLE":"Ese horario no está disponible"
+        "NOT_AVAILABLE":"Ese horario no está disponible",
+        "MAX_REACHED":"Ese horario ya esta lleno"
     },
     "BOOKING_DETAIL": {
         "TITLE": "Reserva",

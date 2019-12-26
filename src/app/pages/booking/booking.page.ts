@@ -25,6 +25,7 @@ export class BookingPage implements OnInit {
     typeObj: string;
     merchant: Merchant;
     notAvailable: string;
+    maxReached: string;
     requiresAuth: string;
     success: string;
     atributesCont: any;
@@ -77,6 +78,10 @@ export class BookingPage implements OnInit {
         });
         this.translateService.get('BOOKING.NOT_AVAILABLE').subscribe(function (value) {
             vm.notAvailable = value;
+            console.log("afk",value);
+        });
+        this.translateService.get('BOOKING.MAX_REACHED').subscribe(function (value) {
+            vm.maxReached = value;
             console.log("afk",value);
         });
         this.translateService.get('BOOKING.SUCCESS').subscribe(function (value) {
@@ -149,6 +154,9 @@ export class BookingPage implements OnInit {
             }else {
                 if(resp.message =="Not Available"){
                     this.presentAlertConfirm(this.notAvailable);
+                }
+                if(resp.message =="Max Reached"){
+                    this.presentAlertConfirm(this.maxReached);
                 }
             }
         }, (err) => {
