@@ -1,14 +1,14 @@
-import {Component, OnInit,ViewChild, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {Friend} from "../../models/friend";
 import {Message} from "../../models/message";
-import { IonInfiniteScroll } from '@ionic/angular';
-import {NavController, ToastController, LoadingController,Events,AlertController, IonContent} from '@ionic/angular';
+import {IonInfiniteScroll} from '@ionic/angular';
+import {NavController, ToastController, LoadingController, Events, AlertController, IonContent} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {ChatService} from '../../services/chat/chat.service';
 import {ApiService} from '../../services/api/api.service';
 import {ParamsService} from '../../services/params/params.service';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 @Component({
     selector: 'app-chat-room',
     templateUrl: './chat-room.page.html',
@@ -40,7 +40,7 @@ export class ChatRoomPage implements OnInit {
         public toastCtrl: ToastController,
         public api: ApiService,
         public navCtrl: NavController,
-        public router:Router,
+        public router: Router,
         public userData: UserDataService,
         public params: ParamsService,
         public events: Events) {
@@ -48,7 +48,32 @@ export class ChatRoomPage implements OnInit {
     ionViewDidEnter() {
         this.tabBarElement = document.querySelector('#tabs .tabbar');
         let paramSent = this.params.getParams();
-        this.friend = paramSent.friend;
+        if (paramSent) {
+            if (paramSent.friend) {
+                this.friend = paramSent.friend;
+                this.type = "user_message";
+                if (this.targetId == this.friend.id) {
+                    this.isNew = false;
+                } else {
+                    this.isNew = true;
+                    this.lastId = null;
+                }
+                this.targetId = this.friend.id;
+                this.objectId = this.friend.id;
+                this.getMessages(true);
+            }
+        } else {
+            paramSent = {"type": "platform", "objectId": "mevico"};
+            let typeObject = paramSent.type;
+            let objectId = paramSent.objectId;
+            if (typeObject == "group") {
+                this.type = "group_message";
+            } else {
+                this.type = "user_message";
+            }
+
+            this.getSupportAgent(typeObject, objectId);
+        }
         console.log("onPageWillEnter");
         this.events.subscribe('notification:received', (message) => {
             this.receiveMessage(message);
@@ -56,28 +81,6 @@ export class ChatRoomPage implements OnInit {
         this.page = 0;
         console.log("using ionViewDidEnter", this.lastId);
         console.log("Friend", this.friend);
-        if (this.friend) {
-            this.type = "user_message";
-            if (this.targetId == this.friend.id) {
-                this.isNew = false;
-            } else {
-                this.isNew = true;
-                this.lastId = null;
-            }
-            this.targetId = this.friend.id;
-            this.objectId = this.friend.id;
-            this.getMessages(true);
-        } else {
-            let typeObject = paramSent.type;
-            let objectId =  paramSent.objectId;
-            if (typeObject=="group"){
-                this.type = "group_message";
-            } else {
-                this.type = "user_message";
-            }
-            
-            this.getSupportAgent(typeObject, objectId);
-        }
     }
 
     ionViewDidLeave() {
@@ -105,15 +108,15 @@ export class ChatRoomPage implements OnInit {
         this.page++;
         this.showLoader();
         let where = "";
-        if(this.type=="user_message"){
-            where = "type=user&to_id=" + this.objectId + "&page=" + this.page 
-        } else if(this.type=="group_message"){
-            where = "type=group&to_id=" + this.objectId + "&page=" + this.page 
+        if (this.type == "user_message") {
+            where = "type=user&to_id=" + this.objectId + "&page=" + this.page
+        } else if (this.type == "group_message") {
+            where = "type=group&to_id=" + this.objectId + "&page=" + this.page
         }
-//        if (this.lastId) {
-//            console.log("using id", this.lastId);
-//            where = where + "&id_after=" + this.lastId;
-//        } 
+        //        if (this.lastId) {
+        //            console.log("using id", this.lastId);
+        //            where = where + "&id_after=" + this.lastId;
+        //        } 
 
         this.chats.getServerChatDetail(where).subscribe((results: any) => {
             this.dismissLoader();

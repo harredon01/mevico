@@ -3,7 +3,7 @@
     <name>Mevico</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <preference name="loadUrlTimeoutValue" value="60000" />
     <allow-intent href="http://*/*" />
@@ -128,8 +128,6 @@
     <allow-navigation href="http://localhost:8101" sessionid="9198a0bd" />
     <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.3.3" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
-    <engine name="ios" spec="^5.0.1" />
-    <engine name="android" spec="^8.1.0" />
     <plugin name="cordova-plugin-ionic" spec="^5.4.5">
         <variable name="APP_ID" value="4a57a2ca" />
         <variable name="CHANNEL_NAME" value="Master" />
@@ -138,4 +136,6 @@
         <variable name="MIN_BACKGROUND_DURATION" value="30" />
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
     </plugin>
+    <engine name="ios" spec="^5.0.1" />
+    <engine name="android" spec="^8.1.0" />
 </widget>

@@ -48,6 +48,15 @@ const routes: Routes = [
                 ]
             },
             {
+                path: 'chat-room',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                    }
+                ]
+            },
+            {
                 path: 'contacts',
                 children: [
                     {
