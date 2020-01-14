@@ -524,7 +524,8 @@
         "SCORE":"Calificación general",
         "RECENT":"Más reciente",
         "OLDEST":"Más antiguo",
-        "GIVE_FEEDBACK":"Dar Punctuación"
+        "GIVE_FEEDBACK":"Dar Punctuación",
+        "IS_OWNER":"Eres administrador de este negocio"
     },
     "MERCHANT_LISTING": {
         "TITLE": "Mi cuenta",

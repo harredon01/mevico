@@ -51,6 +51,7 @@
             </ion-list>
         </div>
         <div class="doctor-menu-client" *ngIf="merchant.owner">
+            <p>{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
             <ion-list>
                 <ion-item>
                     <ion-button (click)="myItems()">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
