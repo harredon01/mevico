@@ -6,6 +6,11 @@
         <ion-title>
             {{ 'BOOKING_DETAIL.TITLE' | translate }}
         </ion-title>
+        <ion-buttons class="cart__button cart__button--right" slot="primary" *ngIf="isModal">
+            <ion-button (click)="done()" strong>
+                    <ion-icon class="close-button" name="md-checkmark" showWhen="core,android,windows"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
@@ -23,7 +28,7 @@
                         <span>{{ mainBooking.ends_at| date : 'h:mm a EEEE, MMMM d, y'}}</span>
                     </ion-col>
                 </ion-row>
-                <ion-col class="detail"*ngIf="mainBooking.total_paid == mainBooking.price" size="10">
+                <ion-col class="detail" *ngIf="mainBooking.total_paid == mainBooking.price" size="10">
                          <span>{{ 'BOOKING_DETAIL.PAID' | translate }} </span>
                 </ion-col>
                 <ion-col class="detail"*ngIf="mainBooking.total_paid == 0" size="10">

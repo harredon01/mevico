@@ -7,10 +7,18 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-    <div style="text-align:center">
-        <button (click)="startCall()">Start OpenTok Call</button>
+<ion-content>
+    <div *ngIf="activeCall" class="call">
+        <div id="subscriber"></div>
+        <div id="publisher"></div> 
+        <ion-button (click)="endCall()">End Call</ion-button>
+        <ion-button (click)="viewNotes()">View Notes</ion-button>
     </div>
-    <div id="subscriber"></div>
-    <div id="publisher"></div> 
+    <div *ngIf="!activeCall">
+        <div style="text-align:center">
+            <ion-button (click)="startCall()">Start OpenTok Call</ion-button>
+        </div>
+    </div>
+
+
 </ion-content>

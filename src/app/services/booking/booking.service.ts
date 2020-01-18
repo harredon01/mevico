@@ -51,6 +51,11 @@ export class BookingService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
+    leaveCall(data: any) {
+        let endpoint = '/bookings/connection_end';
+        let seq = this.api.post(endpoint, data);
+        return seq;
+    }
     cancelBookingObject(objectId: any) {
         let endpoint = '/bookings/'+objectId+'/cancel';
         let seq = this.api.get(endpoint);

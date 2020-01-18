@@ -110,6 +110,7 @@ export class BookingPage implements OnInit {
         this.showLoader();
         let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
         let ndDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
+        this.atributesCont.location = "opentok";
         let data = {
             "type": this.typeObj,
             "object_id": this.objectId,

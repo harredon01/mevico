@@ -16,6 +16,7 @@ import {ParamsService} from '../../services/params/params.service';
 })
 export class BookingDetailPage implements OnInit {
     private mainBooking: Booking;
+    private isModal:boolean = false;
     constructor(public booking: BookingService,
         public activatedRoute: ActivatedRoute,
         public orderData: OrderDataService,
@@ -31,6 +32,9 @@ export class BookingDetailPage implements OnInit {
     ngOnInit() {
         let params = this.params.getParams();
         this.mainBooking = params.booking;
+        if(params.modal){
+            this.isModal = true;
+        }
     }
     cancelBooking() {
         this.showLoader();
@@ -117,6 +121,9 @@ export class BookingDetailPage implements OnInit {
         } else {
             this.spinnerDialog.show();
         }
+    }
+    done() {
+        this.modalCtrl.dismiss("Close");
     }
 
 }

@@ -1,0 +1,24 @@
+.call {
+    width: 100%;
+    height:100%;
+    position:relative;
+    #subscriber{
+        width:100%;
+        height: 90%;
+        background: red;
+    }
+    #publisher{
+        width:25%;
+        border-radius: 8px;
+        height: 25%;
+        background: blue;
+        position: absolute;
+        right: 1%;
+        bottom:11%;
+    }
+    ion-button{
+        width:48%;
+        bottom:0;
+        float:left;
+    }
+}
