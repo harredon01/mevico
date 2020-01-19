@@ -21,6 +21,11 @@ export class BookingService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
+    immediateBookingObject(data: any) {
+        let endpoint = '/bookings/now';
+        let seq = this.api.post(endpoint, data);
+        return seq;
+    }
     getAvailabilitiesObject(data: any)  {
         let url = "/availabilities";
         let seq = this.api.get(url,data);

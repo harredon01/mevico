@@ -3,22 +3,23 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>opentok</ion-title>
+        <ion-title>{{ 'CALL.TITLE' | translate }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <div *ngIf="activeCall" class="call">
+        <div id="publisher"></div>
         <div id="subscriber"></div>
-        <div id="publisher"></div> 
-        <ion-button (click)="endCall()">End Call</ion-button>
-        <ion-button (click)="viewNotes()">View Notes</ion-button>
+        <ion-button (click)="endCall()">{{ 'CALL.END' | translate }}</ion-button>
+        <ion-button (click)="viewNotes()">{{ 'CALL.BOOKING' | translate }}</ion-button>
     </div>
-    <div *ngIf="!activeCall">
+    <div *ngIf="!activeCall" class="waiting">
+        <div id="content"></div> 
         <div style="text-align:center">
-            <ion-button (click)="startCall()">Start OpenTok Call</ion-button>
+            <ion-button (click)="startCall()">{{ 'CALL.START' | translate }}</ion-button>
         </div>
     </div>
-
+    
 
 </ion-content>

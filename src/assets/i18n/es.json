@@ -204,6 +204,12 @@
         "TOTAL_NECESSARY_1": "Debes agregar 1 amigo",
         "NO_RESULTS": "El correo no se encuentra registrado."
     },
+    "CALL": {
+        "TITLE": "Llamada",
+        "START": "Empezar",
+        "END": "Colgar",
+        "BOOKING": "Ver detalles"
+    },
     "CART": {
         "TITLE": "Carrito",
         "DESCRIPTION": "mi pedido",
@@ -510,6 +516,7 @@
         "CHAT": "Chat",
         "EDIT": "Editar",
         "IMAGES": "Mis imágenes",
+        "CALL":"Llamar",
         "INFO":"Acerca de",
         "OVERVIEW":"General",
         "EXPERIENCE":"Experiencia",

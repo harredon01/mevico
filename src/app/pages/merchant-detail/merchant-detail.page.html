@@ -48,6 +48,12 @@
                 <ion-item>
                     <ion-button (click)="chat()">{{ 'MERCHANT_DETAIL.CHAT' | translate }}</ion-button>
                 </ion-item>
+                <ion-item *ngIf="merchant.status=='online'">
+                    <ion-button (click)="call()">
+                        <ion-icon slot="start" name="call"></ion-icon>
+                        {{ 'MERCHANT_DETAIL.CALL' | translate }}
+                    </ion-button>
+                </ion-item>
             </ion-list>
         </div>
         <div class="doctor-menu-client" *ngIf="merchant.owner">

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController,ModalController} from '@ionic/angular';
+import {NavController, ModalController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
 import {BookingService} from '../../services/booking/booking.service';
 import {BookingDetailPage} from '../booking-detail/booking-detail.page';
@@ -17,10 +17,10 @@ export class OpentokPage implements OnInit {
     bookingId: any;
     sessionId: string;
     token: string;
-    activeCall:boolean = true;
+    activeCall: boolean = false;
 
     constructor(public navCtrl: NavController,
-        public modalCtrl:ModalController,
+        public modalCtrl: ModalController,
         public params: ParamsService,
         public bookingS: BookingService) {
         this.apiKey = '46389642';
@@ -36,20 +36,20 @@ export class OpentokPage implements OnInit {
         this.token = params.token;
         this.bookingId = params.booking_id;
     }
-    
-    endCall(){
+
+    endCall() {
         let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};
         this.bookingS.leaveCall(container).subscribe((resp: any) => {
-                    console.log("Register connection result", resp);
+            console.log("Register connection result", resp);
 
-                }, (err) => {
+        }, (err) => {
 
-                });
+        });
     }
     async viewNotes() {
         let container = {};
         let params = this.params.getParams();
-        if(!params){
+        if (!params) {
             params = {};
         }
         params.modal = true;
@@ -64,11 +64,16 @@ export class OpentokPage implements OnInit {
     }
 
     startCall() {
-        console.log("Starting call",this.apiKey,this.sessionId)
+        this.activeCall = true;
+        console.log("Starting call", this.apiKey, this.sessionId)
         this.session = OT.initSession(this.apiKey, this.sessionId);
-        console.log("Session started", this.session)
-
-        this.publisher = OT.initPublisher('publisher');
+        console.log("Session started", this.session);
+        let publisherOptions = {
+            insertMode: 'append',
+            width:90,
+            height:120,
+        };
+        this.publisher = OT.initPublisher('publisher',publisherOptions);
         this.session.on({
             streamCreated: (event: any) => {
                 console.log(`Stream created`);
@@ -95,6 +100,7 @@ export class OpentokPage implements OnInit {
 
                 });
                 this.session.publish(this.publisher);
+                setTimeout(function(){ OT.updateViews(); }, 400);
             }
         });
 
