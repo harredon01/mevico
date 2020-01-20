@@ -15,10 +15,45 @@
         <ion-button (click)="viewNotes()">{{ 'CALL.BOOKING' | translate }}</ion-button>
     </div>
     <div *ngIf="!activeCall" class="waiting">
-        <div id="content"></div> 
-        <div style="text-align:center">
+        <div id="content">
+            <div style="text-align:center">
             <ion-button (click)="startCall()">{{ 'CALL.START' | translate }}</ion-button>
         </div>
+    <ion-card>
+        <ion-card-content>
+            <ion-grid>
+                
+                <ion-col class="detail" size="10">
+                    <span>{{ 'BOOKING_DETAIL.PRICE' | translate }}:{{ mainBooking.price | currency }}  </span>
+                </ion-col>
+                <ion-row class="appot-detail" *ngFor="let item of mainBooking.options | keyvalue">
+                         <ion-col class="detail" size="10">
+                        <span>{{item.key}}</span>
+                        <span>{{item.value}}</span>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+    <ion-card>
+        <ion-card-content>
+            <ion-row class="appot-detail">
+                <ion-col class="icon" size="2">
+                    <ion-icon name="md-clipboard" class="text-danger"></ion-icon>
+                </ion-col>
+                <ion-col class="detail" *ngIf="mainBooking.customer" size="10">
+                    <span>{{ 'BOOKING_DETAIL.BOOKED_BY' | translate }}</span>
+                    <span>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</span>
+                </ion-col>
+                <ion-col class="detail" *ngIf="mainBooking.bookable" size="10">
+                    <span>{{ 'BOOKING_DETAIL.BOOKED_FOR' | translate }}</span>
+                    <span>{{mainBooking.bookable.name}}</span>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+        </div> 
+        
     </div>
     
 

@@ -3,6 +3,7 @@ import {NavController, ModalController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
 import {BookingService} from '../../services/booking/booking.service';
 import {BookingDetailPage} from '../booking-detail/booking-detail.page';
+import {Booking} from '../../models/booking'
 //import * as OT from '@opentok/client';
 declare var OT: any;
 @Component({
@@ -15,6 +16,7 @@ export class OpentokPage implements OnInit {
     publisher: any;
     apiKey: any;
     bookingId: any;
+    mainBooking:Booking;
     sessionId: string;
     token: string;
     activeCall: boolean = false;
@@ -26,12 +28,15 @@ export class OpentokPage implements OnInit {
         this.apiKey = '46389642';
         this.sessionId = '';
         this.token = '';
+        this.mainBooking = new Booking({});
     }
     ngOnInit() {
     }
     ionViewDidEnter() {
         let params = this.params.getParams();
         console.log("Call params", params);
+        this.mainBooking = new Booking(params.booking);
+        this.mainBooking.clean();
         this.sessionId = params.sessionId;
         this.token = params.token;
         this.bookingId = params.booking_id;
@@ -48,6 +53,11 @@ export class OpentokPage implements OnInit {
     }
     async viewNotes() {
         let container = {};
+        let el = (document.querySelector('.OT_publisher') as HTMLElement);
+        let el2 = (document.querySelector('.OT_subscriber') as HTMLElement);
+        el.style.setProperty('display', 'none');
+        el2.style.setProperty('display', 'none');
+        OT.updateViews();
         let params = this.params.getParams();
         if (!params) {
             params = {};
@@ -61,6 +71,9 @@ export class OpentokPage implements OnInit {
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
         console.log("Modal Closed");
+        el.style.setProperty('display', 'block');
+        el2.style.setProperty('display', 'block');
+        OT.updateViews();
     }
 
     startCall() {
@@ -77,7 +90,9 @@ export class OpentokPage implements OnInit {
         this.session.on({
             streamCreated: (event: any) => {
                 console.log(`Stream created`);
-                this.session.subscribe(event.stream, 'subscriber');
+                let options = {width: "100%", height: '89%', insertMode: 'append'};
+                this.session.subscribe(event.stream, 'subscriber',options);
+                setTimeout(function(){ OT.updateViews(); }, 400);
 
             },
             streamDestroyed: (event: any) => {

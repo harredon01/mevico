@@ -25,6 +25,14 @@ export class Booking {
             this[f] = fields[f];
         }
     }
+    clean(){
+        delete this.options.users;
+        delete this.options.item_id;
+        delete this.options.session_id;
+        delete this.options.order_id;
+        delete this.options.payer;
+        delete this.options.paid;
+    }
 
 }
 

@@ -167,8 +167,8 @@
     "BOOKING_DETAIL": {
         "TITLE": "Reserva",
         "ATTRIBUTES": "Detalles",
-        "BOOKED_BY":"Reserva hecha por: ",
-        "BOOKED_FOR":"Reserva hecha para: ",
+        "BOOKED_BY":"Cliente: ",
+        "BOOKED_FOR":"Agente: ",
         "APPROVE":"Aprobar",
         "DENY":"Rechazar",
         "TOTAL_PAID":"Rechazar",
