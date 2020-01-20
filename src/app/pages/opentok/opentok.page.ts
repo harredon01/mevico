@@ -43,6 +43,7 @@ export class OpentokPage implements OnInit {
     }
 
     endCall() {
+        this.session.disconnect();
         let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};
         this.bookingS.leaveCall(container).subscribe((resp: any) => {
             console.log("Register connection result", resp);
@@ -78,7 +79,6 @@ export class OpentokPage implements OnInit {
 
     startCall() {
         this.activeCall = true;
-        console.log("Starting call", this.apiKey, this.sessionId)
         this.session = OT.initSession(this.apiKey, this.sessionId);
         console.log("Session started", this.session);
         let publisherOptions = {
@@ -89,7 +89,7 @@ export class OpentokPage implements OnInit {
         this.publisher = OT.initPublisher('publisher',publisherOptions);
         this.session.on({
             streamCreated: (event: any) => {
-                console.log(`Stream created`);
+                console.log('Stream created');
                 let options = {width: "100%", height: '89%', insertMode: 'append'};
                 this.session.subscribe(event.stream, 'subscriber',options);
                 setTimeout(function(){ OT.updateViews(); }, 400);
@@ -115,6 +115,7 @@ export class OpentokPage implements OnInit {
 
                 });
                 this.session.publish(this.publisher);
+                OT.updateViews();
                 setTimeout(function(){ OT.updateViews(); }, 400);
             }
         });
