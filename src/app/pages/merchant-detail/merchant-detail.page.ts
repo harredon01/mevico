@@ -276,7 +276,7 @@ export class MerchantDetailPage implements OnInit {
                     this.api.handleError(err);
                 });
             } else {
-                if (resp.message == "Not Available") {
+                if (resp.message == "Not available") {
                     this.presentAlertConfirm(this.notAvailable);
                 }
                 if (resp.message == "Max Reached") {

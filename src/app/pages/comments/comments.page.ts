@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, ToastController } from '@ionic/angular';
+import {NavController, ToastController,ModalController } from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 import {RatingsService} from '../../services/ratings/ratings.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
@@ -16,7 +16,7 @@ export class CommentsPage implements OnInit {
     // sure to add it to the type
     items: any[] = [];
     comment: {comment: string, rating: any, object_id: number, type: string} = {
-        comment: 'Dejanos tu comentario de la entrega',
+        comment: '',
         rating: '5',
         object_id: -1,
         type: ""
@@ -29,13 +29,14 @@ export class CommentsPage implements OnInit {
     constructor(public navCtrl: NavController,
         public params: ParamsService,
         public api: ApiService,
+        public modalCtrl:ModalController,
         public ratings: RatingsService,
         public toastCtrl: ToastController,
         public translateService: TranslateService) {
         //this.objectO = this.navParams.get('objectO');
         let paramsSent = this.params.getParams();
-        this.comment.object_id = paramsSent.objectId;
-        this.comment.type = paramsSent.type;
+        this.comment.object_id = paramsSent.object_id;
+        this.comment.type = paramsSent.type_object;
         this.translateService.get('COMMENTS.SAVE_RATING_ERROR').subscribe((value) => {
             this.commentErrorString = value;
         })
@@ -47,7 +48,7 @@ export class CommentsPage implements OnInit {
     postComment() {
         this.ratings.postRating(this.comment).subscribe((resp) => {
             //this.navCtrl.push(MainPage);
-            this.navCtrl.pop();
+            this.modalCtrl.dismiss("Close");
         }, (err) => {
             //this.navCtrl.push(MainPage);
             // Unable to log in
@@ -84,6 +85,9 @@ export class CommentsPage implements OnInit {
 
     ngOnInit() {
         this.getComments();
+    }
+    done() {
+        this.modalCtrl.dismiss("Close");
     }
 
 }

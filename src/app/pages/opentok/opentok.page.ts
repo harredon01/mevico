@@ -3,6 +3,7 @@ import {NavController, ModalController,LoadingController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
 import {BookingService} from '../../services/booking/booking.service';
 import {BookingDetailPage} from '../booking-detail/booking-detail.page';
+import {CommentsPage} from '../comments/comments.page';
 import {Booking} from '../../models/booking';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 //import * as OT from '@opentok/client';
@@ -21,6 +22,7 @@ export class OpentokPage implements OnInit {
     sessionId: string;
     token: string;
     activeCall: boolean = false;
+    ended: boolean = false;
 
     constructor(public navCtrl: NavController,
         public modalCtrl: ModalController,
@@ -46,6 +48,7 @@ export class OpentokPage implements OnInit {
     }
 
     endCall() {
+        this.ended = true;
         this.session.disconnect();
         let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};
         this.bookingS.leaveCall(container).subscribe((resp: any) => {
@@ -87,6 +90,21 @@ export class OpentokPage implements OnInit {
         }
         OT.updateViews();
     }
+    async rate() {
+        let container = {objectJson: this.mainBooking.bookable, type_object: "Merchant", object_id: this.mainBooking.id};
+        this.params.setParams(container);
+        let addModal = await this.modalCtrl.create({
+            component: CommentsPage,
+            componentProps: container
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        console.log("Modal Closed");
+        this.navCtrl.navigateRoot("tabs/categories");
+    }
+    done(){
+        this.navCtrl.navigateRoot("tabs/categories");
+    }
 
     startCall() {
         this.activeCall = true;
@@ -110,6 +128,7 @@ export class OpentokPage implements OnInit {
             },
             streamDestroyed: (event: any) => {
                 console.log(`Stream ${event.stream.name} ended because ${event.reason}`);
+                this.ended = true;
 
             },
             connectionCreated: (event: any) => {
@@ -118,6 +137,7 @@ export class OpentokPage implements OnInit {
             },
             connectionDestroyed: (event: any) => {
                 console.log(`connection ended because ${event.reason}`);
+                this.ended = true;
             },
             sessionConnected: (event: any) => {
                 
@@ -130,7 +150,7 @@ export class OpentokPage implements OnInit {
                 });
                 this.session.publish(this.publisher);
                 this.dismissLoader();
-                let el = (document.querySelector('.OT_subscriber') as HTMLElement);
+                let el = (document.querySelector('.OT_publisher') as HTMLElement);
                 if (el) {
                     el.style.setProperty('display', 'block');
                 }

@@ -153,7 +153,7 @@ export class BookingPage implements OnInit {
                     });
                 }
             }else {
-                if(resp.message =="Not Available"){
+                if(resp.message =="Not available"){
                     this.presentAlertConfirm(this.notAvailable);
                 }
                 if(resp.message =="Max Reached"){

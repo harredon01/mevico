@@ -19,6 +19,7 @@ import {AppComponent} from './app.component';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {AppRoutingModule} from './app-routing.module';
 import {CartPageModule} from './pages/cart/cart.module'
+import {CommentsPageModule} from './pages/comments/comments.module'
 import {BookingDetailPageModule} from './pages/booking-detail/booking-detail.module'
 import {AddressCreatePageModule} from './pages/address-create/address-create.module'
 import {AvailabilityCreatePageModule} from './pages/availability-create/availability-create.module'
@@ -43,6 +44,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         CartPageModule,
         AddressCreatePageModule,
         BookingDetailPageModule,
+        CommentsPageModule,
         AvailabilityCreatePageModule],
     providers: [
         StatusBar,

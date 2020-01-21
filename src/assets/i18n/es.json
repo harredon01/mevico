@@ -208,7 +208,10 @@
         "TITLE": "Llamada",
         "START": "Empezar",
         "END": "Colgar",
-        "BOOKING": "Ver detalles"
+        "BOOKING": "Ver detalles",
+        "RATE":"Calificar",
+        "DONE":"Volver",
+        "ENDED":"Tu llamada ha terminado."
     },
     "CART": {
         "TITLE": "Carrito",

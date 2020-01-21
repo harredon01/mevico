@@ -1,6 +1,11 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>{{ 'COMMENTS.TITLE' | translate }}</ion-title>
+        <ion-buttons class="cart__button cart__button--right" slot="primary" *ngIf="isModal">
+            <ion-button (click)="done()" strong>
+                    <ion-icon class="close-button" name="md-checkmark" showWhen="core,android,windows"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
@@ -23,7 +28,7 @@
                 </ion-select>
             </ion-item>
             <ion-item>
-                <ion-button expand="full" type="submit">{{ 'INPUTS.SAVE' | translate}}</ion-button>
+                <ion-button expand="full" type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
             </ion-item>
         </ion-list>
     </form>
