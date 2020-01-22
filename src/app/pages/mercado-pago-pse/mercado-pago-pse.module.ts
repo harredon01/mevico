@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { IonicModule } from '@ionic/angular';
 
-import { MercadoPagoOptionsPage } from './mercado-pago-options.page';
+import { MercadoPagoPsePage } from './mercado-pago-pse.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: MercadoPagoOptionsPage
+    component: MercadoPagoPsePage
   }
 ];
 
@@ -18,10 +18,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    TranslateModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [MercadoPagoOptionsPage]
+  declarations: [MercadoPagoPsePage]
 })
-export class MercadoPagoOptionsPageModule {}
+export class MercadoPagoPsePageModule {}

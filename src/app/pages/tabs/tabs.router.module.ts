@@ -26,6 +26,27 @@ const routes: Routes = [
                 ]
             },
             {
+                path: 'mercado-pago-options',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule'
+                    },
+                    {
+                        path: 'card',
+                        loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
+                    },
+                    {
+                        path: 'cash',
+                        loadChildren: '../mercado-pago-cash/mercado-pago-cash.module#MercadoPagoCashPageModule'
+                    },
+                    {
+                        path: 'pse',
+                        loadChildren: '../mercado-pago-pse/mercado-pago-pse.module#MercadoPagoPsePageModule'
+                    }
+                ]
+            },
+            {
                 path: 'opentok',
                 children: [
                     {

@@ -47,6 +47,8 @@ const routes: Routes = [
   { path: 'edit-products', loadChildren: './pages/edit-products/edit-products.module#EditProductsPageModule' },
   { path: 'images', loadChildren: './pages/images/images.module#ImagesPageModule' },  { path: 'availability-create', loadChildren: './pages/availability-create/availability-create.module#AvailabilityCreatePageModule' },
   { path: 'mercado-pago-options', loadChildren: './pages/mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule' },
+  { path: 'mercado-pago-pse', loadChildren: './pages/mercado-pago-pse/mercado-pago-pse.module#MercadoPagoPsePageModule' },
+  { path: 'mercado-pago-cash', loadChildren: './pages/mercado-pago-cash/mercado-pago-cash.module#MercadoPagoCashPageModule' },
 
 
 ];
