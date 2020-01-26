@@ -10,8 +10,8 @@
 </ion-header>
 
 <ion-content class="bg-light">
-    <ion-button (click)="toggleFilters()"><ion-icon *ngIf="!showFilters" slot="icon-only" name="arrow-dropdown"></ion-icon><ion-icon *ngIf="showFilters" slot="icon-only" name="arrow-dropup"></ion-icon></ion-button>
-    <ion-list class="mainBooking__list" *ngIf="showFilters">
+    <ion-button (click)="toggleFilters()"><ion-icon *ngIf="!viewFilters" slot="icon-only" name="arrow-dropdown"></ion-icon><ion-icon *ngIf="viewFilters" slot="icon-only" name="arrow-dropup"></ion-icon></ion-button>
+    <ion-list class="mainBooking__list" *ngIf="viewFilters">
         <ion-item>
             <ion-label>{{ 'BOOKING_LIST.RESERVATION_OBJECT' | translate }}</ion-label>
             <ion-select placeholder="selectedObject.name" [(ngModel)]="objectId" (ionChange)="selectObject()"> 
@@ -19,7 +19,7 @@
             </ion-select>
         </ion-item>
     </ion-list>
-    <ion-list class="mainBooking__list" *ngIf="showFilters">
+    <ion-list class="mainBooking__list" *ngIf="viewFilters">
         <ion-item>
             <ion-label>{{ 'BOOKING_LIST.RESERVATION_PERIOD' | translate }}</ion-label>
             <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">

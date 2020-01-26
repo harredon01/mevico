@@ -198,7 +198,8 @@
         "PAID":"Pagado",
         "PENDING":"Esperando para empezar",
         "WAITING":"Esperando participantes",
-        "COMPLETED":"Terminado"
+        "COMPLETED":"Terminado",
+        "READY":"Listo para empezar"
     },
     
     "BUYER_SELECT": {
