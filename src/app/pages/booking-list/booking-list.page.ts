@@ -17,6 +17,7 @@ export class BookingListPage implements OnInit {
     @ViewChild(IonList, { read: ElementRef,static:false }) list: ElementRef;
     private bookings: Booking[] = [];
     private loadMore: boolean = false;
+    private viewFilters: boolean = false;
     private bookingObjects: any[] = [];
     private objectId: any;
     private indexList: any = 1;
@@ -94,6 +95,14 @@ export class BookingListPage implements OnInit {
             }
         }
         this.scrollListVisible(scrollIndex);
+    }
+    
+    toggleFilters() {
+        if (this.viewFilters){
+            this.viewFilters = false;
+        } else {
+            this.viewFilters = true;
+        }
     }
 
     ngOnInit() {
