@@ -14,11 +14,11 @@
                     <ion-select-option value="b3">Central Park</ion-select-option>
                 </ion-select>
             </span-->
-            
+
         </ion-title>
         <ion-buttons class="my-addresses__button my-addresses__button--right" *ngIf="typeSearch=='own'" slot="primary">
             <ion-button   icon-only (click)="createItem()">
-                         <ion-icon class="add-button" name="add"></ion-icon>
+                          <ion-icon class="add-button" name="add"></ion-icon>
             </ion-button>
         </ion-buttons>
         <ion-searchbar [(ngModel)]="textSearch" placeholder="Search..." debounce="1500" (ionChange)="searchText()" *ngIf="typeSearch!='own'"></ion-searchbar>
@@ -48,20 +48,26 @@
             </ion-card-content>
 
             <ion-row class="about-row">
-                <ion-col size="5" center text-left>
+                <ion-col size="4" center text-left>
                     {{ 'MERCHANT_LISTING.EXPERIENCE' | translate }} <strong>{{item.attributes.years_experience }} {{ 'MERCHANT_LISTING.YEARS' | translate }}</strong>
                 </ion-col>
                 <ion-col center text-center>
                     {{ 'MERCHANT_LISTING.FEE' | translate }} <strong>{{item.unit_cost | currency}}</strong>
                 </ion-col>
-                <ion-col size="5" center text-right>
+                <ion-col size="4" center text-right>
                     {{ 'MERCHANT_LISTING.FEEDBACK' | translate }}
-                    <ion-icon name="md-star" class="active"></ion-icon>
-                    <ion-icon name="md-star" class="active"></ion-icon>
-                    <ion-icon name="md-star" class="active"></ion-icon>
-                    <ion-icon name="md-star" class="active"></ion-icon>
-                    <ion-icon name="md-star"></ion-icon>
-                    <span>&nbsp;&nbsp;({{item.rating_count }})</span>
+                    <div class="rating-container">
+                        <div class="rating-box" [style.width]="(item.rating*20)+'%'">
+                            <ion-icon name="md-star"></ion-icon>
+                            <ion-icon name="md-star"></ion-icon>
+                            <ion-icon name="md-star"></ion-icon>
+                            <ion-icon name="md-star"></ion-icon>
+                            <ion-icon name="md-star"></ion-icon>
+                        </div>
+                    </div>
+
+
+                    <span>{{item.rating }} de ({{item.rating_count }})</span>
                 </ion-col>
             </ion-row>
         </ion-card>

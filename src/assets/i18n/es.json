@@ -159,6 +159,7 @@
         "UPCOMING":"Proximos",
         "ADDRESS":"Lugar",
         "PAST":"Terminados",
+        "DETAILS":"Detalles",
         "END_TIME":"Fín",
         "MAKE_RESERVATION":"Seleccionar cita",
         "NOT_AVAILABLE":"Ese horario no está disponible",

@@ -15,7 +15,6 @@
                 <img [src]="objectIcon">
             </ion-avatar>
             <h2>{{objectName}}</h2>
-            <p>{{objectDescription}}</p>
         </ion-item>
     </ion-card>
 </ion-header>
@@ -46,10 +45,6 @@
         </div>
         <div class="difault-form">
             <ion-item>
-                <ion-label>{{ 'BOOKING.START_TIME' | translate }}</ion-label>
-                <ion-datetime display-format="h:mm A" picker-format="h:mm A" [(ngModel)]="startDateS" (ionChange)="selectStart()"></ion-datetime>
-            </ion-item>
-            <ion-item>
                 <ion-label>{{ 'BOOKING.HOURS' | translate }}</ion-label>
                 <ion-select placeholder="Select One" [(ngModel)]="amount" (ionChange)="selectStart()">
                     <ion-select-option value="1">1</ion-select-option>
@@ -59,12 +54,27 @@
                 </ion-select>
             </ion-item>
             <ion-item>
-                <p>{{ 'BOOKING.END_TIME' | translate }}: {{endDate | date :'h:mm a'}}</p>
+                <ion-label>{{ 'BOOKING.START_TIME' | translate }}</ion-label>
+                <ion-datetime display-format="h:mm A" picker-format="h:mm A" [(ngModel)]="startDateS" (ionChange)="selectStart()"></ion-datetime>
             </ion-item>
+
             <ion-item>
-                <ion-label position="floating">{{ 'BOOKING.ADDRESS' | translate }}</ion-label>
-                <ion-input type="text" [(ngModel)]="atributesCont.address"></ion-input>
+                <ion-label>{{ 'BOOKING.END_TIME' | translate }}</ion-label>
+                <p style='color: gray'>{{endDate | date :'h:mm a'}}</p> 
             </ion-item>
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>{{ 'BOOKING.DETAILS' | translate }}</ion-card-title>
+                </ion-card-header>
+
+                <ion-card-content>
+                    <ion-item>
+                        <ion-label position="floating">{{ 'BOOKING.ADDRESS' | translate }}</ion-label>
+                        <ion-input type="text" [(ngModel)]="atributesCont.address"></ion-input>
+                    </ion-item>
+                </ion-card-content>
+            </ion-card>
+
             <br>  
             <ion-button full class="btn success" (click)="createBooking()">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
         </div>

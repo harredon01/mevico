@@ -17,22 +17,52 @@ export class Merchant {
     longitude: any;
     latitude: any;
     item_id: any;
-    owner: boolean=false;
+    owner: boolean = false;
     availabilities: any[];
     attributes: any[];
     ratings: any[];
     files: any[];
 
-  constructor(fields: any) {
-    // Quick and dirty extend/assign fields to this model
-    for (const f in fields) {
-      // @ts-ignore
-      this[f] = fields[f];
+    constructor(fields: any) {
+        // Quick and dirty extend/assign fields to this model
+        for (const f in fields) {
+            // @ts-ignore
+            this[f] = fields[f];
+        }
+        let date2 = new Date();
+        for (let item in this.availabilities) {
+            var str = this.availabilities[item].from; 
+            let timeval = (date2.getMonth() + 1) + "/" + date2.getDate() + "/" + date2.getFullYear()+" "+str;
+            this.availabilities[item].time = Date.parse(timeval );
+            if (this.availabilities[item].range == "monday") {
+                this.availabilities[item].order = 1;
+            }
+            if (this.availabilities[item].range == "tuesday") {
+                this.availabilities[item].order = 2;
+            }
+            if (this.availabilities[item].range == "wednesday") {
+                this.availabilities[item].order = 3;
+            }
+            if (this.availabilities[item].range == "thursday") {
+                this.availabilities[item].order = 4;
+            }
+            if (this.availabilities[item].range == "friday") {
+                this.availabilities[item].order = 5;
+            }
+            if (this.availabilities[item].range == "saturday") {
+                this.availabilities[item].order = 6;
+            }
+            if (this.availabilities[item].range == "sunday") {
+                this.availabilities[item].order = 7;
+            } 
+        }
+        if (this.availabilities) {
+            this.availabilities.sort((a, b) => (a.order > b.order) ? 1 : (a.order === b.order) ? ((a.time > b.time) ? 1 : -1) : -1);
+            console.log("Availabilities", this.availabilities);
+        }
     }
-  }
-
 }
 
 export interface Merchant {
-  [prop: string]: any;
+    [prop: string]: any;
 }

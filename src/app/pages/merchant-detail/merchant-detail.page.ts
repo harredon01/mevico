@@ -154,11 +154,12 @@ export class MerchantDetailPage implements OnInit {
             "target": "bookable",
             "objectName": this.merchant.name,
             "objectDescription": this.merchant.description,
-            "objectIcon": this.merchant.src
+            "objectIcon": this.merchant.icon
         };
         if (this.fromSettings) {
             params["settings"] = true;
         }
+        console.log(params);
         this.params.setParams(params);
         this.navCtrl.navigateForward(this.urlSearch + "/bookings");
     }
@@ -231,11 +232,15 @@ export class MerchantDetailPage implements OnInit {
         let params = {
             "availabilities": this.merchant.availabilities,
             "type": "Merchant",
-            "objectId": this.merchant.id
+            "objectId": this.merchant.id,
+            "objectName": this.merchant.name,
+            "objectDescription": this.merchant.description,
+            "objectIcon": this.merchant.icon 
         }
         if (this.fromSettings) {
             params["settings"] = true;
         }
+        console.log(params);
         this.params.setParams(params);
         this.navCtrl.navigateForward(this.urlSearch + "/book");
     }
