@@ -157,6 +157,7 @@
         "UNPAID":"Pendiente por pagar",
         "UNAPPROVED":"Pendiente de aprobacion",
         "UPCOMING":"Proximos",
+        "ALL":"Todos",
         "ADDRESS":"Lugar",
         "PAST":"Terminados",
         "DETAILS":"Detalles",
@@ -192,7 +193,12 @@
         "UNPAID":"Sin Pagar",
         "UPCOMING":"Próximos",
         "UNAPPROVED":"Pendiente de aprobación",
-        "PAST":"Pasados"
+        "PAST":"Pasados",
+        "STARTS_AT":"Empieza",
+        "PAID":"Pagado",
+        "PENDING":"Esperando para empezar",
+        "WAITING":"Esperando participantes",
+        "COMPLETED":"Terminado"
     },
     
     "BUYER_SELECT": {

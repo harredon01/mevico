@@ -13,6 +13,7 @@ export class Booking {
     ends_at: any;
     price: any;
     quantity: any;
+    position:any;
     total_paid: any;
     options: any;
     notes: any;
