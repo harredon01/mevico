@@ -196,10 +196,11 @@
         "PAST":"Pasados",
         "STARTS_AT":"Empieza",
         "PAID":"Pagado",
-        "PENDING":"Esperando para empezar",
+        "PAYMENT":"Pago",
         "WAITING":"Esperando participantes",
-        "COMPLETED":"Terminado",
-        "READY":"Listo para empezar"
+        "STARTED":"Empezó",
+        "READY":"Listo para empezar",
+        "STATUS":"Estado"
     },
     
     "BUYER_SELECT": {

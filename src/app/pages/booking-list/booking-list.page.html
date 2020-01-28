@@ -39,26 +39,22 @@
                     </ion-row>
                     <ion-row>
                         <ion-col size="6">
-                            <h3>{{ 'BOOKING_LIST.STARTS_AT' | translate }}</h3>
+                            <h4>{{ 'BOOKING_LIST.STARTS_AT' | translate }}</h4>
                             <p>{{booking.starts_at | date }}</p>
                         </ion-col>
                         <ion-col size="6">
+                            <h4>{{ 'BOOKING_LIST.PAYMENT' | translate }}</h4>
                             <p *ngIf="booking.price==booking.total_paid">{{ 'BOOKING_LIST.PAID' | translate }}</p>
                             <p *ngIf="0==booking.total_paid">{{ 'BOOKING_LIST.UNPAID' | translate }}</p>
                             <p *ngIf="-1==booking.total_paid">{{ 'BOOKING_LIST.UNAPPROVED' | translate }}</p>
                         </ion-col>
                     </ion-row>
-                    <ion-row *ngIf="booking.notes">
-                        <ion-col size="6">
-                            
-                 
-                        </ion-col>
-                        <ion-col size="6">
-                            <h3>{{ 'BOOKING_LIST.STATUS' | translate }}</h3>
-                            <p *ngIf="booking.notes=='pending'">{{ 'BOOKING_LIST.PENDING' | translate }}</p>
+                    <ion-row *ngIf="booking.notes&&booking.notes!='pending'&&booking.notes!='completed'">
+                        <ion-col size="12">
+                            <h4>{{ 'BOOKING_LIST.STATUS' | translate }}</h4>
                             <p *ngIf="booking.notes=='ready'">{{ 'BOOKING_LIST.READY' | translate }}</p>
                             <p *ngIf="booking.notes=='waiting'">{{ 'BOOKING_LIST.WAITING' | translate }}</p>
-                            <p *ngIf="booking.notes=='completed'">{{ 'BOOKING_LIST.COMPLETED' | translate }}</p>
+                            <p *ngIf="booking.notes=='started'">{{ 'BOOKING_LIST.STARTED' | translate }}</p>
                         </ion-col>
                     </ion-row>
                 </ion-grid>               

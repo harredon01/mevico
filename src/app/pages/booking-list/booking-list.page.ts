@@ -17,6 +17,7 @@ export class BookingListPage implements OnInit {
     @ViewChild(IonList, { read: ElementRef,static:false }) list: ElementRef;
     private bookings: Booking[] = [];
     private loadMore: boolean = false;
+    private loadingAll: boolean = false;
     private viewFilters: boolean = false;
     private bookingObjects: any[] = [];
     private objectId: any;
@@ -78,8 +79,9 @@ export class BookingListPage implements OnInit {
     }
     
     scrollListVisible(index){
+        console.log("Index",index);
         let arr = this.list.nativeElement.children;
-        let item = arr[index];
+        let item = arr[index-1];
         item.scrollIntoView({behavior:"smooth",block:"center"});
     }
     scrollToday(){
@@ -144,6 +146,7 @@ export class BookingListPage implements OnInit {
             "page": this.page
         };
         this.booking.getBookingsObject(container).subscribe((data: any) => {
+            console.log("Get bookings result",data);
             let results = data.data;
             if (data.page == data.last_page) {
                 this.loadMore = false;
@@ -161,8 +164,8 @@ export class BookingListPage implements OnInit {
                 let newBooking = new Booking(results[item]);
                 this.bookings.push(newBooking);
             }
-            if (this.queryMod == "all" && data.page==1){
-                this.scrollToday()
+            if (this.queryMod == "all"){
+                this.loadingAll = true;
             }
             this.dismissLoader();
         }, (err) => {
@@ -170,6 +173,13 @@ export class BookingListPage implements OnInit {
             this.dismissLoader();
             this.api.handleError(err);
         });
+    }
+    ionViewDidEnter(){
+        if(this.loadingAll){
+            this.scrollToday();
+            let vm = this;
+            setTimeout(function(){ vm.scrollToday(); }, 800);
+        }
     }
     getObjectsWithBookingUser() {
         this.booking.getObjectsWithBookingUser().subscribe((data: any) => {
