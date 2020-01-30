@@ -38,14 +38,14 @@
         <ion-button color="secondary" (click)="createVariant()" *ngIf="!isNew">
             {{ 'EDIT_PRODUCTS.CREATE_VARIANT' | translate }}
         </ion-button>
-
+        <h3>{{ 'EDIT_PRODUCTS.PURCHASE_TITLE' | translate }}</h3>
         <ion-list *ngIf="!editingVariant">
             <ion-card *ngFor="let item of variants">
                 <ion-item>
                     <h2>{{item.sku}}</h2>
-                    <p>{{item.description}}</p>
                 </ion-item>
                 <ion-card-content >
+                    <p>{{item.description}}</p>
                     <p>{{ 'EDIT_PRODUCTS.PRICE' | translate }}: {{item.price | currency}}</p>
                     <p>{{ 'EDIT_PRODUCTS.SALE' | translate }}: {{item.sale | currency}}</p>
                     <p>{{ 'EDIT_PRODUCTS.TAX' | translate }}: {{item.tax | currency}}</p>

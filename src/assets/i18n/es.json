@@ -433,7 +433,8 @@
         "DESCRIPTION_ERROR2":"Ingresa una descripción",
         "DESCRIPTION_ERROR":"Ingresa una descripción",
         "NEW_PRODUCT":"Selecciona una categoria existente o crea una nueva para tu producto",
-        "CATEGORY":"Nueva Categoria"
+        "CATEGORY":"Nueva Categoria",
+        "PURCHASE_TITLE":"Opciones de compra"
     },
     "HOME": {
         "TITLE": "Home",

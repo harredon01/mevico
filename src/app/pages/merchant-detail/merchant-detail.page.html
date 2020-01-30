@@ -168,16 +168,16 @@
                     </ion-card-content>
                 </ion-card>
             </div>
-            <div class="bg-white overview" *ngIf="merchant.attributes.specializations">
+            <div class="bg-white overview" *ngIf="merchant.attributes.specialties">
                 <ion-card>
                     <ion-card-header>
-                        <ion-card-title>{{ 'MERCHANT_DETAIL.SPECIALIZATIONS' | translate }}</ion-card-title>
+                        <ion-card-title>{{ 'MERCHANT_DETAIL.SPECIALIZATIONS' | translate }}</ion-card-title> 
                     </ion-card-header>
 
                     <ion-card-content>
                         <ion-grid>
                             <ion-row>
-                                <ion-col size="12" *ngFor="let specialization of merchant.attributes.specializations">
+                                <ion-col size="12" *ngFor="let specialization of merchant.attributes.specialties">
                                          <div>
                                         <!-- <img src="{{specialization.icon}}"> -->
                                         <h3>{{specialization.name}}</h3>

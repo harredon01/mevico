@@ -22,6 +22,7 @@ export class ChatRoomPage implements OnInit {
     private tabBarElement: any;
     private input: string = '';
     loading: any;
+    private backButton:boolean = false;
     private type: string = '';
     private targetId: string = '';
     private objectId: string = '';
@@ -50,6 +51,7 @@ export class ChatRoomPage implements OnInit {
         let paramSent = this.params.getParams();
         if (paramSent) {
             if (paramSent.friend) {
+                this.backButton = true;
                 this.friend = paramSent.friend;
                 this.type = "user_message";
                 if (this.targetId == this.friend.id) {
