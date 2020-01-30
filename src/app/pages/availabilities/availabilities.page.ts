@@ -131,6 +131,7 @@ export class AvailabilitiesPage implements OnInit {
      * Delete an item from the list of items.
      */
     deleteAvailability(item) {
+        this.showLoader();
         let container = {"id": item.id, "object_id": this.merchant, "type": "Merchant"};
         this.booking.deleteAvailability(container).subscribe((resp: any) => {
             this.dismissLoader();
