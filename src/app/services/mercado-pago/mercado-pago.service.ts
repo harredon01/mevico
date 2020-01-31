@@ -29,4 +29,9 @@ export class MercadoPagoService {
         let seq = this.api.get(url);
         return seq;
     }
+    getBanks() {
+        let url = "/mercadopago/banks";
+        let seq = this.api.get(url);
+        return seq;
+    }
 }
