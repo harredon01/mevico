@@ -3,7 +3,7 @@
     <name>Mevico</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <preference name="loadUrlTimeoutValue" value="60000" />
     <allow-intent href="http://*/*" />
@@ -123,7 +123,6 @@
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
     </plugin>
     <plugin name="cordova-plugin-contacts" spec="^3.0.1" />
-    <plugin name="onesignal-cordova-plugin" spec="2.4.7" />
     <plugin name="cordova-plugin-opentok" spec="^3.4.3" />
     <allow-navigation href="http://localhost:8101" sessionid="9198a0bd" />
     <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.3.3" />
@@ -138,4 +137,5 @@
     </plugin>
     <engine name="ios" spec="^5.0.1" />
     <engine name="android" spec="^8.1.0" />
+    <plugin name="onesignal-cordova-plugin" spec="^2.8.2" />
 </widget>

@@ -63,7 +63,7 @@
     "core-js": "^2.6.10",
     "hammerjs": "^2.0.8",
     "libphonenumber-js": "^1.7.26",
-    "onesignal-cordova-plugin": "2.4.7",
+    "onesignal-cordova-plugin": "^2.8.2",
     "rxjs": "^6.5.3",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
@@ -100,7 +100,6 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-native-spinner": {},
       "cordova-sqlite-storage": {},
-      "onesignal-cordova-plugin": {},
       "cordova-plugin-whitelist": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
@@ -133,7 +132,8 @@
         "MAX_STORE": "2",
         "MIN_BACKGROUND_DURATION": "30",
         "UPDATE_API": "https://api.ionicjs.com"
-      }
+      },
+      "onesignal-cordova-plugin": {}
     },
     "platforms": [
       "ios",
