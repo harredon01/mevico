@@ -26,6 +26,10 @@ const routes: Routes = [
                 ]
             },
             {
+                        path: 'mercado-pago',
+                        loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
+                    },
+            {
                 path: 'mercado-pago-options',
                 children: [
                     {

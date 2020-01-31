@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Payment} from '../../models/payment'
+import {Payment} from '../../models/payment';
+import {UserDataService} from '../../services/user-data/user-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {MercadoPagoService} from '../../services/mercado-pago/mercado-pago.service';
 declare var Mercadopago: any;
@@ -13,10 +14,12 @@ export class MercadoPagoPage implements OnInit {
     paymentMethod: any;
     year: any;
     month: any;
+    v: any;
+
     payment: Payment;
     cardBranch: any = "";
     logo: any = "";
-    installmentsSelected:any;
+    installmentsSelected: any;
     doctypes: any[] = [];
     validationErrors: any[] = [];
     installments: any[] = [];
@@ -25,10 +28,12 @@ export class MercadoPagoPage implements OnInit {
     dateError: boolean = false;
     cvvError: boolean = false;
 
-    constructor(public formBuilder: FormBuilder, 
+    constructor(public formBuilder: FormBuilder,
         private params: ParamsService,
+        public userData: UserDataService,
         private mercadoServ: MercadoPagoService) {
-        this.payment = new Payment({"total":10000});
+        this.payment = new Payment({"total": 10000});
+        this.paymentMethod = 'visa';
         Mercadopago.getIdentificationTypes((status, response) => {
             if (status !== 200) {
                 console.log("Error")
@@ -39,17 +44,49 @@ export class MercadoPagoPage implements OnInit {
         let c = new Date();
         this.payerForm = formBuilder.group({
             cc_number: ['', Validators.compose([Validators.minLength(12), Validators.pattern('[0-9-]*'), Validators.required])],
+            cc_save: [''],
+            installmentsSelected: ['', Validators.required],
+            paymentMethodId: ['', Validators.required],
             cc_security_code: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(4), Validators.pattern('[0-9]*'), Validators.required])],
             cc_name: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[0-9a-zA-Z ]*'), Validators.required])],
             cc_expiration_month: ['', Validators.compose([Validators.maxLength(2), Validators.pattern('[0-9]*'), Validators.required, Validators.min(1), Validators.max(12)])],
-            cc_expiration_year: ['', Validators.compose([Validators.maxLength(4),Validators.minLength(4), Validators.pattern('[0-9]*'), Validators.required, Validators.min(c.getFullYear()), Validators.max(2040)])],
+            cc_expiration_year: ['', Validators.compose([Validators.maxLength(4), Validators.minLength(4), Validators.pattern('[0-9]*'), Validators.required, Validators.min(c.getFullYear()), Validators.max(2040)])],
         });
+        let container = this.payerForm.value;
+        container.paymentMethodId = this.paymentMethod;
+        this.payerForm.setValue(container);
+    }
+    useUser() {
+        console.log("prefil", this.v);
+        console.log("user", this.userData._user);
+        console.log("user2", this.userData._user.user);
+        let container = this.payerForm.value;
+        if (this.v) {
+            container = {
+                email: "",
+                payer_id: "",
+                doc_type: "",
+                entity_type: "",
+            };
+
+        } else {
+            container = {
+                email: this.userData._user.email,
+                payer_id: this.userData._user.docNum,
+                entity_type: "individual",
+                doc_type: this.userData._user.docType,
+            };
+        }
+
+        console.log("Setting form values: ", container);
+        this.payerForm.setValue(container);
     }
 
     pay() {
         this.submitAttempt = true;
         this.dateError = false;
         this.cvvError = false;
+
         if (!this.payerForm.valid) {return;}
         let d = new Date(parseInt(this.year), parseInt(this.month) - 1);
         let c = new Date();
@@ -63,7 +100,7 @@ export class MercadoPagoPage implements OnInit {
             if (status !== 200) {
                 console.log("Error")
                 this.validationErrors = response.cause;
-            } 
+            }
             console.log("Exito", response)
         });
     }
@@ -88,16 +125,16 @@ export class MercadoPagoPage implements OnInit {
         if (value.length >= 6) {
             Mercadopago.getPaymentMethod({"bin": value}, (status, response) => {
                 if (status !== 200) {
-                    console.log("Error",response)
+                    console.log("Error", response)
                 } else {
-                    this.paymentMethod = response[0].payment_type_id;
+                    this.paymentMethod = response[0].id;
                     this.logo = response[0].secure_thumbnail;
                     console.log("Exito", response)
                 }
             });
             Mercadopago.getInstallments({"bin": value, "amount": this.payment.total}, (status, response) => {
                 if (status !== 200) {
-                    console.log("Error",response)
+                    console.log("Error", response)
                 } else {
                     this.installments = response[0].payer_costs;
                     console.log("Exito", response)

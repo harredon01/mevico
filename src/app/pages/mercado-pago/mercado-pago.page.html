@@ -7,69 +7,77 @@
 <ion-content>
     <form action="" method="post" id="pay" name="pay" (ngSubmit)="pay()" [formGroup]="payerForm">
         <fieldset>
-            <ul>
-                <li>
+            <ion-list>
+                <ion-item>
                     <label for="email">Email</label>
                     <input id="email" name="email" value="test_user_19653727@testuser.com" type="email" placeholder="your email"/>
-                </li>
-                <li>
+                </ion-item>
+                <ion-item>
                     <label for="cardNumber">Credit card number:</label>
                     <input type="tel" id="cardNumber" (keyup)="creditTab($event)" data-checkout="cardNumber" placeholder="4509 9535 6623 3704" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off formControlName="cc_number"/>
-                </li>
-                <li *ngIf="!payerForm.controls.cc_number.valid  && (payerForm.controls.cc_number.dirty || submitAttempt)">
+                </ion-item>
+                <ion-item *ngIf="!payerForm.controls.cc_number.valid  && (payerForm.controls.cc_number.dirty || submitAttempt)">
                     <p>{{ 'CHECKOUT_CARD.PAYER_CC_ERROR' | translate }}</p>
-                </li>
-                <li *ngIf="logo.length>0">
+                </ion-item>
+                <ion-item *ngIf="logo.length>0">
                     <img [src]="logo">
-                </li>
-                <li>
+                </ion-item>
+                <ion-item>
                     <label for="cardExpirationMonth">Expiration month:</label>
 
                     <input (keyup)="keytab($event,2)" [(ngModel)]="month" formControlName="cc_expiration_month" style="width:50px" type="tel" id="cardExpirationMonth" data-checkout="cardExpirationMonth" placeholder="12" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
                     <input (keyup)="keytab($event,4)" [(ngModel)]="year" formControlName="cc_expiration_year" style="width:50px" type="tel" id="cardExpirationYear" data-checkout="cardExpirationYear" placeholder="2015" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
                     <input style="width:50px" type="tel" id="securityCode" formControlName="cc_security_code" data-checkout="securityCode" placeholder="CVV" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
 
-                </li>
-                <li *ngIf="!payerForm.controls.cc_expiration_month.valid  && (payerForm.controls.cc_expiration_month.dirty || submitAttempt)">
+                </ion-item>
+                <ion-item *ngIf="!payerForm.controls.cc_expiration_month.valid  && (payerForm.controls.cc_expiration_month.dirty || submitAttempt)">
                     <p>{{ 'CHECKOUT_CARD.PAYER_EXPIRATION_MONTH_ERROR' | translate }}</p>
-                </li>
-                <li *ngIf="!payerForm.controls.cc_expiration_year.valid  && (payerForm.controls.cc_expiration_year.dirty || submitAttempt)">
+                </ion-item>
+                <ion-item *ngIf="!payerForm.controls.cc_expiration_year.valid  && (payerForm.controls.cc_expiration_year.dirty || submitAttempt)">
                     <p>{{ 'CHECKOUT_CARD.PAYER_EXPIRATION_YEAR_ERROR' | translate }}</p>
-                </li>
-                <li *ngIf="dateError && submitAttempt">
+                </ion-item>
+                <ion-item *ngIf="dateError && submitAttempt">
                     <p>{{ 'CHECKOUT_CARD.PAYER_DATE_ERROR' | translate }}</p>
-                </li>
-                <li *ngIf="cvvError && submitAttempt">
+                </ion-item>
+                <ion-item *ngIf="cvvError && submitAttempt">
                     <p>{{ 'CHECKOUT_CARD.PAYER_CVV_LENGTH_ERROR' | translate }}</p>
-                </li>
-                <li *ngIf="!payerForm.controls.cc_security_code.valid  && (payerForm.controls.cc_security_code.dirty || submitAttempt)">
+                </ion-item>
+                <ion-item *ngIf="!payerForm.controls.cc_security_code.valid  && (payerForm.controls.cc_security_code.dirty || submitAttempt)">
                     <p>{{ 'CHECKOUT_CARD.PAYER_CVV_ERROR' | translate }}</p>
-                </li>
+                </ion-item>
                 
-                <li>
+                <ion-item>
                     <label for="cardholderName">Card holder name:</label>
                     <input type="text" id="cardholderName" data-checkout="cardholderName" placeholder="APRO" formControlName="cc_name"/>
-                </li>
-                <li *ngIf="!payerForm.controls.cc_name.valid  && (payerForm.controls.cc_name.dirty || submitAttempt)">
+                </ion-item>
+                <ion-item *ngIf="!payerForm.controls.cc_name.valid  && (payerForm.controls.cc_name.dirty || submitAttempt)">
                     <p>{{ 'CHECKOUT_CARD.PAYER_CC_NAME_ERROR' | translate }}</p>
-                </li>
-                <li>
+                </ion-item>
+                <!--ion-item>
+                    <ion-label>{{ 'INPUTS.MY_DATA' | translate }}</ion-label>
+                    <ion-checkbox [(ngModel)]="v" (click)="useUser()" ></ion-checkbox>
+                </ion-item-->
+                <ion-item>
+                    <ion-label>{{ 'CHECKOUT_CARD.SAVE_CARD' | translate }}</ion-label>
+                    <ion-checkbox formControlName="cc_save" ></ion-checkbox>
+                </ion-item>
+                <ion-item>
                     <label for="docType">Document type:</label>
                     <select id="docType" data-checkout="docType"><option *ngFor="let item of doctypes" [value]='item.id'>{{item.name}}</option></select>
-                </li>
-                <li>
+                </ion-item>
+                <ion-item>
                     <label for="docType">Installments:</label>
-                    <select [(ngModel)]="installmentsSelected" [ngModelOptions]="{standalone: true}"><option *ngFor="let item of installments" [value]='item.installments'>{{item.recommended_message}}</option></select>
-                </li>
-                <li>
+                    <ion-select [(ngModel)]="installmentsSelected" formControlName="installmentsSelected"><ion-select-option *ngFor="let item of installments" [value]='item.installments'>{{item.recommended_message}}</ion-select-option></ion-select>
+                </ion-item>
+                <ion-item>
                     <label for="docNumber">Document number:</label>
                     <input type="text" id="docNumber" data-checkout="docNumber" placeholder="12345678" />
-                </li>
-                <li>
+                </ion-item>
+                <ion-item>
                     <p *ngFor="let item of validationErrors">{{item.description}}</p>
-                </li>
-            </ul>
-            <input type="hidden" name="paymentMethodId" [(ngModel)]="paymentMethod" [ngModelOptions]="{standalone: true}"/>
+                </ion-item>
+            </ion-list>
+            <ion-input type="hidden" name="paymentMethodId" formControlName="paymentMethodId" [(ngModel)]="paymentMethod" ></ion-input>
                    <input type="submit" value="Pay!" />
         </fieldset>
     </form>
