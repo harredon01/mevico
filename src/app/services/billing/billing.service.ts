@@ -6,8 +6,8 @@ import {ApiService} from '../api/api.service';
 export class BillingService {
     constructor(public api: ApiService) {}
 
-    payCreditCard(data: any) {
-        let url = "/billing/pay_cc/PayU";
+    payCreditCard(data: any,platform:any) {
+        let url = "/billing/pay_cc/"+platform;
         let seq = this.api.post(url, data);
         return seq;
     }

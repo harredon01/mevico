@@ -181,7 +181,7 @@ export class MercadoPagoOptionsPage implements OnInit {
     getPaymentMethods() {
         this.mercadoServ.getPaymentMethods().subscribe((resp: any) => {
             console.log("Register connection result", resp);
-            this.paymentMethods = resp;
+            this.paymentMethods = resp; 
         }, (err) => {
 
         });

@@ -1,9 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Payment} from '../../models/payment';
+import {TranslateService} from '@ngx-translate/core';
+import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {ApiService} from '../../services/api/api.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
+import {NavController, ToastController, LoadingController, ModalController, AlertController} from '@ionic/angular';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {MercadoPagoService} from '../../services/mercado-pago/mercado-pago.service';
+import {BillingService} from '../../services/billing/billing.service';
 declare var Mercadopago: any;
 @Component({
     selector: 'app-mercado-pago',
@@ -18,8 +24,11 @@ export class MercadoPagoPage implements OnInit {
 
     payment: Payment;
     cardBranch: any = "";
+    loading: any;
+    private cardPaymentErrorString: string;
     logo: any = "";
     installmentsSelected: any;
+    issuerId: any;
     doctypes: any[] = [];
     validationErrors: any[] = [];
     installments: any[] = [];
@@ -31,9 +40,32 @@ export class MercadoPagoPage implements OnInit {
     constructor(public formBuilder: FormBuilder,
         private params: ParamsService,
         public userData: UserDataService,
+        public api: ApiService,
+        public billing: BillingService,
+        public translateService: TranslateService,
+        public loadingCtrl: LoadingController,
+        private spinnerDialog: SpinnerDialog,
+        public toastCtrl: ToastController,
         private mercadoServ: MercadoPagoService) {
-        this.payment = new Payment({"total": 10000});
-        this.paymentMethod = 'visa';
+        this.translateService.get('CHECKOUT_BANKS.BANKS_GET_ERROR').subscribe((value) => {
+            this.cardPaymentErrorString = value;
+        });
+        let paramsCont = this.params.getParams();
+        if (paramsCont) {
+            if (paramsCont.paymentMethod) {
+                this.paymentMethod = paramsCont.paymentMethod;
+            } else {
+                this.paymentMethod = 'visa';
+            }
+            if (paramsCont.payment) {
+                this.payment = new Payment(paramsCont.payment);
+            } else {
+                this.payment = new Payment({"id": 80, "total": 10000});
+            }
+        } else {
+            this.payment = new Payment({"id": 80, "total": 10000});
+            this.paymentMethod = 'visa';
+        }
         Mercadopago.getIdentificationTypes((status, response) => {
             if (status !== 200) {
                 console.log("Error")
@@ -46,6 +78,9 @@ export class MercadoPagoPage implements OnInit {
             cc_number: ['', Validators.compose([Validators.minLength(12), Validators.pattern('[0-9-]*'), Validators.required])],
             cc_save: [''],
             installmentsSelected: ['', Validators.required],
+            email: ['', Validators.required],
+            payer_id: ['', Validators.required],
+            doc_type: ['', Validators.required],
             paymentMethodId: ['', Validators.required],
             cc_security_code: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(4), Validators.pattern('[0-9]*'), Validators.required])],
             cc_name: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[0-9a-zA-Z ]*'), Validators.required])],
@@ -54,6 +89,11 @@ export class MercadoPagoPage implements OnInit {
         });
         let container = this.payerForm.value;
         container.paymentMethodId = this.paymentMethod;
+        for (let prop in container) {
+            if (!container[prop]) {
+                container[prop] = "";
+            }
+        }
         this.payerForm.setValue(container);
     }
     useUser() {
@@ -62,24 +102,62 @@ export class MercadoPagoPage implements OnInit {
         console.log("user2", this.userData._user.user);
         let container = this.payerForm.value;
         if (this.v) {
-            container = {
-                email: "",
-                payer_id: "",
-                doc_type: "",
-                entity_type: "",
-            };
-
+            container.email = "";
+            container.payer_id = "";
+            container.doc_type = "";
         } else {
-            container = {
-                email: this.userData._user.email,
-                payer_id: this.userData._user.docNum,
-                entity_type: "individual",
-                doc_type: this.userData._user.docType,
-            };
+            container.cc_name = this.userData._user.name;
+            container.email = this.userData._user.email;
+            container.payer_id = this.userData._user.docNum;
+            container.doc_type = this.userData._user.docType;
         }
-
+        for (let prop in container) {
+            if (!container[prop]) {
+                container[prop] = "";
+            }
+        }
         console.log("Setting form values: ", container);
         this.payerForm.setValue(container);
+    }
+    showLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loading = this.loadingCtrl.create({
+                spinner: 'crescent',
+                backdropDismiss: true
+            }).then(toast => toast.present());
+        } else {
+            this.spinnerDialog.show();
+        }
+    }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
+    showAlert(alert) {
+        let toast = this.toastCtrl.create({
+            message: alert,
+            duration: 3000,
+            position: 'top'
+        }).then(toast => toast.present());
+    }
+    showAlertTranslation(alert) {
+        this.translateService.get(alert).subscribe(
+            value => {
+                if (value.includes("MERCADO")) {
+                    this.translateService.get('MERCADOPAGO.DEFAULT').subscribe(
+                        value2 => {
+                            this.showAlert(value2);
+                        }
+                    )
+                } else {
+                    this.validationErrors.push(value);
+                    this.showAlert(value)
+                }
+            }
+        )
     }
 
     pay() {
@@ -94,14 +172,54 @@ export class MercadoPagoPage implements OnInit {
             this.dateError = true;
             return;
         }
+        this.showLoader();
         var $form = document.querySelector('#pay');
 
         Mercadopago.createToken($form, (status, response) => {
             if (status !== 200) {
-                console.log("Error")
-                this.validationErrors = response.cause;
+                this.dismissLoader();
+                console.log("Error", response)
+                this.validationErrors = [];
+                let errors = response.cause;
+                for(let item in errors){
+                    this.showAlertTranslation("MERCADOPAGO."+errors[item].code);
+                }
+                
+            } else {
+                let values = this.payerForm.value;
+                let container = {
+                    token: response.id,
+                    payment_id: this.payment.id,
+                    platform: "Booking",
+                    payment_method_id: this.paymentMethod,
+                    installments: this.installmentsSelected,
+                    email: values.email,
+                    save_card: values.cc_save,
+                    issuer_id: this.issuerId
+                };
+                this.billing.payCreditCard(container, "MercadoPagoService").subscribe((data: any) => {
+                    this.dismissLoader();
+                    console.log("after payDebit");
+                    console.log(JSON.stringify(data));
+                    if (data.code == "SUCCESS") {
+                        if (data.transactionResponse.state == "PENDING") {
+                            //this.showPrompt();
+
+                        } else {
+                            this.showAlert(this.cardPaymentErrorString);
+                        }
+                    } else {
+                        this.showAlert(this.cardPaymentErrorString);
+                    }
+                }, (err) => {
+                    this.dismissLoader();
+                    // Unable to log in
+                    this.showAlert(this.cardPaymentErrorString);
+                    this.api.handleError(err);
+                });
             }
-            console.log("Exito", response)
+            console.log("Exito", response);
+
         });
     }
     creditTab(event) {
@@ -129,6 +247,7 @@ export class MercadoPagoPage implements OnInit {
                 } else {
                     this.paymentMethod = response[0].id;
                     this.logo = response[0].secure_thumbnail;
+
                     console.log("Exito", response)
                 }
             });
@@ -137,6 +256,8 @@ export class MercadoPagoPage implements OnInit {
                     console.log("Error", response)
                 } else {
                     this.installments = response[0].payer_costs;
+                    this.issuerId = response[0].issuer.id;
+                    console.log("Issuer id");
                     console.log("Exito", response)
                 }
             });

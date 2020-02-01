@@ -4,6 +4,26 @@ import {ApiService} from '../api/api.service';
     providedIn: 'root'
 })
 export class MercadoPagoService {
+    tokenGenerateResponses:any = {
+        "205":"Ingresa el número de tu tarjeta.",
+        "208":"Elige un mes.",
+        "209":"Elige un año.",
+        "212":"Ingresa tu documento.",
+        "213":"Ingresa tu documento.",
+        "214":"Ingresa tu documento.",
+        "220":"Ingresa tu banco emisor.",
+        "221":"Ingresa el nombre y apellido.",
+        "224":"Ingresa el código de seguridad.",
+        "E301":"Hay algo mal en ese número. Vuelve a ingresarlo.",
+        "E302":"Revisa el código de seguridad.",
+        "316":"Ingresa un nombre válido.",
+        "322":"Revisa tu documento.",
+        "323":"Revisa tu documento.",
+        "324":"Revisa tu documento.",
+        "325":"Revisa la fecha.",
+        "326":"Revisa la fecha.",
+        "default":"Revisa los datos.",
+    }
 
     constructor(private api:ApiService) {}
     payCreditCard(data: any) {

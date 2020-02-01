@@ -243,7 +243,7 @@ export class CheckoutCardPage implements OnInit {
             payment_id: this.orderData.payment.id,
             platform: "Food"
         };
-        this.billing.payCreditCard(container).subscribe((data: any) => {
+        this.billing.payCreditCard(container,"Payu").subscribe((data: any) => {
             let transaction = data.response.transactionResponse;
             this.transactionResponse(transaction);
         }, (err) => {
@@ -285,7 +285,7 @@ export class CheckoutCardPage implements OnInit {
             platform: "Food"
         };
         console.log("before payCreditCard token", container);
-        this.billing.payCreditCard(container).subscribe((data: any) => {
+        this.billing.payCreditCard(container,"PayU").subscribe((data: any) => {
             this.transactionResponse(data.response.transactionResponse);
         }, (err) => {
             this.dismissLoader();

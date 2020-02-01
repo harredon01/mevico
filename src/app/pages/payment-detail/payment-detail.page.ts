@@ -267,7 +267,7 @@ export class PaymentDetailPage implements OnInit {
             platform: "Food"
         };
         console.log("before payCreditCard token", container);
-        this.billing.payCreditCard(container).subscribe((data: any) => {
+        this.billing.payCreditCard(container,"PayU").subscribe((data: any) => {
             let transaction = data.response.transactionResponse;
             this.transactionResponse(transaction);
         }, (err) => {
