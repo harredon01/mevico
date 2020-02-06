@@ -26,10 +26,6 @@ const routes: Routes = [
                 ]
             },
             {
-                        path: 'mercado-pago',
-                        loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
-                    },
-            {
                 path: 'mercado-pago-options',
                 children: [
                     {
@@ -39,14 +35,6 @@ const routes: Routes = [
                     {
                         path: 'card',
                         loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
-                    },
-                    {
-                        path: 'cash',
-                        loadChildren: '../mercado-pago-cash/mercado-pago-cash.module#MercadoPagoCashPageModule'
-                    },
-                    {
-                        path: 'pse',
-                        loadChildren: '../mercado-pago-pse/mercado-pago-pse.module#MercadoPagoPsePageModule'
                     }
                 ]
             },

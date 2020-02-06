@@ -14,6 +14,7 @@
             <ion-select-option *ngFor="let item of queries" value="{{item.value}}">{{item.name}}</ion-select-option>
         </ion-select>
     </ion-item>
+    <p *ngIf="items.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
     <ion-list>
         <ion-item-sliding *ngFor="let item of items">
             <ion-item (click)="openItem(item)">

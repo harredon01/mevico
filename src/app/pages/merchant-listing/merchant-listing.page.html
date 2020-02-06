@@ -29,6 +29,7 @@
     </ion-select>
     <p>{{totalResults}} {{ 'MERCHANT_LISTING.RESULTS_FOUND' | translate }}</p>
     <ion-button clear class="btn success" (click)="searchNearby()" *ngIf="typeSearch!='own'|| false">{{ 'MERCHANT_LISTING.NEARBY' | translate }}</ion-button>
+    <p *ngIf="merchants.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
     <ion-list>
         <ion-card *ngFor="let item of merchants">
             <ion-item>

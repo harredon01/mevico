@@ -8,6 +8,7 @@
 </ion-header>
 <ion-content class="payments">
     <div class="payments__wrapper">
+        <p *ngIf="currentItems.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
         <ion-list>
             <ion-item-sliding *ngFor="let item of currentItems">
                 <ion-item (click)="openItem(item)">

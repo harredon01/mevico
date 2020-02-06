@@ -548,6 +548,12 @@
         "325":"Revisa la fecha.",
         "326":"Revisa la fecha."
     },
+    "MERCADOPAGO_PAYMENT": {
+        "CARDS":"Tus Tarjetas",
+        "CARDS_ERROR":"Selecciona una tarjeta",
+        "CVV":"CVV",
+        "CVV_ERROR":"Ingresa el cvv de la tarjeta"
+    },
     "MERCHANT_DETAIL": {
         "TITLE": "Mi cuenta",
         "DESCRIPTION": "",
@@ -783,6 +789,7 @@
         "EDIT": "Editar",
         "CANCEL": "Cancelar",
         "CART_OPEN": "Pedidos abiertos",
+        "NO_RESULTS": "No resultados",
         "REMEMBER": "Recordarme",
         "MY_DATA": "Usar mis datos",
         "CREATE_ADDRESS": "Crear dirección",

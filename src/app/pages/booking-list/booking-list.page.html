@@ -27,6 +27,7 @@
             </ion-select>
         </ion-item>
     </ion-list>
+    <p *ngIf="bookings.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
     <ion-list class="doctor-list">
         <ion-item (click)="openBooking(booking)" *ngFor="let booking of bookings">
             <ion-card>

@@ -209,7 +209,7 @@ export class MercadoPagoPage implements OnInit {
                             this.showAlert(this.cardPaymentErrorString);
                         }
                     } else {
-                        this.showAlert(this.cardPaymentErrorString);
+                        this.showAlertTranslation("MERCADOPAGO." + data.response.status_detail);
                     }
                 }, (err) => {
                     this.dismissLoader();

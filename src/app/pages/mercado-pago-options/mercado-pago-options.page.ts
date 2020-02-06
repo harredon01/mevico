@@ -11,6 +11,7 @@ import {NavController, ToastController, LoadingController, ModalController, Aler
 import {Payment} from '../../models/payment';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {BillingService} from '../../services/billing/billing.service';
+declare var Mercadopago: any;
 @Component({
     selector: 'app-mercado-pago-options',
     templateUrl: './mercado-pago-options.page.html',
@@ -37,12 +38,21 @@ export class MercadoPagoOptionsPage implements OnInit {
             payment_method_id: '',
             email: ''
         };
+    payer3: {
+        cardId: string,
+        cvv: string,
+    } = {
+            cardId: '',
+            cvv: ''
+        };
     option: any;
     loading: any;
     payerForm: FormGroup;
     payerForm2: FormGroup;
+    payerForm3: FormGroup;
     submitAttempt: boolean = false;
     submitAttempt2: boolean = false;
+    submitAttempt3: boolean = false;
     v: any;
     v2: any;
     currentItems: any[];
@@ -56,12 +66,13 @@ export class MercadoPagoOptionsPage implements OnInit {
     private gettingBanks: string;
     private cashErrorString: string;
     private makingPayment: string;
-
+    private cardPaymentErrorString: string;
+    validationErrors = [];
     paymentMethods: any[] = [];
     pse: any = {};
     cash: any = {};
     paymentsSelected: boolean = false;
-    paymentPse: boolean = true;
+    paymentM: any;
     payment: Payment;
     constructor(private params: ParamsService,
         private navCtrl: NavController,
@@ -90,7 +101,14 @@ export class MercadoPagoOptionsPage implements OnInit {
             payment_method_id: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z 0-9._%+-]*'), Validators.required])],
             email: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-.]*\.[a-zA-Z]{2,}'), Validators.required])],
         });
+        this.payerForm3 = formBuilder.group({
+            cardId: ['', Validators.required],
+            cvv: ['', Validators.required],
+        });
         this.currentItems = [];
+        this.translateService.get('CHECKOUT_BANKS.BANKS_GET_ERROR').subscribe((value) => {
+            this.cardPaymentErrorString = value;
+        });
 
         this.translateService.get('CHECKOUT_BANKS.BANKS_GET_ERROR').subscribe((value) => {
             this.banksErrorString = value;
@@ -175,13 +193,20 @@ export class MercadoPagoOptionsPage implements OnInit {
     cancelSelection() {
         this.paymentsSelected = false;
     }
+    showMessage(message) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: 'top'
+        }).then(toast => toast.present());
+    }
     ngOnInit() {
         this.getPaymentMethods();
     }
     getPaymentMethods() {
         this.mercadoServ.getPaymentMethods().subscribe((resp: any) => {
             console.log("Register connection result", resp);
-            this.paymentMethods = resp; 
+            this.paymentMethods = resp;
         }, (err) => {
 
         });
@@ -213,27 +238,15 @@ export class MercadoPagoOptionsPage implements OnInit {
                         this.navCtrl.navigateRoot("tabs");
                     });
                 } else {
-                    let toast = this.toastCtrl.create({
-                        message: this.bankPaymentErrorString,
-                        duration: 3000,
-                        position: 'top'
-                    }).then(toast => toast.present());
+                    this.showMessage(this.bankPaymentErrorString);
                 }
             } else {
-                let toast = this.toastCtrl.create({
-                    message: this.bankPaymentErrorString,
-                    duration: 3000,
-                    position: 'top'
-                }).then(toast => toast.present());
+                this.showMessage(this.bankPaymentErrorString);
             }
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
-            let toast = this.toastCtrl.create({
-                message: this.bankPaymentErrorString,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
+            this.showMessage(this.bankPaymentErrorString);
             this.api.handleError(err);
         });
     }
@@ -281,12 +294,8 @@ export class MercadoPagoOptionsPage implements OnInit {
             }
         }, (err) => {
             this.dismissLoader();
+            this.showMessage(this.cashErrorString);
             // Unable to log in
-            let toast = this.toastCtrl.create({
-                message: this.cashErrorString,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
             this.api.handleError(err);
         });
     }
@@ -295,22 +304,93 @@ export class MercadoPagoOptionsPage implements OnInit {
 
 
         if (item.payment_type_id == "QUICK") {
+            this.paymentM = 'card';
             //this.quickPay();
         } else if (item.payment_type_id == "ticket") {
-            this.paymentPse = false;
+            this.paymentM = 'cash';
             this.cash = item;
             this.payer2.payment_method_id = item.id;
         } else if (item.payment_type_id == "credit_card") {
             let container = this.params.getParams();
-            container.paymentMethodId = item.id;
+            if (!container) {
+                container = {};
+            }
+            container.paymentMethod = item.id;
             this.params.setParams(container);
-            this.navCtrl.navigateForward('tabs/mercado-pago-options/mercado-pago');
+            this.navCtrl.navigateForward('tabs/mercado-pago-options/card');
         } else if (item.payment_type_id == "bank_transfer") {
-            this.paymentPse = true;
+            this.paymentM = 'pse';
             console.log("Item", item);
             this.pse = item;
             this.currentItems = item.financial_institutions
         }
+    }
+    showAlertTranslation(alert) {
+        this.translateService.get(alert).subscribe(
+            value => {
+                if (value.includes("MERCADO")) {
+                    this.translateService.get('MERCADOPAGO.DEFAULT').subscribe(
+                        value2 => {
+                            this.showMessage(value2);
+                        }
+                    )
+                } else {
+                    this.validationErrors.push(value);
+                    this.showMessage(value)
+                }
+            }
+        )
+    }
+
+    pay() {
+        this.submitAttempt3 = true;
+
+        if (!this.payerForm3.valid) {return;}
+        this.showLoader();
+        var $form = document.querySelector('#pay');
+
+        Mercadopago.createToken($form, (status, response) => {
+            if (status !== 200) {
+                this.dismissLoader();
+                console.log("Error", response)
+                this.validationErrors = [];
+                let errors = response.cause;
+                for (let item in errors) {
+                    this.showAlertTranslation("MERCADOPAGO." + errors[item].code);
+                }
+
+            } else {
+                let values = this.payerForm.value;
+                let container = {
+                    token: response.id,
+                    payment_id: this.payment.id,
+                    platform: "Booking",
+                    quick:true
+                };
+                this.billing.payCreditCard(container, "MercadoPagoService").subscribe((data: any) => {
+                    this.dismissLoader();
+                    console.log("after payDebit");
+                    console.log(JSON.stringify(data));
+                    if (data.code == "SUCCESS") {
+                        if (data.transactionResponse.state == "PENDING") {
+                            //this.showPrompt();
+
+                        } else {
+                            this.showMessage(this.cardPaymentErrorString);
+                        }
+                    } else {
+                        this.showAlertTranslation("MERCADOPAGO." + data.response.status_detail);
+                    }
+                }, (err) => {
+                    this.dismissLoader();
+                    // Unable to log in
+                    this.showMessage(this.cardPaymentErrorString);
+                    this.api.handleError(err);
+                });
+            }
+            console.log("Exito", response);
+
+        });
     }
 
 }

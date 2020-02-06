@@ -22,7 +22,7 @@
         </ion-card>
     </ion-list>
     <div *ngIf="paymentsSelected">
-        <ion-card *ngIf="paymentPse">
+        <ion-card *ngIf="paymentM=='pse'">
             <ion-item>
                 <ion-avatar item-start>
                     <img [src]="pse.secure_thumbnail">
@@ -93,7 +93,7 @@
                 </form>
             </ion-card-content>
         </ion-card>
-        <ion-card *ngIf="!paymentPse">
+        <ion-card *ngIf="paymentM=='cash'">
             <ion-item>
                 <ion-avatar item-start>
                     <img [src]="cash.secure_thumbnail">
@@ -130,6 +130,36 @@
                     <ion-button class="btn-secondary" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
                     <ion-button class="btn-secondary" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
                 </form>
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="paymentM=='card'">
+            <ion-card-content>
+                <form (submit)="payCard()" [formGroup]="payerForm3" id="pay" name="pay" >
+                    <ion-list>
+                        <ion-item>
+                            <ion-label position="floating">{{ 'MERCADOPAGO_PAYMENT.CARDS' | translate }}</ion-label>
+                            <ion-select [(ngModel)]="payer3.cardId" formControlName="cardId" id="cardId" name="cardId" data-checkout='cardId'>
+                                <ion-select-option *ngFor="let item of cards" value="item.id">{{item.first_six_digits}} {{item.last_four}}</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                        <ion-item *ngIf="!payerForm3.controls.cardId.valid  && (payerForm3.controls.cardId.dirty || submitAttempt3)">
+                            <p>{{ 'MERCADOPAGO_PAYMENT.CARDS_ERROR' | translate }}</p>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">{{ 'MERCADOPAGO_PAYMENT.CVV' | translate }}</ion-label>
+                            <ion-input type="text" [(ngModel)]="payer3.cvv" formControlName="cvv"></ion-input>
+                        </ion-item>
+                        <ion-item *ngIf="!payerForm3.controls.cvv.valid  && (payerForm3.controls.cvv.dirty || submitAttempt3)">
+                            <p>{{ 'MERCADOPAGO_PAYMENT.CVV_ERROR' | translate }}</p>
+                        </ion-item>
+
+                    </ion-list>
+                    <ion-button class="btn-secondary" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
+                    <ion-button class="btn-secondary" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
+                </form>
+                <ion-item *ngFor="let item of validationErrors" >
+                    <p>{{item}}</p>
+                </ion-item>
             </ion-card-content>
         </ion-card>
     </div>
