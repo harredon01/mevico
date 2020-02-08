@@ -54,4 +54,9 @@ export class MercadoPagoService {
         let seq = this.api.get(url);
         return seq;
     }
+    getCards() {
+        let url = "/mercadopago/cards";
+        let seq = this.api.get(url);
+        return seq;
+    }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {ParamsService} from '../../services/params/params.service';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -41,9 +41,11 @@ export class MercadoPagoOptionsPage implements OnInit {
     payer3: {
         cardId: string,
         cvv: string,
+        installmentsSelected: string,
     } = {
             cardId: '',
-            cvv: ''
+            cvv: '',
+            installmentsSelected:''
         };
     option: any;
     loading: any;
@@ -56,7 +58,10 @@ export class MercadoPagoOptionsPage implements OnInit {
     v: any;
     v2: any;
     currentItems: any[];
+    installments: any[] = [];
     cards: any[];
+    installmentsSelected: any;
+    issuerId: any;
 
     private banksErrorString: string;
     private bankPaymentErrorString: string;
@@ -77,6 +82,7 @@ export class MercadoPagoOptionsPage implements OnInit {
     constructor(private params: ParamsService,
         private navCtrl: NavController,
         public iab: InAppBrowser,
+        public cdr: ChangeDetectorRef,
         public orderData: OrderDataService,
         public billing: BillingService,
         public api: ApiService,
@@ -104,6 +110,7 @@ export class MercadoPagoOptionsPage implements OnInit {
         this.payerForm3 = formBuilder.group({
             cardId: ['', Validators.required],
             cvv: ['', Validators.required],
+            installmentsSelected: ['', Validators.required],
         });
         this.currentItems = [];
         this.translateService.get('CHECKOUT_BANKS.BANKS_GET_ERROR').subscribe((value) => {
@@ -133,7 +140,7 @@ export class MercadoPagoOptionsPage implements OnInit {
         });
         this.translateService.get('CHECKOUT_BANKS.MAKING_PAYMENT').subscribe((value) => {
             this.makingPayment = value;
-        });
+        }); 
     }
 
     useUser() {
@@ -167,6 +174,7 @@ export class MercadoPagoOptionsPage implements OnInit {
 
         console.log("Setting form values: ", container);
         this.payerForm.setValue(container);
+        this.cdr.detectChanges();
     }
     useUser2() {
         console.log("prefil", this.v);
@@ -188,6 +196,7 @@ export class MercadoPagoOptionsPage implements OnInit {
 
         console.log("Setting form values: ", container);
         this.payerForm2.setValue(container);
+        this.cdr.detectChanges();
     }
 
     cancelSelection() {
@@ -201,12 +210,28 @@ export class MercadoPagoOptionsPage implements OnInit {
         }).then(toast => toast.present());
     }
     ngOnInit() {
+
+    }
+    ionViewDidEnter() {
         this.getPaymentMethods();
+        this.getCards();
+        this.cdr.detectChanges();
     }
     getPaymentMethods() {
         this.mercadoServ.getPaymentMethods().subscribe((resp: any) => {
             console.log("Register connection result", resp);
             this.paymentMethods = resp;
+        }, (err) => {
+
+        });
+    }
+    getCards() {
+        this.mercadoServ.getCards().subscribe((resp: any) => {
+            console.log("Get cards result", resp);
+            for (let item in resp) {
+                resp[item].payment_type_id = "QUICK";
+            }
+            this.cards = resp;
         }, (err) => {
 
         });
@@ -305,6 +330,26 @@ export class MercadoPagoOptionsPage implements OnInit {
 
         if (item.payment_type_id == "QUICK") {
             this.paymentM = 'card';
+            this.payer3.cardId = item.id;
+            let container = this.payerForm3.value;
+            for (let prop in container) {
+                if (!container[prop]) {
+                    container[prop] = "";
+                }
+            }
+            container.cardId = item.id;
+            console.log("Set value", container);
+            this.payerForm3.setValue(container);
+            Mercadopago.getInstallments({"bin": item.first_six_digits, "amount": this.payment.total}, (status, response) => {
+                if (status !== 200) {
+                    console.log("Error", response)
+                } else {
+                    this.installments = response[0].payer_costs;
+                    this.issuerId = response[0].issuer.id;
+                    console.log("Issuer id");
+                    console.log("Exito", response)
+                }
+            });
             //this.quickPay();
         } else if (item.payment_type_id == "ticket") {
             this.paymentM = 'cash';
@@ -324,6 +369,7 @@ export class MercadoPagoOptionsPage implements OnInit {
             this.pse = item;
             this.currentItems = item.financial_institutions
         }
+        this.cdr.detectChanges();
     }
     showAlertTranslation(alert) {
         this.translateService.get(alert).subscribe(
@@ -342,7 +388,7 @@ export class MercadoPagoOptionsPage implements OnInit {
         )
     }
 
-    pay() {
+    payCard() {
         this.submitAttempt3 = true;
 
         if (!this.payerForm3.valid) {return;}
@@ -365,7 +411,9 @@ export class MercadoPagoOptionsPage implements OnInit {
                     token: response.id,
                     payment_id: this.payment.id,
                     platform: "Booking",
-                    quick:true
+                    installments: this.installmentsSelected,
+                    quick: true,
+                    issuer_id: this.issuerId
                 };
                 this.billing.payCreditCard(container, "MercadoPagoService").subscribe((data: any) => {
                     this.dismissLoader();

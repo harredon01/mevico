@@ -61,27 +61,27 @@ export class TrackingService {
             console.log("getToken");
             console.log(value);
             if (value) {
-                BackgroundGeolocation.ready({
-                    reset: true,
-                    debug: true,
-                    headers: {
-                        "Authorization": "Bearer " + value
-                    },
-                    logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
-                    desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-                    distanceFilter: 10,
-                    url: 'https://dev.lonchis.com.co/api/locations/user',
-                    autoSync: true,
-                    stopOnTerminate: false,
-                    startOnBoot: true
-                }, (state) => {
-                    if (!state.enabled && start) {
-                        // 3.  Start tracking.
-                        BackgroundGeolocation.start();
-                    }
-                    this.isReady = true;
-                    console.log('[ready] BackgroundGeolocation is ready to use');
-                });
+//                BackgroundGeolocation.ready({
+//                    reset: true,
+//                    debug: true,
+//                    headers: {
+//                        "Authorization": "Bearer " + value
+//                    },
+//                    logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
+//                    desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+//                    distanceFilter: 10,
+//                    url: 'https://dev.lonchis.com.co/api/locations/user',
+//                    autoSync: true,
+//                    stopOnTerminate: false,
+//                    startOnBoot: true
+//                }, (state) => {
+//                    if (!state.enabled && start) {
+//                        // 3.  Start tracking.
+//                        BackgroundGeolocation.start();
+//                    }
+//                    this.isReady = true;
+//                    console.log('[ready] BackgroundGeolocation is ready to use');
+//                });
             }
         });
     }

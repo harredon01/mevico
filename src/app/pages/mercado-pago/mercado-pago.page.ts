@@ -41,7 +41,9 @@ export class MercadoPagoPage implements OnInit {
         private params: ParamsService,
         public userData: UserDataService,
         public api: ApiService,
+        public orderData:OrderDataService,
         public billing: BillingService,
+        public navCtrl:NavController,
         public translateService: TranslateService,
         public loadingCtrl: LoadingController,
         private spinnerDialog: SpinnerDialog,
@@ -60,10 +62,10 @@ export class MercadoPagoPage implements OnInit {
             if (paramsCont.payment) {
                 this.payment = new Payment(paramsCont.payment);
             } else {
-                this.payment = new Payment({"id": 80, "total": 10000});
+                this.payment = new Payment({"id": 765, "total": 10000});
             }
         } else {
-            this.payment = new Payment({"id": 80, "total": 10000});
+            this.payment = new Payment({"id": 765, "total": 10000});
             this.paymentMethod = 'visa';
         }
         Mercadopago.getIdentificationTypes((status, response) => {
@@ -94,6 +96,9 @@ export class MercadoPagoPage implements OnInit {
                 container[prop] = "";
             }
         }
+        container.cc_save = true;
+        container.cc_expiration_year = '20';
+        console.log("Set value",container);
         this.payerForm.setValue(container);
     }
     useUser() {
@@ -106,8 +111,13 @@ export class MercadoPagoPage implements OnInit {
             container.payer_id = "";
             container.doc_type = "";
         } else {
-            container.cc_name = this.userData._user.name;
+            //            container.cc_name = this.userData._user.name;cc_expiration_year
             container.email = this.userData._user.email;
+            container.cc_name = 'APRO';
+            container.cc_security_code = '123';
+            container.cc_expiration_year = '2020';
+            container.cc_expiration_month = '12';
+            container.cc_number = '4013540682746260';
             container.payer_id = this.userData._user.docNum;
             container.doc_type = this.userData._user.docType;
         }
@@ -164,6 +174,8 @@ export class MercadoPagoPage implements OnInit {
         this.submitAttempt = true;
         this.dateError = false;
         this.cvvError = false;
+        let values = this.payerForm.value;
+        console.log("values", values)
 
         if (!this.payerForm.valid) {return;}
         let d = new Date(parseInt(this.year), parseInt(this.month) - 1);
@@ -181,10 +193,10 @@ export class MercadoPagoPage implements OnInit {
                 console.log("Error", response)
                 this.validationErrors = [];
                 let errors = response.cause;
-                for(let item in errors){
-                    this.showAlertTranslation("MERCADOPAGO."+errors[item].code);
+                for (let item in errors) {
+                    this.showAlertTranslation("MERCADOPAGO." + errors[item].code);
                 }
-                
+
             } else {
                 let values = this.payerForm.value;
                 let container = {
@@ -201,15 +213,18 @@ export class MercadoPagoPage implements OnInit {
                     this.dismissLoader();
                     console.log("after payDebit");
                     console.log(JSON.stringify(data));
-                    if (data.code == "SUCCESS") {
-                        if (data.transactionResponse.state == "PENDING") {
-                            //this.showPrompt();
+                    if (data.status == "success") {
+                        this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
+                        if (data.response == "in_process") {
+
 
                         } else {
-                            this.showAlert(this.cardPaymentErrorString);
+
                         }
+                        this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
+                        this.navCtrl.navigateRoot("tabs/categories")
                     } else {
-                        this.showAlertTranslation("MERCADOPAGO." + data.response.status_detail);
+                        this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
                     }
                 }, (err) => {
                     this.dismissLoader();
