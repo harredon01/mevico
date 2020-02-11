@@ -142,7 +142,7 @@ export class CheckoutCashPage implements OnInit {
     }
     payCash() {
         this.submitAttempt = true;
-        if (!this.payerForm.valid) {return;}
+        if (!this.payerForm.valid) {return;} 
         this.showLoader();
         let container = {
             payment_method: this.payer.payment_method,
@@ -151,7 +151,7 @@ export class CheckoutCashPage implements OnInit {
             email: true,
             platform: "Food"
         };
-        this.billing.payCash(container).subscribe((data: any) => {
+        this.billing.payCash(container,"PayU").subscribe((data: any) => {
             this.dismissLoader();
             console.log("after payCash");
             console.log(JSON.stringify(data));

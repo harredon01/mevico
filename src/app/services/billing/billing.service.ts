@@ -34,14 +34,14 @@ export class BillingService {
         return seq;
     }
 
-    payDebit(data: any) {
-        let url = "/billing/pay_debit/PayU";
+    payDebit(data: any,platform:any) {
+        let url = "/billing/pay_debit/"+platform;
         let seq = this.api.post(url, data);
         return seq;
     }
 
-    payCash(data: any) {
-        let url = "/billing/pay_cash/PayU";
+    payCash(data: any,platform:any) {
+        let url = "/billing/pay_cash/"+platform;
         let seq = this.api.post(url, data);
         return seq;
     }

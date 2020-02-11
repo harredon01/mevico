@@ -45,7 +45,7 @@ export class MercadoPagoOptionsPage implements OnInit {
     } = {
             cardId: '',
             cvv: '',
-            installmentsSelected:''
+            installmentsSelected: ''
         };
     option: any;
     loading: any;
@@ -59,7 +59,7 @@ export class MercadoPagoOptionsPage implements OnInit {
     v2: any;
     currentItems: any[];
     installments: any[] = [];
-    cards: any[];
+    cards: any[] = [];
     installmentsSelected: any;
     issuerId: any;
 
@@ -140,7 +140,7 @@ export class MercadoPagoOptionsPage implements OnInit {
         });
         this.translateService.get('CHECKOUT_BANKS.MAKING_PAYMENT').subscribe((value) => {
             this.makingPayment = value;
-        }); 
+        });
     }
 
     useUser() {
@@ -213,6 +213,7 @@ export class MercadoPagoOptionsPage implements OnInit {
 
     }
     ionViewDidEnter() {
+        this.paymentsSelected = false;
         this.getPaymentMethods();
         this.getCards();
         this.cdr.detectChanges();
@@ -247,26 +248,28 @@ export class MercadoPagoOptionsPage implements OnInit {
             financial_institution: this.payer.financial_institution,
             email: this.payer.email,
             payer_id: this.payer.payer_id,
-            payment_id: this.orderData.payment.id,
+            payment_id: this.payment.id,
             platform: "Food"
         };
-        this.billing.payDebit(container).subscribe((data: any) => {
+        this.billing.payDebit(container, "MercadoPagoService").subscribe((data: any) => {
             this.dismissLoader();
             console.log("after payDebit");
             console.log(JSON.stringify(data));
-            if (data.code == "SUCCESS") {
-                if (data.transactionResponse.state == "PENDING") {
-                    //this.showPrompt();
-                    const browser = this.iab.create(data.transactionResponse.extraParameters.BANK_URL);
+            if (data.status == "success") {
+                this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
+                if (data.response == "pending") {
+                    const browser = this.iab.create(data.url);
                     browser.on('exit').subscribe(event => {
                         this.orderData.clearOrder();
                         this.navCtrl.navigateRoot("tabs");
                     });
+
                 } else {
-                    this.showMessage(this.bankPaymentErrorString);
+                    this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
+                    this.navCtrl.navigateRoot("tabs/categories")
                 }
             } else {
-                this.showMessage(this.bankPaymentErrorString);
+                this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
             }
         }, (err) => {
             this.dismissLoader();
@@ -294,28 +297,35 @@ export class MercadoPagoOptionsPage implements OnInit {
         }
     }
     submitPaymentCash() {
-        this.submitAttempt = true;
-        if (!this.payerForm.valid) {return;}
+        this.submitAttempt2 = true;
+        if (!this.payerForm2.valid) {return;}
         this.showLoader();
         let container = {
             payment_method_id: this.payer2.payment_method_id,
             email: this.payer2.email,
-            payment_id: this.orderData.payment.id,
+            payment_id: this.payment.id,
             platform: "Food"
         };
-        this.billing.payCash(container).subscribe((data: any) => {
+        this.billing.payCash(container, "MercadoPagoService").subscribe((data: any) => {
             this.dismissLoader();
             console.log("after payCash");
             console.log(JSON.stringify(data));
-            if (data.code == "SUCCESS") {
-                if (data.transactionResponse.state == "PENDING") {
-                    //this.showPrompt();
-                    const browser = this.iab.create(data.transactionResponse.extraParameters.URL_PAYMENT_RECEIPT_HTML);
+            if (data.status == "success") {
+                this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
+                if (data.response == "pending") {
+                    const browser = this.iab.create(data.url);
                     browser.on('exit').subscribe(event => {
                         this.orderData.clearOrder();
                         this.navCtrl.navigateRoot("tabs");
                     });
+
+                } else {
+                    this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
+                    this.navCtrl.navigateRoot("tabs/categories")
                 }
+
+            } else {
+                this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
             }
         }, (err) => {
             this.dismissLoader();
@@ -417,17 +427,20 @@ export class MercadoPagoOptionsPage implements OnInit {
                 };
                 this.billing.payCreditCard(container, "MercadoPagoService").subscribe((data: any) => {
                     this.dismissLoader();
-                    console.log("after payDebit");
+                    console.log("after payCredit");
                     console.log(JSON.stringify(data));
-                    if (data.code == "SUCCESS") {
-                        if (data.transactionResponse.state == "PENDING") {
-                            //this.showPrompt();
+                    if (data.status == "success") {
+                        this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
+                        if (data.response == "in_process") {
+
 
                         } else {
-                            this.showMessage(this.cardPaymentErrorString);
+
                         }
+                        this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
+                        this.navCtrl.navigateRoot("tabs/categories")
                     } else {
-                        this.showAlertTranslation("MERCADOPAGO." + data.response.status_detail);
+                        this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
                     }
                 }, (err) => {
                     this.dismissLoader();

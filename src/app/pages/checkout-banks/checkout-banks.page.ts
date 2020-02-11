@@ -230,7 +230,7 @@ export class CheckoutBanksPage implements OnInit {
             platform: "Food",
             email: true
         };
-        this.billing.payDebit(container).subscribe((data: any) => {
+        this.billing.payDebit(container,"PayU").subscribe((data: any) => {
             this.dismissLoader();
             console.log("after payDebit");
             console.log(JSON.stringify(data));

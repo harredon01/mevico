@@ -568,7 +568,11 @@
         "CARDS":"Tus Tarjetas",
         "CARDS_ERROR":"Selecciona una tarjeta",
         "CVV":"CVV",
-        "CVV_ERROR":"Ingresa el cvv de la tarjeta"
+        "CVV_ERROR":"Ingresa el cvv de la tarjeta",
+        "INSTALLMENTS":"Cuotas",
+        "INSTALLMENTS_ERROR":"Selecciona la opción de cuotas",
+        "MY_CARDS":"Mis tarjetas guardadas",
+        "OTHER_PAYMENTS":"Nuestros medios de pago"
     },
     "MERCHANT_DETAIL": {
         "TITLE": "Mi cuenta",

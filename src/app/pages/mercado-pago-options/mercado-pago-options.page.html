@@ -6,6 +6,9 @@
 
 <ion-content>
     <ion-list *ngIf="!paymentsSelected">
+        <ion-item *ngIf="cards.length > 0">
+            <h2>{{ 'MERCADOPAGO_PAYMENT.MY_CARDS' | translate }}</h2>
+        </ion-item>
         <ion-card *ngFor="let item of cards">
             <ion-item>
                 <ion-avatar item-start>
@@ -20,6 +23,9 @@
 
             </ion-card-content>
         </ion-card>
+        <ion-item>
+            <h2>{{ 'MERCADOPAGO_PAYMENT.OTHER_PAYMENTS' | translate }}</h2>
+        </ion-item>
         <ion-card *ngFor="let item of paymentMethods">
             <ion-item>
                 <ion-avatar item-start>
@@ -30,8 +36,8 @@
                 <ion-button clear class="btn success" (click)="openItem(item)">{{ 'MERCHANT_LISTING.VIEW' | translate }}</ion-button>
             </ion-item>
             <ion-card-content>
-                <p>Cantidad máxima: {{item.max_allowed_amount}}</p>
-                <p>Cantidad mínima: {{item.min_allowed_amount}}</p>
+                <p>Cantidad máxima: {{item.max_allowed_amount | currency}}</p>
+                <p>Cantidad mínima: {{item.min_allowed_amount | currency}}</p>
             </ion-card-content>
         </ion-card>
     </ion-list>
@@ -44,10 +50,7 @@
                 <h2>{{pse.name}}</h2>
             </ion-item>
             <ion-card-content>
-                <ion-item >
-                    <ion-label>{{ 'INPUTS.MY_DATA' | translate }}</ion-label>
-                    <ion-checkbox [(ngModel)]="v" (click)="useUser()"></ion-checkbox>
-                </ion-item>
+
                 <form  (submit)="submitPaymentPse()" [formGroup]="payerForm" >
                     <ion-list>
                         <ion-item>
@@ -58,6 +61,10 @@
                         </ion-item>
                         <ion-item *ngIf="!payerForm.controls.financial_institution.valid  && (payerForm.controls.financial_institution.dirty || submitAttempt)">
                             <p>{{ 'CHECKOUT_BANKS.BANK_ERROR' | translate }}</p>
+                        </ion-item>
+                        <ion-item >
+                            <ion-label>{{ 'INPUTS.MY_DATA' | translate }}</ion-label>
+                            <ion-checkbox [(ngModel)]="v" (click)="useUser()" [ngModelOptions]="{standalone: true}"></ion-checkbox>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">{{ 'CHECKOUT_BANKS.PAYER_TYPE' | translate }}</ion-label>
@@ -124,9 +131,8 @@
                         <ion-item>
                             <ion-label position="floating">{{ 'CHECKOUT_CASH.OPTIONS' | translate }}</ion-label>
                             <ion-select [(ngModel)]="payer2.payment_method_id" formControlName="payment_method_id">
-                                <ion-select-option value="BALOTO">Baloto</ion-select-option>
-                                <ion-select-option value="EFECTY">Efecty</ion-select-option>
-                                <ion-select-option value="OTHERS_CASH">Otros metodos</ion-select-option>
+                                <ion-select-option value="baloto">Baloto</ion-select-option>
+                                <ion-select-option value="efecty">Efecty</ion-select-option>
                             </ion-select>
                         </ion-item>
                         <ion-item *ngIf="!payerForm2.controls.payment_method_id.valid  && (payerForm2.controls.payment_method_id.dirty || submitAttempt2)">
@@ -160,12 +166,15 @@
                             <p>{{ 'MERCADOPAGO_PAYMENT.CARDS_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>
-                            <label for="docType">Installments:</label>
+                            <label for="docType">{{ 'MERCADOPAGO_PAYMENT.INSTALLMENTS' | translate }}:</label>
                             <ion-select [(ngModel)]="installmentsSelected" formControlName="installmentsSelected"><ion-select-option *ngFor="let item of installments" [value]='item.installments'>{{item.recommended_message}}</ion-select-option></ion-select>
+                        </ion-item>
+                        <ion-item *ngIf="!payerForm3.controls.cvv.valid  && (payerForm3.controls.cvv.dirty || submitAttempt3)">
+                            <p>{{ 'MERCADOPAGO_PAYMENT.INSTALLMENTS_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">{{ 'MERCADOPAGO_PAYMENT.CVV' | translate }}</ion-label>
-                            <ion-input type="text" [(ngModel)]="payer3.cvv" formControlName="cvv"></ion-input>
+                            <ion-input type="text" [(ngModel)]="payer3.cvv" formControlName="cvv" data-checkout="securityCode"></ion-input>
                         </ion-item>
                         <ion-item *ngIf="!payerForm3.controls.cvv.valid  && (payerForm3.controls.cvv.dirty || submitAttempt3)">
                             <p>{{ 'MERCADOPAGO_PAYMENT.CVV_ERROR' | translate }}</p>

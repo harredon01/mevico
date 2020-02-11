@@ -211,7 +211,7 @@ export class MercadoPagoPage implements OnInit {
                 };
                 this.billing.payCreditCard(container, "MercadoPagoService").subscribe((data: any) => {
                     this.dismissLoader();
-                    console.log("after payDebit");
+                    console.log("after payCredit");
                     console.log(JSON.stringify(data));
                     if (data.status == "success") {
                         this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
