@@ -80,7 +80,7 @@ export class MercadoPagoPage implements OnInit {
             cc_number: ['', Validators.compose([Validators.minLength(12), Validators.pattern('[0-9-]*'), Validators.required])],
             cc_save: [''],
             installmentsSelected: ['', Validators.required],
-            email: ['', Validators.required],
+            email: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-.]*\.[a-zA-Z]{2,}'), Validators.required])],
             payer_id: ['', Validators.required],
             doc_type: ['', Validators.required],
             paymentMethodId: ['', Validators.required],
@@ -188,6 +188,7 @@ export class MercadoPagoPage implements OnInit {
         var $form = document.querySelector('#pay');
 
         Mercadopago.createToken($form, (status, response) => {
+            Mercadopago.clearSession();
             if (status !== 200) {
                 this.dismissLoader();
                 console.log("Error", response)

@@ -54,12 +54,15 @@
                 <label for="cardholderName">Card holder name:</label>
                 <input type="text" id="cardholderName" data-checkout="cardholderName" placeholder="APRO" formControlName="cc_name"/>
             </ion-item>
-            <ion-item>
-                <label for="email">Email</label>
-                <input id="email" name="email" value="test_user_19653727@testuser.com" type="email" placeholder="your email" formControlName="email"/>
-            </ion-item>
             <ion-item *ngIf="!payerForm.controls.cc_name.valid  && (payerForm.controls.cc_name.dirty || submitAttempt)">
                 <p>{{ 'CHECKOUT_CARD.PAYER_CC_NAME_ERROR' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <label for="email">{{ 'USER.EMAIL' | translate }}</label>
+                <input id="email" name="email" value="test_user_19653727@testuser.com" type="email" placeholder="your email" formControlName="email"/>
+            </ion-item>
+            <ion-item *ngIf="!payerForm.controls.email.valid  && (payerForm.controls.email.dirty || submitAttempt)">
+                <p>{{ 'USER.EMAIL_ERROR' | translate }}</p>
             </ion-item>
 
 

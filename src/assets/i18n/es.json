@@ -277,7 +277,7 @@
         "PAYER_CC_NAME_ERROR": " Verificar el nombre del titular de la TC",
         "PAY_CC_ERROR": "Tuvimos un error con el pago. verifica la información e intenta de nuevo",
         "PAY_CC_SUCCESS": "Pago exitoso",
-        "PAY_CC_STARTING": "iniciando el proceso de compra"
+        "PAY_CC_STARTING": "Estamos iniciando tu pago"
     },
     "CHECKOUT_CASH": {
         "TITLE": "Pago en efectivo",

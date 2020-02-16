@@ -169,7 +169,7 @@
                             <label for="docType">{{ 'MERCADOPAGO_PAYMENT.INSTALLMENTS' | translate }}:</label>
                             <ion-select [(ngModel)]="installmentsSelected" formControlName="installmentsSelected"><ion-select-option *ngFor="let item of installments" [value]='item.installments'>{{item.recommended_message}}</ion-select-option></ion-select>
                         </ion-item>
-                        <ion-item *ngIf="!payerForm3.controls.cvv.valid  && (payerForm3.controls.cvv.dirty || submitAttempt3)">
+                        <ion-item *ngIf="!payerForm3.controls.installmentsSelected.valid  && (payerForm3.controls.installmentsSelected.dirty || submitAttempt3)">
                             <p>{{ 'MERCADOPAGO_PAYMENT.INSTALLMENTS_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>

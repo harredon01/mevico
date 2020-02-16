@@ -292,7 +292,6 @@ export class MercadoPagoOptionsPage implements OnInit {
         if (document.URL.startsWith('http')) {
             this.loading = this.loadingCtrl.create({
                 spinner: 'crescent',
-                message: this.gettingBanks,
                 backdropDismiss: true
             }).then(toast => toast.present());
         } else {
@@ -416,6 +415,7 @@ export class MercadoPagoOptionsPage implements OnInit {
         var $form = document.querySelector('#pay');
 
         Mercadopago.createToken($form, (status, response) => {
+            Mercadopago.clearSession();
             if (status !== 200) {
                 this.dismissLoader();
                 console.log("Error", response)
