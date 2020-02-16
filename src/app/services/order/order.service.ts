@@ -71,16 +71,16 @@ export class OrderService {
      * Send a POST request to our signup endpoint with the data
      * the user entered on the form.
      */
-    prepareOrder(accountInfo: any) {
-        let seq = this.api.post('/orders/prepare/food', accountInfo);
+    prepareOrder(accountInfo: any,platform:any) {
+        let seq = this.api.post('/orders/prepare/'+platform , accountInfo);
         return seq;
     }
     /**
      * Send a POST request to our signup endpoint with the data
      * the user entered on the form.
      */
-    setDiscounts(order: any) {
-        let seq = this.api.post('/orders/discounts/food/'+order, {});
+    setDiscounts(order: any,platform:any) {
+        let seq = this.api.post('/orders/discounts/'+platform+"/"+order, {});
         return seq;
     }
     

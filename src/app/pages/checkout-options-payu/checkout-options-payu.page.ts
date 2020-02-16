@@ -77,6 +77,7 @@ export class CheckoutOptionsPayuPage implements OnInit {
         private spinnerDialog: SpinnerDialog) {
         this.coupon = "";
         this.showPayment = false;
+        this.payment= new Payment({});
         this.hasSavedCard = false;
         this.requiresDelivery = false;
         console.log("User");
@@ -136,6 +137,28 @@ export class CheckoutOptionsPayuPage implements OnInit {
         this.hasSavedCard = false;
         let endDate = new Date();
         endDate.setDate(endDate.getDate() + 1);
+        this.user.getUser().subscribe((resp: any) => {
+            if (resp) {
+                console.log("getUser", resp);
+                this.userData._user = resp.user;
+                let savedCards = resp.savedCards;
+                for (let key in savedCards) {
+                    if (savedCards[key] == "PayU") {
+                        this.userData._user.savedCard = true;
+                        this.hasSavedCard = true;
+                    }
+                }
+                console.log("getUser", this.userData._user);
+            }
+
+        }, (err) => {
+            let toast = this.toastCtrl.create({
+                message: this.loginErrorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
         this.deliveryRule = endDate.toISOString();
         console.log("deliveryRule", this.deliveryRule);
         console.log("Has saved card", this.hasSavedCard);

@@ -95,7 +95,15 @@ export class MercadoPagoOptionsPage implements OnInit {
         public formBuilder: FormBuilder,
         private mercadoServ: MercadoPagoService) {
         let container = this.params.getParams();
-        this.payment = new Payment({"id": 12, "total": 50000});
+        if (container) {
+            if (container.payment) {
+                this.payment = new Payment(container.payment)
+            } else {
+                this.payment = new Payment({"id": 12, "total": 50000});
+            }
+        } else {
+            this.payment = new Payment({"id": 12, "total": 50000});
+        }
         this.payerForm = formBuilder.group({
             financial_institution: ['', Validators.required],
             doc_type: ['', Validators.required],
@@ -250,23 +258,25 @@ export class MercadoPagoOptionsPage implements OnInit {
             payer_id: this.payer.payer_id,
             payment_id: this.payment.id,
             platform: "Food"
-        };
+        }; 
         this.billing.payDebit(container, "MercadoPagoService").subscribe((data: any) => {
             this.dismissLoader();
             console.log("after payDebit");
             console.log(JSON.stringify(data));
             if (data.status == "success") {
                 this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
+                this.orderData.currentOrder = null;
                 if (data.response == "pending") {
                     const browser = this.iab.create(data.url);
                     browser.on('exit').subscribe(event => {
                         this.orderData.clearOrder();
-                        this.navCtrl.navigateRoot("tabs");
+                        let container = {"payment": this.payment, "status": data.status, "response": "pending", "status_detail": 'pending_contingency'};
+                        this.params.setParams(container);
+                        this.navCtrl.navigateRoot("tabs/mercado-pago-options/thankyou");
                     });
 
                 } else {
-                    this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
-                    this.navCtrl.navigateRoot("tabs/categories")
+
                 }
             } else {
                 this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
@@ -316,12 +326,12 @@ export class MercadoPagoOptionsPage implements OnInit {
                     const browser = this.iab.create(data.url);
                     browser.on('exit').subscribe(event => {
                         this.orderData.clearOrder();
-                        this.navCtrl.navigateRoot("tabs");
+                        let container = {"payment": this.payment, "status": data.status, "response": "pending", "status_detail": 'pending_cash', 'paymentMethod': "IN_BANK"};
+                        this.params.setParams(container);
+                        this.navCtrl.navigateRoot("tabs/mercado-pago-options/thankyou");
                     });
 
                 } else {
-                    this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
-                    this.navCtrl.navigateRoot("tabs/categories")
                 }
 
             } else {
@@ -431,14 +441,16 @@ export class MercadoPagoOptionsPage implements OnInit {
                     console.log(JSON.stringify(data));
                     if (data.status == "success") {
                         this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
+                        this.orderData.clearOrder();
                         if (data.response == "in_process") {
 
 
                         } else {
 
                         }
-                        this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
-                        this.navCtrl.navigateRoot("tabs/categories")
+                        let container = {"payment": this.payment, "status": data.status, "response": data.response, "status_detail": data.status_detail};
+                        this.params.setParams(container);
+                        this.navCtrl.navigateRoot("tabs/mercado-pago-options/thankyou");
                     } else {
                         this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
                     }

@@ -153,28 +153,6 @@ export class CheckoutPreparePage implements OnInit {
         this.showPayment = false;
         this.hasSavedCard = false;
         this.requiresDelivery = false;
-        this.user.getUser().subscribe((resp: any) => {
-            if (resp) {
-                console.log("getUser", resp);
-                this.userData._user = resp.user;
-                let savedCards = resp.savedCards;
-                for (let key in savedCards) {
-                    if (savedCards[key] == "PayU") {
-                        this.userData._user.savedCard = true;
-                        this.hasSavedCard = true;
-                    }
-                }
-                console.log("getUser", this.userData._user);
-            }
-
-        }, (err) => {
-            let toast = this.toastCtrl.create({
-                message: this.loginErrorString,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
-            this.api.handleError(err);
-        });
         let endDate = new Date();
         endDate.setDate(endDate.getDate() + 1);
         this.deliveryRule = endDate.toISOString();
@@ -201,20 +179,6 @@ export class CheckoutPreparePage implements OnInit {
         }
     }
 
-
-    selectPaymentOption() {
-        let option = this.paymentMethod;
-        if (option == "QUICK") {
-            this.quickPay();
-        } else if (option == "IN_BANK") {
-            this.payInBank();
-        } else {
-            this.orderData.paymentMethod = option;
-            let nextPage = this.orderData.getStep2(option);
-            console.log("Next page", nextPage);
-            this.navCtrl.navigateForward(nextPage);
-        }
-    }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
             this.loadingCtrl.dismiss();
@@ -269,29 +233,7 @@ export class CheckoutPreparePage implements OnInit {
 
         console.log("Order data delivery", this.orderData.deliveryDate);
     }
-    quickPay() {
-        this.showLoader();
 
-        let container = {
-            quick: true,
-            payment_id: this.orderData.payment.id,
-            platform: "Booking"
-        };
-        console.log("before payCreditCard token", container);
-        this.billing.payCreditCard(container,"PayU").subscribe((data: any) => {
-            let transaction = data.response.transactionResponse;
-            this.transactionResponse(transaction, null);
-        }, (err) => {
-            this.dismissLoader();
-            // Unable to log in
-            let toast = this.toastCtrl.create({
-                message: this.cardErrorString,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
-            this.api.handleError(err);
-        });
-    }
     openSupport() {
         this.params.setParams({
             type: "platform",
@@ -299,61 +241,7 @@ export class CheckoutPreparePage implements OnInit {
         })
         this.navCtrl.navigateForward('tabs/settings/addresses/');
     }
-    payInBank() {
-        this.showLoader();
-        let payers = [];
-        let payersContainer = this.orderData.payers;
-        for (let item in payersContainer) {
-            payers.push(payersContainer[item].user_id);
-        }
-        let recurring_type = "limit";
-        let recurring_value = 3;
-        if (this.orderData.currentOrder.merchant_id == 1300) {
-            recurring_type = "calendar";
-            recurring_value = null;
-        }
-        let container = {
-            "order_id": this.orderData.currentOrder.id,
-            "payers": payers,
-            "split_order": this.split,
-            "platform": "Booking",
-            "recurring": this.recurring,
-            "recurring_type": recurring_type,
-            "recurring_value": recurring_value,
-            "merchant_id": this.orderData.currentOrder.merchant_id,
-            "payment_id": this.orderData.payment.id
-        };
-        console.log("before payCreditCard token", container);
-        this.billing.payInBank(container).subscribe((data: any) => {
-            this.dismissLoader();
-            if (data.status == "success") {
-                console.log("after payInBank");
-                this.orderData.clearOrder();
-                this.params.setParams({
-                    objectId: data.payment.id,
-                    newPayment: true
-                });
-                this.navCtrl.navigateForward('tabs/settings/payments/' + data.payment.id);
-            } else {
-                // Unable to pay in bank
-                let toast = this.toastCtrl.create({
-                    message: this.banksErrorString,
-                    duration: 3000,
-                    position: 'top'
-                }).then(toast => toast.present());
-            }
 
-        }, (err) => {
-            this.dismissLoader();
-            // Unable to log in
-            let toast = this.toastCtrl.create({
-                message: this.cardErrorString,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
-            this.api.handleError(err);
-        });
-    }
     /**
      * Navigate to the detail page for this item.
      */
@@ -405,7 +293,7 @@ export class CheckoutPreparePage implements OnInit {
             "recurring_value": recurring_value,
             "merchant_id": this.orderData.currentOrder.merchant_id
         };
-        this.orderProvider.prepareOrder(container).subscribe((resp: any) => {
+        this.orderProvider.prepareOrder(container,"Booking").subscribe((resp: any) => {
             if (resp) {
                 if (resp.status == "success") {
                     this.dismissLoader();
@@ -431,8 +319,9 @@ export class CheckoutPreparePage implements OnInit {
                             console.log("completePaidOrderError", err);
                         });
                     } else {
-                        this.showPayment = true;
-                        this.scrollToTop();
+                        let container = {"payment":this.payment};
+                        this.params.setParams(container);
+                        this.navCtrl.navigateForward("tabs/mercado-pago-options");
                     }
                 } else {
                     this.handleCheckError(resp);
@@ -455,12 +344,13 @@ export class CheckoutPreparePage implements OnInit {
     }
     setDiscounts() {
         this.showLoader2()
-        this.orderProvider.setDiscounts(this.orderData.currentOrder.id).subscribe((resp: any) => {
+        this.orderProvider.setDiscounts(this.orderData.currentOrder.id,"Booking").subscribe((resp: any) => {
 
             if (resp) {
                 console.log("setDiscounts", resp);
                 console.log(JSON.stringify(resp));
                 this.orderData.payment = resp.payment;
+                this.payment= resp.payment;
                 this.checkOrder();
             }
         }, (err) => {
@@ -643,6 +533,7 @@ export class CheckoutPreparePage implements OnInit {
                 console.log("setDiscounts", resp);
                 console.log(JSON.stringify(resp));
                 this.orderData.payment = resp.payment;
+                this.payment = resp.payment;
                 if (resp.status == "success") {
                     this.getCart();
 

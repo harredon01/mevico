@@ -214,15 +214,17 @@ export class MercadoPagoPage implements OnInit {
                     console.log("after payCredit");
                     console.log(JSON.stringify(data));
                     if (data.status == "success") {
+                        this.orderData.clearOrder();
                         this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
                         if (data.response == "in_process") {
 
 
                         } else {
-
                         }
-                        this.navCtrl.navigateRoot("tabs"); this.orderData.currentOrder = null;
-                        this.navCtrl.navigateRoot("tabs/categories")
+                        let container = {"payment":this.payment,"status":data.status,"response":data.response,"status_detail":data.status_detail};
+                        this.params.setParams(container);
+                        this.navCtrl.navigateRoot("tabs/mercado-pago-options/thankyou");
+                        
                     } else {
                         this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
                     }

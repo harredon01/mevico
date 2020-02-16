@@ -521,6 +521,7 @@
     },
     "MERCADOPAGO": {
         "106":"No puedes realizar pagos a usuarios de otros países.",
+        "approved":"Tu pago ha sido aprobado. ",
         "109":"payment_method_id no procesa pagos en installments cuotas. Elige otra tarjeta u otro medio de pago.",
         "126":"No pudimos procesar tu pago.",
         "129":"payment_method_id no procesa pagos del monto seleccionado. Elige otra tarjeta u otro medio de pago.",
@@ -548,6 +549,7 @@
         "325":"Revisa la fecha.",
         "accredited":"Listo, se acreditó tu pago! En tu resumen verás el cargo de amount como statement_descriptor.",
         "pending_contingency":"Estamos procesando el pago. En menos de 2 días hábiles te enviaremos por e-mail el resultado.",
+        "pending_cash":"Listo. Termina el pago en efectivo y te notificaremos apenas hayamos recibido confirmacion del dinero. ",
         "pending_review_manual":"Estamos procesando el pago. En menos de 2 días hábiles te diremos por e-mail si se acreditó o si necesitamos más información.",
         "cc_rejected_bad_filled_card_number":"Revisa el número de tarjeta.",
         "cc_rejected_bad_filled_date":"Revisa la fecha de vencimiento.",

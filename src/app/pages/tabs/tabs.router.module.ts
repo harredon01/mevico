@@ -35,6 +35,10 @@ const routes: Routes = [
                     {
                         path: 'card',
                         loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
+                    },
+                    {
+                        path: 'thankyou',
+                        loadChildren: '../mercado-pago-thankyou/mercado-pago-thankyou.module#MercadoPagoThankyouPageModule'
                     }
                 ]
             },
@@ -255,6 +259,10 @@ const routes: Routes = [
                     {
                         path: 'complete',
                         loadChildren: '../payu-complete/payu-complete.module#PayuCompletePageModule'
+                    },
+                    {
+                        path: 'options',
+                        loadChildren: '../checkout-options-payu/checkout-options-payu.module#CheckoutOptionsPayuPageModule'
                     },
                 ]
             },

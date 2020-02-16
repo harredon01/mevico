@@ -5,7 +5,7 @@
         </ion-buttons>
         <ion-title>{{ 'CHECKOUT_PREPARE.TITLE' | translate }}</ion-title>
     </ion-toolbar>
-</ion-header>
+</ion-header> 
 
 <ion-content class="checkout-prepare">
     <div class="checkout-prepare--wrapper">
@@ -15,7 +15,6 @@
                     <span>{{ 'CHECKOUT_PREPARE.COMPLETE' | translate }}</span>        
                 </ion-card-header>        
                 <ion-card-content>
-                    <p>{{ 'CHECKOUT_PREPARE.ORDER_TOTAL' | translate }} {{order.total | currency }}</p>
                     <div *ngIf="paymentMethod !='IN_BANK'">
                         <p>{{ 'CHECKOUT_PREPARE.YOUR_TOTAL' | translate }}: {{payment.subtotal | currency }}</p>    
                         <p>{{ 'PAYMENT.TRANSACTION_COST' | translate }}: {{payment.transaction_cost | currency }}</p>    

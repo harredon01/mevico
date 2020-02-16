@@ -10,7 +10,7 @@ import {OrderService} from '../../services/order/order.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserService} from '../../services/user/user.service';
 import {ApiService} from '../../services/api/api.service';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 @Component({
     selector: 'app-checkout-shipping',
     templateUrl: './checkout-shipping.page.html',
@@ -134,11 +134,12 @@ export class CheckoutShippingPage implements OnInit {
        * The view loaded, let's query our items for the list
        */
     ionViewDidEnter() {
-
+        console.log("shipping", this.orderData.shippingAddress)
         if (this.orderData.shippingAddress) {
             this.showAddressCard = true;
             this.selectedAddress = this.orderData.shippingAddress;
         } else {
+            this.showAddressCard = false;
             if (this.mapData.createdAddress) {
                 let container = new Address(this.mapData.createdAddress);
                 this.mapData.createdAddress = null;
@@ -162,8 +163,8 @@ export class CheckoutShippingPage implements OnInit {
         if (this.merchant == 1299) {
             isMeal = 1;
         }
-        let params = {"is_meal": isMeal,"merchant_id": this.merchant};
-        console.log("Prepare order",params);
+        let params = {"is_meal": isMeal, "merchant_id": this.merchant};
+        console.log("Prepare order", params);
         this.params.setParams(params)
         this.navCtrl.navigateForward('tabs/checkout/prepare');
     }
