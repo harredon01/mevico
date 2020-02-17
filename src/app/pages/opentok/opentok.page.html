@@ -11,6 +11,12 @@
     <div *ngIf="activeCall&&!ended" class="call">
         <div id="publisher"></div>
         <div id="subscriber"></div>
+        <ion-card *ngIf="!streamCreated">
+            <ion-item>
+                <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+                <ion-label>{{ recipient.name }}</ion-label>
+            </ion-item>
+        </ion-card>
         <ion-button (click)="endCall()">{{ 'CALL.END' | translate }}</ion-button>
         <ion-button (click)="viewNotes()">{{ 'CALL.BOOKING' | translate }}</ion-button>
     </div>
@@ -19,7 +25,7 @@
             <div style="text-align:center" *ngIf="!ended" class="waiting">
                 <ion-button (click)="startCall()">{{ 'CALL.START' | translate }}</ion-button>
             </div>
-            
+
 
             <ion-card>
                 <ion-card-content>
@@ -32,8 +38,8 @@
 
                         <ion-row class="appot-detail" *ngFor="let item of mainBooking.options | keyvalue">
                                  <ion-col class="detail" size="10">
-                                <span>{{item.key}}</span>
-                                <span>{{item.value}}</span>
+                                     <span style="text-transform: capitalize">{{item.key}}: </span>
+                                <span style="text-transform: capitalize">{{item.value}}</span>
                             </ion-col>
                         </ion-row>
                     </ion-grid>
@@ -48,6 +54,11 @@
                         <ion-col class="detail" *ngIf="mainBooking.customer" size="10">
                             <span>{{ 'BOOKING_DETAIL.BOOKED_BY' | translate }}</span>
                             <span>{{mainBooking.customer.firstName}} {{mainBooking.customer.lastName}}</span>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="appot-detail">
+                        <ion-col class="icon" size="2">
+                            <ion-icon name="md-clipboard" class="text-danger"></ion-icon>
                         </ion-col>
                         <ion-col class="detail" *ngIf="mainBooking.bookable" size="10">
                             <span>{{ 'BOOKING_DETAIL.BOOKED_FOR' | translate }}</span>

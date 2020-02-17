@@ -164,7 +164,7 @@ export class AppComponent {
             console.log("Opening destiny payload", destinyPayload);
             this.params.setParams(destinyPayload);
             this.nav.navigateForward(destinyUrl);
-        } else if (notification.type == "booking_starting") {
+        } else if (notification.type == "booking_starting" || notification.type == "booking_waiting") {
             let destinyUrl = notification.payload.utl;
             let destinyPayload = notification.payload;
             console.log("Opening destiny notification", destinyUrl);

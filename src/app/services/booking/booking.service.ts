@@ -11,6 +11,11 @@ export class BookingService {
         let seq = this.api.get(endpoint,objectB);
         return seq;
     }
+    getBooking(objectB: any) {
+        let endpoint = '/bookings/'+objectB;
+        let seq = this.api.get(endpoint );
+        return seq;
+    }
     getObjectsWithBookingUser() {
         let endpoint = '/bookings/user';
         let seq = this.api.get(endpoint);

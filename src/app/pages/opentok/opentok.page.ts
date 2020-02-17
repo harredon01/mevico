@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, ModalController,LoadingController} from '@ionic/angular';
+import {NavController, ModalController, LoadingController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
 import {BookingService} from '../../services/booking/booking.service';
 import {BookingDetailPage} from '../booking-detail/booking-detail.page';
 import {CommentsPage} from '../comments/comments.page';
+import {TranslateService} from '@ngx-translate/core';
 import {Booking} from '../../models/booking';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {UserDataService} from '../../services/user-data/user-data.service';
 //import * as OT from '@opentok/client';
 declare var OT: any;
 @Component({
@@ -20,17 +22,22 @@ export class OpentokPage implements OnInit {
     bookingId: any;
     mainBooking: Booking;
     sessionId: string;
+    recipient: any;
     token: string;
     activeCall: boolean = false;
+    streamCreated: boolean = false;
     ended: boolean = false;
 
     constructor(public navCtrl: NavController,
         public modalCtrl: ModalController,
+        public userData: UserDataService,
+        public translateService: TranslateService,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog,
         public params: ParamsService,
         public bookingS: BookingService) {
         this.apiKey = '46389642';
+        this.recipient = {};
         this.sessionId = '';
         this.token = '';
         this.mainBooking = new Booking({});
@@ -40,11 +47,34 @@ export class OpentokPage implements OnInit {
     ionViewDidEnter() {
         let params = this.params.getParams();
         console.log("Call params", params);
-        this.mainBooking = new Booking(params.booking);
-        this.mainBooking.clean();
+
         this.sessionId = params.sessionId;
         this.token = params.token;
         this.bookingId = params.booking_id;
+        this.getBooking();
+    }
+    getBooking() {
+        this.bookingS.getBooking(this.bookingId).subscribe((resp: any) => {
+            console.log("getBooking", resp);
+            if (resp.status == 'success') {
+                this.mainBooking = new Booking(resp.booking);
+                this.mainBooking.clean();
+                if (this.userData._user.id == this.mainBooking.customer.id) {
+                    this.recipient = this.mainBooking.bookable;
+                } else {
+                    this.recipient = this.mainBooking.customer;
+                }
+                console.log("getBooking result", this.recipient);
+            } else {
+                this.translateService.get('OPENTOK.DENIED').subscribe((value) => {
+                    this.recipient.name = value;
+                });
+            }
+
+
+        }, (err) => {
+
+        });
     }
 
     endCall() {
@@ -102,7 +132,7 @@ export class OpentokPage implements OnInit {
         console.log("Modal Closed");
         this.navCtrl.navigateRoot("tabs/categories");
     }
-    done(){
+    done() {
         this.navCtrl.navigateRoot("tabs/categories");
     }
 
@@ -140,7 +170,7 @@ export class OpentokPage implements OnInit {
                 this.ended = true;
             },
             sessionConnected: (event: any) => {
-                
+
                 let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};
                 this.bookingS.registerConnection(container).subscribe((resp: any) => {
                     console.log("Register connection result", resp);
