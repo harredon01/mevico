@@ -6,13 +6,9 @@
                 <p class="login__message">{{ 'LOGIN.MESSAGE' | translate }}</p>
             </div>
             <ion-list class="login__create">
-                <!--
-                      Want to use a Username instead of an Email? Here you go:
-                      <ion-item>
-                          <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-                          <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
-                      </ion-item>
-                -->
+                <div class="login__image">
+                    <img src="assets/sign_up.png" alt="">
+                </div>
                 <ion-item class="login__item" no-padding>
                     <ion-label position="floating">{{ 'LOGIN.USERNAME' | translate }}</ion-label>
                     <ion-input class="login__input" type="text" [(ngModel)]="account.username" name="username" required></ion-input>
@@ -48,8 +44,5 @@
                 </div>
             </ion-list>
         </form>
-    </div>
-    <div class="login__image">
-        <img src="assets/logo-login.svg" alt="">
     </div>
 </ion-content>

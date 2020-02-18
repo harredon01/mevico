@@ -14,3 +14,36 @@
 * {
     font-family: 'Source Sans Pro', sans-serif !important;
 }
+
+.button {
+    &--form {
+        height: 40px;
+        span {
+            text-transform: capitalize;
+        }
+    }
+}
+
+.text {
+    &--small {
+        font-size: 12px;
+    }
+
+    &--right {
+        width: 100%;
+        text-align: right;
+    }
+
+    &--bold {
+        font-weight: 700;
+    }
+}
+
+ion-item{
+    --inner-padding-end: 0px;
+    --padding-start:0px
+}
+
+.item .sc-ion-label-md-h {
+    color: rgba($color: #000000, $alpha: .8);
+}
