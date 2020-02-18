@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 import {Router, RouterEvent, NavigationEnd} from '@angular/router';
-import {Platform, Events,MenuController,NavController,AlertController} from '@ionic/angular';
+import {Platform, Events, MenuController, NavController, AlertController} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
 import {TranslateService} from '@ngx-translate/core';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {LanguageService} from './services/language/language.service';
 import {AlertsService} from './services/alerts/alerts.service';
 import {ParamsService} from './services/params/params.service'
-import {Friend} from'./models/friend'
+import {Friend} from './models/friend'
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html'
@@ -30,7 +30,7 @@ export class AppComponent {
         private nav: NavController,
         private statusBar: StatusBar,
         private menuCtrl: MenuController,
-        private alerts:AlertsService,
+        private alerts: AlertsService,
         private languageService: LanguageService,
         private router: Router
     ) {
@@ -110,10 +110,12 @@ export class AppComponent {
         this.oneSignal.handleNotificationReceived()
             .subscribe(jsonData => {
                 let message = jsonData.payload.additionalData;
-                console.log("Notification received",message);
+                console.log("Notification received", message);
                 message.subject_es = message.subject;
-                message.created_at.date = message.created_at.date.replace(" ", "T");
-                message.created_at = new Date(message.created_at.date);
+                if (message.created_at.date) {
+                    message.created_at.date = message.created_at.date.replace(" ", "T");
+                    message.created_at = new Date(message.created_at.date);
+                }
                 if (message.type == "user_message") {
                     message.id = message.payload.message_id;
                     message.to_id = message.user_id;
@@ -138,7 +140,7 @@ export class AppComponent {
         this.nav.navigateRoot(pageUrl);
     }
     openNotification(notification) {
-        console.log("openNotification",notification);
+        console.log("openNotification", notification);
         // Reset the content nav to have just this page
         // we wouldn't want the back button to show in this scenario
         if (notification.type == "order_status" || notification.type == "payment_status" || notification.type == "split_order_payment" || notification.type == "payment_successful") {
@@ -146,7 +148,7 @@ export class AppComponent {
                 objectId: notification.payload.payment_id
             };
             this.params.setParams(parms);
-            this.nav.navigateForward('tabs/settings/payments/'+notification.payload.payment_id);
+            this.nav.navigateForward('tabs/settings/payments/' + notification.payload.payment_id);
         } else if (notification.type == "user_message") {
             let friend = new Friend({
                 "id": notification.trigger_id,
