@@ -1,7 +1,10 @@
 <ion-content class="login">
     <div class="login__wrapper">
         <form (submit)="doLogin()">
-            <p class="login__title">{{ 'LOGIN.TITLE' | translate }}</p>
+            <div class="login__messages">
+                <p class="login__title">{{ 'LOGIN.TITLE' | translate }}</p>
+                <p class="login__message">{{ 'LOGIN.MESSAGE' | translate }}</p>
+            </div>
             <ion-list class="login__create">
                 <!--
                       Want to use a Username instead of an Email? Here you go:
@@ -10,31 +13,41 @@
                           <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
                       </ion-item>
                 -->
-                <ion-item class="login__item">
+                <ion-item class="login__item" no-padding>
                     <ion-label position="floating">{{ 'LOGIN.USERNAME' | translate }}</ion-label>
-                    <ion-input type="text" [(ngModel)]="account.username" name="username" required></ion-input>
+                    <ion-input class="login__input" type="text" [(ngModel)]="account.username" name="username" required></ion-input>
                 </ion-item>
-                <ion-item class="login__item">
+                <ion-item class="login__item" no-padding>
                     <ion-label position="floating">{{ 'LOGIN.PASSWORD' | translate }}</ion-label>
-                    <ion-input type="password" [(ngModel)]="account.password" name="password" required></ion-input>
+                    <ion-input class="login__input" type="password" [(ngModel)]="account.password" name="password" required></ion-input>
                 </ion-item>
-                <ion-item class="login__item login--remember">
+                <ion-item class="login__item login--remember" no-padding>
                     <ion-label>{{ 'INPUTS.REMEMBER' | translate }}</ion-label>
                     <ion-checkbox [(ngModel)]="account.remember" name="remember"></ion-checkbox>
                 </ion-item>
                 <div padding class="login__enter">
-                    <ion-button type="submit" class="button" expand="block">Ingresar</ion-button>
+                    <ion-button type="submit" class="button" expand="full">
+                        <span class="login__button">Ingresar</span>
+                    </ion-button>
+                </div>
+                <div padding class="login__forgot-account">
+                    <a href="javascript:;" (click)="forgotPass()">{{ 'LOGIN.FORGOT_PASS' | translate }}</a>
+                </div>
+                <p class="login__text">Or</p>
+                <div class="login__buttons">
+                    <div class="login__third login__third--facebook">
+                        <p class="btn-text"><b>Sign in with facebook</b></p>
+                    </div>
+                    <div class="login__third login__third--google">
+                        <p class="btn-text"><b>Sign in with Google</b></p>
+                    </div>
+                </div>
+                <div class="login__create-account">
+                    No tiene cuenta?  
+                    <span (click)="singup()" class="login__create-text">Crear cuenta</span>
                 </div>
             </ion-list>
         </form>
-        <div padding class="login__create-account">
-            <ion-button class="button" (click)="singup()" expand="block">Crear cuenta</ion-button>
-        </div>
-        <div padding class="login__create-account">
-            <br/>
-            <a href="javascript:;" (click)="forgotPass()">{{ 'LOGIN.FORGOT_PASS' | translate }}</a>
-
-        </div>
     </div>
     <div class="login__image">
         <img src="assets/logo-login.svg" alt="">
