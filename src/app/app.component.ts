@@ -123,7 +123,7 @@ export class AppComponent {
                     message.target_id = message.user_id;
                     //this.chats.saveMessage(message);
                 }
-                this.items.unshift(message);
+                this.items.push(message);
                 this.cleanResults();
                 console.log('notification received: ', message);
                 this.events.publish('notification:received', message, Date.now());
