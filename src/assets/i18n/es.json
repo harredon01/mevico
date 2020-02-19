@@ -472,8 +472,10 @@
     },
     "ITEMS": {
         "TITLE": "Items",
+        "FULLFILL":"Entregar",
         "FULLFILLED":"Entregado",
-        "UNFULFILLED":"Por entregar"
+        "UNFULFILLED":"Por entregar",
+        "ERROR_FULLFILL":"Error enviando a transportador porfavor comunicate con soporte"
     },
     "LOGIN": {
         "USERNAME": "Correo",

@@ -14,6 +14,8 @@ export class Item {
     amount: any;
     product_id: any;
     variant_id: any;
+    attributes:any;
+    detailsvisible:boolean = false;
     item_id: any;
 
   constructor(fields: any) {
@@ -23,6 +25,14 @@ export class Item {
       this[f] = fields[f];
     }
   }
+  clean(){
+        delete this.attributes.users;
+        delete this.attributes.item_id;
+        delete this.attributes.session_id;
+        delete this.attributes.order_id;
+        delete this.attributes.payer;
+        delete this.attributes.paid;
+    }
 
 }
 
