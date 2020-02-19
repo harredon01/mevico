@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {NavController, LoadingController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Item} from '../../models/item';
+import {Order} from '../../models/order';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../../services/api/api.service';
 import {ParamsService} from '../../services/params/params.service';
@@ -14,6 +15,7 @@ import {ParamsService} from '../../services/params/params.service';
 })
 export class ItemsPage implements OnInit {
     private items: Item[] = [];
+    private orders: Order[] = [];
     private page: any = 0;
     private merchant: any;
     private urlSearch:string="";
@@ -55,19 +57,27 @@ export class ItemsPage implements OnInit {
 
     ionViewDidEnter() {
         this.page = 0;
-        this.items = [];
+        this.orders = [];
         this.getItems();
     }
     selectQuery() {
         this.page = 0;
-        this.items = [];
+        this.orders = [];
         this.getItems();
+    }
+    getOrder(id){
+        for(let item in this.orders){
+            if(id == this.orders[item].id){
+                return this.orders[item];
+            }
+        }
+        return null;
     }
 
     getItems() {
         this.showLoader();
         this.page++;
-        let where = "merchant_id=" + this.merchant + "&fulfillment=" + this.status + "&page=" + this.page + "&paid_status=paid";
+        let where = "merchant_id=" + this.merchant + "&fulfillment=" + this.status + "&page=" + this.page + "&paid_status=paid&includes=order.orderAddresses";
         this.itemsServ.getItems(where).subscribe((data: any) => {
             let results = data.data;
             if (data.page == data.last_page) {
@@ -78,8 +88,15 @@ export class ItemsPage implements OnInit {
             for (let item in results) {
                 results[item].starts_at = new Date(results[item].starts_at);
                 results[item].ends_at = new Date(results[item].ends_at);
+                let order = this.getOrder(results[item].order.id);
                 let newItem = new Item(results[item]);
-                this.items.push(newItem);
+                if(order){
+                    order.items.push(newItem);
+                } else {
+                    order = new Order(results[item].order);
+                    order.items.push(newItem);
+                    this.orders.push(order);
+                }
             }
             this.dismissLoader();
         }, (err) => {
