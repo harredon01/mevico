@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemsService} from '../../services/items/items.service';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, LoadingController,ToastController} from '@ionic/angular';
+import {NavController, LoadingController, ToastController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Item} from '../../models/item';
 import {Order} from '../../models/order';
@@ -26,7 +26,7 @@ export class ItemsPage implements OnInit {
         public params: ParamsService,
         public activatedRoute: ActivatedRoute,
         public api: ApiService,
-        public toastCtrl:ToastController,
+        public toastCtrl: ToastController,
         public translateService: TranslateService,
         public navCtrl: NavController,
         public loadingCtrl: LoadingController,
@@ -90,19 +90,21 @@ export class ItemsPage implements OnInit {
                 this.loadMore = true;
             }
             for (let item in results) {
-                let order = this.getOrder(results[item].order.id);
-                let newItem = new Item(results[item]);
-                newItem.clean();
-                if (order) {
-                    order.items.push(newItem);
-                } else {
-                    results[item].order.created_at = results[item].order.created_at.replace(" ", "T");
-                    results[item].order.updated_at = results[item].order.updated_at.replace(" ", "T");
-                    results[item].order.created_at = new Date(results[item].order.created_at);
-                    results[item].order.updated_at = new Date(results[item].order.updated_at);
-                    order = new Order(results[item].order);
-                    order.items.push(newItem);
-                    this.orders.push(order);
+                if (results[item].order) {
+                    let order = this.getOrder(results[item].order.id); 
+                    let newItem = new Item(results[item]);
+                    newItem.clean();
+                    if (order) {
+                        order.items.push(newItem);
+                    } else {
+                        results[item].order.created_at = results[item].order.created_at.replace(" ", "T");
+                        results[item].order.updated_at = results[item].order.updated_at.replace(" ", "T");
+                        results[item].order.created_at = new Date(results[item].order.created_at);
+                        results[item].order.updated_at = new Date(results[item].order.updated_at);
+                        order = new Order(results[item].order);
+                        order.items.push(newItem);
+                        this.orders.push(order);
+                    }
                 }
             }
             this.dismissLoader();
@@ -146,19 +148,19 @@ export class ItemsPage implements OnInit {
     }
 
     openItem(item: Item) {
-        if (item.detailsvisible){
+        if (item.detailsvisible) {
             item.detailsvisible = false;
         } else {
             item.detailsvisible = true;
         }
     }
-    fulfillOrder(order:Order) {
+    fulfillOrder(order: Order) {
         let container = {
             "items": order.items
         };
         this.itemsServ.updateItemStatus(container).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after get Deliveries",);
+            console.log("after get Deliveries");
             let results = data.data;
             for (let one in results) {
                 //this.item = new Item(results[one]);
