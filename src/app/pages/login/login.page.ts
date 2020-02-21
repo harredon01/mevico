@@ -80,41 +80,44 @@ export class LoginPage implements OnInit {
         })
             .then(res => {
                 console.log(res);
-                let container = {"token": res.accessToken, "driver": "google"};
-                this.auth.checkSocialToken(container).subscribe((resp: any) => {
-                    if (resp.status == "success") {
-                        this.userData.setToken(resp.token);
-                        this.user.postLogin().then((value) => {
-                            this.dismissLoader();
-                            this.navCtrl.navigateRoot("tabs");
-                            this.events.publish("authenticated");
-                        }, (err) => {
-                            this._loadUserData();
-                            // Unable to log in
-                            let toast = this.toastCtrl.create({
-                                message: this.loginErrorString,
-                                duration: 3000,
-                                position: 'top'
-                            }).then(toast => toast.present());
-                        });
-                    } else {
-                        let toast = this.toastCtrl.create({
-                            message: this.loginErrorString,
-                            duration: 3000,
-                            position: 'top'
-                        }).then(toast => toast.present());
-                    }
-                    console.log("checkSocialToken result", resp);
+                this.verifyToken(res.accessToken, "google");
+            })
+            .catch(err => console.error(err));
+    }
+    verifyToken(token, platform) {
+        let container = {"token": token, "driver": platform};
+        this.auth.checkSocialToken(container).subscribe((resp: any) => {
+            if (resp.status == "success") {
+                this.userData.setToken(resp.token);
+                this.user.postLogin().then((value) => {
+                    this.dismissLoader();
+                    this.navCtrl.navigateRoot("tabs");
+                    this.events.publish("authenticated");
                 }, (err) => {
-                    console.log("checkSocialToken err", err);
+                    this._loadUserData();
+                    // Unable to log in
                     let toast = this.toastCtrl.create({
                         message: this.loginErrorString,
                         duration: 3000,
                         position: 'top'
                     }).then(toast => toast.present());
                 });
-            })
-            .catch(err => console.error(err));
+            } else {
+                let toast = this.toastCtrl.create({
+                    message: this.loginErrorString,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
+            }
+            console.log("checkSocialToken result", resp);
+        }, (err) => {
+            console.log("checkSocialToken err", err);
+            let toast = this.toastCtrl.create({
+                message: this.loginErrorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+        });
     }
 
     ngOnInit() {
