@@ -16,7 +16,7 @@ export class Item {
     variant_id: any;
     attributes:any;
     detailsvisible:boolean = false;
-    item_id: any;
+    item_id: any; 
 
   constructor(fields: any) {
     // Quick and dirty extend/assign fields to this model

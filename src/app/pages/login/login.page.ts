@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, LoadingController,Events} from '@ionic/angular';
+import {GooglePlus} from '@ionic-native/google-plus/ngx';
+import {NavController, ToastController, LoadingController, Events} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {UserService} from '../../services/user/user.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
+import {AuthService} from '../../services/auth/auth.service';
 import {ApiService} from '../../services/api/api.service';
 
 @Component({
@@ -37,9 +39,11 @@ export class LoginPage implements OnInit {
     private isUpdating: boolean;
     constructor(public spinnerDialog: SpinnerDialog,
         public navCtrl: NavController,
+        private googlePlus: GooglePlus,
         public user: UserService,
         public api: ApiService,
-        public events:Events,
+        public auth: AuthService,
+        public events: Events,
         public loadingCtrl: LoadingController,
         public userData: UserDataService,
         public iab: InAppBrowser,
@@ -67,6 +71,50 @@ export class LoginPage implements OnInit {
         } else {
             this.spinnerDialog.hide();
         }
+    }
+    loginGoogle() {
+        this.googlePlus.login({
+            'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
+            'webClientId': '650065312777-h6sq9leehcqo7732m0r8ot3gek1btig9.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
+            'offline': true // optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
+        })
+            .then(res => {
+                console.log(res);
+                let container = {"token": res.accessToken, "driver": "google"};
+                this.auth.checkSocialToken(container).subscribe((resp: any) => {
+                    if (resp.status == "success") {
+                        this.userData.setToken(resp.token);
+                        this.user.postLogin().then((value) => {
+                            this.dismissLoader();
+                            this.navCtrl.navigateRoot("tabs");
+                            this.events.publish("authenticated");
+                        }, (err) => {
+                            this._loadUserData();
+                            // Unable to log in
+                            let toast = this.toastCtrl.create({
+                                message: this.loginErrorString,
+                                duration: 3000,
+                                position: 'top'
+                            }).then(toast => toast.present());
+                        });
+                    } else {
+                        let toast = this.toastCtrl.create({
+                            message: this.loginErrorString,
+                            duration: 3000,
+                            position: 'top'
+                        }).then(toast => toast.present());
+                    }
+                    console.log("checkSocialToken result", resp);
+                }, (err) => {
+                    console.log("checkSocialToken err", err);
+                    let toast = this.toastCtrl.create({
+                        message: this.loginErrorString,
+                        duration: 3000,
+                        position: 'top'
+                    }).then(toast => toast.present());
+                });
+            })
+            .catch(err => console.error(err));
     }
 
     ngOnInit() {

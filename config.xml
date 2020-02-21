@@ -3,7 +3,7 @@
     <name>Mevico</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <preference name="loadUrlTimeoutValue" value="60000" />
     <allow-intent href="http://*/*" />
@@ -136,10 +136,10 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
     </plugin>
     <plugin name="onesignal-cordova-plugin" spec="^2.8.2" />
-    <engine name="ios" spec="^5.0.1" />
-    <engine name="android" spec="^8.1.0" />
     <plugin name="cordova-plugin-googleplus" spec="^8.4.0">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.650065312777-pme9rmfq9mp5ppiisjoemrf6d3np6cof" />
         <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
     </plugin>
+    <engine name="ios" spec="^5.1.1" />
+    <engine name="android" spec="^8.1.0" />
 </widget>

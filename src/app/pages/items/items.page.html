@@ -29,12 +29,14 @@
                     <div class="checkout__item"><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</div>
                     <div class="checkout__item"><strong>{{ 'CART_ITEM.PRICE' | translate }}: </strong> {{item.price | currency }}</div>
                     <div class="checkout__item"><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumConditions | currency }}</div>
-                    <ion-row class="appot-detail" *ngFor="let attr of item.attributes | keyvalue" *ngIf="item.detailsvisible">
-                             <ion-col class="detail" size="10">
-                            <span>{{attr.key}}</span>
-                            <span>{{attr.value}}</span>
-                        </ion-col>
-                    </ion-row>
+                    <div *ngIf="item.detailsvisible">
+                        <ion-row class="appot-detail" *ngFor="let attr of item.attributes | keyvalue">
+                                 <ion-col class="detail" size="10">
+                                <span>{{attr.key}}</span>
+                                <span>{{attr.value}}</span>
+                            </ion-col> 
+                        </ion-row>
+                    </div>
                 </ion-item>
                 <ion-button (click)="fulfillOrder(Order)">                
                     <h2>{{ 'ITEM_DETAIL.FULFILLED' | translate }}</h2>

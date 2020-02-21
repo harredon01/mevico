@@ -23,6 +23,11 @@ export class AuthService {
         let seq = this.api.post(endpoint, codes);
         return seq;
     }
+    checkSocialToken(data: any) {
+        let endpoint = '/auth/social';
+        let seq = this.api.post(endpoint, data);
+        return seq;
+    }
     /**
      * Send a POST request to our login endpoint with the data
      * the user entered on the form.

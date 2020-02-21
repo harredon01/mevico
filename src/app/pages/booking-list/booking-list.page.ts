@@ -79,10 +79,12 @@ export class BookingListPage implements OnInit {
     }
     
     scrollListVisible(index){
-        console.log("Index",index);
+        console.log("Index",index); 
         let arr = this.list.nativeElement.children;
         let item = arr[index-1];
-        item.scrollIntoView({behavior:"smooth",block:"center"});
+        if(item){
+            item.scrollIntoView({behavior:"smooth",block:"center"});
+        }
     }
     scrollToday(){
         let today = new Date();

@@ -18,9 +18,9 @@ export class Order {
     payment_id:string;
     recurring_type:any;
     is_editable:any;
-    items:any[];
-    order_conditions:any[];
-    order_addresses:any[];
+    items:any[]=[];
+    order_conditions:any[]=[];
+    order_addresses:any[]=[];
     attributes:any;
     merchant_id:any;
     created_at:any;

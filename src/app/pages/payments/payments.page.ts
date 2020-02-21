@@ -14,7 +14,7 @@ import {ApiService} from '../../services/api/api.service';
 })
 export class PaymentsPage implements OnInit {
 
-  currentItems: any[];
+    currentItems: any[]=[];
     private paymentsErrorString: string;
     private paymentsGetStartString: string;
     page: any;
