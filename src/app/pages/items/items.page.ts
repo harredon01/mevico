@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemsService} from '../../services/items/items.service';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, LoadingController} from '@ionic/angular';
+import {NavController, LoadingController,ToastController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Item} from '../../models/item';
+import {Order} from '../../models/order';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../../services/api/api.service';
 import {ParamsService} from '../../services/params/params.service';
@@ -13,10 +14,11 @@ import {ParamsService} from '../../services/params/params.service';
     styleUrls: ['./items.page.scss'],
 })
 export class ItemsPage implements OnInit {
-    private items: Item[] = [];
+    private orders: Order[] = [];
     private page: any = 0;
     private merchant: any;
-    private urlSearch:string="";
+    private urlSearch: string = "";
+    private fullfillError: string = "";
     private status: any;
     private queries: any[];
     private loadMore: boolean = false;
@@ -24,6 +26,7 @@ export class ItemsPage implements OnInit {
         public params: ParamsService,
         public activatedRoute: ActivatedRoute,
         public api: ApiService,
+        public toastCtrl:ToastController,
         public translateService: TranslateService,
         public navCtrl: NavController,
         public loadingCtrl: LoadingController,
@@ -39,14 +42,17 @@ export class ItemsPage implements OnInit {
             let container = {"name": value, "value": "unfulfilled"};
             vm.queries.push(container);
         });
+        this.translateService.get('ITEMS.ERROR_FULLFILL').subscribe(function (value) {
+            this.fullfillError = value;
+        });
 
         let container = this.params.getParams();
         this.merchant = container.merchant;
-        if(container.settings){
-            this.urlSearch = "tabs/settings/merchants/"+this.merchant.id;
+        if (container.settings) {
+            this.urlSearch = "tabs/settings/merchants/" + this.merchant.id;
         } else {
             let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-            this.urlSearch = 'tabs/categories/'+category+'/merchant/'+this.merchant.id;
+            this.urlSearch = 'tabs/categories/' + category + '/merchant/' + this.merchant.id;
         }
         this.status = "unfulfilled"
     }
@@ -55,19 +61,27 @@ export class ItemsPage implements OnInit {
 
     ionViewDidEnter() {
         this.page = 0;
-        this.items = [];
+        this.orders = [];
         this.getItems();
     }
     selectQuery() {
         this.page = 0;
-        this.items = [];
+        this.orders = [];
         this.getItems();
+    }
+    getOrder(id) {
+        for (let item in this.orders) {
+            if (id == this.orders[item].id) {
+                return this.orders[item];
+            }
+        }
+        return null;
     }
 
     getItems() {
         this.showLoader();
         this.page++;
-        let where = "merchant_id=" + this.merchant + "&fulfillment=" + this.status + "&page=" + this.page + "&paid_status=paid";
+        let where = "merchant_id=" + this.merchant + "&fulfillment=" + this.status + "&page=" + this.page + "&paid_status=paid&includes=order.orderAddresses";
         this.itemsServ.getItems(where).subscribe((data: any) => {
             let results = data.data;
             if (data.page == data.last_page) {
@@ -76,10 +90,20 @@ export class ItemsPage implements OnInit {
                 this.loadMore = true;
             }
             for (let item in results) {
-                results[item].starts_at = new Date(results[item].starts_at);
-                results[item].ends_at = new Date(results[item].ends_at);
+                let order = this.getOrder(results[item].order.id);
                 let newItem = new Item(results[item]);
-                this.items.push(newItem);
+                newItem.clean();
+                if (order) {
+                    order.items.push(newItem);
+                } else {
+                    results[item].order.created_at = results[item].order.created_at.replace(" ", "T");
+                    results[item].order.updated_at = results[item].order.updated_at.replace(" ", "T");
+                    results[item].order.created_at = new Date(results[item].order.created_at);
+                    results[item].order.updated_at = new Date(results[item].order.updated_at);
+                    order = new Order(results[item].order);
+                    order.items.push(newItem);
+                    this.orders.push(order);
+                }
             }
             this.dismissLoader();
         }, (err) => {
@@ -122,8 +146,33 @@ export class ItemsPage implements OnInit {
     }
 
     openItem(item: Item) {
-        let param = {"item": item};
-        this.params.setParams(param);
-        this.navCtrl.navigateForward(this.urlSearch + '/items/' + item.id);
+        if (item.detailsvisible){
+            item.detailsvisible = false;
+        } else {
+            item.detailsvisible = true;
+        }
+    }
+    fulfillOrder(order:Order) {
+        let container = {
+            "items": order.items
+        };
+        this.itemsServ.updateItemStatus(container).subscribe((data: any) => {
+            this.dismissLoader();
+            console.log("after get Deliveries",);
+            let results = data.data;
+            for (let one in results) {
+                //this.item = new Item(results[one]);
+            }
+            console.log(JSON.stringify(data));
+        }, (err) => {
+            this.dismissLoader();
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+                message: this.fullfillError,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
     }
 }
