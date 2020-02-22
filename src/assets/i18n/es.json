@@ -850,7 +850,10 @@
         "ID_ERROR": "Tu documento de identificación es obligatorio",
         "DOC_TYPE": "Tipo de documento",
         "DOC_TYPE_ERROR": "verifica el tipo de documento",
-        "GET_USER_ERROR": "Error consiguiendo los datos de usuario"
+        "GET_USER_ERROR": "Error consiguiendo los datos de usuario",
+        "CEL_TITLE":"Ingresa tu cel!",
+        "CEL_DESC":"Lo necesitamos para comunicarnos por si hay un problema en tu pedido.",
+        "CEL_ERROR":"Error guardando tu cel"
     },
     "DAYS": {
         "MONDAY": "Lunes",

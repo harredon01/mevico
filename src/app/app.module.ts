@@ -10,6 +10,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {Contacts } from '@ionic-native/contacts/ngx';
 import {FileTransfer} from '@ionic-native/file-transfer/ngx';
 import {GooglePlus} from '@ionic-native/google-plus/ngx';
+import {Facebook} from '@ionic-native/facebook/ngx';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
@@ -55,6 +56,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         SpinnerDialog,
         Geolocation,
         GooglePlus,
+        Facebook,
         OneSignal,
         ImagePicker,
         SQLite,

@@ -135,6 +135,10 @@ export class UserService {
 
         return seq;
     }
+    registerPhone(data: any) {
+        let seq = this.api.post('/user/phone', data);
+        return seq;
+    }
     /**
      * Send a POST request to our signup endpoint with the data
      * the user entered on the form.

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
+import {Facebook, FacebookLoginResponse} from '@ionic-native/facebook/ngx';
 import {GooglePlus} from '@ionic-native/google-plus/ngx';
 import {NavController, ToastController, LoadingController, Events} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
@@ -40,6 +41,7 @@ export class LoginPage implements OnInit {
     constructor(public spinnerDialog: SpinnerDialog,
         public navCtrl: NavController,
         private googlePlus: GooglePlus,
+        private fb: Facebook,
         public user: UserService,
         public api: ApiService,
         public auth: AuthService,
@@ -83,6 +85,11 @@ export class LoginPage implements OnInit {
                 this.verifyToken(res.accessToken, "google");
             })
             .catch(err => console.error(err));
+    }
+    loginFacebook() {
+        this.fb.login(['public_profile', 'user_friends', 'email'])
+            .then((res: FacebookLoginResponse) => {console.log('Logged into Facebook!', res); this.verifyToken(res.authResponse.accessToken, "facebook");})
+            .catch(e => console.log('Error logging into Facebook', e));
     }
     verifyToken(token, platform) {
         let container = {"token": token, "driver": platform};

@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
-import {NavController, ModalController, ToastController, LoadingController, Events, MenuController} from '@ionic/angular';
+import {NavController, ModalController, ToastController, LoadingController, Events, MenuController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {CartService} from '../../services/cart/cart.service'
 import {OrderDataService} from '../../services/order-data/order-data.service'
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
+import {UserService} from '../../services/user/user.service';
 import {ApiService} from '../../services/api/api.service';
 @Component({
     selector: 'app-merchant-categories',
@@ -16,11 +17,16 @@ import {ApiService} from '../../services/api/api.service';
 export class MerchantCategoriesPage implements OnInit {
     location: string = "n1";
     categoriesErrorGet: string = "";
+    celTitle: string = "";
+    celDesc: string = "";
+    celError: string = "";
     items: any[];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
+        public alertController: AlertController,
         public params: ParamsService,
         public userData: UserDataService,
+        public userS: UserService,
         public api: ApiService,
         public menu: MenuController,
         public toastCtrl: ToastController,
@@ -36,6 +42,15 @@ export class MerchantCategoriesPage implements OnInit {
         this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
             this.categoriesErrorGet = value;
         });
+        this.translateService.get('USER.CEL_TITLE').subscribe((value) => {
+            this.celTitle = value;
+        });
+        this.translateService.get('USER.CEL_DESC').subscribe((value) => {
+            this.celDesc = value;
+        });
+        this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
+            this.celError = value;
+        });
         this.getCart();
         this.events.publish("authenticated");
         this.events.subscribe('cart:orderFinished', () => {
@@ -43,10 +58,73 @@ export class MerchantCategoriesPage implements OnInit {
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
         this.getItems();
+        this.checkPhone();
     }
     /**
        * Navigate to the detail page for this item.
        */
+    checkPhone() {
+        if (this.userData._user.cellphone == "11") {
+            this.presentAlertPrompt();
+        }
+    }
+    async presentAlertPrompt() {
+        const alert = await this.alertController.create({
+            header: this.celTitle,
+            subHeader: this.celDesc,
+            inputs: [
+                {
+                    name: 'area_code',
+                    type: 'tel',
+                    placeholder: '57',
+                    value: '57',
+                },
+                {
+                    name: 'cellphone',
+                    type: 'tel',
+                    placeholder: '3101111111'
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        console.log('Confirm Cancel');
+                    }
+                }, {
+                    text: 'Ok',
+                    handler: (data) => {
+                        console.log('Confirm Ok', data);
+                        this.savePhone(data);
+                    }
+                }
+            ]
+        });
+        await alert.present();
+    }
+    savePhone(data) {
+        this.showLoader();
+        let query = "merchants";
+        this.userS.registerPhone(data).subscribe((resp: any) => {
+            this.dismissLoader();
+            console.log("after registerPhone");
+            console.log(JSON.stringify(resp));
+            if(resp.status == "success"){
+                this.userS.postLogin();
+            }
+        }, (err) => {
+            this.dismissLoader();
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+                message: this.celError,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
+    }
     getItems() {
         this.showLoader();
         let query = "merchants";
