@@ -87,7 +87,7 @@ export class LoginPage implements OnInit {
             .catch(err => console.error(err));
     }
     loginFacebook() {
-        this.fb.login(['public_profile', 'user_friends', 'email'])
+        this.fb.login(['public_profile','email'])
             .then((res: FacebookLoginResponse) => {console.log('Logged into Facebook!', res); this.verifyToken(res.authResponse.accessToken, "facebook");})
             .catch(e => console.log('Error logging into Facebook', e));
     }
