@@ -54,6 +54,14 @@ export class MapService {
             }
 
         });
+        createdmap.on(GoogleMapsEvent.MAP_LONG_CLICK).subscribe((params: any[]) => {
+            console.log("Map clicked", params[0]);
+            if (this.mapData.activeType == "Address" || this.mapData.activeType == "Location") {
+                console.log("Map active ");
+                this.setMarkerPosition(params[0].lat, params[0].lng, this.mapData.newAddressMarker);
+                this.triggerDragend(this.mapData.newAddressMarker);
+            }
+        });
         createdmap.on(GoogleMapsEvent.MAP_READY).subscribe((params: any[]) => {
             this.createDefaultMarkers();
             console.log("Map created");
