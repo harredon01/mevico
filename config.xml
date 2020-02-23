@@ -98,6 +98,12 @@
         <config-file parent="NSCameraUsageDescription" platform="ios" target="*-Info.plist">
             <string>You can take photos</string>
         </config-file>
+        <preference name="deployment-target" value="9.0" />
+        <preference name="pods_use_frameworks" value="true" />
+        <pod name="GoogleSignIn" version="4.4.0" />
+        <pod name="FBSDKCoreKit" version="5.8.0" />
+        <pod name="FBSDKLoginKit" version="5.8.0" />
+        <pod name="FBSDKShareKit" version="5.8.0" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
