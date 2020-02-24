@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, ModalController, NavParams, LoadingController } from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -21,6 +21,7 @@ export class AddressCreatePage implements OnInit {
     constructor(public navCtrl: NavController,
         public modalCtrl: ModalController,
         formBuilder: FormBuilder,
+        private cdr: ChangeDetectorRef,
         public toastCtrl: ToastController,
         public addresses: AddressesService,
         public loadingCtrl: LoadingController,
@@ -129,6 +130,7 @@ export class AddressCreatePage implements OnInit {
     saveAddress(address: any) {
         this.submitAttempt = true;
         console.log("saveAddress");
+        this.cdr.detectChanges();
         if (!this.form.valid) {return;}
 
         return new Promise((resolve, reject) => {
