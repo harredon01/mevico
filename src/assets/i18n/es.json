@@ -226,6 +226,7 @@
     "CART": {
         "TITLE": "Carrito",
         "DESCRIPTION": "mi pedido",
+        "PAY_TITLE": "Quieres ir a pagar?",
         "ERROR_GET": "Error buscando el carrito",
         "ERROR_EMPTY": "No tienes productos para comprar",
         "ERROR_UPDATE": "Error actualizando el carrito",

@@ -21,7 +21,8 @@ export class MerchantProductsPage implements OnInit {
     categories: any[] = [];
     options: any[];
     urlSearch: string = "";
-    isOwner:boolean = false;
+    payTitle: string = "";
+    isOwner: boolean = false;
     slides: any[];
     loading: any;
     merchantObj: {
@@ -47,7 +48,7 @@ export class MerchantProductsPage implements OnInit {
     private minAmount: string;
 
     constructor(public navCtrl: NavController,
-    public activatedRoute: ActivatedRoute,
+        public activatedRoute: ActivatedRoute,
         public productsServ: ProductsService,
         public toastCtrl: ToastController,
         public api: ApiService,
@@ -63,6 +64,9 @@ export class MerchantProductsPage implements OnInit {
         public translateService: TranslateService) {
         this.translateService.get('CART.ERROR_UPDATE').subscribe((value) => {
             this.cartErrorString = value;
+        });
+        this.translateService.get('CART.PAY_TITLE').subscribe((value) => {
+            this.payTitle = value;
         })
         this.translateService.get('INPUTS.SHOW_MORE').subscribe((value) => {
             this.showMoreText = value;
@@ -87,11 +91,11 @@ export class MerchantProductsPage implements OnInit {
         let paramsSent = this.params.getParams();
         this.merchant = paramsSent.objectId;
         this.isOwner = paramsSent.owner;
-        if(paramsSent.settings){
-            this.urlSearch = "tabs/settings/merchants/"+this.merchant;
+        if (paramsSent.settings) {
+            this.urlSearch = "tabs/settings/merchants/" + this.merchant;
         } else {
             let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-            this.urlSearch = 'tabs/categories/'+category+'/merchant/'+this.merchant;
+            this.urlSearch = 'tabs/categories/' + category + '/merchant/' + this.merchant;
         }
         this.products = [];
         this.possibleAmounts = [];
@@ -119,17 +123,45 @@ export class MerchantProductsPage implements OnInit {
     addCart(item: any) {
         this.addCartItem(item);
     }
-    editProduct(productId:any) {
-        if (productId==0){
+    editProduct(productId: any) {
+        if (productId == 0) {
             productId = null;
         }
-        console.log("Entering edit prod",this.urlSearch+"/products/edit/"+productId);
-        this.navCtrl.navigateForward(this.urlSearch+"/products/edit/"+productId);
+        console.log("Entering edit prod", this.urlSearch + "/products/edit/" + productId);
+        this.navCtrl.navigateForward(this.urlSearch + "/products/edit/" + productId);
     }
-    editImages(productId:any) {
-        let container = {"type":"Product","objectId":productId};
+    editImages(productId: any) {
+        let container = {"type": "Product", "objectId": productId};
         this.params.setParams(container);
-        this.navCtrl.navigateForward(this.urlSearch+"/products/images/"+productId);
+        this.navCtrl.navigateForward(this.urlSearch + "/products/images/" + productId);
+    }
+    presentAlertPay(item:any) {
+        this.alertCtrl.create({
+            header: this.payTitle,
+            inputs: [],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        console.log('Confirm Cancel');
+                    }
+                }, {
+                    text: 'Ok',
+                    handler: (resp) => {
+                        console.log('Confirm Ok', item);
+                        if (item == "Shipping") {
+                            this.params.setParams({"merchant_id": this.merchant});
+                            this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+                        } else if (item == "Prepare") {
+                            this.params.setParams({"merchant_id": this.merchant});
+                            this.navCtrl.navigateForward('tabs/checkout/prepare');
+                        }
+                    }
+                }
+            ]
+        }).then(toast => toast.present());
     }
     showLoader() {
         if (document.URL.startsWith('http')) {
@@ -270,6 +302,7 @@ export class MerchantProductsPage implements OnInit {
         }
         this.calculateTotals("update cart item");
         this.cartUpdateMessage();
+        this.presentAlertPay(resp.item);
     }
     handleCartError(resp: any, item) {
         console.log("Error", resp);
@@ -402,7 +435,7 @@ export class MerchantProductsPage implements OnInit {
         this.productsServ.getProductsMerchant(this.merchant, this.page).subscribe((resp) => {
             if (resp.products_total > 0) {
                 this.categories = this.productsServ.buildProductInformation(resp, this.merchant);
-                console.log("Result build product",this.categories);
+                console.log("Result build product", this.categories);
                 this.merchantObj.merchant_name = this.categories[0].products[0].merchant_name;
                 this.merchantObj.merchant_description = this.categories[0].products[0].merchant_description;
                 this.merchantObj.src = this.categories[0].products[0].src;
@@ -456,8 +489,8 @@ export class MerchantProductsPage implements OnInit {
         const {data} = await addModal.onDidDismiss();
         if (data == "Shipping") {
             this.params.setParams({"merchant_id": this.merchant});
-            this.navCtrl.navigateForward('tabs/checkout/shipping/'+this.merchant);
-        }else if (data == "Prepare") {
+            this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+        } else if (data == "Prepare") {
             this.params.setParams({"merchant_id": this.merchant});
             this.navCtrl.navigateForward('tabs/checkout/prepare');
         }
