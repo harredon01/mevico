@@ -4,6 +4,7 @@ import {NavController, ToastController, ModalController, NavParams, LoadingContr
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {AddressesService} from '../../services/addresses/addresses.service';
+import {UserDataService} from '../../services/user-data/user-data.service';
 @Component({
   selector: 'app-address-create',
   templateUrl: './address-create.page.html',
@@ -22,6 +23,7 @@ export class AddressCreatePage implements OnInit {
         public modalCtrl: ModalController,
         formBuilder: FormBuilder,
         private cdr: ChangeDetectorRef,
+        private userData: UserDataService,
         public toastCtrl: ToastController,
         public addresses: AddressesService,
         public loadingCtrl: LoadingController,
@@ -96,7 +98,7 @@ export class AddressCreatePage implements OnInit {
                 notes: notes,
                 postal: postal,
                 lat: lat,
-                phone: "",
+                phone: this.userData._user.cellphone,
                 name: "",
                 long: long,
                 type: navParams.get('type'),
