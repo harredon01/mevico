@@ -1,0 +1,164 @@
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {NavController, ToastController, ModalController, NavParams, LoadingController } from '@ionic/angular';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {AuthService} from '../../services/auth/auth.service';
+@Component({
+  selector: 'app-forgot-pass',
+  templateUrl: './forgot-pass.page.html',
+  styleUrls: ['./forgot-pass.page.scss'],
+})
+export class ForgotPassPage implements OnInit {
+
+  isReadyToSave: boolean;
+    item: any;
+    loading: any;
+    submitAttempt: boolean;
+    form: FormGroup;
+    private passwordErrorStringSave: string;
+
+    constructor(public navCtrl: NavController,
+        public modalCtrl: ModalController,
+        formBuilder: FormBuilder,
+        private cdr: ChangeDetectorRef,
+        private auth: AuthService,
+        public toastCtrl: ToastController,
+        public loadingCtrl: LoadingController,
+        public translateService: TranslateService,
+        public navParams: NavParams,
+        private spinnerDialog: SpinnerDialog) {
+        this.submitAttempt = false;
+        this.translateService.get('FORGOT_PASS.ERROR_SAVE').subscribe((value) => {
+            this.passwordErrorStringSave = value;
+        });
+        this.form = formBuilder.group({
+            email: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-.]*\.[a-zA-Z]{2,}'), Validators.required])],
+            token: ['', Validators.required],
+            password: ['', Validators.required],
+            password_confirmation: ['', Validators.required],
+        });
+        let email: string = navParams.get('email');
+        if (email) {
+            let container = {
+                email: email,
+                token: '',
+                password: '',
+                password_confirmation: '',
+            };
+            console.log("Setting form values: ", container);
+            this.isReadyToSave = true;
+            this.form.setValue(container);
+
+        } else {
+            let container = {
+                email: email,
+                token: '',
+                password: '',
+                password_confirmation: '',
+            };
+            console.log("Setting form values2: ", container);
+            this.form.setValue(container);
+        }
+        // Watch the form for changes, and
+        this.form.valueChanges.subscribe((v) => {
+            console.log("form change", v);
+            this.isReadyToSave = this.form.valid;
+        });
+    }
+
+    ionViewDidLoad() {
+
+    }
+    dismissLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.dismiss();
+        } else {
+            this.spinnerDialog.hide();
+        }
+    }
+    /**
+           * Send a POST request to our signup endpoint with the data
+           * the user entered on the form.
+           */
+    submitChange(passwordData: any) {
+        this.submitAttempt = true;
+        console.log("saveAddress");
+        this.cdr.detectChanges();
+        if (!this.form.valid) {return;}
+
+        return new Promise((resolve, reject) => {
+            console.log("Save Address", passwordData);
+            if (passwordData) {
+                this.showLoader();
+                this.auth.updateForgotPassword(passwordData).subscribe((resp: any) => {
+                    this.dismissLoader();
+                    console.log("Save Address result", resp);
+                    if (resp.status == "success") {
+                        resolve(resp.access_token);
+                    } else {
+                        resolve(null);
+                    }
+                }, (err) => {
+                    this.dismissLoader();
+                    reject(err);
+                });
+            } else {
+                resolve(null);
+            }
+
+        });
+
+    }
+
+
+    /**
+     * The user cancelled, so we dismiss without sending data back.
+     */
+    cancel() {
+        this.modalCtrl.dismiss();
+    }
+
+    /**
+     * The user is done and wants to create the item, so return it
+     * back to the presenter.
+     */
+    done() {
+        if (!this.form.valid) {return;}
+        this.submitChange(this.form.value).then((value) => {
+            console.log("saveAddress result", value);
+            if (value) {
+                this.modalCtrl.dismiss(value);
+            } else {
+                // Unable to log in
+                this.toastCtrl.create({
+                    message: this.passwordErrorStringSave,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
+            }
+        }).catch((error) => {
+            console.log('Error saveAddress', error);
+            this.toastCtrl.create({
+                message: this.passwordErrorStringSave,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+        });;
+
+    }
+    showLoader() {
+        if (document.URL.startsWith('http')) {
+            this.loadingCtrl.create({
+                spinner: 'crescent',
+                backdropDismiss: true
+            }).then(toast => toast.present());
+        } else {
+            this.spinnerDialog.show();
+        }
+    }
+
+  ngOnInit() {
+  }
+
+}

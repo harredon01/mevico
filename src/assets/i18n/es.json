@@ -439,6 +439,11 @@
         "CATEGORY":"Nueva Categoria",
         "PURCHASE_TITLE":"Opciones de compra"
     },
+    "FORGOT_PASS": {
+        "TITLE": "Recuperar contraseña",
+        "DESCRIPTION": "Ingresa el código que recibiste por correo ademas de los demas campos para actualizar tu contraseña. Gracias.",
+        "ERROR_SAVE":"Error actualizando tu contraseña. Porfavor intenta mas tarde."
+    },
     "HOME": {
         "TITLE": "Home",
         "NOTIF_TITLE":"Notificaciones",

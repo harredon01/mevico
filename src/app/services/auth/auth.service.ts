@@ -28,6 +28,22 @@ export class AuthService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
+    requestForgotPassword(code: any) {
+        let endpoint = '/auth/password_request';
+        let codes = {code: code};
+        let seq = this.api.post(endpoint, codes);
+        return seq;
+    }
+    updateForgotPassword(data: any) {
+        let endpoint = '/auth/password_request_update';
+        let seq = this.api.post(endpoint, data);
+        return seq;
+    }
+    verifyTwoFactorToken(data: any) {
+        let endpoint = '/auth/verify_two_factor';
+        let seq = this.api.post(endpoint, data);
+        return seq;
+    }
     /**
      * Send a POST request to our login endpoint with the data
      * the user entered on the form.
