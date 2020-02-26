@@ -441,7 +441,7 @@
     },
     "FORGOT_PASS": {
         "TITLE": "Recuperar contraseña",
-        "DESCRIPTION": "Ingresa el código que recibiste por correo ademas de los demas campos para actualizar tu contraseña. Gracias.",
+        "DESC": "Ingresa el código que recibiste por correo ademas de los demas campos para actualizar tu contraseña. Gracias.",
         "ERROR_SAVE":"Error actualizando tu contraseña. Porfavor intenta mas tarde."
     },
     "HOME": {
@@ -491,6 +491,8 @@
         "DESCRIPTION": "ingresa usuario y contraseña",
         "LOGIN_START": "Autenticando",
         "FORGOT_PASS": "¿Olvido su contraseña?",
+        "FORGOT": "Ingresa tu correo",
+        "FORGOT_ERROR": "No existe una cuenta con ese correo",
         "LOGIN_ERROR": "Hubo un error, por favor verifica tus datos",
         "UPDATE_START": "Espera mientras actualizamos tu aplicación",
         "UPDATE_ERROR": "Hubo un error actualizando tu aplicación"
@@ -844,6 +846,8 @@
         "EMAIL_ERROR": "El correo es obligatorio",
         "MOBILE": "Ingresa tu celular",
         "MOBILE_ERROR": "Tu celular es obligatorio",
+        "TOKEN": "Ingresa el código que recibiste por correo",
+        "TOKEN_ERROR": "El código es obligatorio",
         "PASSWORD": "Ingresa tu contraseña",
         "AREA_CODE": "Ingresa tu código de área",
         "PASSWORD_ERROR": "verifica la contraseña debe ser mínimo 6 caracteres",

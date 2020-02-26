@@ -116,7 +116,7 @@ export class ForgotPassPage implements OnInit {
      * The user cancelled, so we dismiss without sending data back.
      */
     cancel() {
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss(null);
     }
 
     /**
@@ -124,9 +124,9 @@ export class ForgotPassPage implements OnInit {
      * back to the presenter.
      */
     done() {
-        if (!this.form.valid) {return;}
-        this.submitChange(this.form.value).then((value) => {
-            console.log("saveAddress result", value);
+        if (!this.form.valid) {return;} 
+        this.submitChange(this.form.value).then((value:any) => {
+            console.log("update password result", value);
             if (value) {
                 this.modalCtrl.dismiss(value);
             } else {

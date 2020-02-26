@@ -4,7 +4,7 @@
         <ion-buttons class="my-addresses__button my-addresses__button--left" slot="secondary">
             <ion-button (click)="cancel()">
                 <span color="primary" showWhen="ios">
-                    {{ 'CANCEL_BUTTON' | translate }}
+                    {{ 'INPUTS.CANCEL' | translate }}
                 </span>
                 <ion-icon class="close-button" name="md-close" showWhen="android,windows"></ion-icon>
             </ion-button>
@@ -22,10 +22,6 @@
 <ion-content class="my-addresses">
     <div class="my-addresses__wrapper">
         <form [formGroup]="form" (ngSubmit)="done()">
-            <input type="hidden" formControlName="lat" />
-            <input type="hidden" formControlName="long" />
-            <input type="hidden" formControlName="address_id" />
-            <input type="hidden" formControlName="postal" />
             <ion-list>
                 <ion-item>
                     <p>{{ 'FORGOT_PASS.DESC' | translate }}</p>
@@ -59,15 +55,6 @@
                 </ion-item>
                 <ion-item *ngIf="!form.controls.password_confirmation.valid  && (form.controls.password_confirmation.dirty || submitAttempt)">
                     <p>{{ 'USER.REPEAT_PASSWORD_ERROR' | translate }}</p>
-                </ion-item>
-
-
-                <ion-item>
-                    <ion-label position="floating">{{ 'USER.PHONE' | translate }}</ion-label>
-                    <ion-input type="tel" formControlName="phone"></ion-input>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.phone.valid  && (form.controls.phone.dirty || submitAttempt)">
-                    <p>{{ 'USER.PHONE_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>

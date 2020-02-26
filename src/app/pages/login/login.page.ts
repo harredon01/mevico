@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Facebook, FacebookLoginResponse} from '@ionic-native/facebook/ngx';
 import {GooglePlus} from '@ionic-native/google-plus/ngx';
-import {NavController, ToastController, LoadingController, Events} from '@ionic/angular';
+import {NavController, ToastController, LoadingController, Events, AlertController, ModalController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {UserService} from '../../services/user/user.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {AuthService} from '../../services/auth/auth.service';
 import {ApiService} from '../../services/api/api.service';
+import {ForgotPassPage} from '../forgot-pass/forgot-pass.page';
 
 @Component({
     selector: 'app-login',
@@ -37,6 +38,8 @@ export class LoginPage implements OnInit {
     // Our translated text strings
     private updateErrorString: string;
     private updateStartString: string;
+    private forgotErrorString: string;
+    private forgotString: string;
     private isUpdating: boolean;
     constructor(public spinnerDialog: SpinnerDialog,
         public navCtrl: NavController,
@@ -44,6 +47,8 @@ export class LoginPage implements OnInit {
         private fb: Facebook,
         public user: UserService,
         public api: ApiService,
+        private alertsCtrl: AlertController,
+        private modalCtrl: ModalController,
         public auth: AuthService,
         public events: Events,
         public loadingCtrl: LoadingController,
@@ -55,6 +60,12 @@ export class LoginPage implements OnInit {
 
         this.translateService.get('LOGIN.LOGIN_ERROR').subscribe((value) => {
             this.loginErrorString = value;
+        });
+        this.translateService.get('LOGIN.FORGOT').subscribe((value) => {
+            this.forgotString = value;
+        });
+        this.translateService.get('LOGIN.FORGOT_ERROR').subscribe((value) => {
+            this.forgotErrorString = value;
         });
         this.translateService.get('LOGIN.LOGIN_START').subscribe((value) => {
             this.loginStartString = value;
@@ -74,6 +85,70 @@ export class LoginPage implements OnInit {
             this.spinnerDialog.hide();
         }
     }
+    async presentAlertForgotPass() {
+        const alert = await this.alertsCtrl.create({
+            subHeader: this.forgotString,
+            inputs: [
+                {
+                    name: 'email',
+                    type: 'email',
+                    placeholder: 'camila@lonchis.com.co',
+                    value:this.account.username
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        console.log('Confirm Cancel');
+                    }
+                }, {
+                    text: 'Ok',
+                    handler: (data) => {
+                        console.log('Confirm Ok', data);
+                        this.submitForgot(data);
+                    }
+                }
+            ]
+        });
+        await alert.present();
+    }
+    async performForgotPass(container) {
+        let addModal = await this.modalCtrl.create({
+            component: ForgotPassPage,
+            componentProps: container 
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        if (data) {
+            console.log("Process complete, address created", data);
+            this.postTokenAuth(data);
+        }
+    }
+    submitForgot(data) {
+        this.auth.requestForgotPassword(data).subscribe((resp: any) => {
+            console.log("Resp",resp);
+            if (resp.status == "success") {
+                this.performForgotPass(data);
+            } else {
+                this.toastCtrl.create({
+                    message: this.forgotErrorString,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
+            }
+            console.log("requestForgotPassword result", resp);
+        }, (err) => {
+            console.log("requestForgotPassword err", err);
+            this.toastCtrl.create({
+                message: this.forgotErrorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+        });
+    }
     loginGoogle() {
         this.googlePlus.login({
             'webClientId': '650065312777-h6sq9leehcqo7732m0r8ot3gek1btig9.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
@@ -86,7 +161,7 @@ export class LoginPage implements OnInit {
             .catch(err => console.error(err));
     }
     loginFacebook() {
-        this.fb.login(['public_profile','email'])
+        this.fb.login(['public_profile', 'email'])
             .then((res: FacebookLoginResponse) => {console.log('Logged into Facebook!', res); this.verifyToken(res.authResponse.accessToken, "facebook");})
             .catch(e => console.log('Error logging into Facebook', e));
     }
@@ -94,20 +169,7 @@ export class LoginPage implements OnInit {
         let container = {"token": token, "driver": platform};
         this.auth.checkSocialToken(container).subscribe((resp: any) => {
             if (resp.status == "success") {
-                this.userData.setToken(resp.token);
-                this.user.postLogin().then((value) => {
-                    this.dismissLoader();
-                    this.navCtrl.navigateRoot("tabs");
-                    this.events.publish("authenticated");
-                }, (err) => {
-                    this._loadUserData();
-                    // Unable to log in
-                    let toast = this.toastCtrl.create({
-                        message: this.loginErrorString,
-                        duration: 3000,
-                        position: 'top'
-                    }).then(toast => toast.present());
-                });
+                this.postTokenAuth(resp.token);
             } else {
                 let toast = this.toastCtrl.create({
                     message: this.loginErrorString,
@@ -118,6 +180,22 @@ export class LoginPage implements OnInit {
             console.log("checkSocialToken result", resp);
         }, (err) => {
             console.log("checkSocialToken err", err);
+            let toast = this.toastCtrl.create({
+                message: this.loginErrorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+        });
+    }
+    postTokenAuth(token) {
+        this.userData.setToken(token);
+        this.user.postLogin().then((value) => {
+            this.dismissLoader();
+            this.navCtrl.navigateRoot("tabs");
+            this.events.publish("authenticated");
+        }, (err) => {
+            this._loadUserData();
+            // Unable to log in
             let toast = this.toastCtrl.create({
                 message: this.loginErrorString,
                 duration: 3000,
@@ -137,7 +215,7 @@ export class LoginPage implements OnInit {
                 this.userData.setToken(value);
                 this.user.postLogin().then((value) => {
                     this.dismissLoader();
-                    this.navCtrl.navigateRoot("tabs");
+                    this.navCtrl.navigateRoot("tabs/settings/addresses");  
                     this.events.publish("authenticated");
                 }, (err) => {
                     this._loadUserData();

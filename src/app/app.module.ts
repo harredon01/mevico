@@ -23,6 +23,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {CartPageModule} from './pages/cart/cart.module'
 import {CommentsPageModule} from './pages/comments/comments.module'
 import {BookingDetailPageModule} from './pages/booking-detail/booking-detail.module'
+import {ForgotPassPageModule} from './pages/forgot-pass/forgot-pass.module'
 import {AddressCreatePageModule} from './pages/address-create/address-create.module'
 import {AvailabilityCreatePageModule} from './pages/availability-create/availability-create.module'
 export function HttpLoaderFactory(http: HttpClient) {
@@ -45,6 +46,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         AppRoutingModule,
         CartPageModule,
         AddressCreatePageModule,
+        ForgotPassPageModule,
         BookingDetailPageModule,
         CommentsPageModule,
         AvailabilityCreatePageModule],

@@ -28,10 +28,9 @@ export class AuthService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
-    requestForgotPassword(code: any) {
+    requestForgotPassword(data: any) {
         let endpoint = '/auth/password_request';
-        let codes = {code: code};
-        let seq = this.api.post(endpoint, codes);
+        let seq = this.api.post(endpoint, data);
         return seq;
     }
     updateForgotPassword(data: any) {
