@@ -15,6 +15,7 @@ export class ForgotPassPage implements OnInit {
     item: any;
     loading: any;
     submitAttempt: boolean;
+    passwordError: boolean = false;
     form: FormGroup;
     private passwordErrorStringSave: string;
 
@@ -82,8 +83,7 @@ export class ForgotPassPage implements OnInit {
            * the user entered on the form.
            */
     submitChange(passwordData: any) {
-        this.submitAttempt = true;
-        console.log("saveAddress");
+        
         this.cdr.detectChanges();
         if (!this.form.valid) {return;}
 
@@ -124,8 +124,16 @@ export class ForgotPassPage implements OnInit {
      * back to the presenter.
      */
     done() {
+        this.passwordError = false;
+        this.submitAttempt = true;
+        let container = this.form.value;
+        if(container.password != container.password_confirmation){
+            this.passwordError = true;
+            return;
+        }
+        console.log("saveAddress");
         if (!this.form.valid) {return;} 
-        this.submitChange(this.form.value).then((value:any) => {
+        this.submitChange(container).then((value:any) => {
             console.log("update password result", value);
             if (value) {
                 this.modalCtrl.dismiss(value);

@@ -53,7 +53,7 @@
                     <ion-label position="floating">{{ 'USER.REPEAT_PASSWORD' | translate }}</ion-label>
                     <ion-input type="text" formControlName="password_confirmation"></ion-input>
                 </ion-item>
-                <ion-item *ngIf="!form.controls.password_confirmation.valid  && (form.controls.password_confirmation.dirty || submitAttempt)">
+                <ion-item *ngIf="(!form.controls.password_confirmation.valid  && (form.controls.password_confirmation.dirty || submitAttempt))||passwordError">
                     <p>{{ 'USER.REPEAT_PASSWORD_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
