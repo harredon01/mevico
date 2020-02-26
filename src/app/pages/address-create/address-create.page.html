@@ -3,6 +3,9 @@
         <ion-title>{{ 'ADDRESS_CREATE.TITLE' | translate }}</ion-title>
         <ion-buttons class="my-addresses__button my-addresses__button--left" slot="secondary">
             <ion-button (click)="cancel()">
+                <span color="primary" showWhen="ios">
+                    {{ 'INPUTS.CANCEL' | translate }}
+                </span>
                 <ion-icon class="close-button" name="md-close" showWhen="android,windows"></ion-icon>
             </ion-button>
         </ion-buttons>
