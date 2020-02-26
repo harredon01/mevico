@@ -4,9 +4,9 @@
             <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>{{ 'ADDRESSES.TITLE' | translate }}</ion-title>
-        <ion-buttons class="my-addresses__button my-addresses__button--right"  slot="primary">
-            <ion-button  icon-only (click)="showPrompt()">
-                         <ion-icon class="add-button" name="add"></ion-icon>
+        <ion-buttons class="my-addresses__button my-addresses__button--right" slot="primary">
+            <ion-button icon-only (click)="showPrompt()">
+                <ion-icon class="add-button" name="add"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
@@ -15,22 +15,51 @@
 <ion-content class="my-addresses">
     <div class="my-addresses__wrapper">
         <p *ngIf="currentItems.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
-        <ion-list>
-            <ion-item-sliding *ngFor="let item of currentItems">
-                <ion-item (click)="editAddress(item)">
-                    <h2>{{item.name}}</h2>
-                    <p>{{item.address}}</p>
-                    <p>{{item.type}} <span *ngIf="item.type == 'denied'">{{ 'PAYMENT.DENIED2' | translate }}</span> 
-                        <span *ngIf="item.type == 'buyer'">{{ 'ADDRESSES.BUYER' | translate }}</span>
-                        <span *ngIf="item.type == 'shipping'">{{ 'ADDRESSES.SHIPPING' | translate }}</span>
-                        <span *ngIf="item.type == 'billing'">{{ 'ADDRESSES.BILLING' | translate }}</span></p>
-                </ion-item>
-                <ion-item-options>  
-                    <ion-button color="danger" (click)="deleteAddress(item)">
-                        {{ 'DELETE_BUTTON' | translate }}
-                    </ion-button>
-                </ion-item-options>
-            </ion-item-sliding>
-        </ion-list>
+        <div class="my-addresses__list">
+            <div class="my-addresses__item-wrapper" *ngFor="let item of currentItems">
+                <div class="my-addresses__item" (click)="editAddress(item)">
+                    <p class="my-addresses__item-content">
+                        <span class="text--bold text--block">
+                            Name:
+                        </span>
+                        <span>
+                            {{item.name}}
+                        </span>
+                    </p>
+                    <p class="my-addresses__item-content">
+                        <span class="text--bold text--block">
+                            Address:
+                        </span>
+                        <span>
+                            {{item.address}}
+                        </span>
+                    </p>
+                    <!-- Todo: Validar si type existe -->
+                    <p class="my-addresses__item-content">
+                        <span class="text--bold text--block">
+                            Type:
+                        </span>
+                        <span>
+                            {{item.type}}
+                        </span>
+                        <span *ngIf="item.type == 'denied'">
+                            {{ 'PAYMENT.DENIED2' | translate }}
+                        </span>
+                        <span *ngIf="item.type == 'buyer'">
+                            {{ 'ADDRESSES.BUYER' | translate }}
+                        </span>
+                        <span *ngIf="item.type == 'shipping'">
+                            {{ 'ADDRESSES.SHIPPING' | translate }}
+                        </span>
+                        <span *ngIf="item.type == 'billing'">
+                            {{ 'ADDRESSES.BILLING' | translate }}</span></p>
+                    <p class="my-addresses__item-content">
+                        <ion-button color="danger" (click)="deleteAddress(item)">
+                            {{ 'DELETE_BUTTON' | translate }}
+                        </ion-button>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </ion-content>
