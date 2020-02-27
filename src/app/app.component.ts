@@ -239,8 +239,11 @@ export class AppComponent {
             }
             if (triggerEvent) {
                 this.events.publish('notification:received', data[msg], Date.now());
+                this.items.unshift(data[msg]);
+            }else {
+                this.items.push(data[msg]);
             }
-            this.items.unshift(data[msg]);
+            
         }
         if (results.page < results.last_page) {
             more = true;
@@ -263,7 +266,7 @@ export class AppComponent {
     }
     getAlerts() {
         this.page++;
-        let where = "page=" + this.page + "&limit=20";
+        let where = "page=" + this.page + "&limit=20&order_by=id,desc";
         this.alerts.getLanguage().then((value) => {
             console.log("getToken");
             console.log(value);
@@ -271,7 +274,7 @@ export class AppComponent {
                 value = "es";
             }
             this.alerts.getAlerts(where).subscribe((results: any) => {
-                this.alertLoaded = true;
+                this.alertLoaded = true; 
                 this.alertsmore = this.handleResults(results, false, value);
                 if (this.items.length < 9 && this.alertsmore) {
                     this.getAlerts();
@@ -299,7 +302,7 @@ export class AppComponent {
             if (!value) {
                 value = "es";
             }
-            let where = "page=" + page + "&notification_id>" + last_notif + "&limit=20";
+            let where = "page=" + page + "&notification_id>" + last_notif + "&limit=20&order_by=id,asc";
             this.alerts.getAlerts(where).subscribe((results: any) => {
                 if (results.total > 0) {
                     let more = this.handleResults(results, true, value);

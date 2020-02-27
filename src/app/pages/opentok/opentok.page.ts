@@ -19,7 +19,7 @@ export class OpentokPage implements OnInit {
     session: any;
     publisher: any;
     apiKey: any;
-    bookingId: any;
+    bookingId: any = null;
     mainBooking: Booking;
     sessionId: string;
     recipient: any;
@@ -50,7 +50,15 @@ export class OpentokPage implements OnInit {
 
         this.sessionId = params.sessionId;
         this.token = params.token;
+        if (this.bookingId) {
+            if (this.bookingId != params.booking_id) {
+                this.activeCall = false;
+                this.streamCreated = false;
+                this.ended = false;
+            }
+        }
         this.bookingId = params.booking_id;
+
         this.getBooking();
     }
     getBooking() {
@@ -82,8 +90,12 @@ export class OpentokPage implements OnInit {
         this.session.disconnect();
         let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};
         this.bookingS.leaveCall(container).subscribe((resp: any) => {
-            console.log("Register connection result", resp);
-
+            console.log("end call result", resp);
+            if (resp.status == "success") {
+                this.bookingId = -1;
+            } else {
+                this.endCall();
+            }
         }, (err) => {
 
         });
@@ -172,12 +184,7 @@ export class OpentokPage implements OnInit {
             sessionConnected: (event: any) => {
 
                 let container = {"booking_id": this.bookingId, "connection_id": this.session.connection.connectionId};
-                this.bookingS.registerConnection(container).subscribe((resp: any) => {
-                    console.log("Register connection result", resp);
-
-                }, (err) => {
-
-                });
+                this.registerConnection(container);
                 this.session.publish(this.publisher);
                 this.dismissLoader();
                 let el = (document.querySelector('.OT_publisher') as HTMLElement);
@@ -211,6 +218,18 @@ export class OpentokPage implements OnInit {
         } else {
             this.spinnerDialog.hide();
         }
+    }
+    registerConnection(container) {
+        this.bookingS.registerConnection(container).subscribe((resp: any) => {
+            console.log("Register connection result", resp);
+            if (resp.status == 'success') {
+                console.log("Connection registered")
+            } else {
+                this.registerConnection(container);
+            }
+        }, (err) => {
+
+        });
     }
 
 }
