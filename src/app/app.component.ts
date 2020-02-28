@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router, RouterEvent, NavigationEnd} from '@angular/router';
-import {Platform, Events, MenuController, NavController, AlertController} from '@ionic/angular';
+import {Platform, Events, MenuController, NavController, AlertController, ToastController} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
 import {TranslateService} from '@ngx-translate/core';
@@ -27,6 +27,7 @@ export class AppComponent {
         private events: Events,
         private alertsCtrl: AlertController,
         private params: ParamsService,
+        private toastCtrl: ToastController,
         private nav: NavController,
         private statusBar: StatusBar,
         private menuCtrl: MenuController,
@@ -127,7 +128,11 @@ export class AppComponent {
                 this.cleanResults();
                 console.log('notification received: ', message);
                 this.events.publish('notification:received', message, Date.now());
-                this.sortNotificationType(jsonData, true);
+                this.toastCtrl.create({
+                    message: message.subject_es,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
 
                 console.log('notificationOpenedCallback: ' + JSON.stringify(message));
             });
@@ -240,10 +245,10 @@ export class AppComponent {
             if (triggerEvent) {
                 this.events.publish('notification:received', data[msg], Date.now());
                 this.items.unshift(data[msg]);
-            }else {
+            } else {
                 this.items.push(data[msg]);
             }
-            
+
         }
         if (results.page < results.last_page) {
             more = true;
@@ -274,7 +279,7 @@ export class AppComponent {
                 value = "es";
             }
             this.alerts.getAlerts(where).subscribe((results: any) => {
-                this.alertLoaded = true; 
+                this.alertLoaded = true;
                 this.alertsmore = this.handleResults(results, false, value);
                 if (this.items.length < 9 && this.alertsmore) {
                     this.getAlerts();
