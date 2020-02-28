@@ -215,7 +215,7 @@ export class LoginPage implements OnInit {
                 this.userData.setToken(value);
                 this.user.postLogin().then((value) => {
                     this.dismissLoader();
-                    this.navCtrl.navigateRoot("tabs/settings/addresses");  
+                    this.navCtrl.navigateRoot("tabs");  
                     this.events.publish("authenticated");
                 }, (err) => {
                     this._loadUserData();
