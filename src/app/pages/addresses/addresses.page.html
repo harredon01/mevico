@@ -34,28 +34,9 @@
                             {{item.address}}
                         </span>
                     </p>
-                    <!-- Todo: Validar si type existe -->
-                    <p class="my-addresses__item-content">
-                        <span class="text--bold text--block">
-                            Type:
-                        </span>
-                        <span>
-                            {{item.type}}
-                        </span>
-                        <span *ngIf="item.type == 'denied'">
-                            {{ 'PAYMENT.DENIED2' | translate }}
-                        </span>
-                        <span *ngIf="item.type == 'buyer'">
-                            {{ 'ADDRESSES.BUYER' | translate }}
-                        </span>
-                        <span *ngIf="item.type == 'shipping'">
-                            {{ 'ADDRESSES.SHIPPING' | translate }}
-                        </span>
-                        <span *ngIf="item.type == 'billing'">
-                            {{ 'ADDRESSES.BILLING' | translate }}</span></p>
-                    <p class="my-addresses__item-content">
-                        <ion-button color="danger" (click)="deleteAddress(item)">
-                            {{ 'DELETE_BUTTON' | translate }}
+                    <p class="my-addresses__item-content my-addresses__item--delete">
+                        <ion-button size="small" color="danger" (click)="deleteAddress(item)">
+                            {{ 'Eliminar Dirección' | translate }}
                         </ion-button>
                     </p>
                 </div>

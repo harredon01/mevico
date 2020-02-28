@@ -15,6 +15,74 @@
     font-family: 'Source Sans Pro', sans-serif !important;
 }
 
+.button-back {
+    &--center {
+        position: absolute;
+        top: 12%;
+    }
+}
+
+.block--right {
+    text-align: right;
+}
+
+.total-result {
+    padding: 10px;
+    background-color: rgba(222, 222, 222, 0.2);
+    border-radius: 10px;
+    margin-top: 0;
+}
+
+.card-component {
+    margin: 10px 0;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid #dedede;
+    padding-bottom: 10px;
+
+    &:last-child {
+        border-bottom: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    &__stats {
+        padding: 10px;
+        background-color: rgba(#dedede, 0.4);
+        margin: 10px 0;
+        border-radius: 10px;
+        &-item {
+            padding: 5px 0;
+        }
+    }
+
+    &__avatar {
+        margin: 10px 10px 10px 0;
+    }
+
+    &__content {
+        padding: 15px 0 10px;
+    }
+}
+
+
+.search {
+    position: relative;
+    &__item {
+        padding-bottom: 0 !important;
+        width: 250px;
+        float: right;
+        padding-right: 5px !important;
+    }
+}
+
+.select {
+    &__label {
+        margin: 0;
+        padding: 0 10px;
+    }
+}
+
 .button {
     &--form {
         height: 40px;
