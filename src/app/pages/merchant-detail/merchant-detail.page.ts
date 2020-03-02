@@ -262,6 +262,7 @@ export class MerchantDetailPage implements OnInit {
                 let extras = {
                     "type": "Booking",
                     "id": booking.id,
+                    "call":true,
                     "name": "Booking appointment for: " + booking.bookable.name,
                 }
                 let item = {
