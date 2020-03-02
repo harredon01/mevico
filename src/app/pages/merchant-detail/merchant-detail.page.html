@@ -13,7 +13,7 @@
             <div class="content-car">
                 <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
                 <ion-button size="small" icon-only clear (click)="openCart()">
-                    <ion-icon name="cart"></ion-icon>
+                            <ion-icon name="cart"></ion-icon>
                 </ion-button>
             </div>
         </div>
@@ -82,33 +82,35 @@
         </div>
 
         <div class="doctor-menu-client profile__booking" *ngIf="merchant.owner">
-                <p class="text--center">{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
-                <ion-list class="profile__options profile__options--list">
-                    <ion-item no-padding lines="none" class="profile__options-item">
-                        <ion-button (click)="myItems()">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
-                    </ion-item>
-                    <ion-item no-padding lines="none" class="profile__options-item">
-                        <ion-button (click)="myBookings()">{{ 'MERCHANT_DETAIL.MY_BOOKING' | translate }}</ion-button>
-                    </ion-item>
-                    <ion-item no-padding lines="none" class="profile__options-item">
-                        <ion-button (click)="myAvailabilities()">{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}
-                        </ion-button>
-                    </ion-item>
-                    <ion-item no-padding lines="none" class="profile__options-item">
-                        <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>
-                    </ion-item>
-                    <ion-item no-padding lines="none" class="profile__options-item">
-                        <ion-button (click)="editMerchant()">{{ 'MERCHANT_DETAIL.EDIT' | translate }}</ion-button>
-                    </ion-item>
-                    <ion-item no-padding lines="none" class="profile__options-item">
-                        <ion-button (click)="showProducts()">{{ 'MERCHANT_DETAIL.STORE' | translate }}</ion-button>
-                    </ion-item>
-                </ion-list>
-            </div>
+            <p class="text--center">{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
+            <ion-list class="profile__options profile__options--list">
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <ion-button (click)="myItems()">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
+                </ion-item>
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <ion-button (click)="myBookings()">{{ 'MERCHANT_DETAIL.MY_BOOKING' | translate }}</ion-button>
+                </ion-item>
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <ion-button (click)="myAvailabilities()">{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}
+                    </ion-button>
+                </ion-item>
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>
+                </ion-item>
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <ion-button (click)="editMerchant()">{{ 'MERCHANT_DETAIL.EDIT' | translate }}</ion-button>
+                </ion-item>
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <ion-button (click)="showProducts()">{{ 'MERCHANT_DETAIL.STORE' | translate }}</ion-button>
+                </ion-item>
+            </ion-list>
+        </div>
 
         <div class="profile__description">
             <p class="profile__description-title">About Doctor</p>
             <p class="profile__description-body">{{merchant.description}}</p>
+            <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
+            <span class="text--block">{{ merchant.unit_cost | currency }}</span>
         </div>
     </div>
 
@@ -125,23 +127,6 @@
     <div [ngSwitch]="doctor" class="bg-light mb">
         <ion-list class="doctor__wrapper" *ngSwitchCase="'about'">
             <div class="bg-white overview">
-                <ion-grid>
-                    <ion-row class="doctor__container">
-                        <ion-col size="6" *ngIf="merchant.availabilities.length>0">
-                            <div class="doctor__value">
-                                <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
-                                <span class="text--block">{{ merchant.unit_cost | currency }}</span>
-                            </div>
-                        </ion-col>
-                        <ion-col size="6" *ngIf="merchant.availabilities.length>0">
-                            <div class="doctor__value">
-                                <p class="text--bold">{{ 'MERCHANT_DETAIL.ADDRESS' | translate }}:</p>
-                                <span class="text--block">{{merchant.address}}</span>
-                            </div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-
                 <!-- <div class="map-location">//Descomentar cuando yo lo aclare
                     <img src="assets/imgs/map-location.png" style="position: absolute;height: 100%;bottom: 0;z-index: 0;">
                     <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/dentist-1.jpg"></div>
@@ -233,13 +218,13 @@
             </div>
 
             <ion-card class="profile__overview-card" *ngFor="let rating of merchant.ratings">
-                <ion-item>
+                      <ion-item>
                     <p>{{rating.pseudonim}}</p>
                 </ion-item>
                 <ion-item>
                     <div>
                         <strong style="position: relative;
-                        top: -2px;">({{rating.rating}})</strong>
+                                top: -2px;">({{rating.rating}})</strong>
                         <div class="rating-container2">
                             <div class="rating-box2" [style.width]="(rating.rating*20)+'%'">
                                 <ion-icon name="md-star"></ion-icon>

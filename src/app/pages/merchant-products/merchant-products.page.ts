@@ -151,10 +151,10 @@ export class MerchantProductsPage implements OnInit {
                     text: 'Ok',
                     handler: (resp) => {
                         console.log('Confirm Ok', item);
-                        if (item == "Shipping") {
+                        if (item.attributes.is_shippable == true) {
                             this.params.setParams({"merchant_id": this.merchant});
                             this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
-                        } else if (item == "Prepare") {
+                        } else {
                             this.params.setParams({"merchant_id": this.merchant});
                             this.navCtrl.navigateForward('tabs/checkout/prepare');
                         }

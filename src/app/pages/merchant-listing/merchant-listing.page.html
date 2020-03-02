@@ -26,9 +26,8 @@
 
 <ion-content class="bg-light merchant-list">
     <ion-item>
-        <ion-label class="select__label">XXX</ion-label>
-        <ion-select [(ngModel)]="category" interface="popover" (ionChange)="searchCategory()"
-            *ngIf="typeSearch!='own'|| false">
+        <ion-label class="select__label">Categoría</ion-label>
+        <ion-select [(ngModel)]="category" interface="popover" (ionChange)="searchCategory()" *ngIf="typeSearch!='own'|| false">
             <ion-select-option value="{{category.id}}" *ngFor="let category of categoryItems">{{category.name}}
             </ion-select-option>
         </ion-select>

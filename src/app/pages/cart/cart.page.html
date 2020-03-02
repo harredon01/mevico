@@ -11,7 +11,7 @@
 
 <ion-content>
     <ion-grid>
-        <p>{{ 'CART.DESC' | translate }}</p>
+        <p>{{ 'CART.DESCRIPTION' | translate }}</p>
         <div class="checkout-prepare__items" *ngFor="let item of currentItems">
              <div class="checkout__item" *ngIf="item.attributes.type=='meal-plan'"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}} x {{item.attributes.buyers}}</div>
             <div class="checkout__item" *ngIf="item.attributes.type!='meal-plan'"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}}</div>
