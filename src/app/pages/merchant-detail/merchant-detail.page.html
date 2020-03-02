@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title class="ion__title">
+        <div class="profile__menu">
             <!-- &nbsp; -->
             <span class="shareIcons">
                 <ion-icon name="ios-bookmark-outline" item-start></ion-icon>
@@ -12,113 +12,131 @@
             </span>
             <div class="content-car">
                 <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
-                <ion-button icon-only clear (click)="openCart()"><ion-icon name="cart"></ion-icon></ion-button>
+                <ion-button size="small" icon-only clear (click)="openCart()">
+                    <ion-icon name="cart"></ion-icon>
+                </ion-button>
             </div>
-        </ion-title>
+        </div>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <img src="assets/imgs/background-1.jpg" style="width: 100%;display: block;">
-    <div class="doctor-detail">
-        <img src="{{merchant.icon}}">
-        <div>
-            <h2 class="text-white">{{merchant.name}}</h2>
-            <p class="text-white">{{merchant.type}}</p>
-
-
-        </div>
-    </div>
-    <ion-slides *ngIf="merchant.files.length>0">
+    <ion-slides class="profile__image-wrapper" *ngIf="merchant.files.length>0">
         <ion-slide *ngFor="let img of merchant.files">
-            <img [src]="img.file" class="image--large " alt="merchant" style="max-height: 10em; width:100%;">
+            <img [src]="img.file" class="image--large profile__image" alt="merchant">
         </ion-slide>
     </ion-slides>
-    <div class="doctor-detail__booking">
-        <p>{{merchant.description}}</p>
-        <div class="doctor-menu-title">{{ 'MERCHANT_DETAIL.MENU' | translate }}</div>
+    <div class="doctor-detail profile">
+        <div class="profile__main-info">
+            <h2 class="text-white text--bold">{{merchant.name}}</h2>
+            <p class="text--italic text-white">{{merchant.type}}</p>
+            <div class="rating-container">
+
+                <div class="rating-box">
+                    <div>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                    </div>
+                    <div class="rating-box--hide" [style.width]="(merchant.rating*20)+'%'">
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="doctor-detail__booking profile__booking">
         <div class="doctor-menu-client" *ngIf="!merchant.owner">
-            <ion-list>
-                <ion-item>
-                    <ion-button (click)="showProducts()">{{ 'MERCHANT_DETAIL.STORE' | translate }}</ion-button>
+            <ion-list class="profile__options">
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <div class="profile__options-wrapper" (click)="showProducts()">
+                        <img src="assets/icon/store.svg" alt="">
+                        {{ 'MERCHANT_DETAIL.STORE' | translate }}
+                    </div>
                 </ion-item>
-                <ion-item>
-                    <ion-button (click)="appointmentbook()">{{ 'MERCHANT_DETAIL.BOOKING' | translate }}</ion-button>
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <div class="profile__options-wrapper" (click)="appointmentbook()">
+                        <img src="assets/icon/reservation.svg" alt="">
+                        {{ 'MERCHANT_DETAIL.BOOKING' | translate }}
+                    </div>
                 </ion-item>
-                <ion-item>
-                    <ion-button (click)="chat()">{{ 'MERCHANT_DETAIL.CHAT' | translate }}</ion-button>
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <div class="profile__options-wrapper" (click)="chat()">
+                        <img src="assets/icon/chat.svg" alt="">
+                        {{ 'MERCHANT_DETAIL.CHAT' | translate }}
+                    </div>
                 </ion-item>
-                <ion-item *ngIf="merchant.status=='online'">
-                    <ion-button (click)="call()">
-                        <ion-icon slot="start" name="call"></ion-icon>
+                <ion-item *ngIf="merchant.status=='online'" no-padding lines="none" class="profile__options-item">
+                    <div class="profile__options-wrapper" (click)="call()">
+                        <img src="assets/icon/phone.svg" alt="">
                         {{ 'MERCHANT_DETAIL.CALL' | translate }}
-                    </ion-button>
+                    </div>
                 </ion-item>
             </ion-list>
         </div>
-        <div class="doctor-menu-client" *ngIf="merchant.owner">
-            <p>{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
-            <ion-list>
-                <ion-item>
-                    <ion-button (click)="myItems()">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
-                </ion-item>
-                <ion-item>
-                    <ion-button (click)="myBookings()">{{ 'MERCHANT_DETAIL.MY_BOOKING' | translate }}</ion-button>
-                </ion-item>
-                <ion-item>
-                    <ion-button (click)="myAvailabilities()">{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</ion-button>
-                </ion-item>
-                <ion-item>
-                    <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>
-                </ion-item>
-                <ion-item>
-                    <ion-button (click)="editMerchant()">{{ 'MERCHANT_DETAIL.EDIT' | translate }}</ion-button>
-                </ion-item>
-                <ion-item>
-                    <ion-button (click)="showProducts()">{{ 'MERCHANT_DETAIL.STORE' | translate }}</ion-button>
-                </ion-item>
-            </ion-list>
+
+        <div class="doctor-menu-client profile__booking" *ngIf="merchant.owner">
+                <p class="text--center">{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
+                <ion-list class="profile__options profile__options--list">
+                    <ion-item no-padding lines="none" class="profile__options-item">
+                        <ion-button (click)="myItems()">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
+                    </ion-item>
+                    <ion-item no-padding lines="none" class="profile__options-item">
+                        <ion-button (click)="myBookings()">{{ 'MERCHANT_DETAIL.MY_BOOKING' | translate }}</ion-button>
+                    </ion-item>
+                    <ion-item no-padding lines="none" class="profile__options-item">
+                        <ion-button (click)="myAvailabilities()">{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}
+                        </ion-button>
+                    </ion-item>
+                    <ion-item no-padding lines="none" class="profile__options-item">
+                        <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>
+                    </ion-item>
+                    <ion-item no-padding lines="none" class="profile__options-item">
+                        <ion-button (click)="editMerchant()">{{ 'MERCHANT_DETAIL.EDIT' | translate }}</ion-button>
+                    </ion-item>
+                    <ion-item no-padding lines="none" class="profile__options-item">
+                        <ion-button (click)="showProducts()">{{ 'MERCHANT_DETAIL.STORE' | translate }}</ion-button>
+                    </ion-item>
+                </ion-list>
+            </div>
+
+        <div class="profile__description">
+            <p class="profile__description-title">About Doctor</p>
+            <p class="profile__description-body">{{merchant.description}}</p>
         </div>
-    </div>    
-    <div class="defult-tab bg-white">
-        <ion-segment [(ngModel)]="doctor" padding-left padding-right>
-            <ion-segment-button value="about" color="primary" class="text-white">
+    </div>
+
+    <div class="profile__tab defult-tab bg-white">
+        <ion-segment [(ngModel)]="doctor">
+            <ion-segment-button value="about" color="primary" class="text-white profile__tab-item">
                 {{ 'MERCHANT_DETAIL.INFO' | translate }}
             </ion-segment-button>
-            <ion-segment-button value="feedback" class="text-white">
+            <ion-segment-button value="feedback" class="text-white profile__tab-item">
                 {{ 'MERCHANT_DETAIL.RATINGS' | translate }}
             </ion-segment-button>
         </ion-segment>
     </div>
     <div [ngSwitch]="doctor" class="bg-light mb">
-        <ion-list *ngSwitchCase="'about'">
+        <ion-list class="doctor__wrapper" *ngSwitchCase="'about'">
             <div class="bg-white overview">
                 <ion-grid>
-                    <ion-row class="doctor-container">
-                        <ion-col size="12">
-                            <div class="doctor-feedback">
-                                <div class="rating-container">
-                                    <div class="rating-box" [style.width]="(merchant.rating*20)+'%'">
-                                        <ion-icon name="md-star"></ion-icon>
-                                        <ion-icon name="md-star"></ion-icon>
-                                        <ion-icon name="md-star"></ion-icon>
-                                        <ion-icon name="md-star"></ion-icon>
-                                        <ion-icon name="md-star"></ion-icon>
-                                    </div>
-                                </div>
-                                <span>{{merchant.rating }} de ({{merchant.rating_count }})</span>
+                    <ion-row class="doctor__container">
+                        <ion-col size="6" *ngIf="merchant.availabilities.length>0">
+                            <div class="doctor__value">
+                                <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
+                                <span class="text--block">{{ merchant.unit_cost | currency }}</span>
                             </div>
                         </ion-col>
-                        <ion-col size="12" *ngIf="merchant.availabilities.length>0">
-                            <div class="doctor-value">
-                                <h2>{{ 'MERCHANT_DETAIL.HOURLY' | translate }}</h2>
-                                <p>{{ merchant.unit_cost | currency }}</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="12" *ngIf="merchant.availabilities.length>0">
-                            <div class="doctor-value">
-                                <h2>{{ 'MERCHANT_DETAIL.ADDRESS' | translate }}</h2>
-                                <p>{{merchant.address}}</p>
+                        <ion-col size="6" *ngIf="merchant.availabilities.length>0">
+                            <div class="doctor__value">
+                                <p class="text--bold">{{ 'MERCHANT_DETAIL.ADDRESS' | translate }}:</p>
+                                <span class="text--block">{{merchant.address}}</span>
                             </div>
                         </ion-col>
                     </ion-row>
@@ -129,116 +147,99 @@
                     <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/dentist-1.jpg"></div>
                 </div> -->
             </div>
-            <div class="bg-white overview" *ngIf="merchant.attributes.experience">
-                <ion-card>
-                    <ion-card-header>
-                        <ion-card-title>{{ 'MERCHANT_DETAIL.EXPERIENCE' | translate }}</ion-card-title>
+            <div class="profile__overview bg-white overview" *ngIf="merchant.attributes.experience">
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">{{ 'MERCHANT_DETAIL.EXPERIENCE' | translate }}
+                        </ion-card-title>
                     </ion-card-header>
-
-                    <ion-card-content>
-                        <ion-grid>
-                            <ion-row>
-                                <ion-col size="12" *ngIf="merchant.attributes.experience">
-                                    <div *ngFor="let experience of merchant.attributes.experience" class="doctor-experience">
-                                        <p>{{experience.name}}</p>
-                                    </div>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let experience of merchant.attributes.experience" class="doctor-experience">
+                                <p>{{experience.name}}</p>
+                            </li>
+                        </ul>
                     </ion-card-content>
                 </ion-card>
             </div>
             <div class="bg-white overview" *ngIf="merchant.attributes.services">
-                <ion-card>
-                    <ion-card-header>
-                        <ion-card-title>{{ 'MERCHANT_DETAIL.SERVICES' | translate }}</ion-card-title>
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">{{ 'MERCHANT_DETAIL.SERVICES' | translate }}
+                        </ion-card-title>
                     </ion-card-header>
 
-                    <ion-card-content>
-                        <ion-grid>
-                            <ion-row>
-                                <ion-col size="12" *ngFor="let service of merchant.attributes.services">
-                                         <div>
-                                        <!-- <img src="{{service.icon}}"> -->
-                                        <h3>{{service.name}}</h3>
-                                    </div>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let service of merchant.attributes.services" class="doctor-experience">
+                                <p>{{service.name}}</p>
+                            </li>
+                        </ul>
                     </ion-card-content>
                 </ion-card>
             </div>
             <div class="bg-white overview" *ngIf="merchant.attributes.specialties">
-                <ion-card>
-                    <ion-card-header>
-                        <ion-card-title>{{ 'MERCHANT_DETAIL.SPECIALIZATIONS' | translate }}</ion-card-title> 
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">
+                            {{ 'MERCHANT_DETAIL.SPECIALIZATIONS' | translate }}</ion-card-title>
                     </ion-card-header>
 
-                    <ion-card-content>
-                        <ion-grid>
-                            <ion-row>
-                                <ion-col size="12" *ngFor="let specialization of merchant.attributes.specialties">
-                                         <div>
-                                        <!-- <img src="{{specialization.icon}}"> -->
-                                        <h3>{{specialization.name}}</h3>
-                                    </div>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let specialization of merchant.attributes.specialties"
+                                class="doctor-experience">
+                                <p>{{specialization.name}}</p>
+                            </li>
+                        </ul>
                     </ion-card-content>
                 </ion-card>
             </div>
             <div class="bg-white overview practics" *ngIf="merchant.availabilities.length>0">
-                <ion-card>
-                    <ion-card-header>
-                        <ion-card-title>{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</ion-card-title>
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">
+                            {{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</ion-card-title>
                     </ion-card-header>
-                    <ion-card-content>
-                        <ion-grid>
-                            <ion-row>
-                                <ion-col size="12" *ngFor="let availability of merchant.availabilities">
-                                         <h5>{{availability.range}}<span float-right>{{availability.from}} to {{availability.to}}</span></h5>
-                                </ion-col>
-                            </ion-row>
-                        </ion-grid>
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let availability of merchant.availabilities" class="doctor-experience">
+                                <p>{{availability.range}}<span float-right>{{availability.from}} to
+                                        {{availability.to}}</span></p>
+                            </li>
+                        </ul>
                     </ion-card-content>
                 </ion-card>
-
             </div>
             <br>
-            <ion-button expand="full" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0"><ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}</ion-button>
+            <ion-button expand="full" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0">
+                <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
+            </ion-button>
         </ion-list>
         <ion-list *ngSwitchCase="'feedback'">
-
             <div class="bg-white rate-over-all">
-                <ion-grid>
-                    <ion-row>
-                        <ion-col size="6">
-                            <div class="rate">
-                                <span> {{merchant.rating}}</span>
-                                <span>({{merchant.rating_count}})</span>
-                            </div>
-                        </ion-col>
-                        <ion-col size="6" style="padding-right: 0;">
-                            <div class="rate">
-                                <span>Sort By</span>
-                                <ion-select [(ngModel)]="Short" interface="popover" class="location">
-                                    <ion-select-option value="n1">{{ 'MERCHANT_DETAIL.RECENT' | translate }}</ion-select-option>
-                                    <ion-select-option value="n2">{{ 'MERCHANT_DETAIL.OLDEST' | translate }}</ion-select-option>
-                                </ion-select>
-                            </div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
+                <div class="rate rate--left">
+                    <span> {{merchant.rating}} ({{merchant.rating_count}})</span>
+                </div>
+                <div class="rate rate--right">
+                    <span>Sort By</span>
+                    <ion-select [(ngModel)]="Short" interface="popover" class="location">
+                        <ion-select-option value="n1">{{ 'MERCHANT_DETAIL.RECENT' | translate }}
+                        </ion-select-option>
+                        <ion-select-option value="n2">{{ 'MERCHANT_DETAIL.OLDEST' | translate }}
+                        </ion-select-option>
+                    </ion-select>
+                </div>
             </div>
 
-            <ion-card *ngFor="let rating of merchant.ratings">
+            <ion-card class="profile__overview-card" *ngFor="let rating of merchant.ratings">
                 <ion-item>
                     <p>{{rating.pseudonim}}</p>
-                    </ion-item>
+                </ion-item>
                 <ion-item>
-                    <div class="rate">
-                        <strong>({{rating.rating}})</strong>
+                    <div>
+                        <strong style="position: relative;
+                        top: -2px;">({{rating.rating}})</strong>
                         <div class="rating-container2">
                             <div class="rating-box2" [style.width]="(rating.rating*20)+'%'">
                                 <ion-icon name="md-star"></ion-icon>
@@ -248,10 +249,12 @@
                                 <ion-icon name="md-star"></ion-icon>
                             </div>
                         </div>
+                    </div>
+                    <div class="rate rate--right">
                         <span>{{rating.updated_at | date}}</span>
                     </div>
                 </ion-item>
-                <ion-card-content>
+                <ion-card-content class="profile__overview-comment" no-padding>
                     {{rating.comment}}
                 </ion-card-content>
             </ion-card>
