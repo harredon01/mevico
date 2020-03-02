@@ -1,15 +1,19 @@
-<ion-header>
+<ion-header class="header header--type-one">
     <ion-toolbar class="mainHeader">
-        <ion-title>
+        <ion-title class="header__title">
             Find Doctor
         </ion-title>
     </ion-toolbar>
 </ion-header>
 
-<ion-content class="bg-light">
+<ion-content class="bg-light merchant-categories">
     <div class="quick-link bg-white">
-        <ion-button class="button" (click)="openMenu()" expand="block"><ion-icon ios="ios-notifications" md="md-notifications"></ion-icon></ion-button>
-        <p class="text-danger">Categorias</p>
+        <div class="merchant-categories__header">
+            <p class="merchant-categories__header-title text-danger">Categorias</p>
+            <ion-button class="button merchant-categories__header-button " (click)="openMenu()" size="small" expand="block">
+                <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
+            </ion-button>
+        </div>
         <ion-list class="mainCategories">
             <ion-item (click)="openItem(item)" *ngFor="let item of items" class="mainCategories__list">
                 <img src="assets/imgs/dentist-1.jpg" item-start>
@@ -17,9 +21,10 @@
                     <span>{{item.name}}</span>
                     <small>{{item.description}}</small>
                 </span>
-                <ion-icon name="ios-arrow-forward" item-end></ion-icon>
-                <!-- <ion-icon name="ion-ios-arrow-round-forward" item-end></ion-icon> -->
-            </ion-item> 
+                <div class="icon__wrapper">
+                    <ion-icon name="ios-arrow-forward" item-end></ion-icon>
+                </div>
+            </ion-item>
         </ion-list>
     </div>
 
