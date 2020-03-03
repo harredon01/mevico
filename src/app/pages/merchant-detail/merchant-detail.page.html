@@ -29,7 +29,9 @@
     <div class="doctor-detail profile">
         <div class="profile__main-info">
             <h2 class="text-white text--bold">{{merchant.name}}</h2>
-            <p class="text--italic text-white">{{merchant.type}}</p>
+            <p class="text--italic text-white">{{merchant.type}}</p> 
+            <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
+            <span class="text--block">{{ merchant.unit_cost | currency }}</span>
             <div class="rating-container">
 
                 <div class="rating-box">
@@ -109,8 +111,7 @@
         <div class="profile__description">
             <p class="profile__description-title">About Doctor</p>
             <p class="profile__description-body">{{merchant.description}}</p>
-            <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
-            <span class="text--block">{{ merchant.unit_cost | currency }}</span>
+            
         </div>
     </div>
     <div class="bg-white overview practics" *ngIf="merchant.availabilities.length>0">
