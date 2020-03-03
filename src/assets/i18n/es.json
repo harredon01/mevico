@@ -621,10 +621,10 @@
         "TITLE": "Mi cuenta",
         "DESCRIPTION": "",
         "NEARBY": "Buscar cerca a mí",
-        "RESULTS_FOUND":"Resultados encontrados",
+        "RESULTS_FOUND":"Resultados",
         "EXPERIENCE": "Experiencia",
         "YEARS": "Años",
-        "VIEW":"Ver Perfil Completo",
+        "VIEW":"Ver más",
         "FEE":"Tarifa",
         "FEEDBACK":"Calificaciones"
     },

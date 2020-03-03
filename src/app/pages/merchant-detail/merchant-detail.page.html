@@ -113,7 +113,27 @@
             <span class="text--block">{{ merchant.unit_cost | currency }}</span>
         </div>
     </div>
-
+    <div class="bg-white overview practics" *ngIf="merchant.availabilities.length>0">
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">
+                            {{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let availability of merchant.availabilities" class="doctor-experience">
+                                <p>{{availability.range}}<span float-right>{{availability.from}} to
+                                        {{availability.to}}</span></p>
+                            </li>
+                        </ul> 
+                    </ion-card-content>
+                </ion-card>
+            </div>
+            <br>
+            <ion-button  (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0" style="float:right">
+                <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
+            </ion-button>
+<br/>
     <div class="profile__tab defult-tab bg-white">
         <ion-segment [(ngModel)]="doctor">
             <ion-segment-button value="about" color="primary" class="text-white profile__tab-item">
@@ -180,26 +200,7 @@
                     </ion-card-content>
                 </ion-card>
             </div>
-            <div class="bg-white overview practics" *ngIf="merchant.availabilities.length>0">
-                <ion-card class="profile__overview-card">
-                    <ion-card-header class="profile__overview-header">
-                        <ion-card-title class="profile__overview-title">
-                            {{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content class="profile__overview-content">
-                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
-                            <li *ngFor="let availability of merchant.availabilities" class="doctor-experience">
-                                <p>{{availability.range}}<span float-right>{{availability.from}} to
-                                        {{availability.to}}</span></p>
-                            </li>
-                        </ul>
-                    </ion-card-content>
-                </ion-card>
-            </div>
-            <br>
-            <ion-button expand="full" (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0">
-                <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
-            </ion-button>
+            
         </ion-list>
         <ion-list *ngSwitchCase="'feedback'">
             <div class="bg-white rate-over-all">
