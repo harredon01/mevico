@@ -42,6 +42,7 @@
     "@opentok/client": "^2.16.6",
     "cordova-android": "^8.1.0",
     "cordova-background-geolocation-lt": "3.0.7",
+    "cordova-browser": "^5.0.4",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-background-fetch": "5.5.0",
     "cordova-plugin-contacts": "^3.0.1",
@@ -123,7 +124,8 @@
         "PLAY_SERVICES_VERSION": "15.0.1",
         "ANDROID_SUPPORT_V4_VERSION": "27.+",
         "API_KEY_FOR_ANDROID": "AIzaSyDDwPkLjnHj9rZ7M1hk9Z7HMi-ENu47sm4",
-        "API_KEY_FOR_IOS": "AIzaSyBx9ykkz-m1-E-viMdFUh_Q9g0FaEP-K5I"
+        "API_KEY_FOR_IOS": "AIzaSyBx9ykkz-m1-E-viMdFUh_Q9g0FaEP-K5I",
+        "WEB_APPLICATION_CLIENT_ID": "AIzaSyAPP_zCViWdEHS5C36dNi7ezSCw-DkiXSg"
       },
       "cordova-plugin-contacts": {},
       "cordova-plugin-opentok": {},
@@ -138,20 +140,22 @@
         "UPDATE_API": "https://api.ionicjs.com"
       },
       "onesignal-cordova-plugin": {},
-      "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.650065312777-pme9rmfq9mp5ppiisjoemrf6d3np6cof",
-        "PLAY_SERVICES_VERSION": "15.0.1"
-      },
       "cordova-plugin-facebook4": {
         "APP_ID": "1484133631742390",
         "APP_NAME": "Petworld",
         "FACEBOOK_HYBRID_APP_EVENTS": "false",
         "FACEBOOK_ANDROID_SDK_VERSION": "5.13.0"
+      },
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.650065312777-pme9rmfq9mp5ppiisjoemrf6d3np6cof",
+        "WEB_APPLICATION_CLIENT_ID": "650065312777-h6sq9leehcqo7732m0r8ot3gek1btig9.apps.googleusercontent.com",
+        "PLAY_SERVICES_VERSION": "15.0.1"
       }
     },
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "browser"
     ]
   }
 }
