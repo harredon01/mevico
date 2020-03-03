@@ -127,12 +127,13 @@
                             </li>
                         </ul> 
                     </ion-card-content>
-                </ion-card>
+                </ion-card> 
             </div>
-            <br>
+            
             <ion-button  (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0" style="float:right">
                 <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
             </ion-button>
+    <br/>
 <br/>
     <div class="profile__tab defult-tab bg-white">
         <ion-segment [(ngModel)]="doctor">
