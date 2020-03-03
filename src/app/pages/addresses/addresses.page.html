@@ -11,7 +11,6 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-
 <ion-content class="my-addresses">
     <div class="my-addresses__wrapper">
         <p *ngIf="currentItems.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
@@ -29,12 +28,15 @@
                             Address:
                         </span>
                         <span>
-                            {{item.address}}
+                            {{item.address}} 
                         </span>
                     </p>
                     <p class="my-addresses__item-content my-addresses__item--delete">
                         <ion-button size="small" color="danger" (click)="deleteAddress(item)">
-                            {{ 'Eliminar Dirección' | translate }}
+                            {{ 'INPUTS.DELETE' | translate }}
+                        </ion-button>
+                    <ion-button size="small" color="primary" (click)="editAddress(item)">
+                            {{ 'INPUTS.EDIT' | translate }}
                         </ion-button>
                     </p>
                 </div>

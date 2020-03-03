@@ -66,7 +66,18 @@
         padding: 15px 0 10px;
     }
 }
-
+.floating {
+    h2,p {
+        float:left;
+        margin-left: 20px;
+    }
+    p {
+        margin-top: 28px;
+    }
+}
+.pdesc {
+    margin-left: 15px;
+}
 
 .search {
     position: relative;
@@ -142,13 +153,51 @@ ion-item{
     --inner-padding-end: 0px;
     --padding-start:0px
 }
+ion-tab-button{
+    background:var(--ion-color-primary-shade);
+    ion-label, ion-icon {
+        color:var(--ion-color-primary-contrast);
+    }
+}
 
 .item .sc-ion-label-md-h {
     color: rgba($color: #000000, $alpha: .8);
 }
-
 .header {
     &__title {
         padding-top: 0 !important;
     }
 }
+.left {float:left;}
+.right {float:right;}
+.clear {clear:both;}
+.pb10 {padding-bottom: 10px}
+.pb15 {padding-bottom: 15px}
+.pb20 {padding-bottom: 20px}
+.pt10 {padding-top: 10px}
+.pt15 {padding-top: 15px}
+.pt20 {padding-top: 20px}
+.pl10 {padding-left: 10px}
+.pl15 {padding-left: 15px}
+.pl20 {padding-left: 20px}
+.pr10 {padding-right: 10px}
+.pr15 {padding-right: 15px}
+.pr20 {padding-right: 20px}
+.p10 {padding: 10px}
+.p15 {padding: 15px}
+.p20 {padding: 20px}
+.mb10 {margin-bottom: 10px}
+.mb15 {margin-bottom: 15px}
+.mb20 {margin-bottom: 20px}
+.mt10 {margin-top: 10px}
+.mt15 {margin-top: 15px}
+.mt20 {margin-top: 20px}
+.ml10 {margin-left: 10px}
+.ml15 {margin-left: 15px}
+.ml20 {margin-left: 20px}
+.mr10 {margin-right: 10px}
+.mr15 {margin-right: 15px}
+.mr20 {margin-right: 20px}
+.m10 {margin: 10px}
+.m15 {margin: 15px}
+.m20 {margin: 20px}

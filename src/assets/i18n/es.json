@@ -225,7 +225,7 @@
     },
     "CART": {
         "TITLE": "Carrito",
-        "DESCRIPTION": "mi pedido",
+        "DESCRIPTION": "Mi pedido",
         "PAY_TITLE": "Quieres ir a pagar?",
         "ERROR_GET": "Error buscando el carrito",
         "ERROR_EMPTY": "No tienes productos para comprar",
@@ -819,7 +819,7 @@
     "INPUTS": {
         "SUBMIT": "Enviar",
         "UPDATE": "Actualizar",
-        "DELETE": "Borrar",
+        "DELETE": "Eliminar",
         "EDIT": "Editar",
         "CANCEL": "Cancelar",
         "CART_OPEN": "Pedidos abiertos",

@@ -9,42 +9,41 @@
         <ion-item *ngIf="cards.length > 0">
             <h2>{{ 'MERCADOPAGO_PAYMENT.MY_CARDS' | translate }}</h2>
         </ion-item>
-        <ion-card *ngFor="let item of cards">
+        <ion-card *ngFor="let item of cards" >
             <ion-item>
-                <ion-avatar item-start>
+                <ion-avatar item-start class="m20">
                     <img [src]="item.payment_method.secure_thumbnail">
                 </ion-avatar>
                 <h2>{{item.payment_method.name}}</h2>
 
-                <ion-button clear class="btn success" (click)="openItem(item)">{{ 'MERCHANT_LISTING.VIEW' | translate }}</ion-button>
+                
             </ion-item>
             <ion-card-content>
                 <p>{{item.first_six_digits}} . . . . . . {{item.last_four_digits}}</p>
-
+                <ion-button class="btn success mb15 right" (click)="openItem(item)">{{ 'MERCHANT_LISTING.VIEW' | translate }}</ion-button>
             </ion-card-content>
         </ion-card>
-        <ion-item>
+        <ion-item class="ml10">
             <h2>{{ 'MERCADOPAGO_PAYMENT.OTHER_PAYMENTS' | translate }}</h2>
         </ion-item>
         <ion-card *ngFor="let item of paymentMethods">
             <ion-item>
-                <ion-avatar item-start>
+                <ion-avatar item-start class="m20">
                     <img [src]="item.secure_thumbnail">
                 </ion-avatar>
-                <h2>{{item.name}}</h2>
-
-                <ion-button clear class="btn success" (click)="openItem(item)">{{ 'MERCHANT_LISTING.VIEW' | translate }}</ion-button>
+                <h2>{{item.name}}</h2>                
             </ion-item>
             <ion-card-content>
                 <p>Cantidad máxima: {{item.max_allowed_amount | currency}}</p>
                 <p>Cantidad mínima: {{item.min_allowed_amount | currency}}</p>
+                <ion-button clear class="btn success mb15 right" (click)="openItem(item)">{{ 'MERCHANT_LISTING.VIEW' | translate }}</ion-button>
             </ion-card-content>
         </ion-card>
     </ion-list>
     <div *ngIf="paymentsSelected">
         <ion-card *ngIf="paymentM=='pse'">
             <ion-item>
-                <ion-avatar item-start>
+                <ion-avatar item-start class="m15">
                     <img [src]="pse.secure_thumbnail">
                 </ion-avatar>
                 <h2>{{pse.name}}</h2>
@@ -109,14 +108,16 @@
                         </ion-item>
 
                     </ion-list>
-                    <ion-button class="btn-secondary" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
-                    <ion-button class="btn-secondary" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
+                    <ion-button class="btn-secondary right mb15" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
+                    <ion-button color="danger" class="btn-secondary right mb15" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
+                    
+                    
                 </form>
             </ion-card-content>
         </ion-card>
         <ion-card *ngIf="paymentM=='cash'">
             <ion-item>
-                <ion-avatar item-start>
+                <ion-avatar item-start class="m15">
                     <img [src]="cash.secure_thumbnail">
                 </ion-avatar>
                 <h2>{{cash.name}}</h2>
@@ -147,8 +148,8 @@
                         </ion-item>
 
                     </ion-list>
-                    <ion-button class="btn-secondary" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
-                    <ion-button class="btn-secondary" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
+                    <ion-button class="btn-secondary right mb15" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
+                    <ion-button color="danger" class="btn-secondary right mb15" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
                 </form>
             </ion-card-content>
         </ion-card>
@@ -181,8 +182,8 @@
                         </ion-item>
 
                     </ion-list>
-                    <ion-button class="btn-secondary" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
-                    <ion-button class="btn-secondary" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
+                    <ion-button class="btn-secondary right mb15" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
+                    <ion-button color="danger" class="btn-secondary right mb15" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
                 </form>
                 <ion-item *ngFor="let item of validationErrors" >
                     <p>{{item}}</p>
