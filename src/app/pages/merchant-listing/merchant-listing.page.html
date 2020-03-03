@@ -23,25 +23,25 @@
                        (ionChange)="searchText()" *ngIf="typeSearch!='own'"></ion-searchbar>
     </ion-toolbar>
 </ion-header>
-
-<ion-content class="bg-light merchant-list">
-    <ion-item>
-        <ion-label class="select__label">Categoría</ion-label>
+ 
+<ion-content class="bg-light merchant-list"> 
+    <div class="select-cont" > 
         <ion-select [(ngModel)]="category" interface="popover" (ionChange)="searchCategory()" *ngIf="typeSearch!='own'|| false">
-            <ion-select-option value="{{category.id}}" *ngFor="let category of categoryItems">{{category.name}}
+            <ion-select-option [value]="category.id" *ngFor="let category of categoryItems">{{category.name}}
         </ion-select-option>
-    </ion-select>
-</ion-item>
-
-<div class="merchant-list__wrapper">
-    <p class="total-result" style="float: left">{{totalResults}} {{ 'MERCHANT_LISTING.RESULTS_FOUND' | translate }}</p>
+    </ion-select><div style="clear:both"></div> 
+        <p class="total-result" style="float: left;margin-bottom: 0">{{totalResults}} {{ 'MERCHANT_LISTING.RESULTS_FOUND' | translate }}</p>
     <div class="block--right" style="float: right">
         <ion-button clear size="small" class="btn success" (click)="searchNearby()" *ngIf="typeSearch!='own'|| false">
-                    {{ 'MERCHANT_LISTING.NEARBY' | translate }}</ion-button>
+                    {{ 'MERCHANT_LISTING.NEARBY' | translate }}</ion-button> 
     </div>
-    <div style="clear:both"></div> 
+    <div style="clear:both"></div>  
+</div>
+
+<div class="merchant-list__wrapper">
+    
     <p *ngIf="merchants.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
-    <ion-list>
+    <ion-list style="padding-top: 0">
         <ion-card class="card-component" *ngFor="let item of merchants" >
                   <ion-item>
                 <ion-avatar class="card-component__avatar" item-start>

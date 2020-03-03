@@ -3,13 +3,15 @@
         padding: 10px;
     }
 }
-
+.select-cont {
+    background:#d7d8da;  
+}
 .toolbar-title {
     display: flex;
     align-items: center;
     span.location {
         display: block;
-        margin-left: auto;
+        margin-left: auto; 
         position: relative;
         text-align: right;
         ion-select {

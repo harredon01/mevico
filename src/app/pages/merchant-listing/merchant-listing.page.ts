@@ -21,11 +21,11 @@ import {ApiService} from '../../services/api/api.service';
 export class MerchantListingPage implements OnInit {
     @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
     location: any;
-    typeSearch: string = "category";
+    typeSearch: string = "category"; 
     urlSearch: string = "";
     totalResults: any;
     textSearch: string = "";
-    category: string = "a1";
+    category: any;
     merchants: Merchant[] = [];
     categoryItems: any[] = [];
     categoriesErrorGet: string = "";
@@ -41,7 +41,7 @@ export class MerchantListingPage implements OnInit {
         public mapData: MapDataService,
         public categories: CategoriesService,
         public merchantsServ: MerchantsService,
-        public toastCtrl: ToastController,
+        public toastCtrl: ToastController, 
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
         public translateService: TranslateService,
@@ -75,17 +75,18 @@ export class MerchantListingPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
-        if (data) {
+        if (data) { 
             this.getMerchants(null);
         }
     }
     getItems() {
-        let query = "merchants";
+        let query = "merchants"; 
         this.categories.getCategories(query).subscribe((data: any) => {
             console.log("after getCategories");
             this.categoryItems = data.categories;
-            this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-            console.log(JSON.stringify(data));
+            this.category = parseInt(this.activatedRoute.snapshot.paramMap.get('categoryId'));
+            console.log(JSON.stringify(data)); 
+            //this.cdr.detectChanges();
         }, (err) => {
             // Unable to log in
             let toast = this.toastCtrl.create({
