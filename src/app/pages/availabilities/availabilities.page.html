@@ -15,7 +15,7 @@
 <ion-content>
     <ion-list>
         <ion-item-sliding *ngFor="let item of currentItems">
-            <ion-item >
+            <ion-item class="floating">
                 <h2>{{ 'AVAILABILITIES.RANGE' | translate }}: <span *ngIf="item.range == 'sunday'">{{ 'DAYS.SUNDAY' | translate }}</span>
                     <span *ngIf="item.range == 'monday'">{{ 'DAYS.MONDAY' | translate }}</span>
                     <span *ngIf="item.range == 'tuesday'">{{ 'DAYS.TUESDAY' | translate }}</span>

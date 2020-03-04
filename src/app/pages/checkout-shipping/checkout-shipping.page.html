@@ -10,7 +10,7 @@
 
 <ion-content class="checkout-shipping">
     <div class="checkout-shipping--wrapper">
-        <p class="checkout-shipping__description">{{ 'CHECKOUT_SHIPPING.DESCRIPTION' | translate }}</p>
+        <p class="checkout-shipping__description pdesc">{{ 'CHECKOUT_SHIPPING.DESCRIPTION' | translate }}</p>
         <ion-card *ngIf="showAddressCard">
             <ion-item class="checkout-shipping__item">
                 <p class="checkout-shipping__description">{{ 'CHECKOUT_BUYER.SELECTED' | translate }}</p>
@@ -27,7 +27,7 @@
             </ion-card-content>
         </ion-card>
         <ion-list class="checkout-shipping__list" *ngIf="!showAddressCard">
-            <ion-item-sliding class="checkout-shipping__item" *ngFor="let item of currentItems">
+            <ion-item-sliding class="checkout-shipping__item  floating" *ngFor="let item of currentItems">
                 <ion-item (click)="saveShipping(item)">
                     <h2>{{item.name}}</h2>
                     <p>{{item.address}}</p>
