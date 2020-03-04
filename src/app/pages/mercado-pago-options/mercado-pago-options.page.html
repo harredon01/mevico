@@ -11,12 +11,8 @@
         </ion-item>
         <ion-card *ngFor="let item of cards" >
             <ion-item>
-                <ion-avatar item-start class="m20">
-                    <img [src]="item.payment_method.secure_thumbnail">
-                </ion-avatar>
+                <img [src]="item.payment_method.secure_thumbnail"  style="width:30px" class="m15">
                 <h2>{{item.payment_method.name}}</h2>
-
-                
             </ion-item>
             <ion-card-content>
                 <p>{{item.first_six_digits}} . . . . . . {{item.last_four_digits}}</p>
@@ -28,9 +24,7 @@
         </ion-item>
         <ion-card *ngFor="let item of paymentMethods">
             <ion-item>
-                <ion-avatar item-start class="m20">
-                    <img [src]="item.secure_thumbnail">
-                </ion-avatar>
+                <img [src]="item.secure_thumbnail"  style="width:30px" class="m15">
                 <h2>{{item.name}}</h2>                
             </ion-item>
             <ion-card-content>
@@ -43,9 +37,7 @@
     <div *ngIf="paymentsSelected">
         <ion-card *ngIf="paymentM=='pse'">
             <ion-item>
-                <ion-avatar item-start class="m15">
-                    <img [src]="pse.secure_thumbnail">
-                </ion-avatar>
+                <img [src]="pse.secure_thumbnail"  style="width:30px" class="m15">
                 <h2>{{pse.name}}</h2>
             </ion-item>
             <ion-card-content>
@@ -110,16 +102,14 @@
                     </ion-list>
                     <ion-button class="btn-secondary right mb15" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
                     <ion-button color="danger" class="btn-secondary right mb15" (click)="cancelSelection()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
-                    
-                    
+
+
                 </form>
             </ion-card-content>
         </ion-card>
         <ion-card *ngIf="paymentM=='cash'">
             <ion-item>
-                <ion-avatar item-start class="m15">
-                    <img [src]="cash.secure_thumbnail">
-                </ion-avatar>
+                <img [src]="cash.secure_thumbnail"  style="width:50px" class="m15">
                 <h2>{{cash.name}}</h2>
             </ion-item>
             <ion-card-content>
