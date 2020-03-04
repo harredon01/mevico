@@ -189,7 +189,7 @@
     "BOOKING_LIST": {
         "TITLE": "Mis Reservas",
         "DESCRIPTION": "Ingresa una dirección",
-        "RESERVATION_OBJECT":"Reservas para",
+        "RESERVATION_OBJECT":"Reservas de",
         "RESERVATION_PERIOD":"Periodo",
         "UNPAID":"Sin Pagar",
         "UPCOMING":"Próximos",
