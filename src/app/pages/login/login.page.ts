@@ -16,7 +16,7 @@ import {ForgotPassPage} from '../forgot-pass/forgot-pass.page';
     templateUrl: './login.page.html',
     styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit { 
     // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
