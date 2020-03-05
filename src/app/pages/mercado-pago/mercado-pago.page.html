@@ -7,9 +7,9 @@
 <ion-content>
     <ion-card>
         <ion-item *ngIf="logo.length>0">
-            <ion-avatar item-start class="m15">
+            <ion-item *ngIf="logo.length>0" style="width:50px">
                 <img [src]="logo">
-            </ion-avatar>
+            </ion-item>
         </ion-item>
         <ion-card-content>
             <form action="" method="post" id="pay" name="pay" (ngSubmit)="pay()" [formGroup]="payerForm">
@@ -22,9 +22,6 @@
                     </ion-item>
                     <ion-item *ngIf="!payerForm.controls.cc_number.valid  && (payerForm.controls.cc_number.dirty || submitAttempt)">
                         <p>{{ 'CHECKOUT_CARD.PAYER_CC_ERROR' | translate }}</p>
-                    </ion-item>
-                    <ion-item *ngIf="logo.length>0">
-                        <img [src]="logo">
                     </ion-item>
                     <ion-item>
                         <label for="cardExpirationMonth" style="margin-right:115px">Expiration month:</label>
@@ -101,6 +98,7 @@
                 </ion-list>
                 <ion-input type="hidden" name="paymentMethodId" formControlName="paymentMethodId" [(ngModel)]="paymentMethod" ></ion-input>
                 <ion-item class="right"> 
+                    <ion-button color="danger" style="width:120px" (click)="goBack()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
                     <ion-button type="submit" style="width:120px">{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
                 </ion-item>
             </form>

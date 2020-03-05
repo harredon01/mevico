@@ -101,6 +101,9 @@ export class MercadoPagoPage implements OnInit {
         console.log("Set value",container);
         this.payerForm.setValue(container);
     }
+    goBack(){
+        this.navCtrl.back();
+    }
     useUser() {
         console.log("prefil", this.v);
         console.log("user", this.userData._user);

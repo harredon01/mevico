@@ -3,37 +3,30 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>
-            {{ 'BOOKING_LIST.TITLE' | translate }}
-        </ion-title>
-    </ion-toolbar>
+        <ion-select [placeholder]="selectedObject.name" [(ngModel)]="objectId" (ionChange)="selectObject()" style="width: 150px" class="right p15"> 
+            <ion-select-option *ngFor="let item of bookingObjects" [value]="item.id">{{item.name}}</ion-select-option>
+        </ion-select>
+        <ion-label style="width:150px" class="right p15">{{ 'BOOKING_LIST.RESERVATION_OBJECT' | translate }}</ion-label>
+    </ion-toolbar> 
 </ion-header>
 
 <ion-content class="bg-light">
-    <ion-button (click)="toggleFilters()"><ion-icon *ngIf="!viewFilters" slot="icon-only" name="arrow-dropdown"></ion-icon><ion-icon *ngIf="viewFilters" slot="icon-only" name="arrow-dropup"></ion-icon></ion-button>
-    <ion-list class="mainBooking__list" *ngIf="viewFilters">
-        <ion-item>
-            <ion-label>{{ 'BOOKING_LIST.RESERVATION_OBJECT' | translate }}</ion-label>
-            <ion-select placeholder="selectedObject.name" [(ngModel)]="objectId" (ionChange)="selectObject()"> 
-                <ion-select-option *ngFor="let item of bookingObjects" [value]="[item.id]">{{item.name}}</ion-select-option>
-            </ion-select>
-        </ion-item>
-    </ion-list>
-    <ion-list class="mainBooking__list" *ngIf="viewFilters">
+    
+    <ion-list class="mainBooking__list">
         <ion-item>
             <ion-label>{{ 'BOOKING_LIST.RESERVATION_PERIOD' | translate }}</ion-label>
             <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">
-                <ion-select-option *ngFor="let item of queries" [value]="[item.value]">{{item.name}}</ion-select-option>
+                <ion-select-option *ngFor="let item of queries" [value]="item.value">{{item.name}}</ion-select-option>
             </ion-select>
         </ion-item>
     </ion-list>
-    <p *ngIf="bookings.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
+    <p *ngIf="bookings.length ==0" class="m20">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
     <ion-list class="doctor-list">
         <ion-item (click)="openBooking(booking)" *ngFor="let booking of bookings">
             <ion-card>
                 <ion-grid>
                     <ion-row>
-                        <ion-col size="12">
+                        <ion-col size="12"> 
                             <h2 *ngIf="target=='bookable'">{{booking.customer.firstName}} {{booking.customer.lastName}}</h2>
                             <h2 *ngIf="target=='customer'">{{booking.bookable.name}}</h2>
                         </ion-col>
