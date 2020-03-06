@@ -84,14 +84,16 @@
 
                 <ion-card-content>
                     <ion-item>
-                        <ion-label position="floating">{{ 'BOOKING.ADDRESS' | translate }}</ion-label>
-                        <ion-input type="text" [(ngModel)]="atributesCont.address"></ion-input>
+                        <ion-label position="floating">{{ 'BOOKING.TYPE_HELP' | translate }}</ion-label>
+                        <ion-input type="text" [(ngModel)]="atributesCont.type_help"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-textarea class="mb20" placeholder="{{ 'BOOKING.TYPE_DESC' | translate }}" [(ngModel)]="atributesCont.desc_item"></ion-textarea>
                     </ion-item>
                 </ion-card-content>
             </ion-card>
-
             <br>  
-            <ion-button full class="btn success right" (click)="createBooking()">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
+            <ion-button full class="btn success right" (click)="createBooking()"  *ngIf="timeSelected">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
         </div>
     </div>
 </ion-content>

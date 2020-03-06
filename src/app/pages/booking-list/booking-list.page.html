@@ -18,7 +18,7 @@
             <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">
                 <ion-select-option *ngFor="let item of queries" [value]="item.value">{{item.name}}</ion-select-option>
             </ion-select>
-        </ion-item>
+        </ion-item> 
     </ion-list>
     <p *ngIf="bookings.length ==0" class="m20">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
     <ion-list class="doctor-list">
@@ -34,7 +34,7 @@
                     <ion-row>
                         <ion-col size="6">
                             <h4>{{ 'BOOKING_LIST.STARTS_AT' | translate }}</h4>
-                            <p>{{booking.starts_at | date }}</p>
+                            <p>{{booking.starts_at | date:'medium' }}</p>
                         </ion-col>
                         <ion-col size="6">
                             <h4>{{ 'BOOKING_LIST.PAYMENT' | translate }}</h4>

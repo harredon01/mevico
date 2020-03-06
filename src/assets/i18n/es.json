@@ -146,7 +146,7 @@
         "TO_ERROR": "Indica el final",
         "ERROR_SAVE": "Error guardando la disponibilidad"
     },
-    "BOOKING": {
+    "BOOKING": { 
         "TITLE": "Reservar",
         "DESCRIPTION": "Ingresa una dirección",
         "REQUIRES_AUTH":"Hemos enviado tu reserva, debes esperar que sea confirmada. Te enviaremos una notificación cuando puedas hacer el pago",
@@ -155,11 +155,13 @@
         "OCCUPIED_SLOTS":"Reservas existentes",
         "START_TIME":"Inicio",
         "HOURS":"Horas",
-        "UNPAID":"Pendiente por pagar",
-        "UNAPPROVED":"Pendiente de aprobacion",
-        "UPCOMING":"Proximos",
-        "ALL":"Todos",
+        "UNPAID":"Pend. por pagar",
+        "UNAPPROVED":"Pend. de aprobacion",
+        "UPCOMING":"Proximos Confirmados",
+        "ALL":"Proximos todos",
         "ADDRESS":"Lugar",
+        "TYPE_HELP":"Que tipo de mascota tienes?",
+        "TYPE_DESC":"Dscribe las cosas que te gustaria tratar en la cita.",
         "PAST":"Terminados",
         "DETAILS":"Detalles",
         "END_TIME":"Fín",
