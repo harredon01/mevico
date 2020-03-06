@@ -112,11 +112,9 @@ p {
     overflow-x: auto;
     position: relative;
     .calander-row {
-        width: 500px;
-        padding-right: 30px;
         .day {
             width: 58px;
-            float: left;
+            //float: left;
             position: relative;
             font-size: 2.5rem;
             font-weight: 600;
