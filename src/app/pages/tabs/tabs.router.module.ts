@@ -17,6 +17,10 @@ const routes: Routes = [
                 ]
             },
             {
+                path: 'book',
+                loadChildren: '../booking/booking.module#BookingPageModule',
+            },
+            {
                 path: 'map',
                 children: [
                     {

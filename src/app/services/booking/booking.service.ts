@@ -71,4 +71,42 @@ export class BookingService {
         let seq = this.api.get(endpoint);
         return seq;
     }
+    getMonthName(month:any){
+        if(month==0){
+            return "Enero"
+        }
+        if(month==1){
+            return "Febrero"
+        }
+        if(month==2){
+            return "Marzo"
+        }
+        if(month==3){
+            return "Abril"
+        }
+        if(month==4){
+            return "Mayo"
+        }
+        if(month==5){
+            return "Junio"
+        }
+        if(month==6){
+            return "Julio"
+        }
+        if(month==7){
+            return "Agosto"
+        }
+        if(month==8){
+            return "Septiembre"
+        }
+        if(month==9){
+            return "Octubre"
+        }
+        if(month==10){
+            return "Noviembre"
+        }
+        if(month==11){
+            return "Diciembre"
+        }
+    }
 }

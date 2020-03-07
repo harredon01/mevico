@@ -19,7 +19,9 @@ export class BookingPage implements OnInit {
     availableDates: Date[] = [];
     selectedSpots: any[] = [];
     availabilities: any[] = [];
+    months: any[] = [];
     dateSelected: boolean = false;
+    timeSelected: boolean = false;
     availabilitiesDate: any[] = [];
     weekday: any[] = [];
     typeObj: string;
@@ -246,11 +248,19 @@ export class BookingPage implements OnInit {
     }
 
     getDates() {
-        var myDate = new Date();
-        for (let i = 0; i < 31; i++) {
+        var myDate = new Date(); 
+        let month = myDate.getMonth();
+        let monthcont = {month: month, days: [], title: this.booking.getMonthName(month)};
+        for (let i = 0; i < 61; i++) {
             let day = myDate.getDay();
             if (this.checkAvailableDays(this.weekday[day])) {
                 let container = new Date(myDate.getTime());
+                if (myDate.getMonth()!=monthcont.month){
+                    this.months.push(monthcont);
+                    let month = myDate.getMonth();
+                    monthcont = {month: month,days:[], title: this.booking.getMonthName(month)};
+                } 
+                monthcont.days.push(container);
                 this.availableDates.push(container);
             }
             myDate.setDate(myDate.getDate() + 1);
@@ -263,6 +273,7 @@ export class BookingPage implements OnInit {
         this.startDate = new Date(this.startDateS);
         this.endDate = new Date(this.startDateS);
         this.endDate.setHours(this.startDate.getHours() + parseInt(this.amount));
+        this.timeSelected = true;
     }
     selectDate(selectedDate: Date) {
         console.log("select date", selectedDate);
