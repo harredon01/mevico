@@ -11,10 +11,10 @@ import {AuthService} from '../../services/auth/auth.service';
 export class MedicalPage implements OnInit { 
     @ViewChild(IonContent, {static: false}) content: IonContent;
     private data: any = {};
-    private showForm = false;
+    public showForm = false;
     private medicalSuccess:string = "";
     private medicalError:string = "";
-    private showProfile = false;
+    public showProfile = false;
     private genders:any[] = [
         {name: "M", value: "m"},
         {name: "F", value: "f"}

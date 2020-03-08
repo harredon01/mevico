@@ -20,6 +20,8 @@ export class ContactsPage implements OnInit {
     loadMore: boolean = false;
     itemsErrorGet: string = "";
     itemsErrorDelete: string = "";
+    queryMod: string = "";
+    queries:any[]=[];
     itemsErrorBlock: string = "";
     constructor(public navCtrl: NavController,
         public params: ParamsService,
@@ -53,6 +55,9 @@ export class ContactsPage implements OnInit {
         if (data) {
             this.getContacts(null);
         }
+    }
+    selectQuery(){
+        
     }
     getContacts(event) {
         this.showLoader();

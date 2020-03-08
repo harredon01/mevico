@@ -12,7 +12,7 @@ import {ParamsService} from '../../services/params/params.service';
   styleUrls: ['./contact-detail.page.scss'],
 })
 export class ContactDetailPage implements OnInit {
-private mainContact: Contact;
+public mainContact: Contact;
     constructor(public contacts: ContactsService,
         public activatedRoute: ActivatedRoute,
         public params: ParamsService,

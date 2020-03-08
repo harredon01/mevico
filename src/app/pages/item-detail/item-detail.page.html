@@ -16,7 +16,7 @@
             <p><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</p>
             <p><strong>{{ 'CART_ITEM.PRICE' | translate }}: </strong> {{item.price | currency }}</p>
             <p><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumWithConditions | currency }}</p>
-            <ion-button (click)="fulfillItem(item)">                
+            <ion-button (click)="fulfillItem()">                
                 <h2>{{ 'ITEM_DETAIL.FULFILLED' | translate }}</h2>
             </ion-button>    
         </ion-card-content>    

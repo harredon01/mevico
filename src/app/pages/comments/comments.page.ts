@@ -15,6 +15,7 @@ export class CommentsPage implements OnInit {
     // If you're using the username field with or without email, make
     // sure to add it to the type
     items: any[] = [];
+    isModal:boolean = false;
     comment: {comment: string, rating: any, object_id: number, type: string} = {
         comment: '',
         rating: '5',

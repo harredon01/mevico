@@ -15,21 +15,21 @@ import {ParamsService} from '../../services/params/params.service';
 })
 export class BookingListPage implements OnInit {
     @ViewChild(IonList, { read: ElementRef,static:false }) list: ElementRef;
-    private bookings: Booking[] = [];
-    private loadMore: boolean = false;
-    private loadingAll: boolean = false;
-    private viewFilters: boolean = false;
-    private bookingObjects: any[] = [];
-    private objectId: any;
-    private indexList: any = 1;
-    private selectedObject: any;
-    private typeObj: any;
-    private page: any = 0;
-    private query: string = "";
-    private queryMod: string = "";
-    private target: string = "";
-    private urlSearch: string = "";
-    private queries: any[] = [];
+    public bookings: Booking[] = [];
+    public loadMore: boolean = false;
+    public loadingAll: boolean = false;
+    public viewFilters: boolean = false;
+    public bookingObjects: any[] = [];
+    public objectId: any;
+    public indexList: any = 1;
+    public selectedObject: any;
+    public typeObj: any;
+    public page: any = 0;
+    public query: string = "";
+    public queryMod: string = "";
+    public target: string = "";
+    public urlSearch: string = "";
+    public queries: any[] = [];
     scrollTo = null;
     constructor(public booking: BookingService,
         public activatedRoute: ActivatedRoute,

@@ -17,22 +17,22 @@ import {Router} from '@angular/router';
 export class ChatRoomPage implements OnInit {
     @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
     @ViewChild(IonContent, {static: false}) content: IonContent;
-    private friend: Friend = new Friend({});
-    private messages: Message[] = [];
-    private tabBarElement: any;
-    private input: string = '';
+    public friend: Friend = new Friend({});
+    public messages: Message[] = [];
+    public tabBarElement: any;
+    public input: string = '';
     loading: any;
-    private backButton:boolean = false;
-    private type: string = '';
-    private targetId: string = '';
-    private objectId: string = '';
-    private lastId: any = null;
-    private isNew: boolean = true;
+    public backButton:boolean = false;
+    public type: string = '';
+    public targetId: string = '';
+    public objectId: string = '';
+    public lastId: any = null;
+    public isNew: boolean = true;
     paymentsGetStartString = '';
     avatar = 'assets/avatar/Dylan.png';
     paymentsErrorString = '';
-    private page = 0;
-    private messagemore = false;
+    public page = 0;
+    public messagemore = false;
 
     constructor(public chats: ChatService,
         private spinnerDialog: SpinnerDialog,

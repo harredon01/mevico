@@ -15,6 +15,7 @@ import {Contact} from '../../models/contact'
 export class SelectContactsPage implements OnInit {
     @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
     contacts: Contact[] = [];
+    contacts2: Contact[] = [];
     invites: any[] = [];
     page: any = 0;
     loadMore: boolean = false;

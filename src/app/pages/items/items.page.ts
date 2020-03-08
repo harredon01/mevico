@@ -14,13 +14,13 @@ import {ParamsService} from '../../services/params/params.service';
     styleUrls: ['./items.page.scss'],
 })
 export class ItemsPage implements OnInit {
-    private orders: Order[] = [];
+    public orders: Order[] = [];
     private page: any = 0;
     private merchant: any;
     private urlSearch: string = "";
     private fullfillError: string = "";
-    private status: any;
-    private queries: any[];
+    public status: any;
+    public queries: any[];
     private loadMore: boolean = false;
     constructor(public itemsServ: ItemsService,
         public params: ParamsService,

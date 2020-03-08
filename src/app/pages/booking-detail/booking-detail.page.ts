@@ -15,8 +15,8 @@ import {ParamsService} from '../../services/params/params.service';
     styleUrls: ['./booking-detail.page.scss'],
 })
 export class BookingDetailPage implements OnInit {
-    private mainBooking: Booking;
-    private isModal:boolean = false;
+    public mainBooking: Booking;
+    public isModal:boolean = false;
     constructor(public booking: BookingService,
         public activatedRoute: ActivatedRoute,
         public orderData: OrderDataService,
