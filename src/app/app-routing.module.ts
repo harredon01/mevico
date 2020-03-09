@@ -48,6 +48,7 @@ const routes: Routes = [
   { path: 'images', loadChildren: './pages/images/images.module#ImagesPageModule' },
   { path: 'availability-create', loadChildren: './pages/availability-create/availability-create.module#AvailabilityCreatePageModule' },
   { path: 'mercado-pago-options', loadChildren: './pages/mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule' },  { path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule' },
+  { path: 'new-merchant', loadChildren: './pages/new-merchant/new-merchant.module#NewMerchantPageModule' },
 
 
 

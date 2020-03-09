@@ -9,25 +9,20 @@ import {UserDataService} from '../../services/user-data/user-data.service';
 import {MapDataService} from '../../services/map-data/map-data.service';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {Merchant} from '../../models/merchant';
+
 @Component({
-    selector: 'app-create-merchant',
-    templateUrl: './create-merchant.page.html',
-    styleUrls: ['./create-merchant.page.scss'],
+  selector: 'app-new-merchant',
+  templateUrl: './new-merchant.page.html',
+  styleUrls: ['./new-merchant.page.scss'],
 })
-export class CreateMerchantPage implements OnInit {
+export class NewMerchantPage implements OnInit {
     isReadyToSave: boolean;
     locationLoaded: boolean = false;
     item: any;
     merchant: Merchant;
     loading: any;
     type: any;
-    editName: boolean = false;
-    editType: boolean = false;
-    editDescription: boolean = false;
-    editUnitCost: boolean = false;
-    editServices: boolean = false;
-    editSpecialties: boolean = false;
-    editExperience: boolean = false;
+    typeSelected = "";
     country: any;
     region: any;
     city: any;
@@ -50,7 +45,6 @@ export class CreateMerchantPage implements OnInit {
         public translateService: TranslateService,
         public userData: UserDataService,
         private spinnerDialog: SpinnerDialog) {
-        this.merchant = new Merchant({files: [], availabilities: [], attributes: {}});
         this.submitAttempt = false;
         this.country = null;
         this.region = null;
@@ -90,7 +84,81 @@ export class CreateMerchantPage implements OnInit {
             let editingMerchant: any = container.merchant;
             this.merchant = container.merchant;
             if (editingMerchant) {
-                this.loadMerchant(editingMerchant)
+                let container = {
+                    id: editingMerchant.id,
+                    type: editingMerchant.type,
+                    name: editingMerchant.name,
+                    description: editingMerchant.description,
+                    email: editingMerchant.email,
+                    telephone: editingMerchant.telephone,
+                    address: editingMerchant.address,
+                    unit_cost: editingMerchant.unit_cost,
+                    lat: editingMerchant.lat,
+                    long: editingMerchant.long,
+                    city_id: editingMerchant.city_id,
+                    region_id: editingMerchant.region_id,
+                    country_id: editingMerchant.country_id,
+                };
+                this.country = editingMerchant.country_id;
+                this.region = editingMerchant.region_id;
+                this.city = editingMerchant.city_id;
+                this.selectCountry(this.region, this.city);
+                this.typeSelected = editingMerchant.type;
+                let attributes = editingMerchant.attributes;
+                let services = [];
+                if (attributes.services) {
+                    services = attributes.services;
+
+                }
+                for (let i = 0; i < 3; i++) {
+                    let indicator = i + 1;
+                    let property = "service" + indicator;
+                    if (services[i]) {
+                        container[property] = services[i].name;
+                    } else {
+                        container[property] = "";
+                    }
+                }
+                let specialties = [];
+                if (attributes.specialties) {
+                    specialties = attributes.specialties;
+                }
+                for (let i = 0; i < 3; i++) {
+                    let indicator = i + 1;
+                    let property = "specialty" + indicator;
+                    if (specialties[i]) {
+                        container[property] = specialties[i].name;
+                    } else {
+                        container[property] = "";
+                    }
+                }
+                let experience = [];
+                if (attributes.experience) {
+                    experience = attributes.experience;
+
+                }
+                for (let i = 0; i < 3; i++) {
+                    let indicator = i + 1;
+                    let property = "experience" + indicator;
+                    if (experience[i]) {
+                        container[property] = experience[i].name;
+                    } else {
+                        container[property] = "";
+                    }
+                }
+                if (attributes.booking_requires_auth) {
+                    container['booking_requires_auth'] = attributes.booking_requires_auth;
+                } else {
+                    container['booking_requires_auth'] = false;
+                }
+                if (attributes.max_per_hour) {
+                    container['max_per_hour'] = attributes.max_per_hour;
+                } else {
+                    container['max_per_hour'] = false;
+                }
+                console.log("Setting form values: ", container);
+                this.isReadyToSave = true;
+                this.form.setValue(container);
                 merchantLoaded = true;
             }
         }
@@ -128,7 +196,6 @@ export class CreateMerchantPage implements OnInit {
             this.form.setValue(container);
             this.country = 1
             this.selectCountry(null, null);
-            this.resetEdits(true);
         }
 
 
@@ -137,98 +204,6 @@ export class CreateMerchantPage implements OnInit {
             console.log("form change", v);
             this.isReadyToSave = this.form.valid;
         });
-    }
-    resetEdits(value:boolean) {
-        this.editName = value;
-        this.editType = value;
-        this.editDescription = value;
-        this.editUnitCost = value;
-        this.editServices = value;
-        this.editSpecialties = value;
-        this.editExperience = value;
-    }
-    editField(field: any) {
-        if (this["edit" + field]) {
-            this["edit" + field] = false;
-        } else {
-            this["edit" + field] = true;
-        }
-    }
-    loadMerchant(editingMerchant: any) {
-        let container = {
-            id: editingMerchant.id,
-            type: editingMerchant.type,
-            name: editingMerchant.name,
-            description: editingMerchant.description,
-            email: editingMerchant.email,
-            telephone: editingMerchant.telephone,
-            address: editingMerchant.address,
-            unit_cost: editingMerchant.unit_cost,
-            lat: editingMerchant.lat,
-            long: editingMerchant.long,
-            city_id: editingMerchant.city_id,
-            region_id: editingMerchant.region_id,
-            country_id: editingMerchant.country_id,
-        };
-        this.country = editingMerchant.country_id;
-        this.region = editingMerchant.region_id;
-        this.city = editingMerchant.city_id;
-        this.selectCountry(this.region, this.city);
-        let attributes = editingMerchant.attributes;
-        let services = [];
-        if (attributes.services) {
-            services = attributes.services;
-
-        }
-        for (let i = 0; i < 3; i++) {
-            let indicator = i + 1;
-            let property = "service" + indicator;
-            if (services[i]) {
-                container[property] = services[i].name;
-            } else {
-                container[property] = "";
-            }
-        }
-        let specialties = [];
-        if (attributes.specialties) {
-            specialties = attributes.specialties;
-        }
-        for (let i = 0; i < 3; i++) {
-            let indicator = i + 1;
-            let property = "specialty" + indicator;
-            if (specialties[i]) {
-                container[property] = specialties[i].name;
-            } else {
-                container[property] = "";
-            }
-        }
-        let experience = [];
-        if (attributes.experience) {
-            experience = attributes.experience;
-
-        }
-        for (let i = 0; i < 3; i++) {
-            let indicator = i + 1;
-            let property = "experience" + indicator;
-            if (experience[i]) {
-                container[property] = experience[i].name;
-            } else {
-                container[property] = "";
-            }
-        }
-        if (attributes.booking_requires_auth) {
-            container['booking_requires_auth'] = attributes.booking_requires_auth;
-        } else {
-            container['booking_requires_auth'] = false;
-        }
-        if (attributes.max_per_hour) {
-            container['max_per_hour'] = attributes.max_per_hour;
-        } else {
-            container['max_per_hour'] = false;
-        }
-        console.log("Setting form values: ", container);
-        this.isReadyToSave = true;
-        this.form.setValue(container);
     }
     ionViewDidEnter() {
         let container: any = this.params.getParams();
@@ -315,45 +290,9 @@ export class CreateMerchantPage implements OnInit {
             this.dismissLoader();
             console.log("Save Address result", resp);
             if (resp.status == "success") {
-                let data = resp.object;
-                let container = data.merchant;
-                container.files = data.files;
-                container.availabilities = data.availabilities;
-                container.ratings = data.availabilities;
-                this.merchant = new Merchant(container);
-                this.loadMerchant(container);
-                this.resetEdits(false);
-                //                let container = {"hasChanged": true};
-                //                this.params.setParams(container);
-                //                this.navCtrl.back();
-            } else {
-                this.toastCtrl.create({
-                    message: this.merchantErrorStringSave,
-                    duration: 3000,
-                    position: 'top'
-                }).then(toast => toast.present());
-            }
-        }, (err) => {
-            this.dismissLoader();
-            this.toastCtrl.create({
-                message: this.merchantErrorStringSave,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
-        });
-    }
-    getMerchant() {
-        this.showLoader();
-        this.merchants.getMerchant('1305').subscribe((resp: any) => {
-            this.dismissLoader();
-            console.log("getMerchant result", resp);
-            if (resp.status == "success") {
-                let container = resp.merchant;
-                container.files = resp.files;
-                container.availabilities = resp.availabilities;
-                container.ratings = resp.availabilities;
-                this.merchant = new Merchant(container);
-                this.loadMerchant(container);
+                let container = {"hasChanged": true};
+                this.params.setParams(container);
+                this.navCtrl.back();
             } else {
                 this.toastCtrl.create({
                     message: this.merchantErrorStringSave,
@@ -376,9 +315,7 @@ export class CreateMerchantPage implements OnInit {
      * modal and then adds the new item to our data source if the user created one.
      */
     addShippingAddress() {
-        let typeSel = this.form.get('type').value;
-        console.log("Type selected", typeSel);
-        if (typeSel == "location" || typeSel == "medical") {
+        if (this.typeSelected == "location" || this.typeSelected == "medical") {
             this.mapData.hideAll();
             this.mapData.activeType = "Location";
             this.mapData.activeId = "-1";

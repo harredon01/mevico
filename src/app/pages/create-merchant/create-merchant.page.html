@@ -69,10 +69,6 @@
                 <p class="text--center">{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
                 <ion-list class="profile__options profile__options--list">
                     <ion-item no-padding lines="none" class="profile__options-item">
-                        <ion-button (click)="myAvailabilities()">{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}
-                        </ion-button>
-                    </ion-item>
-                    <ion-item no-padding lines="none" class="profile__options-item">
                         <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>
                     </ion-item>
                 </ion-list>
@@ -107,14 +103,10 @@
                                     {{availability.to}}</span></p>
                         </li>
                     </ul> 
+                    <a href="javascript:;" (click)="myAvailabilities()" class="right">edit</a>
                 </ion-card-content>
             </ion-card> 
-            <ion-icon class="m10 right" name="create-outline"></ion-icon>
         </div>
-
-        <ion-button  (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0" style="float:right">
-            <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
-        </ion-button>
         <br/>
         <br/>
         <div class="bg-light mb">
