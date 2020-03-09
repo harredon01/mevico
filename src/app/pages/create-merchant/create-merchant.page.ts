@@ -21,7 +21,10 @@ export class CreateMerchantPage implements OnInit {
     merchant: Merchant;
     loading: any;
     type: any;
-    typeSelected = "";
+    editName: boolean = false;
+    editType: boolean = false;
+    editDescription: boolean = false;
+    editUnitCost: boolean = false;
     country: any;
     region: any;
     city: any;
@@ -44,7 +47,7 @@ export class CreateMerchantPage implements OnInit {
         public translateService: TranslateService,
         public userData: UserDataService,
         private spinnerDialog: SpinnerDialog) {
-        this.merchant = new Merchant({files:[],availabilities:[]});
+        this.merchant = new Merchant({files: [], availabilities: [], attributes: {}});
         this.submitAttempt = false;
         this.country = null;
         this.region = null;
@@ -132,6 +135,19 @@ export class CreateMerchantPage implements OnInit {
             this.isReadyToSave = this.form.valid;
         });
     }
+    resetEdits() {
+        this.editName = false;
+        this.editType = false;
+        this.editDescription = false;
+        this.editUnitCost = false;
+    }
+    editField(field: any) {
+        if (this["edit" + field]) {
+            this["edit" + field] = false;
+        } else {
+            this["edit" + field] = true;
+        }
+    }
     loadMerchant(editingMerchant: any) {
         let container = {
             id: editingMerchant.id,
@@ -152,7 +168,6 @@ export class CreateMerchantPage implements OnInit {
         this.region = editingMerchant.region_id;
         this.city = editingMerchant.city_id;
         this.selectCountry(this.region, this.city);
-        this.typeSelected = editingMerchant.type;
         let attributes = editingMerchant.attributes;
         let services = [];
         if (attributes.services) {
@@ -294,9 +309,17 @@ export class CreateMerchantPage implements OnInit {
             this.dismissLoader();
             console.log("Save Address result", resp);
             if (resp.status == "success") {
-                let container = {"hasChanged": true};
-                this.params.setParams(container);
-                this.navCtrl.back();
+                let data = resp.object;
+                let container = data.merchant;
+                container.files = data.files;
+                container.availabilities = data.availabilities;
+                container.ratings = data.availabilities;
+                this.merchant = new Merchant(container);
+                this.loadMerchant(container);
+                this.resetEdits();
+                //                let container = {"hasChanged": true};
+                //                this.params.setParams(container);
+                //                this.navCtrl.back();
             } else {
                 this.toastCtrl.create({
                     message: this.merchantErrorStringSave,
@@ -317,7 +340,7 @@ export class CreateMerchantPage implements OnInit {
         this.showLoader();
         this.merchants.getMerchant('1305').subscribe((resp: any) => {
             this.dismissLoader();
-            console.log("Save Address result", resp);
+            console.log("getMerchant result", resp);
             if (resp.status == "success") {
                 let container = resp.merchant;
                 container.files = resp.files;
@@ -347,7 +370,9 @@ export class CreateMerchantPage implements OnInit {
      * modal and then adds the new item to our data source if the user created one.
      */
     addShippingAddress() {
-        if (this.typeSelected == "location" || this.typeSelected == "medical") {
+        let typeSel = this.form.get('type').value;
+        console.log("Type selected", typeSel);
+        if (typeSel == "location" || typeSel == "medical") {
             this.mapData.hideAll();
             this.mapData.activeType = "Location";
             this.mapData.activeId = "-1";
