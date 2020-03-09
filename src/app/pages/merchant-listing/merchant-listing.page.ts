@@ -112,6 +112,15 @@ export class MerchantListingPage implements OnInit {
     /**
      * Navigate to the detail page for this item.
      */
+    createItem() {
+        if(this.typeSearch=="own"){
+            this.navCtrl.navigateForward(this.urlSearch + "create-merchant");
+        } 
+        console.log("Creating merchant");
+    }
+    /**
+     * Navigate to the detail page for this item.
+     */
     searchNearby() {
         this.showLoader();
         this.geolocation.getCurrentPosition().then((resp) => {

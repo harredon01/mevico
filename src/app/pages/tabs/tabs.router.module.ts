@@ -17,15 +17,6 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'editmerchant',
-                children: [
-                    {
-                        path: '',
-                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
-                    }
-                ]
-            },
-            {
                 path: 'map',
                 children: [
                     {
@@ -312,7 +303,7 @@ const routes: Routes = [
                             },
                             {
                                 path: 'create-merchant',
-                                loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
+                                loadChildren: '../new-merchant/new-merchant.module#NewMerchantPageModule'
                             },
                             {
                                 path: ':objectId',

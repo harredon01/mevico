@@ -68,12 +68,12 @@
                         {{ 'MERCHANT_DETAIL.BOOKING' | translate }}
                     </div>
                 </ion-item>
-                <ion-item no-padding lines="none" class="profile__options-item">
+                <!--ion-item no-padding lines="none" class="profile__options-item">
                     <div class="profile__options-wrapper" (click)="chat()">
                         <img src="assets/icon/chat.svg" alt="">
                         {{ 'MERCHANT_DETAIL.CHAT' | translate }}
                     </div>
-                </ion-item>
+                </ion-item-->
                 <ion-item *ngIf="merchant.status=='online'" no-padding lines="none" class="profile__options-item">
                     <div class="profile__options-wrapper" (click)="call()">
                         <img src="assets/icon/phone.svg" alt="">
@@ -91,13 +91,6 @@
                 </ion-item>
                 <ion-item no-padding lines="none" class="profile__options-item">
                     <ion-button (click)="myBookings()">{{ 'MERCHANT_DETAIL.MY_BOOKING' | translate }}</ion-button>
-                </ion-item>
-                <ion-item no-padding lines="none" class="profile__options-item">
-                    <ion-button (click)="myAvailabilities()">{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}
-                    </ion-button>
-                </ion-item>
-                <ion-item no-padding lines="none" class="profile__options-item">
-                    <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>
                 </ion-item>
                 <ion-item no-padding lines="none" class="profile__options-item">
                     <ion-button (click)="editMerchant()">{{ 'MERCHANT_DETAIL.EDIT' | translate }}</ion-button>
