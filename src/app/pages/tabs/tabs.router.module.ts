@@ -17,8 +17,13 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'book',
-                loadChildren: '../booking/booking.module#BookingPageModule',
+                path: 'editmerchant',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
+                    }
+                ]
             },
             {
                 path: 'map',

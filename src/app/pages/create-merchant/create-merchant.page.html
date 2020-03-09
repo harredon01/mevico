@@ -15,6 +15,141 @@
 </ion-header>
 
 <ion-content>
+    <ion-slides class="profile__image-wrapper" *ngIf="merchant.files.length>0">
+        <ion-slide *ngFor="let img of merchant.files">
+            <img [src]="img.file" class="image--large profile__image" alt="merchant">
+        </ion-slide>
+    </ion-slides>
+    <div class="doctor-detail profile">
+        <div class="profile__main-info">
+            <h2 class="text-white text--bold">{{merchant.name}}</h2>
+            <p class="text--italic text-white">{{merchant.type}}</p> 
+            <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
+            <span class="text--block">{{ merchant.unit_cost | currency }}</span>
+            <div class="rating-container">
+
+                <div class="rating-box">
+                    <div>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                        <ion-icon color="warning" name="ios-star-outline"></ion-icon>
+                    </div>
+                    <div class="rating-box--hide" [style.width]="(merchant.rating*20)+'%'">
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                        <ion-icon color="warning" name="md-star"></ion-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="doctor-detail__booking profile__booking">
+
+        <div class="doctor-menu-client profile__booking" *ngIf="merchant.owner">
+            <p class="text--center">{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
+            <ion-list class="profile__options profile__options--list">
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <ion-button (click)="myAvailabilities()">{{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}
+                    </ion-button>
+                </ion-item>
+                <ion-item no-padding lines="none" class="profile__options-item">
+                    <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <div class="profile__description">
+            <p class="profile__description-title">About Doctor</p>
+            <p class="profile__description-body">{{merchant.description}}</p>
+            
+        </div>
+    </div>
+    <div class="bg-white overview practics" *ngIf="merchant.availabilities.length>0">
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">
+                            {{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let availability of merchant.availabilities" class="doctor-experience">
+                                <p>{{availability.range}}<span float-right>{{availability.from}} to
+                                        {{availability.to}}</span></p>
+                            </li>
+                        </ul> 
+                    </ion-card-content>
+                </ion-card> 
+        <ion-icon class="m10 right" name="create-outline"></ion-icon>
+            </div>
+            
+            <ion-button  (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0" style="float:right">
+                <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
+            </ion-button>
+    <br/>
+<br/>
+    <div class="bg-light mb">
+        <ion-list class="doctor__wrapper">
+            <div class="bg-white overview">
+                <!-- <div class="map-location">//Descomentar cuando yo lo aclare
+                    <img src="assets/imgs/map-location.png" style="position: absolute;height: 100%;bottom: 0;z-index: 0;">
+                    <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/dentist-1.jpg"></div>
+                </div> -->
+            </div>
+            <div class="profile__overview bg-white overview" *ngIf="merchant.attributes.experience">
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">{{ 'MERCHANT_DETAIL.EXPERIENCE' | translate }}
+                        </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let experience of merchant.attributes.experience" class="doctor-experience">
+                                <p>{{experience.name}}</p>
+                            </li>
+                        </ul>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+            <div class="bg-white overview" *ngIf="merchant.attributes.services">
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">{{ 'MERCHANT_DETAIL.SERVICES' | translate }}
+                        </ion-card-title>
+                    </ion-card-header>
+
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let service of merchant.attributes.services" class="doctor-experience">
+                                <p>{{service.name}}</p>
+                            </li>
+                        </ul>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+            <div class="bg-white overview" *ngIf="merchant.attributes.specialties">
+                <ion-card class="profile__overview-card">
+                    <ion-card-header class="profile__overview-header">
+                        <ion-card-title class="profile__overview-title">
+                            {{ 'MERCHANT_DETAIL.SPECIALIZATIONS' | translate }}</ion-card-title>
+                    </ion-card-header>
+
+                    <ion-card-content class="profile__overview-content">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                            <li *ngFor="let specialization of merchant.attributes.specialties"
+                                class="doctor-experience">
+                                <p>{{specialization.name}}</p>
+                            </li>
+                        </ul>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+            
+        </ion-list>
+    </div>
     <form [formGroup]="form" (ngSubmit)="done()">
         <input type="hidden" formControlName="id" />
         <input type="hidden" formControlName="lat" />

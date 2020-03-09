@@ -3,6 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {NavController, ModalController, ToastController, LoadingController, Events, MenuController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {CartService} from '../../services/cart/cart.service'
 import {OrderDataService} from '../../services/order-data/order-data.service'
 import {ParamsService} from '../../services/params/params.service';
@@ -26,6 +27,7 @@ export class MerchantCategoriesPage implements OnInit {
         public alertController: AlertController,
         public params: ParamsService,
         public userData: UserDataService,
+        public iab: InAppBrowser,
         public userS: UserService,
         public api: ApiService,
         public menu: MenuController,
@@ -67,6 +69,11 @@ export class MerchantCategoriesPage implements OnInit {
         if (this.userData._user.cellphone == "11") {
             this.presentAlertPrompt();
         }
+    }
+    activateMerchant(){
+        const browser = this.iab.create("https://auth.mercadopago.com.co/authorization?client_id=7257598100783047&response_type=code&platform_id=mp&redirect_uri=http%3A%2F%2Fdev.lonchis.com.co/mercado/return?user_id=" + this.userData._user.id);
+        browser.on('exit').subscribe(event => {
+        });
     }
     async presentAlertPrompt() {
         const alert = await this.alertController.create({
