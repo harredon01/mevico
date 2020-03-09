@@ -61,25 +61,6 @@
                     </ion-item>
                     <a href="javascript:;" (click)="done()">save</a>
                 </div>
-                <div class="rating-container">
-
-                    <div class="rating-box">
-                        <div>
-                            <ion-icon color="warning" name="ios-star-outline"></ion-icon>
-                            <ion-icon color="warning" name="ios-star-outline"></ion-icon>
-                            <ion-icon color="warning" name="ios-star-outline"></ion-icon>
-                            <ion-icon color="warning" name="ios-star-outline"></ion-icon>
-                            <ion-icon color="warning" name="ios-star-outline"></ion-icon>
-                        </div>
-                        <div class="rating-box--hide" [style.width]="(merchant.rating*20)+'%'">
-                            <ion-icon color="warning" name="md-star"></ion-icon>
-                            <ion-icon color="warning" name="md-star"></ion-icon>
-                            <ion-icon color="warning" name="md-star"></ion-icon>
-                            <ion-icon color="warning" name="md-star"></ion-icon>
-                            <ion-icon color="warning" name="md-star"></ion-icon>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="doctor-detail__booking profile__booking">
@@ -101,10 +82,10 @@
                 <p class="profile__description-title">About Doctor</p>
                 <p class="profile__description-body">{{merchant.description}}</p>
                 <a href="javascript:;" (click)="editField('Description')" >edit</a>
-                <div *ngIf="editDescription">
-                    <ion-item>
+                <div *ngIf="editDescription" style="width:100%">
+                    <ion-item >
                         <ion-label position="floating">{{ 'MERCHANT_CREATE.DESCRIPTION' | translate }}</ion-label>
-                        <ion-textarea formControlName="description"></ion-textarea>
+                        <ion-textarea formControlName="description" rows="4"></ion-textarea>
                     </ion-item>
                     <ion-item *ngIf="!form.controls.description.valid  && (form.controls.description.dirty || submitAttempt)">
                         <p>{{ 'MERCHANT_CREATE.DESCRIPTION_ERROR' | translate }}</p>
@@ -157,7 +138,28 @@
                                 </li>
                             </ul>
                         </ion-card-content>
+
+                        <a href="javascript:;" (click)="editField('Experience')" class="right">edit</a>
+                        <div *ngIf="editExperience">
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.EXPERIENCE' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="experience1"></ion-input>
+                            </ion-item>
+                            <ion-item *ngIf="!form.controls.experience1.valid  && (form.controls.experience1.dirty || submitAttempt)">
+                                <p>{{ 'MERCHANT_CREATE.EXPERIENCE_ERROR' | translate }}</p>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.EXPERIENCE' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="experience2"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.EXPERIENCE' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="experience3"></ion-input>
+                            </ion-item>
+                            <a href="javascript:;" (click)="done()" class="right">save</a>
+                        </div>
                     </ion-card>
+
                 </div>
                 <div class="bg-white overview" *ngIf="merchant.attributes.services">
                     <ion-card class="profile__overview-card">
@@ -173,6 +175,26 @@
                                 </li>
                             </ul>
                         </ion-card-content>
+
+                        <a href="javascript:;" (click)="editField('Services')" class="right">edit</a>
+                        <div *ngIf="editServices">
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.SERVICE' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="service1"></ion-input>
+                            </ion-item>
+                            <ion-item *ngIf="!form.controls.service1.valid  && (form.controls.service1.dirty || submitAttempt)">
+                                <p>{{ 'MERCHANT_CREATE.SERVICE_ERROR' | translate }}</p>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.SERVICE' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="service2"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.SERVICE' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="service3"></ion-input>
+                            </ion-item>
+                            <a href="javascript:;" (click)="done()" class="right">save</a>
+                        </div>
                     </ion-card>
                 </div>
                 <div class="bg-white overview" *ngIf="merchant.attributes.specialties">
@@ -190,6 +212,26 @@
                                 </li>
                             </ul>
                         </ion-card-content>
+
+                        <a href="javascript:;" (click)="editField('Specialties')" class="right">edit</a>
+                        <div *ngIf="editSpecialties">
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.SPECIALTY' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="specialty1"></ion-input>
+                            </ion-item>
+                            <ion-item *ngIf="!form.controls.specialty1.valid  && (form.controls.specialty1.dirty || submitAttempt)">
+                                <p>{{ 'MERCHANT_CREATE.SPECIALTY_ERROR' | translate }}</p>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.SPECIALTY' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="specialty2"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'MERCHANT_CREATE.SPECIALTY' | translate }}</ion-label>
+                                <ion-input type="text" formControlName="specialty3"></ion-input>
+                            </ion-item>
+                            <a href="javascript:;" (click)="done()" class="right">save</a>
+                        </div>
                     </ion-card>
                 </div>
 
@@ -203,126 +245,80 @@
             <ion-item>
                 <p>{{ 'MERCHANT_CREATE.DESCRIPTION' | translate }}</p>
             </ion-item>
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-subtitle>{{ 'MERCHANT_CREATE.DESCRIPTION' | translate }}</ion-card-subtitle>
+                </ion-card-header>
 
-            <div *ngIf="this.form.get('type').value=='medical' || this.form.get('type').value=='location'">
+                <ion-card-content>
+                    <ion-item>
+                        <ion-label position="floating">{{ 'MERCHANT_CREATE.EMAIL' | translate }}</ion-label>
+                        <ion-input type="email" formControlName="email"></ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!form.controls.email.valid  && (form.controls.email.dirty || submitAttempt)">
+                        <p>{{ 'MERCHANT_CREATE.EMAIL_ERROR' | translate }}</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">{{ 'MERCHANT_CREATE.TELEPHONE' | translate }}</ion-label>
+                        <ion-input type="tel" formControlName="telephone"></ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!form.controls.telephone.valid  && (form.controls.telephone.dirty || submitAttempt)">
+                        <p>{{ 'MERCHANT_CREATE.TELEPHONE_ERROR' | translate }}</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">{{ 'MERCHANT_CREATE.ADDRESS' | translate }}</ion-label>
+                        <ion-input type="text" formControlName="address"></ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!form.controls.address.valid  && (form.controls.address.dirty || submitAttempt)">
+                        <p>{{ 'MERCHANT_CREATE.ADDRESS_ERROR' | translate }}</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'MERCHANT_CREATE.COUNTRY' | translate }}</ion-label>
+                        <ion-select formControlName="country_id" [(ngModel)]="country" (ionChange)="selectCountry(null)">
+                            <ion-select-option *ngFor="let item of countries" [value]='item.id'>{{item.name}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="!form.controls.country_id.valid  && (form.controls.country_id.dirty || submitAttempt)">
+                        <p>{{ 'MERCHANT_CREATE.COUNTRY_ERROR' | translate }}</p>
+                    </ion-item>
+                    <ion-item *ngIf="country">
+                        <ion-label>{{ 'MERCHANT_CREATE.REGION' | translate }}</ion-label>
+                        <ion-select [(ngModel)]="region" formControlName="region_id" (ionChange)="selectRegion()">
+                            <ion-select-option *ngFor="let item of regions" [value]='item.id'>{{item.name}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="!form.controls.region_id.valid  && (form.controls.region_id.dirty || submitAttempt) && country">
+                        <p>{{ 'MERCHANT_CREATE.REGION_ERROR' | translate }}</p>
+                    </ion-item>
+                    <ion-item *ngIf="region">
+                        <ion-label>{{ 'MERCHANT_CREATE.CITY' | translate }}</ion-label>
+                        <ion-select formControlName="city_id" [(ngModel)]="city">
+                            <ion-select-option *ngFor="let item of cities" [value]='item.id'>{{item.name}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="!form.controls.city_id.valid  && (form.controls.city_id.dirty || submitAttempt) && region">
+                        <p>{{ 'MERCHANT_CREATE.CITY_ERROR' | translate }}</p>
+                    </ion-item>
 
-
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.EMAIL' | translate }}</ion-label>
-                    <ion-input type="email" formControlName="email"></ion-input>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.email.valid  && (form.controls.email.dirty || submitAttempt)">
-                    <p>{{ 'MERCHANT_CREATE.EMAIL_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.TELEPHONE' | translate }}</ion-label>
-                    <ion-input type="tel" formControlName="telephone"></ion-input>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.telephone.valid  && (form.controls.telephone.dirty || submitAttempt)">
-                    <p>{{ 'MERCHANT_CREATE.TELEPHONE_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.ADDRESS' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="address"></ion-input>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.address.valid  && (form.controls.address.dirty || submitAttempt)">
-                    <p>{{ 'MERCHANT_CREATE.ADDRESS_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label>{{ 'MERCHANT_CREATE.COUNTRY' | translate }}</ion-label>
-                    <ion-select formControlName="country_id" [(ngModel)]="country" (ionChange)="selectCountry(null)">
-                        <ion-select-option *ngFor="let item of countries" [value]='item.id'>{{item.name}}</ion-select-option>
-                    </ion-select>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.country_id.valid  && (form.controls.country_id.dirty || submitAttempt)">
-                    <p>{{ 'MERCHANT_CREATE.COUNTRY_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item *ngIf="country">
-                    <ion-label>{{ 'MERCHANT_CREATE.REGION' | translate }}</ion-label>
-                    <ion-select [(ngModel)]="region" formControlName="region_id" (ionChange)="selectRegion()">
-                        <ion-select-option *ngFor="let item of regions" [value]='item.id'>{{item.name}}</ion-select-option>
-                    </ion-select>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.region_id.valid  && (form.controls.region_id.dirty || submitAttempt) && country">
-                    <p>{{ 'MERCHANT_CREATE.REGION_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item *ngIf="region">
-                    <ion-label>{{ 'MERCHANT_CREATE.CITY' | translate }}</ion-label>
-                    <ion-select formControlName="city_id" [(ngModel)]="city">
-                        <ion-select-option *ngFor="let item of cities" [value]='item.id'>{{item.name}}</ion-select-option>
-                    </ion-select>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.city_id.valid  && (form.controls.city_id.dirty || submitAttempt) && region">
-                    <p>{{ 'MERCHANT_CREATE.CITY_ERROR' | translate }}</p>
-                </ion-item>
-
-                <ion-item>
-                    <p>{{ 'MERCHANT_CREATE.BOOKING_REQUIRES_AUTH_DESC' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.BOOKING_REQUIRES_AUTH' | translate }}</ion-label>
-                    <ion-checkbox checked="true" formControlName="booking_requires_auth"></ion-checkbox>
-                </ion-item>
-                <ion-item>
-                    <p>{{ 'MERCHANT_CREATE.MAX_PER_HOUR_DESC' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.MAX_PER_HOUR' | translate }}</ion-label>
-                    <ion-input type="tel" formControlName="max_per_hour"></ion-input>
-                </ion-item>
-            </div>
-
-
-            <div *ngIf="typeSelected=='medical' || typeSelected=='location'">
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.SERVICE' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="service1"></ion-input>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.service1.valid  && (form.controls.service1.dirty || submitAttempt)">
-                    <p>{{ 'MERCHANT_CREATE.SERVICE_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.SERVICE' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="service2"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.SERVICE' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="service3"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.SPECIALTY' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="specialty1"></ion-input>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.specialty1.valid  && (form.controls.specialty1.dirty || submitAttempt)">
-                    <p>{{ 'MERCHANT_CREATE.SPECIALTY_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.SPECIALTY' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="specialty2"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.SPECIALTY' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="specialty3"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.EXPERIENCE' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="experience1"></ion-input>
-                </ion-item>
-                <ion-item *ngIf="!form.controls.experience1.valid  && (form.controls.experience1.dirty || submitAttempt)">
-                    <p>{{ 'MERCHANT_CREATE.EXPERIENCE_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.EXPERIENCE' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="experience2"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label position="floating">{{ 'MERCHANT_CREATE.EXPERIENCE' | translate }}</ion-label>
-                    <ion-input type="text" formControlName="experience3"></ion-input>
-                </ion-item>
-            </div>
-            <ion-item>
-                <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
-            </ion-item>
+                    <ion-item>
+                        <p>{{ 'MERCHANT_CREATE.BOOKING_REQUIRES_AUTH_DESC' | translate }}</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'MERCHANT_CREATE.BOOKING_REQUIRES_AUTH' | translate }}</ion-label>
+                        <ion-checkbox checked="true" formControlName="booking_requires_auth" class="right"></ion-checkbox>
+                    </ion-item>
+                    <ion-item>
+                        <p>{{ 'MERCHANT_CREATE.MAX_PER_HOUR_DESC' | translate }}</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">{{ 'MERCHANT_CREATE.MAX_PER_HOUR' | translate }}</ion-label>
+                        <ion-input type="tel" formControlName="max_per_hour"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-button full type="submit" >{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
+                    </ion-item>
+                </ion-card-content>
+            </ion-card>
         </ion-list>
     </form>
 </ion-content>

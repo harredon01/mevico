@@ -25,6 +25,9 @@ export class CreateMerchantPage implements OnInit {
     editType: boolean = false;
     editDescription: boolean = false;
     editUnitCost: boolean = false;
+    editServices: boolean = false;
+    editSpecialties: boolean = false;
+    editExperience: boolean = false;
     country: any;
     region: any;
     city: any;
