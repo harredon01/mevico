@@ -20,17 +20,16 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <div style="width:100%;background-repeat: no-repeat;height:200px;overflow-y: hidden">
+    <div class="profile__backgrnd">
         <img src="assets/imgs/background-1.jpg" style="width:100%" alt="merchant" />
     </div> 
-    <div class="profile__image-container" style="width:100%;position: relative;height:100px;">
+    <div class="profile__image-container">
         <div class="profile__image-wrapper" *ngIf="merchant.files.length>0" >
             <div style="position: relative">
                 <img [src]="merchant.icon" class="image--large profile__image" alt="merchant"/>
             </div>
         </div>
     </div>
-    
     <div class="doctor-detail profile">
         <div class="profile__main-info">
             <h2 class="text-white text--bold">{{merchant.name}}</h2>
@@ -58,7 +57,7 @@
             </div>
         </div>
     </div>
-    <ion-slides *ngIf="merchant.files.length>0">
+    <ion-slides *ngIf="merchant.files.length>0" style="height:150px;">
         <ion-slide *ngFor="let img of merchant.files">
             <img [src]="img.file" alt="merchant">
         </ion-slide>

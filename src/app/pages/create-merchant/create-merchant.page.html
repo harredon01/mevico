@@ -16,11 +16,16 @@
 
 <ion-content>
     <form [formGroup]="form" (ngSubmit)="done()">
-        <ion-slides class="profile__image-wrapper" *ngIf="merchant.files.length>0">
-            <ion-slide *ngFor="let img of merchant.files">
-                <img [src]="img.file" class="image--large profile__image" alt="merchant">
-            </ion-slide>
-        </ion-slides>
+        <div class="profile__backgrnd">
+            <img src="assets/imgs/background-1.jpg" style="width:100%" alt="merchant" />
+        </div> 
+        <div class="profile__image-container">
+            <div class="profile__image-wrapper" *ngIf="merchant.files.length>0" >
+                <div style="position: relative">
+                    <img [src]="merchant.icon" class="image--large profile__image" alt="merchant"/>
+                </div>
+            </div>
+        </div>
         <div class="doctor-detail profile">
             <div class="profile__main-info">
                 <h2 class="text-white text--bold" >{{merchant.name}}</h2>
@@ -63,10 +68,13 @@
                 </div>
             </div>
         </div>
+        <ion-slides *ngIf="merchant.files.length>0" style="height:150px;">
+            <ion-slide *ngFor="let img of merchant.files">
+                <img [src]="img.file" alt="merchant">
+            </ion-slide>
+        </ion-slides>
         <div class="doctor-detail__booking profile__booking">
-
             <div class="doctor-menu-client profile__booking" *ngIf="merchant.owner">
-                <p class="text--center">{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
                 <ion-list class="profile__options profile__options--list">
                     <ion-item no-padding lines="none" class="profile__options-item">
                         <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>

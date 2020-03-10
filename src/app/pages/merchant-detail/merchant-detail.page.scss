@@ -11,6 +11,13 @@
         width:100%;
         top:-40px;
     }
+    
+    &__backgrnd {
+        width:100%;
+        background-repeat: no-repeat;
+        height:200px;
+        overflow-y: hidden
+    }
     &__image-container {
         width:100%;
         position: relative;

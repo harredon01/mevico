@@ -121,7 +121,13 @@ export class ImagesPage implements OnInit {
             height: 800,
             outputType: 0
         };
-        this.prepareForUpload(options,container,false);
+        this.showLoader();
+        this.imagesServ.prepareForUpload(options,container,false).then((value: any) => {
+            this.images.push(value.file);
+            if(value.last){
+                this.dismissLoader();
+            }
+        });
     }
     setAvatar() {
         let params = this.params.getParams();
@@ -135,7 +141,10 @@ export class ImagesPage implements OnInit {
             maximumImagesCount: 1,
             outputType: 0
         };
-        this.prepareForUpload(options,container,true);
+        this.imagesServ.prepareForUpload(options,container,true).then((value: any) => {
+            this.icon = value.file;
+            this.dismissLoader();
+        });
     }
     prepareForUpload(options,container,avatar) {
         this.showLoader();

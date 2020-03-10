@@ -3,6 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {NavController, ToastController, ModalController, LoadingController, Events} from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {ImagesService} from '../../services/images/images.service';
 import {ParamsService} from '../../services/params/params.service';
 import {LocationsService} from '../../services/locations/locations.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
@@ -40,6 +41,7 @@ export class CreateMerchantPage implements OnInit {
     constructor(public navCtrl: NavController,
         public modalCtrl: ModalController,
         formBuilder: FormBuilder,
+        public imagesServ: ImagesService,
         public toastCtrl: ToastController,
         public mapData: MapDataService,
         private cdr: ChangeDetectorRef,
@@ -138,7 +140,34 @@ export class CreateMerchantPage implements OnInit {
             this.isReadyToSave = this.form.valid;
         });
     }
-    resetEdits(value:boolean) {
+    myImages() {
+        let params = {
+            "objectId": this.merchant.id,
+            "type": "Merchant",
+            "Name": this.merchant.name
+        };
+        params["settings"] = true;
+        this.params.setParams(params);
+        this.navCtrl.navigateForward("tabs/settings/merchants/" + this.merchant.id + "/images");
+    }
+    setAvatar() {
+        this.showLoader();
+        let container = {};
+        container['type'] = "Merchant_avatar";
+        container['intended_id'] = this.merchant.id;
+
+        let options = {
+            width: 800,
+            height: 800,
+            maximumImagesCount: 1,
+            outputType: 0
+        };
+        this.imagesServ.prepareForUpload(options,container,true).then((value: any) => {
+            this.merchant.icon = value.file;
+            this.dismissLoader();
+        });
+    }
+    resetEdits(value: boolean) {
         this.editName = value;
         this.editType = value;
         this.editDescription = value;
