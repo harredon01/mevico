@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {NavController, ModalController, LoadingController, AlertController} from '@ionic/angular';
+import {Component, OnInit,ViewChild} from '@angular/core';
+import {NavController, ModalController, LoadingController, AlertController,IonSlides} from '@ionic/angular';
 import {ActivatedRoute} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {MerchantsService} from '../../services/merchants/merchants.service';
@@ -18,6 +18,7 @@ import {CartService} from '../../services/cart/cart.service'
     styleUrls: ['./merchant-detail.page.scss'],
 })
 export class MerchantDetailPage implements OnInit {
+    @ViewChild('slides',{static:false}) slides: IonSlides;
     doctor: string = "about";
     Short: string = "n1";
     category: string = "";
@@ -141,6 +142,12 @@ export class MerchantDetailPage implements OnInit {
             this.getMerchant(this.merchant.id);
         }
     }
+    slidePrev() {
+        this.slides.slidePrev();
+    }
+    slideNext() {
+        this.slides.slideNext();
+    }
     showProducts() {
         let params = {
             "type": "Merchant",
@@ -157,7 +164,7 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id,
             "objectName": this.merchant.name,
             "objectDescription": this.merchant.description,
-            "objectIcon": this.merchant.icon 
+            "objectIcon": this.merchant.icon
         }
         if (this.fromSettings) {
             params["settings"] = true;
@@ -184,7 +191,7 @@ export class MerchantDetailPage implements OnInit {
                 let extras = {
                     "type": "Booking",
                     "id": booking.id,
-                    "call":true,
+                    "call": true,
                     "name": "Booking appointment for: " + booking.bookable.name,
                 }
                 let item = {

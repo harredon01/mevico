@@ -1,6 +1,6 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, ModalController, LoadingController, Events} from '@ionic/angular';
+import {NavController, ToastController, ModalController, LoadingController, IonSlides} from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ImagesService} from '../../services/images/images.service';
@@ -16,8 +16,10 @@ import {Merchant} from '../../models/merchant';
     styleUrls: ['./create-merchant.page.scss'],
 })
 export class CreateMerchantPage implements OnInit {
+    @ViewChild('slides', {static: false}) slides: IonSlides;
     isReadyToSave: boolean;
     locationLoaded: boolean = false;
+    MerchantLoaded: boolean = false;
     item: any;
     merchant: Merchant;
     loading: any;
@@ -25,13 +27,11 @@ export class CreateMerchantPage implements OnInit {
     editName: boolean = false;
     editType: boolean = false;
     editDescription: boolean = false;
-    editUnitCost: boolean = false;
+    editUnit_cost: boolean = false;
     editServices: boolean = false;
     editSpecialties: boolean = false;
     editExperience: boolean = false;
-    country: any;
-    region: any;
-    city: any;
+
     countries: any[] = [];
     regions: any[] = [];
     cities: any[] = [];
@@ -54,8 +54,6 @@ export class CreateMerchantPage implements OnInit {
         private spinnerDialog: SpinnerDialog) {
         this.merchant = new Merchant({files: [], availabilities: [], attributes: {}});
         this.submitAttempt = false;
-        this.country = null;
-        this.region = null;
         this.translateService.get('MERCHANT_CREATE.ERROR_SAVE').subscribe((value) => {
             this.merchantErrorStringSave = value;
         });
@@ -73,13 +71,13 @@ export class CreateMerchantPage implements OnInit {
             max_per_hour: [''],
             lat: [''],
             long: [''],
-            service1: [''],
+            service1: ['', Validators.required],
             service2: [''],
             service3: [''],
-            specialty1: [''],
+            specialty1: ['', Validators.required],
             specialty2: [''],
             specialty3: [''],
-            experience1: [''],
+            experience1: ['', Validators.required],
             experience2: [''],
             experience3: [''],
             city_id: ['', Validators.required],
@@ -87,10 +85,11 @@ export class CreateMerchantPage implements OnInit {
             country_id: ['', Validators.required],
         });
         let container: any = this.params.getParams();
-        console.log("Entering merchant", container); 
+        console.log("Entering merchant", container);
         if (container) {
             this.getMerchant(container.item.id);
         }
+        console.log("Form", this.form.errors)
         // Watch the form for changes, and
         this.form.valueChanges.subscribe((v) => {
             console.log("form change", v);
@@ -106,6 +105,12 @@ export class CreateMerchantPage implements OnInit {
         params["settings"] = true;
         this.params.setParams(params);
         this.navCtrl.navigateForward("tabs/settings/merchants/" + this.merchant.id + "/images");
+    }
+    slidePrev() {
+        this.slides.slidePrev();
+    }
+    slideNext() {
+        this.slides.slideNext();
     }
     showProducts() {
         let params = {
@@ -129,9 +134,9 @@ export class CreateMerchantPage implements OnInit {
             maximumImagesCount: 1,
             outputType: 0
         };
-        this.imagesServ.prepareForUpload(options,container,true).then((value: any) => {
+        this.imagesServ.prepareForUpload(options, container, true).then((value: any) => {
             let results = value.files;
-            if(results.length > 0 ){
+            if (results.length > 0) {
                 this.merchant.icon = results[0];
             }
             this.dismissLoader();
@@ -141,10 +146,31 @@ export class CreateMerchantPage implements OnInit {
         this.editName = value;
         this.editType = value;
         this.editDescription = value;
-        this.editUnitCost = value;
+        this.editUnit_cost = value;
         this.editServices = value;
         this.editSpecialties = value;
         this.editExperience = value;
+    }
+    resetEditsForm() {
+        let keys = Object.keys(this.form.value);
+        for (let item in keys) {
+            if (!this.form.controls[keys[item]].valid) {
+                let name = keys[item];
+                let nameCapitalized = "edit" + name.charAt(0).toUpperCase() + name.slice(1);
+                if (nameCapitalized.includes("Service")) {
+                    this.editServices = true;
+                } else if (nameCapitalized.includes("Experience")) {
+                    this.editExperience = true;
+                } else if (nameCapitalized.includes("Specialt")) {
+                    this.editSpecialties = true;
+                } else {
+                    if (this[nameCapitalized]==false) {
+                        this[nameCapitalized]=true;
+                    }
+                }
+                console.log("Invalid", keys[item]);
+            }
+        }
     }
     editField(field: any) {
         if (this["edit" + field]) {
@@ -169,10 +195,7 @@ export class CreateMerchantPage implements OnInit {
             region_id: editingMerchant.region_id,
             country_id: editingMerchant.country_id,
         };
-        this.country = editingMerchant.country_id;
-        this.region = editingMerchant.region_id;
-        this.city = editingMerchant.city_id;
-        this.selectCountry(this.region, this.city);
+        
         let attributes = editingMerchant.attributes;
         let services = [];
         if (attributes.services) {
@@ -228,6 +251,9 @@ export class CreateMerchantPage implements OnInit {
         console.log("Setting form values: ", container);
         this.isReadyToSave = true;
         this.form.setValue(container);
+        console.log("Before set company");
+        this.MerchantLoaded = true;
+        this.selectCountry(editingMerchant.region_id, editingMerchant.city_id);
     }
     ionViewDidEnter() {
         let container: any = this.params.getParams();
@@ -259,7 +285,7 @@ export class CreateMerchantPage implements OnInit {
     getCountries() {
         this.locations.getCountries().subscribe((resp: any) => {
             this.countries = resp.data;
-            this.country = 1;
+            this.form.patchValue({country_id: 1});
             console.log("getCountries result", resp);
 
         }, (err) => {
@@ -267,34 +293,44 @@ export class CreateMerchantPage implements OnInit {
         });
     }
     selectCountry(region, city) {
+        if (!this.MerchantLoaded){
+            return;
+        }
+        if (!region){
+            return;
+        }
+        if (!city){
+            return;
+        }
         this.showLoader();
-        console.log("selectCountry", region, city);
-        this.form.patchValue({country_id: this.country+""});
-        this.locations.getRegionsCountry(this.country).subscribe((resp: any) => {
+        console.log("selectCountry", this.form.get('country_id').value);
+        this.locations.getRegionsCountry(this.form.get('country_id').value).subscribe((resp: any) => {
             this.dismissLoader();
-            this.region = null;
+            this.regions = resp.data;
             if (region) {
-                this.region = region;
-                this.form.patchValue({region_id: region+""});
-                this.cdr.detectChanges();
+                this.form.patchValue({region_id: region});
+                
                 this.selectRegion(city);
             }
 
             console.log("getRegionsCountry result", resp);
-            this.regions = resp.data;
+            this.cdr.detectChanges();
         }, (err) => {
             this.dismissLoader();
         });
     }
+    
     selectRegion(city) {
+        if (!this.MerchantLoaded){
+            return;
+        }
         this.showLoader();
-        this.locations.getCitiesRegion(this.region).subscribe((resp: any) => {
+        this.locations.getCitiesRegion(this.form.get('region_id').value).subscribe((resp: any) => {
             this.dismissLoader();
             console.log("getCitiesRegion result", resp);
             this.cities = resp.data;
             if (city) {
-                this.city = city;
-                this.form.patchValue({city_id: city+""});
+                this.form.patchValue({city_id: city });
             }
             this.cdr.detectChanges();
         }, (err) => {
@@ -341,7 +377,7 @@ export class CreateMerchantPage implements OnInit {
             }).then(toast => toast.present());
         });
     }
-    
+
     getMerchant(merchant) {
         this.showLoader();
         this.merchants.getMerchant(merchant).subscribe((resp: any) => {
@@ -407,7 +443,8 @@ export class CreateMerchantPage implements OnInit {
      * back to the presenter.
      */
     done() {
-        if (!this.form.valid) {this.resetEdits(true);return;}
+        this.resetEdits(false);
+        if (!this.form.valid) {this.resetEditsForm(); return;}
         this.saveMerchant(this.form.value);
     }
     showLoader() {

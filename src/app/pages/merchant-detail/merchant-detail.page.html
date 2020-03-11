@@ -57,33 +57,42 @@
             </div>
         </div>
     </div>
-    <ion-slides *ngIf="merchant.files.length>0" style="height:150px;">
-        <ion-slide *ngFor="let img of merchant.files">
-            <img [src]="img.file" alt="merchant">
-        </ion-slide>
-    </ion-slides>
+    <div style="position: relative">
+        <div style="position: absolute;top: 50%;left: 16px;font-size: 25px;z-index: 2;" (click)="slidePrev()" *ngIf="merchant.files.length>1">
+            <ion-icon name="arrow-back"></ion-icon>
+        </div>
+        <div style="position: absolute;top: 50%;right: 16px;font-size: 25px;z-index: 2;" (click)="slideNext()" *ngIf="merchant.files.length>1">
+            <ion-icon name="arrow-forward"></ion-icon>
+        </div>
+        <ion-slides *ngIf="merchant.files.length>0" style="height:150px;" #slides>
+            <ion-slide *ngFor="let img of merchant.files">
+                <img [src]="img.file" alt="merchant">
+            </ion-slide>
+        </ion-slides>
+    </div>
+
     <div class="doctor-detail__booking profile__booking">
         <div class="doctor-menu-client">
             <ion-list class="profile__options">
-                <ion-item no-padding lines="none" class="profile__options-item">
+                <ion-item lines="none" class="profile__options-item ion-no-padding">
                     <div class="profile__options-wrapper" (click)="showProducts()">
                         <img src="assets/icon/store.svg" alt="">
                         {{ 'MERCHANT_DETAIL.STORE' | translate }}
                     </div>
                 </ion-item>
-                <ion-item no-padding lines="none" class="profile__options-item">
+                <ion-item lines="none" class="profile__options-item ion-no-padding">
                     <div class="profile__options-wrapper" (click)="appointmentbook()">
                         <img src="assets/icon/reservation.svg" alt="">
                         {{ 'MERCHANT_DETAIL.BOOKING' | translate }}
                     </div>
                 </ion-item>
-                <!--ion-item no-padding lines="none" class="profile__options-item">
+                <!--ion-item lines="none" class="profile__options-item ion-no-padding">
                     <div class="profile__options-wrapper" (click)="chat()">
                         <img src="assets/icon/chat.svg" alt="">
                         {{ 'MERCHANT_DETAIL.CHAT' | translate }}
                     </div>
                 </ion-item-->
-                <ion-item *ngIf="merchant.status=='online'" no-padding lines="none" class="profile__options-item">
+                <ion-item *ngIf="merchant.status=='online'" lines="none" class="profile__options-item ion-no-padding">
                     <div class="profile__options-wrapper" (click)="call()">
                         <img src="assets/icon/phone.svg" alt="">
                         {{ 'MERCHANT_DETAIL.CALL' | translate }}
@@ -111,7 +120,7 @@
             <ion-card-content class="profile__overview-content">
                 <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
                     <li *ngFor="let availability of merchant.availabilities" class="doctor-experience">
-                        <p>{{availability.range}}<span float-right>{{availability.from}} to
+                        <p>{{availability.range}}<span class="ion-float-right">{{availability.from}} to
                                 {{availability.to}}</span></p>
                     </li>
                 </ul> 
@@ -230,7 +239,7 @@
                         <span>{{rating.updated_at | date}}</span>
                     </div>
                 </ion-item>
-                <ion-card-content class="profile__overview-comment" no-padding>
+                <ion-card-content class="profile__overview-comment ion-no-padding">
                     {{rating.comment}}
                 </ion-card-content>
             </ion-card>

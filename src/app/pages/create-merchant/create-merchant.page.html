@@ -30,7 +30,7 @@
             <div class="profile__main-info">
                 <h2 class="text-white text--bold" >{{merchant.name}}</h2>
                 <a href="javascript:;" (click)="editField('Name')">edit</a>
-                <div *ngIf="editName">
+                <div *ngIf="editName" class="input-box">
                     <ion-item >
                         <ion-label position="floating">{{ 'MERCHANT_CREATE.NAME' | translate }}</ion-label>
                         <ion-input type="text" formControlName="name"></ion-input>
@@ -42,7 +42,7 @@
                 </div>
                 <p class="text--italic text-white">{{merchant.type}} </p> 
                 <a href="javascript:;" (click)="editField('Type')">edit</a>
-                <div *ngIf="editType">
+                <div *ngIf="editType" class="input-box">
                     <ion-item>
                         <ion-label position="floating">{{ 'MERCHANT_CREATE.TYPE' | translate }}</ion-label>
                         <ion-select placeholder="Que quieres crear" formControlName="type" (ionChange)="addShippingAddress()" >
@@ -54,8 +54,8 @@
                 </div>
                 <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
                 <span class="text--block">{{ merchant.unit_cost | currency }} </span>
-                <a href="javascript:;" (click)="editField('UnitCost')" >edit</a>
-                <div *ngIf="editUnitCost">
+                <a href="javascript:;" (click)="editField('Unit_cost')" >edit</a>
+                <div *ngIf="editUnit_cost" class="input-box">
                     <ion-item>
                         <p>{{ 'MERCHANT_CREATE.HOUR_COST_DESC' | translate }}</p>
                     </ion-item>
@@ -67,18 +67,26 @@
                 </div>
             </div>
         </div>
-        <ion-slides *ngIf="merchant.files.length>0" style="height:150px;">
-            <ion-slide *ngFor="let img of merchant.files">
-                <img [src]="img.file" alt="merchant">
-            </ion-slide>
-        </ion-slides>
+        <div style="position: relative">
+            <div style="position: absolute;top: 50%;left: 16px;font-size: 25px;z-index: 2;" (click)="slidePrev()" *ngIf="merchant.files.length>1">
+                <ion-icon name="arrow-back"></ion-icon>
+            </div>
+            <div style="position: absolute;top: 50%;right: 16px;font-size: 25px;z-index: 2;" (click)="slideNext()" *ngIf="merchant.files.length>1">
+                <ion-icon name="arrow-forward"></ion-icon>
+            </div>
+            <ion-slides *ngIf="merchant.files.length>0" style="height:150px;" #slides>
+                <ion-slide *ngFor="let img of merchant.files">
+                    <img [src]="img.file" alt="merchant">
+                </ion-slide>
+            </ion-slides>
+        </div>
         <div class="doctor-detail__booking profile__booking">
             <div class="profile__description">
                 <a href="javascript:;" (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</a>
                 <p class="profile__description-title">Acerca de</p>
                 <p class="profile__description-body">{{merchant.description}}</p>
                 <a href="javascript:;" (click)="editField('Description')" >edit</a>
-                <div *ngIf="editDescription" style="width:100%">
+                <div *ngIf="editDescription" style="width:100%"  class="input-box">
                     <ion-item >
                         <ion-label position="floating">{{ 'MERCHANT_CREATE.DESCRIPTION' | translate }}</ion-label>
                         <ion-textarea formControlName="description" rows="4"></ion-textarea>
@@ -132,7 +140,7 @@
                         </ion-card-content>
 
                         <a href="javascript:;" (click)="editField('Experience')" class="right">edit</a>
-                        <div *ngIf="editExperience">
+                        <div *ngIf="editExperience" class="input-box">
                             <ion-item>
                                 <ion-label position="floating">{{ 'MERCHANT_CREATE.EXPERIENCE' | translate }}</ion-label>
                                 <ion-input type="text" formControlName="experience1"></ion-input>
@@ -169,7 +177,7 @@
                         </ion-card-content>
 
                         <a href="javascript:;" (click)="editField('Services')" class="right">edit</a>
-                        <div *ngIf="editServices">
+                        <div *ngIf="editServices" class="input-box">
                             <ion-item>
                                 <ion-label position="floating">{{ 'MERCHANT_CREATE.SERVICE' | translate }}</ion-label>
                                 <ion-input type="text" formControlName="service1"></ion-input>
@@ -206,7 +214,7 @@
                         </ion-card-content>
 
                         <a href="javascript:;" (click)="editField('Specialties')" class="right">edit</a>
-                        <div *ngIf="editSpecialties">
+                        <div *ngIf="editSpecialties" class="input-box">
                             <ion-item>
                                 <ion-label position="floating">{{ 'MERCHANT_CREATE.SPECIALTY' | translate }}</ion-label>
                                 <ion-input type="text" formControlName="specialty1"></ion-input>
@@ -266,25 +274,25 @@
                     </ion-item>
                     <ion-item>
                         <ion-label>{{ 'MERCHANT_CREATE.COUNTRY' | translate }}</ion-label>
-                        <ion-select formControlName="country_id" [(ngModel)]="country" (ionChange)="selectCountry(null)">
+                        <ion-select formControlName="country_id" (ionChange)="selectCountry()" name="country_id">
                             <ion-select-option *ngFor="let item of countries" [value]='item.id'>{{item.name}}</ion-select-option>
                         </ion-select>
                     </ion-item>
                     <ion-item *ngIf="!form.controls.country_id.valid  && (form.controls.country_id.dirty || submitAttempt)">
                         <p>{{ 'MERCHANT_CREATE.COUNTRY_ERROR' | translate }}</p>
                     </ion-item>
-                    <ion-item *ngIf="country">
+                    <ion-item *ngIf="form.get('country_id').value">
                         <ion-label>{{ 'MERCHANT_CREATE.REGION' | translate }}</ion-label>
-                        <ion-select [(ngModel)]="region" formControlName="region_id" (ionChange)="selectRegion()">
+                        <ion-select formControlName="region_id" (ionChange)="selectRegion()" name="region_id">
                             <ion-select-option *ngFor="let item of regions" [value]='item.id'>{{item.name}}</ion-select-option>
                         </ion-select>
                     </ion-item>
                     <ion-item *ngIf="!form.controls.region_id.valid  && (form.controls.region_id.dirty || submitAttempt) && country">
                         <p>{{ 'MERCHANT_CREATE.REGION_ERROR' | translate }}</p>
                     </ion-item>
-                    <ion-item *ngIf="region">
+                    <ion-item *ngIf="form.get('region_id').value">
                         <ion-label>{{ 'MERCHANT_CREATE.CITY' | translate }}</ion-label>
-                        <ion-select formControlName="city_id" [(ngModel)]="city">
+                        <ion-select formControlName="city_id" name="city_id" >
                             <ion-select-option *ngFor="let item of cities" [value]='item.id'>{{item.name}}</ion-select-option>
                         </ion-select>
                     </ion-item>
