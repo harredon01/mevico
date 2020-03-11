@@ -123,10 +123,8 @@ export class ImagesPage implements OnInit {
         };
         this.showLoader();
         this.imagesServ.prepareForUpload(options,container,false).then((value: any) => {
-            this.images.push(value.file);
-            if(value.last){
-                this.dismissLoader();
-            }
+            this.images = this.images.concat(value.files);
+            this.dismissLoader();
         });
     }
     setAvatar() {
@@ -142,7 +140,11 @@ export class ImagesPage implements OnInit {
             outputType: 0
         };
         this.imagesServ.prepareForUpload(options,container,true).then((value: any) => {
-            this.icon = value.file;
+            let results = value.files;
+            if(results.length > 0){
+                this.icon = results[0];
+            }
+            
             this.dismissLoader();
         });
     }

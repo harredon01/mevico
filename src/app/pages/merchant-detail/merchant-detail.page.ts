@@ -123,18 +123,6 @@ export class MerchantDetailPage implements OnInit {
         });
     }
 
-    addfeedback() {
-        let params = {
-            "type": "Merchant",
-            "objectId": this.merchant.id,
-            "name": this.merchant.name
-        };
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
-        this.params.setParams(params);
-        this.navCtrl.navigateForward(this.urlSearch + "/ratings");
-    }
     chat() {
         let params = {
             "type": "Merchant",
@@ -146,69 +134,6 @@ export class MerchantDetailPage implements OnInit {
         }
         this.params.setParams(params);
         this.navCtrl.navigateForward(this.urlSearch + "/chat");
-    }
-    myBookings() {
-        let params = {
-            "type": "Merchant",
-            "objectId": this.merchant.id,
-            "target": "bookable",
-            "objectName": this.merchant.name,
-            "objectDescription": this.merchant.description,
-            "objectIcon": this.merchant.icon
-        };
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
-        console.log(params);
-        this.params.setParams(params);
-        this.navCtrl.navigateForward(this.urlSearch + "/bookings");
-    }
-    myItems() {
-        let params = {
-            "merchant": this.merchant.id
-        };
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
-        this.params.setParams(params);
-        this.navCtrl.navigateForward(this.urlSearch + "/items");
-    }
-    myImages() {
-        let icon = this.merchant.icon;
-        if (!icon) {
-            icon = "https://gohife.s3.us-east-2.amazonaws.com/public/icons/avatar.png";
-        }
-        let params = {
-            "objectId": this.merchant.id,
-            "type": "Merchant",
-            "Name": this.merchant.name,
-            "icon": icon
-        };
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
-        this.params.setParams(params);
-        this.navCtrl.navigateForward(this.urlSearch + "/images");
-    }
-    myAvailabilities() {
-        let params = {
-            "merchant": this.merchant.id
-        };
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
-        this.params.setParams(params);
-        this.navCtrl.navigateForward(this.urlSearch + "/availabilities");
-    }
-    editMerchant() {
-        let params = {
-            "merchant": this.merchant
-        };
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
-        this.params.setParams(params);
-        this.navCtrl.navigateForward(this.urlSearch + "/edit");
     }
     ionViewDidEnter() {
         let container = this.params.getParams();
@@ -222,9 +147,6 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id,
             "owner": this.merchant.owner
         };
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
         this.params.setParams(params);
         this.navCtrl.navigateForward(this.urlSearch + "/products");
     }

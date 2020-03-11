@@ -24,6 +24,7 @@ export class ImagesService {
         return new Promise((resolve, reject) => {
             this.imagePicker.getPictures(options).then((results) => {
                 const fileTransfer: FileTransferObject = this.transfer.create();
+                let images:any[] = [];
                 for (var i = 0; i < results.length; i++) {
                     console.log('Image URI: ' + results[i]);
                     console.log('Image: ', (i + 1), results.length);
@@ -33,7 +34,11 @@ export class ImagesService {
                     }
                     this.upload(fileTransfer, results[i], container, last, avatar).then((value: any) => {
                         console.log("After upload result", value);
-                        resolve(value);
+                        images.push(value.file);
+                        if(value.last){
+                            resolve({images:images,last:true})
+                        }
+                        
                     });
                 }
             }, (err) => {});

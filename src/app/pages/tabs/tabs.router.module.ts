@@ -148,14 +148,6 @@ const routes: Routes = [
                                             {
                                                 path: '',
                                                 loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
-                                            },
-                                            {
-                                                path: 'edit/:productId',
-                                                loadChildren: '../edit-products/edit-products.module#EditProductsPageModule',
-                                            },
-                                            {
-                                                path: 'images/:productId',
-                                                loadChildren: '../images/images.module#ImagesPageModule',
                                             }
                                         ]
                                     },
@@ -164,50 +156,12 @@ const routes: Routes = [
                                         loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
                                     },
                                     {
-                                        path: 'edit',
-                                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
-                                    },
-                                    {
                                         path: 'book',
                                         loadChildren: '../booking/booking.module#BookingPageModule',
                                     },
                                     {
-                                        path: 'bookings',
-                                        children: [
-                                            {
-                                                path: '',
-                                                loadChildren: '../booking-list/booking-list.module#BookingListPageModule',
-                                            },
-                                            {
-                                                path: ':bookingId',
-                                                loadChildren: '../booking-detail/booking-detail.module#BookingDetailPageModule',
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        path: 'items',
-                                        children: [
-                                            {
-                                                path: '',
-                                                loadChildren: '../items/items.module#ItemsPageModule',
-                                            },
-                                            {
-                                                path: ':itemId',
-                                                loadChildren: '../item-detail/item-detail.module#ItemDetailPageModule',
-                                            }
-                                        ]
-                                    },
-                                    {
                                         path: 'ratings',
                                         loadChildren: '../comments/comments.module#CommentsPageModule',
-                                    },
-                                    {
-                                        path: 'availabilities',
-                                        loadChildren: '../availabilities/availabilities.module#AvailabilitiesPageModule',
-                                    },
-                                    {
-                                        path: 'images',
-                                        loadChildren: '../images/images.module#ImagesPageModule',
                                     }
                                 ]
                             }
@@ -310,7 +264,7 @@ const routes: Routes = [
                                 children: [
                                     {
                                         path: '',
-                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
                                     },
                                     {
                                         path: 'products',
@@ -332,10 +286,6 @@ const routes: Routes = [
                                     {
                                         path: 'chat',
                                         loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
-                                    },
-                                    {
-                                        path: 'edit',
-                                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
                                     },
                                     {
                                         path: 'bookings',

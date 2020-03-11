@@ -25,7 +25,7 @@
     </div> 
     <div class="profile__image-container">
         <div class="profile__image-wrapper" *ngIf="merchant.files.length>0" >
-            <div style="position: relative">
+            <div style="position: relative;width:100%;text-align: center">
                 <img [src]="merchant.icon" class="image--large profile__image" alt="merchant"/>
             </div>
         </div>
@@ -63,7 +63,7 @@
         </ion-slide>
     </ion-slides>
     <div class="doctor-detail__booking profile__booking">
-        <div class="doctor-menu-client" *ngIf="!merchant.owner">
+        <div class="doctor-menu-client">
             <ion-list class="profile__options">
                 <ion-item no-padding lines="none" class="profile__options-item">
                     <div class="profile__options-wrapper" (click)="showProducts()">
@@ -94,20 +94,6 @@
 
         <div class="doctor-menu-client profile__booking" *ngIf="merchant.owner">
             <p class="text--center">{{ 'MERCHANT_DETAIL.IS_OWNER' | translate }}</p>
-            <ion-list class="profile__options profile__options--list">
-                <ion-item no-padding lines="none" class="profile__options-item">
-                    <ion-button (click)="myItems()">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
-                </ion-item>
-                <ion-item no-padding lines="none" class="profile__options-item">
-                    <ion-button (click)="myBookings()">{{ 'MERCHANT_DETAIL.MY_BOOKING' | translate }}</ion-button>
-                </ion-item>
-                <ion-item no-padding lines="none" class="profile__options-item">
-                    <ion-button (click)="editMerchant()">{{ 'MERCHANT_DETAIL.EDIT' | translate }}</ion-button>
-                </ion-item>
-                <ion-item no-padding lines="none" class="profile__options-item">
-                    <ion-button (click)="showProducts()">{{ 'MERCHANT_DETAIL.STORE' | translate }}</ion-button>
-                </ion-item>
-            </ion-list>
         </div>
 
         <div class="profile__description">

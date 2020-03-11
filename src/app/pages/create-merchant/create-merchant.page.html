@@ -21,7 +21,7 @@
         </div> 
         <div class="profile__image-container">
             <div class="profile__image-wrapper" *ngIf="merchant.files.length>0" >
-                <div style="position: relative">
+                <div style="position: relative;width:100%;text-align: center">
                     <img [src]="merchant.icon" class="image--large profile__image" alt="merchant"/>
                 </div>
             </div>
@@ -40,8 +40,8 @@
                     </ion-item>
                     <a href="javascript:;" (click)="done()">save</a>
                 </div>
-
-                <p class="text--italic text-white">{{merchant.type}} <a href="javascript:;" (click)="editField('Type')">edit</a></p> 
+                <p class="text--italic text-white">{{merchant.type}} </p> 
+                <a href="javascript:;" (click)="editField('Type')">edit</a>
                 <div *ngIf="editType">
                     <ion-item>
                         <ion-label position="floating">{{ 'MERCHANT_CREATE.TYPE' | translate }}</ion-label>
@@ -52,10 +52,9 @@
                     </ion-item>
                     <a href="javascript:;" (click)="done()">save</a>
                 </div>
-
                 <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
                 <span class="text--block">{{ merchant.unit_cost | currency }} </span>
-                <a href="javascript:;" (click)="editField('Name')" >edit</a>
+                <a href="javascript:;" (click)="editField('UnitCost')" >edit</a>
                 <div *ngIf="editUnitCost">
                     <ion-item>
                         <p>{{ 'MERCHANT_CREATE.HOUR_COST_DESC' | translate }}</p>
@@ -74,16 +73,9 @@
             </ion-slide>
         </ion-slides>
         <div class="doctor-detail__booking profile__booking">
-            <div class="doctor-menu-client profile__booking" *ngIf="merchant.owner">
-                <ion-list class="profile__options profile__options--list">
-                    <ion-item no-padding lines="none" class="profile__options-item">
-                        <ion-button (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</ion-button>
-                    </ion-item>
-                </ion-list>
-            </div>
-
             <div class="profile__description">
-                <p class="profile__description-title">About Doctor</p>
+                <a href="javascript:;" (click)="myImages()">{{ 'MERCHANT_DETAIL.IMAGES' | translate }}</a>
+                <p class="profile__description-title">Acerca de</p>
                 <p class="profile__description-body">{{merchant.description}}</p>
                 <a href="javascript:;" (click)="editField('Description')" >edit</a>
                 <div *ngIf="editDescription" style="width:100%">
