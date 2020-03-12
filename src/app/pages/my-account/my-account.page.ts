@@ -15,31 +15,6 @@ export class MyAccountPage implements OnInit {
     // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
-    account: {
-        firstName: string,
-        lastName: string,
-        docNum: string,
-        docType: string,
-        area_code: number,
-        cellphone: number,
-        email: string,
-        language: string,
-        city_id: number,
-        region_id: number
-        country_id: number
-    } = {
-            firstName: '',
-            lastName: '',
-            docNum: '',
-            docType: '',
-            area_code: 57,
-            cellphone: 0,
-            email: '',
-            language: 'es',
-            city_id: 524,
-            region_id: 11,
-            country_id: 1
-        };
 
     registrationForm: FormGroup;
     submitAttempt: boolean = false;
@@ -73,9 +48,21 @@ export class MyAccountPage implements OnInit {
             //window.location.reload();
         });
         console.log("Current lang", this.translateService.currentLang);
+        
+
+        this.registrationForm = formBuilder.group({
+            docNum: ['', Validators.compose([Validators.maxLength(30), Validators.minLength(6), Validators.required])],
+            docType: ['', Validators.compose([Validators.required])],
+            id: ['', Validators.compose([Validators.required])],
+            area_code: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[0-9]*'), Validators.required])],
+            cellphone: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[0-9._%+-]*'), Validators.required])],
+            firstName: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z 0-9áúíóéÁÉÍÓÚñÑ]*'), Validators.required])],
+            lastName: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z 0-9áúíóéÁÉÍÓÚñÑ]*'), Validators.required])],
+            email: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-.]*\.[a-zA-Z]{2,}'), Validators.required])]
+        });
         if (this.userData._user) {
             console.log("savedUser", this.userData._user);
-            this.account = this.userData._user;
+            this.registrationForm.patchValue(this.userData._user);
         } else {
             this.user.getUser().subscribe((resp: any) => {
                 if (resp) {
@@ -87,7 +74,7 @@ export class MyAccountPage implements OnInit {
                             this.userData._user.savedCard = true;
                         }
                     }
-                    this.account = this.userData._user;
+                    this.registrationForm.patchValue(this.userData._user);
                     console.log("getUser", this.userData._user);
                 }
 
@@ -100,16 +87,6 @@ export class MyAccountPage implements OnInit {
                 this.api.handleError(err);
             });
         }
-
-        this.registrationForm = formBuilder.group({
-            docNum: ['', Validators.compose([Validators.maxLength(30), Validators.minLength(6), Validators.required])],
-            docType: ['', Validators.compose([Validators.required])],
-            area_code: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[0-9]*'), Validators.required])],
-            cellphone: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[0-9._%+-]*'), Validators.required])],
-            firstName: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z 0-9áúíóéÁÉÍÓÚñÑ]*'), Validators.required])],
-            lastName: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z 0-9áúíóéÁÉÍÓÚñÑ]*'), Validators.required])],
-            email: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-.]*\.[a-zA-Z]{2,}'), Validators.required])]
-        });
         this.userData.getLanguage().then((value) => {
             console.log("getLanguage");
             console.log(value);
@@ -138,7 +115,7 @@ export class MyAccountPage implements OnInit {
     doUpdate() {
         this.showLoader();
         // Attempt to login in through our User service
-        this.user.myAccount(this.account).subscribe((resp: any) => {
+        this.user.myAccount(this.registrationForm.value).subscribe((resp: any) => {
             console.log("Response my account", resp);
             this.dismissLoader();
             if (resp.status == "success") {

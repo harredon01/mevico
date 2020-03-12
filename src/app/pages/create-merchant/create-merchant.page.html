@@ -65,6 +65,19 @@
                     </ion-item>
                     <a href="javascript:;" (click)="done()">save</a>
                 </div>
+                <p class="text--bold">{{ 'MERCHANT_LISTING.EXPERIENCE' | translate }}:</p>
+                <span class="text--block">{{ merchant.attributes.years_experience }} {{ 'MERCHANT_LISTING.YEARS' | translate }}</span>
+                <a href="javascript:;" (click)="editField('Years_experience')" >edit</a>
+                <div *ngIf="editYears_experience" class="input-box">
+                    <ion-item>
+                        <ion-label position="floating">{{ 'MERCHANT_CREATE.YEARS_EXPERIENCE' | translate }}</ion-label>
+                        <ion-input type="tel" formControlName="years_experience"></ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!form.controls.years_experience.valid  && (form.controls.years_experience.dirty || submitAttempt)" >
+                        <p>{{ 'MERCHANT_CREATE.YEARS_EXPERIENCE_ERROR' | translate }}</p>
+                    </ion-item>
+                    <a href="javascript:;" (click)="done()">save</a>
+                </div>
             </div>
         </div>
         <div style="position: relative">

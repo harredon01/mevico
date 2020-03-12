@@ -24,6 +24,7 @@ export class CreateMerchantPage implements OnInit {
     merchant: Merchant;
     loading: any;
     type: any;
+    editYears_experience: boolean = false;
     editName: boolean = false;
     editType: boolean = false;
     editDescription: boolean = false;
@@ -66,6 +67,7 @@ export class CreateMerchantPage implements OnInit {
             email: ['', Validators.required],
             telephone: ['', Validators.required],
             address: ['', Validators.required],
+            years_experience: ['', Validators.required],
             unit_cost: [''],
             booking_requires_auth: [''],
             max_per_hour: [''],
@@ -150,6 +152,7 @@ export class CreateMerchantPage implements OnInit {
         this.editServices = value;
         this.editSpecialties = value;
         this.editExperience = value;
+        this.editYears_experience = value;
     }
     resetEditsForm() {
         let keys = Object.keys(this.form.value);

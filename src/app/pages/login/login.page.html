@@ -9,24 +9,24 @@
                 <div class="login__image">
                     <img src="assets/sign_up.png" alt="">
                 </div>
-                <ion-item class="login__item" no-padding>
+                <ion-item class="login__item ion-no-padding">
                     <ion-label position="floating">{{ 'LOGIN.USERNAME' | translate }}</ion-label>
                     <ion-input class="login__input" type="text" [(ngModel)]="account.username" name="username" required></ion-input>
                 </ion-item>
-                <ion-item class="login__item" no-padding>
+                <ion-item class="login__item ion-no-padding">
                     <ion-label position="floating">{{ 'LOGIN.PASSWORD' | translate }}</ion-label>
                     <ion-input class="login__input" type="password" [(ngModel)]="account.password" name="password" required></ion-input>
                 </ion-item>
-                <ion-item class="login__item login--remember" no-padding>
+                <ion-item class="login__item login--remember ion-no-padding">
                     <ion-label>{{ 'INPUTS.REMEMBER' | translate }}</ion-label>
                     <ion-checkbox [(ngModel)]="account.remember" name="remember"></ion-checkbox>
                 </ion-item>
-                <div padding class="login__enter">
+                <div class="login__enter ion-padding">
                     <ion-button type="submit" class="button" expand="full">
                         <span class="login__button">Ingresar</span>
                     </ion-button>
                 </div>
-                <div padding class="login__forgot-account">
+                <div class="login__forgot-account ion-padding">
                     <a href="javascript:;" (click)="presentAlertForgotPass()">{{ 'LOGIN.FORGOT_PASS' | translate }}</a>
                 </div>
                 <p class="login__text">Or</p>

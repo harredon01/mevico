@@ -27,10 +27,10 @@
             <input type="hidden" formControlName="address_id" />
             <input type="hidden" formControlName="postal" />
             <ion-list>
-                <ion-item no-padding>
+                <ion-item class="ion-no-padding">
                     <p>{{ 'ADDRESS_FIELDS.ADDRESS_CONFIRM' | translate }}</p>
                 </ion-item>
-                <ion-item no-padding>
+                <ion-item class="ion-no-padding">
                     <ion-label position="floating">
                         <span class="text--bold">
                             {{ 'ADDRESS_FIELDS.ADDRESS' | translate }}
@@ -41,7 +41,7 @@
                 <ion-item *ngIf="!form.controls.address.valid  && (form.controls.address.dirty || submitAttempt)">
                     <p>{{ 'ADDRESS_FIELDS.ADDRESS_ERROR' | translate }}</p>
                 </ion-item>
-                <ion-item no-padding>
+                <ion-item class="ion-no-padding">
                     <ion-label position="floating">
                         <span class="text--bold">
                             {{ 'ADDRESS_FIELDS.POSTAL' | translate }}
@@ -52,7 +52,7 @@
                 <ion-item *ngIf="!form.controls.postal.valid  && (form.controls.postal.dirty || submitAttempt)">
                     <p>{{ 'ADDRESS_FIELDS.POSTAL_ERROR' | translate }}</p>
                 </ion-item>
-                <ion-item no-padding>
+                <ion-item class="ion-no-padding">
                     <ion-label position="floating">
                                 {{ 'ADDRESS_FIELDS.NOTES' | translate }}
                     </ion-label>
@@ -63,7 +63,7 @@
                 </ion-item>
 
 
-                <ion-item no-padding>
+                <ion-item class="ion-no-padding">
                     <ion-label position="floating">
                             <span class="text--bold">
                                 {{ 'ADDRESS_FIELDS.NAME' | translate }}
@@ -77,7 +77,7 @@
                 </ion-item>
 
 
-                <ion-item no-padding>
+                <ion-item class="ion-no-padding">
                     <ion-label position="floating">
                             <span class="text--bold">
                                 {{ 'ADDRESS_FIELDS.PHONE' | translate }}
@@ -90,7 +90,7 @@
                 <ion-item *ngIf="!form.controls.phone.valid  && (form.controls.phone.dirty || submitAttempt)">
                     <p>{{ 'ADDRESS_FIELDS.PHONE_ERROR' | translate }}</p>
                 </ion-item>
-                <ion-item no-padding>
+                <ion-item class="ion-no-padding">
                     <ion-button class="button__full" full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
                 </ion-item>
             </ion-list>

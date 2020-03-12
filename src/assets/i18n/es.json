@@ -664,8 +664,9 @@
         "SPECIALTY":"Especialidad",
         "SPECIALTY_ERROR":"Debes llenar una especialidad",
         "EXPERIENCE":"Experiencia",
-        "EXPERIENCE_ERROR":"Debes llenar una experiencia"
-        
+        "EXPERIENCE_ERROR":"Debes llenar una experiencia",
+        "YEARS_EXPERIENCE":"Años de experiencia",
+        "YEARS_EXPERIENCE_ERROR":"Debes llenar tus años de experiencia"
     },
     "MY_ACCOUNT": {
         "TITLE": "Mi cuenta",

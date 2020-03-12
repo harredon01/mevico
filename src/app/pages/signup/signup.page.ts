@@ -11,37 +11,7 @@ import {UserService} from '../../services/user/user.service';
   styleUrls: ['./signup.page.scss'],
 })
 export class SignupPage implements OnInit {
-account: {
-        firstName: string,
-        lastName: string,
-        docNum: string,
-        docType: string,
-        area_code: number,
-        cellphone: number,
-        email: string,
-        password: string
-        password_confirmation: string,
-        language: string,
-        city_id: number,
-        region_id: number
-        country_id: number,
-        remember:boolean
-    } = {
-            firstName: '',
-            lastName: '',
-            docNum: '',
-            docType: '',
-            area_code: 57,
-            cellphone: null,
-            email: '',
-            password: '',
-            password_confirmation: '',
-            language: 'es',
-            city_id: 524,
-            region_id: 11,
-            country_id: 1,
-            remember:true
-        };
+
 
     registrationForm: FormGroup;
     submitAttempt: boolean = false;
@@ -103,17 +73,18 @@ account: {
         console.log("Signing up");
         if (!this.registrationForm.valid) {return;}
         console.log("Registration valid");
-        if (this.account.password != this.account.password_confirmation) {
+        if (this.registrationForm.get('password').value != this.registrationForm.get('password_confirmation').value ) {
             this.passwordError = true;
             return;
         }
         console.log("Password match");
         this.showLoader();
         // Attempt to login in through our User service
-        this.user.signup(this.account).subscribe((resp:any) => {
+        this.user.signup(this.registrationForm.value).subscribe((resp:any) => {
             if (resp.status == 'success') {
-                this.account.remember = true;
-                this.user._loggedIn(resp, this.account);
+                let container = this.registrationForm.value;
+                container.remember = true;
+                this.user._loggedIn(resp, container);
             }
             this.dismissLoader();
             console.log("Post login", resp);
@@ -171,8 +142,8 @@ account: {
     }
 
     selectType() {
-        console.log("Select type", this.account.docType);
-        if (this.account.docType == "CC" || this.account.docType == "TI" || this.account.docType == "CEL") {
+        console.log("Select type", this.registrationForm.get('docType').value);
+        if (this.registrationForm.get('docType').value == "CC" || this.registrationForm.get('docType').value == "TI" || this.registrationForm.get('docType').value == "CEL") {
             this.idType = "tel";
         } else {
             this.idType = "text";

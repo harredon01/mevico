@@ -13,15 +13,6 @@ import {ApiService} from '../../services/api/api.service';
 })
 export class PasswordPage implements OnInit {
     isReadyToSave: boolean;
-    account: {
-        old_password: string,
-        password: string
-        password_confirmation: string
-    } = {
-            old_password: '',
-            password: '',
-            password_confirmation: ''
-        };
 
     form: FormGroup;
     submitAttempt: boolean = false;
@@ -73,13 +64,13 @@ export class PasswordPage implements OnInit {
         console.log("Updating password");
         if (!this.form.valid) {return;}
         console.log("Password update valid");
-        if (this.account.password != this.account.password_confirmation) {
+        if (this.form.get('password').value != this.form.get('password_confirmation').value) {
             this.passwordError = true;
             return;
         }
         console.log("Password match");
         this.showLoader();
-        this.auth.updatePassword(this.account).subscribe((resp: any) => {
+        this.auth.updatePassword(this.form.value).subscribe((resp: any) => {
             this.dismissLoader();
             console.log("savePassword result", resp);
             if (resp.status == "success") {

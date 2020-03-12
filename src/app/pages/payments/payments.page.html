@@ -11,7 +11,7 @@
         <p *ngIf="currentItems.length ==0" class="pdesc">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
         <div>
             <div class="payments__item-wrapper" *ngFor="let item of currentItems">
-                 <div no-padding class="payments__item" (click)="openItem(item)">
+                 <div class="payments__item ion-no-padding" (click)="openItem(item)">
                     <p class="payments__content">
                     <ion-grid >
                         <ion-row>
