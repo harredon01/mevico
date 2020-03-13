@@ -23,14 +23,10 @@
         </ion-list>
         <ion-button class="btn-primary" *ngIf="!showAddressCard" shape="round" (click)="createAddress()">Crear Dirección</ion-button>
         <ion-card *ngIf="showAddressCard">
-            <ion-item class="checkout-shipping__item">
-                <p class="checkout-shipping__description">{{ 'CHECKOUT_BUYER.SELECTED' | translate }}</p>
-            </ion-item>
-            
-            <ion-item class="checkout-shipping__item">
-                <h2>{{selectedAddress.address}}</h2>
-                <p>{{selectedAddress.name}}</p>
-            </ion-item>
+            <ion-card-header>
+                <p class="checkout-shipping__description"><b>{{ 'CHECKOUT_BUYER.SELECTED' | translate }}</b></p>
+                <ion-card-subtitle>{{selectedAddress.address}}</ion-card-subtitle>
+            </ion-card-header>
             <ion-card-content  class="checkout-shipping__item checkout-shipping__info">
                 <p>{{selectedAddress.phone}}</p>
                 <p>{{selectedAddress.cityName}}</p>
