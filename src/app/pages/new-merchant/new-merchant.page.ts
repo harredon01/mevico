@@ -23,9 +23,7 @@ export class NewMerchantPage implements OnInit {
     loading: any;
     type: any;
     typeSelected = "";
-    country: any;
-    region: any;
-    city: any;
+
     countries: any[] = [];
     regions: any[] = [];
     cities: any[] = [];
@@ -46,8 +44,6 @@ export class NewMerchantPage implements OnInit {
         public userData: UserDataService,
         private spinnerDialog: SpinnerDialog) {
         this.submitAttempt = false;
-        this.country = null;
-        this.region = null;
         this.translateService.get('MERCHANT_CREATE.ERROR_SAVE').subscribe((value) => {
             this.merchantErrorStringSave = value;
         });
@@ -99,10 +95,7 @@ export class NewMerchantPage implements OnInit {
                     region_id: editingMerchant.region_id,
                     country_id: editingMerchant.country_id,
                 };
-                this.country = editingMerchant.country_id;
-                this.region = editingMerchant.region_id;
-                this.city = editingMerchant.city_id;
-                this.selectCountry(this.region, this.city);
+                this.selectCountry(editingMerchant.region_id, editingMerchant.city_id);
                 this.typeSelected = editingMerchant.type;
                 let attributes = editingMerchant.attributes;
                 let services = [];
@@ -194,7 +187,6 @@ export class NewMerchantPage implements OnInit {
             };
             console.log("Setting form values2: ", container);
             this.form.setValue(container);
-            this.country = 1
             this.selectCountry(null, null);
         }
 
@@ -235,7 +227,7 @@ export class NewMerchantPage implements OnInit {
     getCountries() {
         this.locations.getCountries().subscribe((resp: any) => {
             this.countries = resp.data;
-            this.country = 1;
+            this.form.patchValue({country_id: 1});
             console.log("getCountries result", resp);
 
         }, (err) => {
@@ -245,12 +237,9 @@ export class NewMerchantPage implements OnInit {
     selectCountry(region, city) {
         this.showLoader();
         console.log("selectCountry", region, city);
-        this.form.patchValue({country_id: this.country});
-        this.locations.getRegionsCountry(this.country).subscribe((resp: any) => {
+        this.locations.getRegionsCountry(this.form.get('country_id').value).subscribe((resp: any) => {
             this.dismissLoader();
-            this.region = null;
             if (region) {
-                this.region = region;
                 this.form.patchValue({region_id: region});
                 this.cdr.detectChanges();
                 this.selectRegion(city);
@@ -264,12 +253,11 @@ export class NewMerchantPage implements OnInit {
     }
     selectRegion(city) {
         this.showLoader();
-        this.locations.getCitiesRegion(this.region).subscribe((resp: any) => {
+        this.locations.getCitiesRegion(this.form.get('region_id').value).subscribe((resp: any) => {
             this.dismissLoader();
             console.log("getCitiesRegion result", resp);
             this.cities = resp.data;
             if (city) {
-                this.city = city;
                 this.form.patchValue({city_id: city});
             }
             this.cdr.detectChanges();
