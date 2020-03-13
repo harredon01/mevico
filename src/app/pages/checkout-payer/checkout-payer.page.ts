@@ -21,16 +21,16 @@ export class CheckoutPayerPage implements OnInit {
     // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
-    payer: {
-        payer_name: string,
-        payer_email: string,
-        payer_id: string,
-
-    } = {
-            payer_name: '',
-            payer_email: '',
-            payer_id: '',
-        };
+//    payer: {
+//        payer_name: string,
+//        payer_email: string,
+//        payer_id: string,
+//
+//    } = {
+//            payer_name: '',
+//            payer_email: '',
+//            payer_id: '',
+//        };
     payerForm: FormGroup;
     loading: any;
     submitAttempt: boolean = false;
@@ -128,10 +128,6 @@ export class CheckoutPayerPage implements OnInit {
             payer_id: extras.dniNumber
         };
         this.orderData.payerInfo = info;
-        this.payer.payer_name = extras.fullName;
-        this.payer.payer_email = extras.emailAddress;
-        this.payer.payer_id = extras.dniNumber;
-
         this.showAddressCard = false;
         this.selectedAddress = item;
         this.params.setParams({"token": source.source, "method": extras.method});
@@ -147,9 +143,6 @@ export class CheckoutPayerPage implements OnInit {
                 payer_email: this.userData._user.email,
                 payer_id: this.userData._user.docNum,
             };
-            this.payer.payer_name = this.userData._user.firstName + " " + this.userData._user.lastName;
-            this.payer.payer_email = this.userData._user.email;
-            this.payer.payer_id = this.userData._user.docNum;
         } else {
             container = {
                 payer_name: "",
@@ -168,7 +161,6 @@ export class CheckoutPayerPage implements OnInit {
      */
     submitPayer() {
         this.submitAttempt = true;
-        console.log("payer",this.payer)
         console.log("valid",this.payerForm.valid)
         console.log("value",this.payerForm.value)
         if (!this.payerForm.valid) {return;}

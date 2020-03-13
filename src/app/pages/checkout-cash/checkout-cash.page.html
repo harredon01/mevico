@@ -45,7 +45,7 @@
         <ion-list>
             <ion-item>
                 <ion-label position="floating">{{ 'CHECKOUT_CASH.OPTIONS' | translate }}</ion-label>
-                <ion-select [(ngModel)]="payer.payment_method" formControlName="payment_method">
+                <ion-select formControlName="payment_method">
                     <ion-select-option value="BALOTO">Baloto</ion-select-option>
                     <ion-select-option value="EFECTY">Efecty</ion-select-option>
                     <ion-select-option value="OTHERS_CASH">Otros metodos</ion-select-option>
@@ -56,7 +56,7 @@
             </ion-item>
             <ion-item>
                 <ion-label position="floating">{{ 'USER.EMAIL' | translate }}</ion-label>
-                <ion-input type="text" [(ngModel)]="payer.payer_email" formControlName="payer_email"></ion-input>
+                <ion-input type="text" formControlName="payer_email"></ion-input>
             </ion-item>
             <ion-item *ngIf="!payerForm.controls.payer_email.valid  && (payerForm.controls.payer_email.dirty || submitAttempt)">
                 <p>{{ 'USER.EMAIL_ERROR' | translate }}</p>

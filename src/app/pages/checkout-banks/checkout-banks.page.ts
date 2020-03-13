@@ -18,23 +18,23 @@ export class CheckoutBanksPage implements OnInit {
     // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
-    payer: {
-        payer_name: string,
-        user_type: string,
-        doc_type: string,
-        payer_email: string,
-        payer_phone: string,
-        payer_id: string,
-        financial_institution_code: string
-    } = {
-            payer_name: '',
-            payer_email: '',
-            payer_phone: '',
-            user_type: '',
-            doc_type: '',
-            payer_id: '',
-            financial_institution_code: ""
-        };
+//    payer: {
+//        payer_name: string,
+//        user_type: string,
+//        doc_type: string,
+//        payer_email: string,
+//        payer_phone: string,
+//        payer_id: string,
+//        financial_institution_code: string
+//    } = {
+//            payer_name: '',
+//            payer_email: '',
+//            payer_phone: '',
+//            user_type: '',
+//            doc_type: '',
+//            payer_id: '',
+//            financial_institution_code: ""
+//        };
     option: any;
     loading: any;
     payerForm: FormGroup;
@@ -100,6 +100,7 @@ export class CheckoutBanksPage implements OnInit {
         console.log("prefil", this.v);
         console.log("user", this.userData._user);
         console.log("user2", this.userData._user.user);
+        let savedCont = this.payerForm.value
         let container: any = null;
         if (this.v) {
             container = {
@@ -109,7 +110,7 @@ export class CheckoutBanksPage implements OnInit {
                 user_type: "",
                 doc_type: "",
                 payer_phone: "",
-                financial_institution_code: this.payer.financial_institution_code
+                financial_institution_code: savedCont.financial_institution_code
             };
 
         } else {
@@ -120,14 +121,8 @@ export class CheckoutBanksPage implements OnInit {
                 user_type: "N",
                 doc_type: this.userData._user.docType,
                 payer_phone: this.userData._user.cellphone,
-                financial_institution_code: this.payer.financial_institution_code
+                financial_institution_code: savedCont.financial_institution_code
             };
-            this.payer.payer_name = this.userData._user.firstName + " " + this.userData._user.lastName;
-            this.payer.payer_email = this.userData._user.email;
-            this.payer.payer_id = this.userData._user.docNum;
-            this.payer.payer_phone = this.userData._user.cellphone;
-            this.payer.user_type = "N";
-            this.payer.doc_type = this.userData._user.docType;
         }
 
         console.log("Setting form values: ", container);
@@ -217,15 +212,16 @@ export class CheckoutBanksPage implements OnInit {
         this.submitAttempt = true;
         console.log("payBank valid",this.payerForm.valid);
         if (!this.payerForm.valid) {return;}
+        let savedCont = this.payerForm.value
         this.showLoaderPay();
         let container = {
-            doc_type: this.payer.doc_type,
-            user_type: this.payer.user_type,
-            financial_institution_code: this.payer.financial_institution_code,
-            payer_name: this.payer.payer_name,
-            payer_phone: this.payer.payer_phone,
-            payer_email: this.payer.payer_email,
-            payer_id: this.payer.payer_id,
+            doc_type: savedCont.doc_type,
+            user_type: savedCont.user_type,
+            financial_institution_code: savedCont.financial_institution_code,
+            payer_name: savedCont.payer_name,
+            payer_phone: savedCont.payer_phone,
+            payer_email: savedCont.payer_email,
+            payer_id: savedCont.payer_id,
             payment_id: this.orderData.payment.id,
             platform: "Food",
             email: true
@@ -268,13 +264,16 @@ export class CheckoutBanksPage implements OnInit {
         });
     }
     mockData() {
-        this.payer.doc_type = "CC";
-        this.payer.user_type = "N";
-        this.payer.financial_institution_code = "1022";
-        this.payer.payer_name = "APPROVED";
-        this.payer.payer_phone = "3105507245";
-        this.payer.payer_email = "harredon01@gmail.com";
-        this.payer.payer_id = "1020716535";
+        let container = {
+            doc_type:"CC",
+            user_type:"N",
+            financial_institution_code:"1022",
+            payer_name:"APPROVED",
+            payer_phone:"3105507245",
+            payer_email:"harredon01@gmail.com",
+            payer_id:"1020716535"
+        };
+        this.payerForm.setValue(container);
     }
 
     ngOnInit() {

@@ -23,13 +23,13 @@ export class CheckoutCashPage implements OnInit {
     submitAttempt: boolean = false;
     v: any;
     payerForm: FormGroup;
-    payer: {
-        payment_method: string,
-        payer_email: string,
-    } = {
-            payment_method: '',
-            payer_email: '',
-        };
+//    payer: {
+//        payment_method: string,
+//        payer_email: string,
+//    } = {
+//            payment_method: '',
+//            payer_email: '',
+//        };
 
     private cashErrorString: string;
     private cashStartingString: string;
@@ -97,20 +97,18 @@ export class CheckoutCashPage implements OnInit {
         console.log("prefil", this.v);
         console.log("user", this.userData._user);
         let container: any = null;
+        let contForm = this.payerForm.value;
         if (this.v) {
             container = {
                 payer_name: "",
-                payment_method: this.payer.payment_method
+                payment_method: contForm.payment_method
             };
         } else {
             container = {
-                payment_method: this.payer.payment_method,
+                payment_method: contForm.payment_method,
                 payer_email: this.userData._user.email,
             };
-            this.payer.payer_email = this.userData._user.email;
-
         }
-
         console.log("Setting form values: ", container);
         this.payerForm.setValue(container);
     }
@@ -131,7 +129,7 @@ export class CheckoutCashPage implements OnInit {
        */
     selectOption(option) {
         this.scrollToBottom();
-        this.payer.payment_method = option;
+        this.payerForm.patchValue({payment_method: option });
     }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
@@ -145,8 +143,8 @@ export class CheckoutCashPage implements OnInit {
         if (!this.payerForm.valid) {return;} 
         this.showLoader();
         let container = {
-            payment_method: this.payer.payment_method,
-            payer_email: this.payer.payer_email,
+            payment_method: this.payerForm.get('payment_method').value,
+            payer_email: this.payerForm.get('payer_email').value,
             payment_id: this.orderData.payment.id,
             email: true,
             platform: "Food"

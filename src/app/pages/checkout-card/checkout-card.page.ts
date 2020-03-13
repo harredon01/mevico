@@ -19,23 +19,23 @@ export class CheckoutCardPage implements OnInit {
     // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
-    card: {
-        cc_branch: string,
-        cc_expiration_month: string,
-        cc_expiration_year: string,
-        cc_name: string,
-        cc_number: string,
-        cc_security_code: string,
-        save_card: boolean,
-    } = {
-            cc_branch: '',
-            cc_expiration_month: '',
-            cc_expiration_year: '',
-            cc_name: '',
-            cc_number: '',
-            cc_security_code: '',
-            save_card: false
-        };
+    //    card: {
+    //        cc_branch: string,
+    //        cc_expiration_month: string,
+    //        cc_expiration_year: string,
+    //        cc_name: string,
+    //        cc_number: string,
+    //        cc_security_code: string,
+    //        save_card: boolean,
+    //    } = {
+    //            cc_branch: '',
+    //            cc_expiration_month: '',
+    //            cc_expiration_year: '',
+    //            cc_name: '',
+    //            cc_number: '',
+    //            cc_security_code: '',
+    //            save_card: false
+    //        };
     payerForm: FormGroup;
     submitAttempt: boolean = false;
     dateError: boolean = false;
@@ -124,8 +124,7 @@ export class CheckoutCardPage implements OnInit {
                                                     : "";
 
         console.log("Credit branch", branch);
-        this.card.cc_branch = branch;
-
+        this.payerForm.patchValue({cc_branch: branch});
     }
     keytab(event, maxlength: any) {
         let nextInput = event.srcElement.nextElementSibling; // get the sibling element
@@ -199,21 +198,22 @@ export class CheckoutCardPage implements OnInit {
         this.dateError = false;
         this.cvvError = false;
         if (!this.payerForm.valid) {return;}
-        let d = new Date(parseInt(this.card.cc_expiration_year) + 2000, parseInt(this.card.cc_expiration_month) - 1);
+        let d = new Date(parseInt(this.payerForm.get('cc_expiration_year').value) + 2000, parseInt(this.payerForm.get('cc_expiration_month').value) - 1);
         let c = new Date();
         if (d < c) {
             this.dateError = true;
             return;
         }
-        if (this.card.cc_branch != "AMEX" && this.card.cc_security_code.length != 3) {
+        if (this.payerForm.get('cc_branch').value != "AMEX" && this.payerForm.get('cc_security_code').value.length != 3) {
             this.cvvError = true;
             return;
         }
-        if (this.card.cc_branch == "AMEX" && this.card.cc_security_code.length != 4) {
+        if (this.payerForm.get('cc_branch').value == "AMEX" && this.payerForm.get('cc_security_code').value.length != 4) {
             this.cvvError = true;
             return;
         }
         this.showLoader();
+        let contForm = this.payerForm.value
         let buyer = this.orderData.buyerAddress;
         let payer = this.orderData.payerAddress;
         let payer_info = this.orderData.payerInfo;
@@ -233,17 +233,17 @@ export class CheckoutCardPage implements OnInit {
             payer_name: payer_info.payer_name,
             payer_email: payer_info.payer_email,
             payer_id: payer_info.payer_id,
-            cc_branch: this.card.cc_branch,
-            cc_expiration_month: this.card.cc_expiration_month,
-            cc_expiration_year: this.card.cc_expiration_year,
-            cc_name: this.card.cc_name,
-            cc_number: this.card.cc_number,
-            cc_security_code: this.card.cc_security_code,
-            save_card: this.card.save_card,
+            cc_branch: contForm.cc_branch,
+            cc_expiration_month: contForm.cc_expiration_month,
+            cc_expiration_year: contForm.cc_expiration_year,
+            cc_name: contForm.cc_name,
+            cc_number: contForm.cc_number,
+            cc_security_code: contForm.cc_security_code,
+            save_card: contForm.save_card,
             payment_id: this.orderData.payment.id,
             platform: "Food"
         };
-        this.billing.payCreditCard(container,"Payu").subscribe((data: any) => {
+        this.billing.payCreditCard(container, "Payu").subscribe((data: any) => {
             let transaction = data.response.transactionResponse;
             this.transactionResponse(transaction);
         }, (err) => {
@@ -285,7 +285,7 @@ export class CheckoutCardPage implements OnInit {
             platform: "Food"
         };
         console.log("before payCreditCard token", container);
-        this.billing.payCreditCard(container,"PayU").subscribe((data: any) => {
+        this.billing.payCreditCard(container, "PayU").subscribe((data: any) => {
             this.transactionResponse(data.response.transactionResponse);
         }, (err) => {
             this.dismissLoader();
@@ -302,12 +302,15 @@ export class CheckoutCardPage implements OnInit {
         this.useToken = false;
     }
     mockData() {
-        this.card.cc_branch = "VISA";
-        this.card.cc_expiration_month = "11";
-        this.card.cc_expiration_year = "22";
-        this.card.cc_name = "APPROVED";
-        this.card.cc_number = "4111111111111111";
-        this.card.cc_security_code = "123";
+        let container = {
+            cc_branch: "VISA",
+            cc_expiration_month: "VISA",
+            cc_expiration_year: "22",
+            cc_name: "APPROVED",
+            cc_number: "4111111111111111",
+            cc_security_code: "123"
+        };
+        this.payerForm.setValue(container);
     }
 
     ngOnInit() {

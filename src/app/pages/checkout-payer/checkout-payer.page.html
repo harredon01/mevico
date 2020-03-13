@@ -53,21 +53,21 @@
             <ion-list>
                 <ion-item>
                     <ion-label position="floating">{{ 'USER.ID' | translate }}</ion-label>
-                    <ion-input type="text" [(ngModel)]="payer.payer_id" formControlName="payer_id"></ion-input>
+                    <ion-input type="text" formControlName="payer_id"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!payerForm.controls.payer_id.valid  && (payerForm.controls.payer_id.dirty || submitAttempt)">
                     <p>{{ 'USER.ID_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'USER.NAME' | translate }}</ion-label>
-                    <ion-input type="text" [(ngModel)]="payer.payer_name" formControlName="payer_name"></ion-input>
+                    <ion-input type="text" formControlName="payer_name"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!payerForm.controls.payer_name.valid  && (payerForm.controls.payer_name.dirty || submitAttempt)">
                     <p>{{ 'USER.NAME_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'USER.EMAIL' | translate }}</ion-label>
-                    <ion-input type="text" [(ngModel)]="payer.payer_email" formControlName="payer_email"></ion-input>
+                    <ion-input type="text" formControlName="payer_email"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!payerForm.controls.payer_email.valid  && (payerForm.controls.payer_email.dirty || submitAttempt)">
                     <p>{{ 'USER.EMAIL_ERROR' | translate }}</p>
