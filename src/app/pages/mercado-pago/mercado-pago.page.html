@@ -26,8 +26,8 @@
                     <ion-item>
                         <label for="cardExpirationMonth" style="margin-right:115px">Expiration month:</label>
 
-                        <input (keyup)="keytab($event,2)" [(ngModel)]="month" formControlName="cc_expiration_month" style="width:50px" type="tel" id="cardExpirationMonth" data-checkout="cardExpirationMonth" placeholder="12" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
-                        <input (keyup)="keytab($event,4)" [(ngModel)]="year" formControlName="cc_expiration_year" style="width:50px" type="tel" id="cardExpirationYear" data-checkout="cardExpirationYear" placeholder="2015" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
+                        <input (keyup)="keytab($event,2)" formControlName="cc_expiration_month" style="width:50px" type="tel" id="cardExpirationMonth" data-checkout="cardExpirationMonth" placeholder="12" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
+                        <input (keyup)="keytab($event,4)" formControlName="cc_expiration_year" style="width:50px" type="tel" id="cardExpirationYear" data-checkout="cardExpirationYear" placeholder="2015" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
                         <input style="width:50px" type="tel" id="securityCode" formControlName="cc_security_code" data-checkout="securityCode" placeholder="CVV" onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false" onDrop="return false" autocomplete=off />
 
                     </ion-item>

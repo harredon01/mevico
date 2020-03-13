@@ -18,8 +18,8 @@ declare var Mercadopago: any;
 })
 export class MercadoPagoPage implements OnInit {
     paymentMethod: any;
-    year: any;
-    month: any;
+//    year: any;
+//    month: any;
     v: any;
 
     payment: Payment;
@@ -181,7 +181,7 @@ export class MercadoPagoPage implements OnInit {
         console.log("values", values)
 
         if (!this.payerForm.valid) {return;}
-        let d = new Date(parseInt(this.year), parseInt(this.month) - 1);
+        let d = new Date(parseInt(this.payerForm.get('cc_expiration_year').value), parseInt(this.payerForm.get('cc_expiration_month').value) - 1);
         let c = new Date();
         if (d < c) {
             this.dateError = true;
@@ -230,7 +230,12 @@ export class MercadoPagoPage implements OnInit {
                         this.navCtrl.navigateRoot("tabs/mercado-pago-options/thankyou");
                         
                     } else {
-                        this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
+                        if(data.status_detail){
+                            this.showAlertTranslation("MERCADOPAGO." + data.status_detail);
+                        } else {
+                            this.showAlert(this.cardPaymentErrorString);
+                        }
+                        
                     }
                 }, (err) => {
                     this.dismissLoader();

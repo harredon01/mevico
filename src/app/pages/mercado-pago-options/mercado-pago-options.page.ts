@@ -18,35 +18,35 @@ declare var Mercadopago: any;
     styleUrls: ['./mercado-pago-options.page.scss'],
 })
 export class MercadoPagoOptionsPage implements OnInit {
-    payer: {
-        doc_type: string,
-        email: string,
-        entity_type: string
-        payer_id: string,
-        financial_institution: string
-    } = {
-            email: '',
-            doc_type: '',
-            entity_type: '',
-            payer_id: '',
-            financial_institution: ""
-        };
-    payer2: {
-        payment_method_id: string,
-        email: string,
-    } = {
-            payment_method_id: '',
-            email: ''
-        };
-    payer3: {
-        cardId: string,
-        cvv: string,
-        installmentsSelected: string,
-    } = {
-            cardId: '',
-            cvv: '',
-            installmentsSelected: ''
-        };
+//    payer: {
+//        doc_type: string,
+//        email: string,
+//        entity_type: string
+//        payer_id: string,
+//        financial_institution: string
+//    } = {
+//            email: '',
+//            doc_type: '',
+//            entity_type: '',
+//            payer_id: '',
+//            financial_institution: ""
+//        };
+//    payer2: {
+//        payment_method_id: string,
+//        email: string,
+//    } = {
+//            payment_method_id: '',
+//            email: ''
+//        };
+//    payer3: {
+//        cardId: string,
+//        cvv: string,
+//        installmentsSelected: string,
+//    } = {
+//            cardId: '',
+//            cvv: '',
+//            installmentsSelected: ''
+//        };
     option: any;
     loading: any;
     payerForm: FormGroup;
@@ -60,7 +60,7 @@ export class MercadoPagoOptionsPage implements OnInit {
     currentItems: any[];
     installments: any[] = [];
     cards: any[] = [];
-    installmentsSelected: any;
+//    installmentsSelected: any;
     issuerId: any;
 
     private banksErrorString: string;
@@ -162,7 +162,7 @@ export class MercadoPagoOptionsPage implements OnInit {
                 payer_id: "",
                 doc_type: "",
                 entity_type: "",
-                financial_institution: this.payer.financial_institution
+                financial_institution: this.payerForm.get('financial_institution').value 
             };
 
         } else {
@@ -171,13 +171,8 @@ export class MercadoPagoOptionsPage implements OnInit {
                 payer_id: this.userData._user.docNum,
                 entity_type: "individual",
                 doc_type: this.userData._user.docType,
-                financial_institution: this.payer.financial_institution
+                financial_institution: this.payerForm.get('financial_institution').value
             };
-
-            this.payer.email = this.userData._user.email;
-            this.payer.payer_id = this.userData._user.docNum;
-            this.payer.entity_type = "individual";
-            this.payer.entity_type = this.userData._user.docType;
         }
 
         console.log("Setting form values: ", container);
@@ -191,17 +186,14 @@ export class MercadoPagoOptionsPage implements OnInit {
         if (this.v) {
             container = {
                 email: "",
-                payment_method_id: this.payer2.payment_method_id
+                payment_method_id: this.payerForm2.get('payment_method_id').value
             };
         } else {
             container = {
-                payment_method_id: this.payer2.payment_method_id,
+                payment_method_id: this.payerForm2.get('payment_method_id').value,
                 email: this.userData._user.email,
             };
-            this.payer2.email = this.userData._user.email;
-
         }
-
         console.log("Setting form values: ", container);
         this.payerForm2.setValue(container);
         this.cdr.detectChanges();
@@ -251,11 +243,11 @@ export class MercadoPagoOptionsPage implements OnInit {
         if (!this.payerForm.valid) {return;}
         this.showLoader();
         let container = {
-            doc_type: this.payer.doc_type,
-            entity_type: this.payer.entity_type,
-            financial_institution: this.payer.financial_institution,
-            email: this.payer.email,
-            payer_id: this.payer.payer_id,
+            doc_type: this.payerForm.get('doc_type').value,
+            entity_type: this.payerForm.get('entity_type').value ,
+            financial_institution:this.payerForm.get('financial_institution').value,
+            email: this.payerForm.get('email').value,
+            payer_id: this.payerForm.get('payer_id').value,
             payment_id: this.payment.id,
             platform: "Food"
         }; 
@@ -310,8 +302,8 @@ export class MercadoPagoOptionsPage implements OnInit {
         if (!this.payerForm2.valid) {return;}
         this.showLoader();
         let container = {
-            payment_method_id: this.payer2.payment_method_id,
-            email: this.payer2.email,
+            payment_method_id: this.payerForm2.get('payment_method_id').value,
+            email: this.payerForm2.get('email').value,
             payment_id: this.payment.id,
             platform: "Food"
         };
@@ -349,7 +341,6 @@ export class MercadoPagoOptionsPage implements OnInit {
 
         if (item.payment_type_id == "QUICK") {
             this.paymentM = 'card';
-            this.payer3.cardId = item.id;
             let container = this.payerForm3.value;
             for (let prop in container) {
                 if (!container[prop]) {
@@ -373,7 +364,7 @@ export class MercadoPagoOptionsPage implements OnInit {
         } else if (item.payment_type_id == "ticket") {
             this.paymentM = 'cash';
             this.cash = item;
-            this.payer2.payment_method_id = item.id;
+            this.payerForm2.patchValue({payment_method_id: item.id });
         } else if (item.payment_type_id == "credit_card") {
             let container = this.params.getParams();
             if (!container) {
@@ -431,7 +422,7 @@ export class MercadoPagoOptionsPage implements OnInit {
                     token: response.id,
                     payment_id: this.payment.id,
                     platform: "Booking",
-                    installments: this.installmentsSelected,
+                    installments: values.installmentsSelected,
                     quick: true,
                     issuer_id: this.issuerId
                 };
