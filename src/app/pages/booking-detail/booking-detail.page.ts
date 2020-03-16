@@ -16,7 +16,7 @@ import {ParamsService} from '../../services/params/params.service';
 })
 export class BookingDetailPage implements OnInit {
     public mainBooking: Booking;
-    public isModal:boolean = false;
+    public isModal: boolean = false;
     constructor(public booking: BookingService,
         public activatedRoute: ActivatedRoute,
         public orderData: OrderDataService,
@@ -31,18 +31,22 @@ export class BookingDetailPage implements OnInit {
 
     ngOnInit() {
         let params = this.params.getParams();
-        this.mainBooking = params.booking;
-        if(params.modal){
-            this.isModal = true;
+        if (params) {
+            if (params.booking) {
+                this.mainBooking = params.booking;
+            }
+            if (params.modal) {
+                this.isModal = true;
+            }
+            if(params.objectId){
+                this.getBooking(params.objectId);
+            }
         }
     }
     cancelBooking() {
         this.showLoader();
         this.booking.cancelBookingObject(this.mainBooking.id).subscribe((data: any) => {
-            let result = data.booking;
-            result.starts_at = new Date(result.starts_at);
-            result.ends_at = new Date(result.ends_at);
-            this.mainBooking = new Booking(result);
+            this.buildBookingResult(data);
             this.dismissLoader();
         }, (err) => {
             console.log("Error cancelBooking");
@@ -54,10 +58,30 @@ export class BookingDetailPage implements OnInit {
         this.showLoader();
         let container = {"object_id": this.mainBooking.id, "status": status};
         this.booking.changeStatusBookingObject(container).subscribe((data: any) => {
+            this.buildBookingResult(data);
+            this.dismissLoader();
+        }, (err) => {
+            console.log("Error cancelBooking");
+            this.dismissLoader();
+            this.api.handleError(err);
+        });
+    }
+    buildBookingResult(data: any) {
+        if (data.status == "success") {
             let result = data.booking;
+            this.buildBookingResult(result);
+            result.starts_at = result.starts_at.replace(" ", "T");
+            result.ends_at = result.ends_at.replace(" ", "T");
             result.starts_at = new Date(result.starts_at);
             result.ends_at = new Date(result.ends_at);
             this.mainBooking = new Booking(result);
+        }
+
+    }
+    getBooking(booking_id: any) {
+        this.showLoader();
+        this.booking.getBooking(booking_id).subscribe((data: any) => {
+            this.buildBookingResult(data);
             this.dismissLoader();
         }, (err) => {
             console.log("Error cancelBooking");
@@ -74,18 +98,18 @@ export class BookingDetailPage implements OnInit {
     }
     payBooking() {
         let extras = {
-            "type":"Booking",
-            "id":this.mainBooking.id,
+            "type": "Booking",
+            "id": this.mainBooking.id,
             "name": "Booking appointment for: " + this.mainBooking.bookable.name,
-        } 
+        }
         let item = {
             "name": "Booking appointment for: " + this.mainBooking.bookable.name,
             "price": this.mainBooking.price,
             "quantity": this.mainBooking.quantity,
             "tax": 0,
-            "merchant_id":this.mainBooking.bookable.id,
+            "merchant_id": this.mainBooking.bookable.id,
             "cost": 0,
-            "extras":extras
+            "extras": extras
         };
         this.cart.addCustomCartItem(item).subscribe((data: any) => {
             this.orderData.cartData = data.cart;
@@ -95,7 +119,7 @@ export class BookingDetailPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    
+
     async openCart() {
         let container = {cart: this.orderData.cartData};
         console.log("Opening Cart", container);
@@ -105,7 +129,7 @@ export class BookingDetailPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
-        console.log("Cart closing",data);
+        console.log("Cart closing", data);
         if (data == "Prepare") {
             this.params.setParams({"merchant_id": 1});
             this.navCtrl.navigateForward('tabs/checkout/prepare');
