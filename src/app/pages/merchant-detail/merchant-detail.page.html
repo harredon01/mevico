@@ -24,7 +24,7 @@
         <img src="assets/imgs/background-1.jpg" style="width:100%" alt="merchant" />
     </div> 
     <div class="profile__image-container">
-        <div class="profile__image-wrapper" *ngIf="merchant.files.length>0" >
+        <div class="profile__image-wrapper" *ngIf="merchant.icon>0" >
             <div style="position: relative;width:100%;text-align: center">
                 <img [src]="merchant.icon" class="image--large profile__image" alt="merchant"/>
             </div>
@@ -166,7 +166,7 @@
                     </ion-card-content>
                 </ion-card>
             </div>
-            <div class="bg-white overview" *ngIf="merchant.attributes.services">
+            <div class="bg-white overview" *ngIf="merchant.attributes.service">
                 <ion-card class="profile__overview-card">
                     <ion-card-header class="profile__overview-header">
                         <ion-card-title class="profile__overview-title">{{ 'MERCHANT_DETAIL.SERVICES' | translate }}
@@ -174,15 +174,15 @@
                     </ion-card-header>
 
                     <ion-card-content class="profile__overview-content">
-                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
-                            <li *ngFor="let service of merchant.attributes.services" class="doctor-experience">
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.service">
+                            <li *ngFor="let service of merchant.attributes.service" class="doctor-experience">
                                 <p>{{service.name}}</p>
                             </li>
                         </ul>
                     </ion-card-content>
                 </ion-card>
             </div>
-            <div class="bg-white overview" *ngIf="merchant.attributes.specialties">
+            <div class="bg-white overview" *ngIf="merchant.attributes.specialty">
                 <ion-card class="profile__overview-card">
                     <ion-card-header class="profile__overview-header">
                         <ion-card-title class="profile__overview-title">
@@ -190,8 +190,8 @@
                     </ion-card-header>
 
                     <ion-card-content class="profile__overview-content">
-                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
-                            <li *ngFor="let specialization of merchant.attributes.specialties"
+                        <ul class="profile__overview-body" *ngIf="merchant.attributes.specialty">
+                            <li *ngFor="let specialization of merchant.attributes.specialty"
                                 class="doctor-experience">
                                 <p>{{specialization.name}}</p>
                             </li>

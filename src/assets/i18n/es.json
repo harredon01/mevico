@@ -134,7 +134,8 @@
         "TITLE": "Disponibilidad de reservas",
         "RANGE": "Día",
         "FROM": "Desde",
-        "TO": "Hasta"
+        "TO": "Hasta",
+        "NO_RESULTS":"Crea una disponibilidad para recibir reservas cuando te convenga."
     },
     "AVAILABILITY_CREATE": {
         "TITLE": "Crear disponibilidad",
@@ -605,13 +606,18 @@
         "INFO":"Acerca de",
         "OVERVIEW":"General",
         "EXPERIENCE":"Experiencia",
+        "NO_EXPERIENCE":"Agrega una experienca para que nuestros usuarios te conoscan mejor",
         "RATINGS":"Calificaciones",
         "FEEDBACK":"Puntuación",
         "HOURLY":"Valor /h",
         "ADDRESS":"Dirección",
+        "ADD_LOCATION":"Agrega la direccion de tu negocio",
         "SERVICES":"Servicios",
+        "NO_SERVICES":"No tienes servicios registrados. Agrega un servicio para que la comunidad entienda que servicios prestas",
         "SPECIALIZATIONS":"Especialidades",
+        "NO_SPECIALIZATIONS":"No tienes especialidades registradas. Agrega una especialidad para que la comunidad conosca tus habilidades",
         "AVAILABILITIES":"Horarios disponibles",
+        "NO_AVAILABILITIES":"No tienes horarios disponibles. Agrega horarios para que las personas sepan cuando pueden pedir citas contigo. ",
         "BOOK_APPOINTMENT":"Reservar Cita",
         "SCORE":"Calificación general",
         "RECENT":"Más reciente",

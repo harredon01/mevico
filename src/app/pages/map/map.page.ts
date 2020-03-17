@@ -298,7 +298,7 @@ export class MapPage implements OnInit {
         console.log("handleAddressActive", this.mapData.activeId);
         this.mapData.newAddressMarker.setDraggable(true);
         this.mapData.newAddressMarker.setVisible(true);
-        if (this.mapData.activeId == "-1" || this.mapData.activeId == "0") {
+        if (this.mapData.activeId == "-1" || this.mapData.activeId == "0"|| this.mapData.activeId == "2") {
             console.log("Fetching poligons for merchant", this.mapData.merchantId);
             if (this.mapData.merchantId) {
                 this.locations.getActivePolygons(this.mapData.merchantId).subscribe((data: any) => {
@@ -319,7 +319,6 @@ export class MapPage implements OnInit {
                 this.dismissLoader();
                 this.getMyLocationAddressPostal();
             }
-
         } else if (this.mapData.activeId == "1") {
             this.map.setMarkerPosition(this.mapData.address.lat, this.mapData.address.long, this.mapData.newAddressMarker);
             this.map.setCenterMap(this.mapData.address.lat, this.mapData.address.long);
@@ -370,6 +369,15 @@ export class MapPage implements OnInit {
             this.clearMap();
             console.log("Process complete, address created", data);
         }
+    }
+    returnAddressData() {
+        console.log("returnAddressData", this.mapData.address);
+        let container = this.params.getParams();
+        container.mapLocation = true;
+        this.params.setParams(container);
+        this.navCtrl.back();
+        this.clearMap();
+        console.log("Process complete, location saved to data object" );
     }
     locationConfirmed() {
         let params = this.params.getParams();

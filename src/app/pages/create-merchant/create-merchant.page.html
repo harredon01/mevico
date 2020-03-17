@@ -20,9 +20,9 @@
             <img src="assets/imgs/background-1.jpg" style="width:100%" alt="merchant" />
         </div> 
         <div class="profile__image-container">
-            <div class="profile__image-wrapper" *ngIf="merchant.files.length>0" >
+            <div class="profile__image-wrapper" *ngIf="merchant.icon.length>0" >
                 <div style="position: relative;width:100%;text-align: center">
-                    <img [src]="merchant.icon" class="image--large profile__image" alt="merchant"/>
+                    <img [src]="merchant.icon" class="image--large profile__image" alt="merchant" (click)="setAvatar()"/>
                 </div>
             </div>
         </div>
@@ -110,15 +110,17 @@
                     <a href="javascript:;" (click)="done()">save</a>
                 </div>
             </div>
+            <ion-button (click)="addLocation()">{{ 'MERCHANT_DETAIL.ADD_LOCATION' | translate }}</ion-button>
         </div>
-        <div class="bg-white overview practics" *ngIf="merchant.availabilities.length>0">
+        <div class="bg-white overview practics" >
             <ion-card class="profile__overview-card">
                 <ion-card-header class="profile__overview-header">
                     <ion-card-title class="profile__overview-title">
                         {{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</ion-card-title>
                 </ion-card-header>
                 <ion-card-content class="profile__overview-content">
-                    <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
+                    <p *ngIf="merchant.availabilities.length == 0">{{ 'MERCHANT_DETAIL.NO_AVAILABILITIES' | translate }}</p>
+                    <ul class="profile__overview-body" *ngIf="merchant.availabilities">
                         <li *ngFor="let availability of merchant.availabilities" class="doctor-experience">
                             <p>{{availability.range}}<span class="ion-float-right">{{availability.from}} to
                                     {{availability.to}}</span></p>
@@ -138,13 +140,14 @@
                         <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/dentist-1.jpg"></div>
                     </div> -->
                 </div>
-                <div class="profile__overview bg-white overview" *ngIf="merchant.attributes.experience">
+                <div class="profile__overview bg-white overview" >
                     <ion-card class="profile__overview-card">
                         <ion-card-header class="profile__overview-header">
                             <ion-card-title class="profile__overview-title">{{ 'MERCHANT_DETAIL.EXPERIENCE' | translate }}
                             </ion-card-title>
                         </ion-card-header>
                         <ion-card-content class="profile__overview-content">
+                            <p *ngIf="!merchant.attributes.experience">{{ 'MERCHANT_DETAIL.NO_EXPERIENCE' | translate }}</p>
                             <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
                                 <li *ngFor="let experience of merchant.attributes.experience" class="doctor-experience">
                                     <p>{{experience.name}}</p>
@@ -174,7 +177,7 @@
                     </ion-card>
 
                 </div>
-                <div class="bg-white overview" *ngIf="merchant.attributes.services">
+                <div class="bg-white overview" >
                     <ion-card class="profile__overview-card">
                         <ion-card-header class="profile__overview-header">
                             <ion-card-title class="profile__overview-title">{{ 'MERCHANT_DETAIL.SERVICES' | translate }}
@@ -182,8 +185,9 @@
                         </ion-card-header>
 
                         <ion-card-content class="profile__overview-content">
-                            <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
-                                <li *ngFor="let service of merchant.attributes.services" class="doctor-experience">
+                            <p *ngIf="!merchant.attributes.service">{{ 'MERCHANT_DETAIL.NO_SERVICES' | translate }}</p>
+                            <ul class="profile__overview-body" *ngIf="merchant.attributes.service">
+                                <li *ngFor="let service of merchant.attributes.service" class="doctor-experience">
                                     <p>{{service.name}}</p>
                                 </li>
                             </ul>
@@ -210,7 +214,7 @@
                         </div>
                     </ion-card>
                 </div>
-                <div class="bg-white overview" *ngIf="merchant.attributes.specialties">
+                <div class="bg-white overview">
                     <ion-card class="profile__overview-card">
                         <ion-card-header class="profile__overview-header">
                             <ion-card-title class="profile__overview-title">
@@ -218,8 +222,9 @@
                         </ion-card-header>
 
                         <ion-card-content class="profile__overview-content">
-                            <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
-                                <li *ngFor="let specialization of merchant.attributes.specialties"
+                            <p *ngIf="!merchant.attributes.specialty">{{ 'MERCHANT_DETAIL.NO_SPECIALIZATIONS' | translate }}</p>
+                            <ul class="profile__overview-body" *ngIf="merchant.attributes.specialty">
+                                <li *ngFor="let specialization of merchant.attributes.specialty"
                                     class="doctor-experience">
                                     <p>{{specialization.name}}</p>
                                 </li>
@@ -327,7 +332,7 @@
                         <ion-label position="floating">{{ 'MERCHANT_CREATE.MAX_PER_HOUR' | translate }}</ion-label>
                         <ion-input type="tel" formControlName="max_per_hour"></ion-input>
                     </ion-item>
-                    <ion-item>
+                    <ion-item class="right">
                         <ion-button full type="submit" >{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
                     </ion-item>
                 </ion-card-content>

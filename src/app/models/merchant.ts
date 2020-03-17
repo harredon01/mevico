@@ -10,6 +10,7 @@
 export class Merchant {
     name: string;
     src: string;
+    icon:string;
     description: string;
     amount: any;
     product_id: any;

@@ -73,13 +73,13 @@ export class CreateMerchantPage implements OnInit {
             max_per_hour: [''],
             lat: [''],
             long: [''],
-            service1: ['', Validators.required],
+            service1: [''],
             service2: [''],
             service3: [''],
-            specialty1: ['', Validators.required],
+            specialty1: [''],
             specialty2: [''],
             specialty3: [''],
-            experience1: ['', Validators.required],
+            experience1: [''],
             experience2: [''],
             experience3: [''],
             city_id: ['', Validators.required],
@@ -107,6 +107,24 @@ export class CreateMerchantPage implements OnInit {
         params["settings"] = true;
         this.params.setParams(params);
         this.navCtrl.navigateForward("tabs/settings/merchants/" + this.merchant.id + "/images");
+    }
+    myAvailabilities() {
+        let params = {
+            "objectId": this.merchant.id,
+            "type": "Merchant",
+            "Name": this.merchant.name
+        };
+        params["settings"] = true;
+        this.params.setParams(params);
+        this.navCtrl.navigateForward("tabs/settings/merchants/" + this.merchant.id + "/availabilities");
+    }
+    addLocation(){
+        console.log("Adding location");
+        this.mapData.hideAll();
+        this.mapData.activeType = "Address";
+        this.mapData.activeId = "2";
+        this.mapData.merchantId = null;
+        this.navCtrl.navigateForward('tabs/map');
     }
     slidePrev() {
         this.slides.slidePrev();
@@ -201,8 +219,9 @@ export class CreateMerchantPage implements OnInit {
         
         let attributes = editingMerchant.attributes;
         let services = [];
-        if (attributes.services) {
-            services = attributes.services;
+        console.log("Attributes",attributes);
+        if (attributes.service) {
+            services = attributes.service;
 
         }
         for (let i = 0; i < 3; i++) {
@@ -215,8 +234,8 @@ export class CreateMerchantPage implements OnInit {
             }
         }
         let specialties = [];
-        if (attributes.specialties) {
-            specialties = attributes.specialties;
+        if (attributes.specialty) {
+            specialties = attributes.specialty;
         }
         for (let i = 0; i < 3; i++) {
             let indicator = i + 1;
@@ -250,6 +269,11 @@ export class CreateMerchantPage implements OnInit {
             container['max_per_hour'] = attributes.max_per_hour;
         } else {
             container['max_per_hour'] = false;
+        }
+        if (attributes.years_experience) {
+            container['years_experience'] = attributes.years_experience;
+        } else {
+            container['years_experience'] = 0;
         }
         console.log("Setting form values: ", container);
         this.isReadyToSave = true;
