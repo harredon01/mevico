@@ -52,7 +52,7 @@
             <div class="card-component__stats">
                 <ion-grid>
                     <ion-row>
-                        <ion-col ><div class="card-component__stats-item">
+                        <ion-col><div class="card-component__stats-item" *ngIf="item.attributes">
                                 <strong>
                                     {{ 'MERCHANT_LISTING.EXPERIENCE' | translate }}:</strong>
                                 {{item.attributes.years_experience }}

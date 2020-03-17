@@ -24,6 +24,7 @@ export class CreateMerchantPage implements OnInit {
     merchant: Merchant;
     loading: any;
     type: any;
+    galPage: any = 1;
     editYears_experience: boolean = false;
     editName: boolean = false;
     editType: boolean = false;
@@ -127,9 +128,11 @@ export class CreateMerchantPage implements OnInit {
         this.navCtrl.navigateForward('tabs/map');
     }
     slidePrev() {
+        this.galPage--;
         this.slides.slidePrev();
     }
     slideNext() {
+        this.galPage++;
         this.slides.slideNext();
     }
     showProducts() {
@@ -155,7 +158,8 @@ export class CreateMerchantPage implements OnInit {
             outputType: 0
         };
         this.imagesServ.prepareForUpload(options, container, true).then((value: any) => {
-            let results = value.files;
+            console.log("Prepare for upload result",value);
+            let results = value.images;
             if (results.length > 0) {
                 this.merchant.icon = results[0];
             }

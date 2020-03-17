@@ -4,13 +4,6 @@
             <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>{{ 'MERCHANT_CREATE.TITLE' | translate }}</ion-title>
-        <ion-buttons class="my-addresses__button my-addresses__button--left" slot="secondary">
-            <ion-button (click)="cancel()">
-                <span color="primary" showWhen="ios">
-                </span>
-                <ion-icon class="close-button" name="md-close" showWhen="android,windows"></ion-icon>
-            </ion-button>
-        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
@@ -20,7 +13,7 @@
             <img src="assets/imgs/background-1.jpg" style="width:100%" alt="merchant" />
         </div> 
         <div class="profile__image-container">
-            <div class="profile__image-wrapper" *ngIf="merchant.icon.length>0" >
+            <div class="profile__image-wrapper" *ngIf="merchant.icon" >
                 <div style="position: relative;width:100%;text-align: center">
                     <img [src]="merchant.icon" class="image--large profile__image" alt="merchant" (click)="setAvatar()"/>
                 </div>
@@ -81,10 +74,10 @@
             </div>
         </div>
         <div style="position: relative">
-            <div style="position: absolute;top: 50%;left: 16px;font-size: 25px;z-index: 2;" (click)="slidePrev()" *ngIf="merchant.files.length>1">
+            <div style="position: absolute;top: 50%;left: 16px;font-size: 25px;z-index: 2;" (click)="slidePrev()" *ngIf="merchant.files.length>1 && galPage > 1">
                 <ion-icon name="arrow-back"></ion-icon>
             </div>
-            <div style="position: absolute;top: 50%;right: 16px;font-size: 25px;z-index: 2;" (click)="slideNext()" *ngIf="merchant.files.length>1">
+            <div style="position: absolute;top: 50%;right: 16px;font-size: 25px;z-index: 2;" (click)="slideNext()" *ngIf="merchant.files.length>1 && galPage < merchant.files.length">
                 <ion-icon name="arrow-forward"></ion-icon>
             </div>
             <ion-slides *ngIf="merchant.files.length>0" style="height:150px;" #slides>

@@ -27,6 +27,7 @@ export class MerchantDetailPage implements OnInit {
     merchant: Merchant;
     notAvailable: string;
     maxReached: string;
+    galPage:any = 1;
     requiresAuth: string;
     success: string;
 
@@ -143,9 +144,11 @@ export class MerchantDetailPage implements OnInit {
         }
     }
     slidePrev() {
+        this.galPage--;
         this.slides.slidePrev();
     }
     slideNext() {
+        this.galPage++;
         this.slides.slideNext();
     }
     showProducts() {
