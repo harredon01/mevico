@@ -102,8 +102,9 @@
                     </ion-item>
                     <a href="javascript:;" (click)="done()">save</a>
                 </div>
-            </div>
-            <ion-button (click)="addLocation()">{{ 'MERCHANT_DETAIL.ADD_LOCATION' | translate }}</ion-button>
+            </div> 
+            <ion-button (click)="addLocation()" class="right">{{ 'MERCHANT_DETAIL.ADD_LOCATION' | translate }}</ion-button>
+            <div class="clear"></div>
         </div>
         <div class="bg-white overview practics" >
             <ion-card class="profile__overview-card">
@@ -253,8 +254,8 @@
         <input type="hidden" formControlName="lat" />
         <input type="hidden" formControlName="long" />
         <ion-list>
-            <ion-item>
-                <p>{{ 'MERCHANT_CREATE.DESCRIPTION' | translate }}</p>
+            <ion-item class="m15">
+                <p>{{ 'MERCHANT_CREATE.OPERATION' | translate }}</p>
             </ion-item>
             <ion-card>
                 <ion-card-header>

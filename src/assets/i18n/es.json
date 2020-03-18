@@ -672,7 +672,8 @@
         "EXPERIENCE":"Experiencia",
         "EXPERIENCE_ERROR":"Debes llenar una experiencia",
         "YEARS_EXPERIENCE":"Años de experiencia",
-        "YEARS_EXPERIENCE_ERROR":"Debes llenar tus años de experiencia"
+        "YEARS_EXPERIENCE_ERROR":"Debes llenar tus años de experiencia",
+        "OPERATION":"Datos de operación"
     },
     "MY_ACCOUNT": {
         "TITLE": "Mi cuenta",

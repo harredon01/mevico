@@ -13,6 +13,8 @@ export class Booking {
     ends_at: any;
     price: any;
     quantity: any;
+    bookable_id: any;
+    client_id: any;
     position:any;
     total_paid: any;
     options: any;

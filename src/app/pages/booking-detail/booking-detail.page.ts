@@ -38,7 +38,7 @@ export class BookingDetailPage implements OnInit {
             if (params.modal) {
                 this.isModal = true;
             }
-            if(params.objectId){
+            if (params.objectId) {
                 this.getBooking(params.objectId);
             }
         }
@@ -95,6 +95,31 @@ export class BookingDetailPage implements OnInit {
         } else {
             this.spinnerDialog.hide();
         }
+    }
+    appointmentbook() {
+        let params = {
+            "availabilities": null,
+            "type": "Merchant",
+            "objectId": this.mainBooking.bookable.id,
+            "objectName": "",
+            "objectDescription": "",
+            "objectIcon": "",
+            "settings": true
+        }
+        if (this.mainBooking.bookable) {
+            params = {
+                "availabilities": null,
+                "type": "Merchant",
+                "objectId": this.mainBooking.bookable.id,
+                "objectName": this.mainBooking.bookable.name,
+                "objectDescription": this.mainBooking.bookable.description,
+                "objectIcon": this.mainBooking.bookable.icon,
+                "settings": true
+            }
+        }
+        console.log(params);
+        this.params.setParams(params);
+        this.navCtrl.navigateForward('tabs/settings/bookings/' + this.mainBooking.id+"/edit");
     }
     payBooking() {
         let extras = {

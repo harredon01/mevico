@@ -297,6 +297,10 @@ const routes: Routes = [
                                             {
                                                 path: ':bookingId',
                                                 loadChildren: '../booking-detail/booking-detail.module#BookingDetailPageModule',
+                                            },
+                                            {
+                                                path: ':bookingId/edit',
+                                                loadChildren: '../booking/booking.module#BookingPageModule',
                                             }
                                         ]
                                     },

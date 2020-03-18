@@ -93,7 +93,7 @@
                 </ion-card-content>
             </ion-card>
             <br>  
-            <ion-button full class="btn success right" (click)="createBooking()"  *ngIf="timeSelected">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
+            <ion-button full class="btn success right" (click)="saveOrCreateBooking()"  *ngIf="timeSelected">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
         </div>
     </div>
 </ion-content>

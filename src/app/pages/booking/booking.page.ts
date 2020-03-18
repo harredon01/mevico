@@ -6,7 +6,7 @@ import {ParamsService} from '../../services/params/params.service';
 import {CartService} from '../../services/cart/cart.service';
 import {ApiService} from '../../services/api/api.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
-import {Merchant} from '../../models/merchant';
+import {Booking} from '../../models/booking';
 import {CartPage} from '../cart/cart.page';
 import {BookingService} from '../../services/booking/booking.service';
 @Component({
@@ -25,7 +25,7 @@ export class BookingPage implements OnInit {
     availabilitiesDate: any[] = [];
     weekday: any[] = [];
     typeObj: string;
-    merchant: Merchant;
+    bookingObj:Booking = null;
     notAvailable: string;
     maxReached: string;
     requiresAuth: string;
@@ -39,6 +39,7 @@ export class BookingPage implements OnInit {
     startDate: Date;
     endDate: Date;
     startDateS: any;
+    activeBooking: any;
     amount: any = "1";
     submitted: boolean = false;
 
@@ -62,55 +63,119 @@ export class BookingPage implements OnInit {
         this.weekday[4] = "thursday";
         this.weekday[5] = "friday";
         this.weekday[6] = "saturday";
+
+        let vm = this
+        this.translateService.get('BOOKING.REQUIRES_AUTH').subscribe(function (value) {
+            console.log("Req", value);
+            vm.requiresAuth = value;
+        });
+        this.translateService.get('BOOKING.NOT_AVAILABLE').subscribe(function (value) {
+            vm.notAvailable = value;
+            console.log("afk", value);
+        });
+        this.translateService.get('BOOKING.MAX_REACHED').subscribe(function (value) {
+            vm.maxReached = value;
+            console.log("afk", value);
+        });
+        this.translateService.get('BOOKING.SUCCESS').subscribe(function (value) {
+            vm.success = value;
+        });
+
+        console.log("Get availableDates", this.availableDates);
+    }
+
+    ngOnInit() {
+        this.loadData();
+    }
+    loadData() {
         let paramsArrived = this.params.getParams();
-        this.merchant = paramsArrived.merchant;
-        this.availabilities = paramsArrived.availabilities;
-        console.log("Availabilities", this.availabilities);
         this.typeObj = paramsArrived.type;
         this.objectId = paramsArrived.objectId;
         this.objectName = paramsArrived.objectName;
         this.objectDescription = paramsArrived.objectDescription;
         this.objectIcon = paramsArrived.objectIcon;
-        this.getAvailableDates(this.availabilities);
-        console.log("Get availableDays", this.availableDays);
-        let vm = this
-        this.translateService.get('BOOKING.REQUIRES_AUTH').subscribe(function (value) {
-            console.log("Req",value);
-            vm.requiresAuth = value;
-        });
-        this.translateService.get('BOOKING.NOT_AVAILABLE').subscribe(function (value) {
-            vm.notAvailable = value;
-            console.log("afk",value);
-        });
-        this.translateService.get('BOOKING.MAX_REACHED').subscribe(function (value) {
-            vm.maxReached = value;
-            console.log("afk",value);
-        });
-        this.translateService.get('BOOKING.SUCCESS').subscribe(function (value) {
-            vm.success = value;
-        });
-        this.getDates();
-        console.log("Get availableDates", this.availableDates);
+        if(paramsArrived.booking){
+            this.bookingObj = paramsArrived.booking;
+        }
+        if (paramsArrived.availabilities) {
+            this.availabilities = paramsArrived.availabilities;
+            console.log("Availabilities", this.availabilities);
+            this.getAvailableDates(this.availabilities);
+            this.getDates();
+            console.log("Get availableDays", this.availableDays);
+        } else {
+            this.getItems();
+        }
     }
-
-    ngOnInit() {
+    setOrder(item) {
+        if (item.range == 'sunday') {
+            item.order = 0;
+        }
+        if (item.range == 'monday') {
+            item.order = 1;
+        }
+        if (item.range == 'tuesday') {
+            item.order = 2;
+        }
+        if (item.range == 'wednesday') {
+            item.order = 3;
+        }
+        if (item.range == 'thursday') {
+            item.order = 4;
+        }
+        if (item.range == 'friday') {
+            item.order = 5;
+        }
+        if (item.range == 'saturday') {
+            item.order = 6;
+        }
+        return item;
     }
-    goBack(){
-        console.log("goBack",this.dateSelected)
-        if(this.dateSelected){
+    getItems() {
+        let availabilities: any[] = [];
+        let where = {"type": "Merchant", "object_id": this.objectId};
+        this.booking.getAvailabilitiesObject(where).subscribe((data: any) => {
+            this.dismissLoader();
+            console.log("after getItems", data);
+            let results = data.data;
+            for (let one in results) {
+                results[one] = this.setOrder(results[one]);
+                availabilities.push(results[one]);
+            }
+            availabilities.sort((a, b) => (a.order > b.order) ? 1 : -1);
+            this.availabilities = availabilities;
+            console.log("Availabilities", this.availabilities);
+            this.getAvailableDates(this.availabilities);
+            this.getDates();
+            console.log("Get availableDays", this.availableDays);
+            console.log(JSON.stringify(data));
+        }, (err) => {
+            this.dismissLoader();
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+                message: "ERROR",
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
+    }
+    goBack() {
+        console.log("goBack", this.dateSelected)
+        if (this.dateSelected) {
             this.dateSelected = false;
-        }else {
+        } else {
             this.navCtrl.back();
         }
-        
+
     }
     createBooking() {
         if (this.submitted) {
             return true;
-        } 
+        }
         this.submitted = true;
         this.showLoader();
-        let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00"; 
+        let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
         let ndDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
         this.atributesCont.location = "opentok";
         let data = {
@@ -124,7 +189,7 @@ export class BookingPage implements OnInit {
         console.log("data", data);
         this.booking.addBookingObject(data).subscribe((resp: any) => {
             this.dismissLoader();
-            console.log("addBookingObject",resp);
+            console.log("addBookingObject", resp);
             this.submitted = false;
             //this.presentAlertConfirm(data);
             if (resp.status == "success") {
@@ -154,16 +219,58 @@ export class BookingPage implements OnInit {
                         this.api.handleError(err);
                     });
                 }
-            }else {
-                if(resp.message =="Not available"){
+            } else {
+                if (resp.message == "Not available") {
                     this.presentAlertConfirm(this.notAvailable);
                 }
-                if(resp.message =="Max Reached"){
+                if (resp.message == "Max Reached") {
                     this.presentAlertConfirm(this.maxReached);
                 }
             }
         }, (err) => {
             console.log("Error addBookingObject");
+            this.dismissLoader();
+            this.api.handleError(err);
+        });
+    }
+    saveOrCreateBooking(){
+        if(this.bookingObj){
+            this.editBooking()
+        } else {
+            this.createBooking();
+        }
+    }
+    editBooking() {
+        if (this.submitted) {
+            return true;
+        }
+        this.submitted = true;
+        this.showLoader();
+        let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
+        let ndDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
+        this.atributesCont.location = "opentok";
+        let data = {
+            "booking_id": this.bookingObj.id,
+            "type": this.typeObj,
+            "object_id": this.objectId,
+            "from": strDate,
+            "to": ndDate,
+            "attributes": this.atributesCont
+        };
+        console.log("Start", this.startDate);
+        console.log("data", data);
+        this.booking.editBookingObject(data).subscribe((resp: any) => {
+            this.dismissLoader();
+            console.log("editBookingObject", resp);
+            this.submitted = false;
+            //this.presentAlertConfirm(data);
+            if (resp.status == "success") {
+                
+            } else {
+
+            }
+        }, (err) => {
+            console.log("Error editBookingObject");
             this.dismissLoader();
             this.api.handleError(err);
         });
@@ -177,14 +284,14 @@ export class BookingPage implements OnInit {
         console.log("data", data);
         this.booking.cancelBookingObject(data).subscribe((resp: any) => {
             this.dismissLoader();
-            console.log("addBookingObject",resp);
+            console.log("addBookingObject", resp);
             this.submitted = false;
             //this.presentAlertConfirm(data);
             if (resp.status == "success") {
                 this.navCtrl.back();
-            }else {
-                if(resp.message =="Not Available"){
-                    
+            } else {
+                if (resp.message == "Not Available") {
+
                 }
             }
         }, (err) => {
@@ -213,7 +320,7 @@ export class BookingPage implements OnInit {
     }
 
     async presentAlertConfirm(message) {
-        console.log("Present alert",message);
+        console.log("Present alert", message);
         let button = {
             text: 'Ok',
             handler: () => {
@@ -248,18 +355,18 @@ export class BookingPage implements OnInit {
     }
 
     getDates() {
-        var myDate = new Date(); 
+        var myDate = new Date();
         let month = myDate.getMonth();
         let monthcont = {month: month, days: [], title: this.booking.getMonthName(month)};
         for (let i = 0; i < 61; i++) {
             let day = myDate.getDay();
             if (this.checkAvailableDays(this.weekday[day])) {
                 let container = new Date(myDate.getTime());
-                if (myDate.getMonth()!=monthcont.month){
+                if (myDate.getMonth() != monthcont.month) {
                     this.months.push(monthcont);
                     let month = myDate.getMonth();
-                    monthcont = {month: month,days:[], title: this.booking.getMonthName(month)};
-                } 
+                    monthcont = {month: month, days: [], title: this.booking.getMonthName(month)};
+                }
                 monthcont.days.push(container);
                 this.availableDates.push(container);
             }
