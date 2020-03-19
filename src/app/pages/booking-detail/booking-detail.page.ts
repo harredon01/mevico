@@ -96,7 +96,7 @@ export class BookingDetailPage implements OnInit {
             this.spinnerDialog.hide();
         }
     }
-    appointmentbook() {
+    editBooking() {
         let params = {
             "availabilities": null,
             "type": "Merchant",

@@ -11,44 +11,49 @@
 </ion-header>
 
 <ion-content class="bg-light">
-    
-    <ion-list class="mainBooking__list">
+
+    <ion-list class="mainBooking__list" style="padding:0">
         <ion-item>
             <ion-label>{{ 'BOOKING_LIST.RESERVATION_PERIOD' | translate }}</ion-label>
             <ion-select placeholder="Select One" [(ngModel)]="queryMod" (ionChange)="selectQuery()">
                 <ion-select-option *ngFor="let item of queries" [value]="item.value">{{item.name}}</ion-select-option>
             </ion-select>
-        </ion-item> 
+        </ion-item>
     </ion-list>
     <p *ngIf="bookings.length ==0" class="m20">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
-    <ion-list class="doctor-list">
+    <ion-list class="doctor-list" style="padding:0">
         <ion-item (click)="openBooking(booking)" *ngFor="let booking of bookings">
             <ion-card>
-                <ion-grid>
-                    <ion-row>
-                        <ion-col size="12"> 
-                            <h2 *ngIf="target=='bookable'">{{booking.customer.firstName}} {{booking.customer.lastName}}</h2>
-                            <h2 *ngIf="target=='customer'">{{booking.bookable.name}}</h2>
+                <ion-grid> 
+                    <ion-row> 
+                        <ion-col class="icon" size="2">
+                            <ion-icon name="md-calendar" style="font-size: 25px" class="text-danger ml20 mr20 mt10"></ion-icon>
+                        </ion-col> 
+                        <ion-col class="icon" size="8">
+                            <h4 *ngIf="target=='bookable'" class="mt10">{{booking.customer.firstName}} {{booking.customer.lastName}}</h4>
+                            <h4 *ngIf="target=='customer'" class="mt10">{{booking.bookable.name}}</h4>
                         </ion-col>
-                    </ion-row>
-                    <ion-row>
+                        <ion-col class="icon" size="2">
+                            <b class="mt10">{{booking.starts_at | date:'shortDate' }}</b>
+                        </ion-col>
+                    </ion-row> 
+                    <ion-row> 
                         <ion-col size="6">
-                            <h4>{{ 'BOOKING_LIST.STARTS_AT' | translate }}</h4>
-                            <p>{{booking.starts_at | date:'medium' }}</p>
+                            <p>{{ 'BOOKING_LIST.STARTS_AT' | translate }}:<br/> <b>{{booking.starts_at | date:'shortTime' }}</b></p>
+                            <p>{{ 'BOOKING_LIST.STATUS' | translate }}<br/>
+                            <b *ngIf="booking.notes=='ready'">{{ 'BOOKING_LIST.READY' | translate }}</b>
+                            <b *ngIf="booking.notes=='waiting'">{{ 'BOOKING_LIST.WAITING' | translate }}</b>
+                            <b *ngIf="booking.notes=='started'">{{ 'BOOKING_LIST.STARTED' | translate }}</b>
+                            <b *ngIf="booking.notes=='pending'">{{ 'BOOKING_LIST.PENDING' | translate }}</b>
+                            <b *ngIf="booking.notes=='completed'">{{ 'BOOKING_LIST.COMPLETED' | translate }}</b></p>
                         </ion-col>
                         <ion-col size="6">
-                            <h4>{{ 'BOOKING_LIST.PAYMENT' | translate }}</h4>
-                            <p *ngIf="booking.price==booking.total_paid">{{ 'BOOKING_LIST.PAID' | translate }}</p>
-                            <p *ngIf="0==booking.total_paid">{{ 'BOOKING_LIST.UNPAID' | translate }}</p>
-                            <p *ngIf="-1==booking.total_paid">{{ 'BOOKING_LIST.UNAPPROVED' | translate }}</p>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row *ngIf="booking.notes&&booking.notes!='pending'&&booking.notes!='completed'">
-                        <ion-col size="12">
-                            <h4>{{ 'BOOKING_LIST.STATUS' | translate }}</h4>
-                            <p *ngIf="booking.notes=='ready'">{{ 'BOOKING_LIST.READY' | translate }}</p>
-                            <p *ngIf="booking.notes=='waiting'">{{ 'BOOKING_LIST.WAITING' | translate }}</p>
-                            <p *ngIf="booking.notes=='started'">{{ 'BOOKING_LIST.STARTED' | translate }}</p>
+                            <p>{{ 'BOOKING_LIST.ENDS_AT' | translate }}: <br/> <b>{{booking.ends_at | date:'shortTime' }}</b></p>
+                            <p>{{ 'BOOKING_LIST.PAYMENT' | translate }}<br/>
+                                <b *ngIf="booking.price==booking.total_paid">{{ 'BOOKING_LIST.PAID' | translate }}</b>
+                                <b *ngIf="0==booking.total_paid">{{ 'BOOKING_LIST.UNPAID' | translate }}</b>
+                                <b *ngIf="-1==booking.total_paid">{{ 'BOOKING_LIST.UNAPPROVED' | translate }}</b>
+                            </p>
                         </ion-col>
                     </ion-row>
                 </ion-grid>               
