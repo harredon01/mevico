@@ -35,7 +35,6 @@ export class BookingPage implements OnInit {
     objectName: string;
     objectDescription: string;
     objectIcon: string;
-    selectedDate: Date;
     startDate: Date;
     endDate: Date;
     startDateS: any;
@@ -182,11 +181,18 @@ export class BookingPage implements OnInit {
         if (this.submitted) {
             return true;
         }
-        this.submitted = true;
+        this.submitted = true; 
         this.showLoader();
-        let strDate = this.selectedDate.toISOString();
-        this.selectedDate = new Date(this.selectedDate.getTime() + parseInt(this.amount)*3600*1000 /*4 hrs in ms*/);
-        let ndDate = this.selectedDate.toISOString();
+        console.log("toLocaleString", this.startDate.toLocaleString()); 
+        console.log("toString ", this.startDate.toString()); 
+        console.log("toTimeString ", this.startDate.toTimeString()); 
+        console.log("toLocaleDateString ", this.startDate.toLocaleDateString()); 
+        console.log("toLocaleTimeString ", this.startDate.toLocaleTimeString()); 
+        console.log("offset",this.startDate.getTimezoneOffset()*60000); 
+        let startDate = new Date(this.startDate.getTime() - this.startDate.getTimezoneOffset()*60000);
+        let strDate = startDate.toISOString();
+        startDate = new Date(startDate.getTime() + parseInt(this.amount)*3600*1000 /*4 hrs in ms*/);
+        let ndDate = startDate.toISOString(); 
         this.atributesCont.location = "opentok";
         let data = {
             "type": this.typeObj,
@@ -256,16 +262,11 @@ export class BookingPage implements OnInit {
 //        }
 //        this.submitted = true; 
         this.showLoader();
-        let minutes = this.startDate.getMinutes()+"";
-        if(this.startDate.getMinutes() < 10){
-            minutes = "0"+this.startDate.getMinutes();
-        }
-        let hour1 = this.startDate.getHours()+"";
-        if(this.startDate.getHours() < 10){
-            hour1 = "0"+this.startDate.getMinutes();
-        }
-        let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + minutes + ":00";
-        let ndDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + minutes + ":00";
+        console.log("offset",this.startDate.getTimezoneOffset()*60000); 
+        let startDate = new Date(this.startDate.getTime() - this.startDate.getTimezoneOffset()*60000);
+        let strDate = startDate.toISOString();
+        startDate = new Date(startDate.getTime() + parseInt(this.amount)*3600*1000 /*4 hrs in ms*/);
+        let ndDate = startDate.toISOString();
         this.atributesCont.location = "opentok";
         let data = {
             "booking_id": this.bookingObj.id,
@@ -379,11 +380,13 @@ export class BookingPage implements OnInit {
         this.endDate.setHours(this.startDate.getHours() + parseInt(this.amount));
         this.timeSelected = true;
     }
+     
     selectDate(selectedDate: Date) {
         console.log("select date", selectedDate);
         this.showLoader();
         this.startDate = selectedDate;
-        this.selectedDate = selectedDate;
+        this.startDateS = selectedDate.toISOString();
+        this.selectStart(); 
         this.dateSelected = true;
         let strDate = selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate();
         let params = {

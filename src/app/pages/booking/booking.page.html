@@ -65,12 +65,12 @@
                     <ion-select-option value="1">1</ion-select-option>
                     <ion-select-option value="2">2</ion-select-option>
                     <ion-select-option value="3">3</ion-select-option>
-                    <ion-select-option value="4">4</ion-select-option>
+                    <ion-select-option value="4">4</ion-select-option> 
                 </ion-select>
             </ion-item>
             <ion-item>
                 <ion-label>{{ 'BOOKING.START_TIME' | translate }}</ion-label>
-                <ion-datetime display-format="h:mm A" picker-format="h:mm A" [(ngModel)]="startDateS" (ionChange)="selectStart()"></ion-datetime>
+                <ion-datetime display-format="h:mm A" picker-format="h:mm A" [(ngModel)]="startDateS" (ionChange)="selectStart()" display-timezone="cot"></ion-datetime>
             </ion-item>
 
             <ion-item *ngIf="timeSelected">

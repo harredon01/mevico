@@ -75,7 +75,7 @@
                     <span>{{mainBooking.id}}</span>
                     <span>{{ 'BOOKING_DETAIL.ID_TEXT2' | translate }}</span>
                 </ion-col>
-            </ion-row>
+            </ion-row> 
         </ion-card-content>
     </ion-card> 
     <div><ion-button *ngIf="mainBooking.bookable && mainBooking.total_paid==mainBooking.price && (mainBooking.options.status=='approved' || mainBooking.options.status=='active')" full class="btn success right" (click)="changeStatusBooking('started')">{{ 'BOOKING_DETAIL.BEGAN' | translate }}</ion-button>

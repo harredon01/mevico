@@ -84,11 +84,6 @@ export class BookingDetailPage implements OnInit {
     buildBookingResult(data: any) {
         if (data.status == "success") {
             let result = data.booking;
-            this.buildBookingResult(result);
-            result.starts_at = result.starts_at.replace(" ", "T");
-            result.ends_at = result.ends_at.replace(" ", "T");
-            result.starts_at = new Date(result.starts_at);
-            result.ends_at = new Date(result.ends_at);
             this.mainBooking = new Booking(result);
         }
 
