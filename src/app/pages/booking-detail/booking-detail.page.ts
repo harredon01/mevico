@@ -28,8 +28,11 @@ export class BookingDetailPage implements OnInit {
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
     ) {}
+    ngOnInit(){
+        
+    }
 
-    ngOnInit() {
+    ionViewDidEnter() {
         let params = this.params.getParams();
         if (params) {
             if (params.booking) {
@@ -96,6 +99,7 @@ export class BookingDetailPage implements OnInit {
             this.spinnerDialog.hide();
         }
     }
+    
     editBooking() {
         let params = {
             "availabilities": null,
@@ -104,7 +108,8 @@ export class BookingDetailPage implements OnInit {
             "objectName": "",
             "objectDescription": "",
             "objectIcon": "",
-            "settings": true
+            "settings": true,
+            "booking":this.mainBooking
         }
         if (this.mainBooking.bookable) {
             params = {
@@ -114,7 +119,8 @@ export class BookingDetailPage implements OnInit {
                 "objectName": this.mainBooking.bookable.name,
                 "objectDescription": this.mainBooking.bookable.description,
                 "objectIcon": this.mainBooking.bookable.icon,
-                "settings": true
+                "settings": true,
+                "booking":this.mainBooking
             }
         }
         console.log(params);

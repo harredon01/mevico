@@ -96,7 +96,14 @@ export class BookingPage implements OnInit {
         this.objectIcon = paramsArrived.objectIcon;
         if(paramsArrived.booking){
             this.bookingObj = paramsArrived.booking;
-        }
+            this.dateSelected = true; 
+            this.timeSelected = true; 
+            this.selectDate(this.bookingObj.starts_at);
+            this.atributesCont = this.bookingObj.options;
+            console.log("Date",this.bookingObj.starts_at.toISOString());
+            this.startDateS = this.bookingObj.starts_at.toISOString();
+            this.selectStart(); 
+        } 
         if (paramsArrived.availabilities) {
             this.availabilities = paramsArrived.availabilities;
             console.log("Availabilities", this.availabilities);
@@ -131,11 +138,13 @@ export class BookingPage implements OnInit {
         }
         return item;
     }
+    
     getItems() {
         let availabilities: any[] = [];
+//        this.showLoader();
         let where = {"type": "Merchant", "object_id": this.objectId};
         this.booking.getAvailabilitiesObject(where).subscribe((data: any) => {
-            this.dismissLoader();
+//            this.dismissLoader();
             console.log("after getItems", data);
             let results = data.data;
             for (let one in results) {
@@ -150,7 +159,7 @@ export class BookingPage implements OnInit {
             console.log("Get availableDays", this.availableDays);
             console.log(JSON.stringify(data));
         }, (err) => {
-            this.dismissLoader();
+//            this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
                 message: "ERROR",
@@ -175,8 +184,9 @@ export class BookingPage implements OnInit {
         }
         this.submitted = true;
         this.showLoader();
-        let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
-        let ndDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
+        let strDate = this.selectedDate.toISOString();
+        this.selectedDate = new Date(this.selectedDate.getTime() + parseInt(this.amount)*3600*1000 /*4 hrs in ms*/);
+        let ndDate = this.selectedDate.toISOString();
         this.atributesCont.location = "opentok";
         let data = {
             "type": this.typeObj,
@@ -241,13 +251,21 @@ export class BookingPage implements OnInit {
         }
     }
     editBooking() {
-        if (this.submitted) {
-            return true;
-        }
-        this.submitted = true;
+//        if (this.submitted) {
+//            return true;
+//        }
+//        this.submitted = true; 
         this.showLoader();
-        let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + this.startDate.getMinutes() + ":00";
-        let ndDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + this.startDate.getMinutes() + ":00";
+        let minutes = this.startDate.getMinutes()+"";
+        if(this.startDate.getMinutes() < 10){
+            minutes = "0"+this.startDate.getMinutes();
+        }
+        let hour1 = this.startDate.getHours()+"";
+        if(this.startDate.getHours() < 10){
+            hour1 = "0"+this.startDate.getMinutes();
+        }
+        let strDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + this.startDate.getHours() + ":" + minutes + ":00";
+        let ndDate = this.selectedDate.getFullYear() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getDate() + " " + (this.startDate.getHours() + + parseInt(this.amount)) + ":" + minutes + ":00";
         this.atributesCont.location = "opentok";
         let data = {
             "booking_id": this.bookingObj.id,
@@ -265,7 +283,7 @@ export class BookingPage implements OnInit {
             this.submitted = false;
             //this.presentAlertConfirm(data);
             if (resp.status == "success") {
-                
+                this.navCtrl.back();
             } else {
 
             }
@@ -396,10 +414,11 @@ export class BookingPage implements OnInit {
             "object_id": this.objectId,
         };
         this.booking.getBookingsObject(params).subscribe((data: any) => {
+            console.log("getBookingsObject",data);
             this.selectedSpots = data.data;
-            this.dismissLoader();
+            this.dismissLoader(); 
         }, (err) => {
-            console.log("Error addBookingObject");
+            console.log("Error getBookingsObject");
             this.api.handleError(err);
         });
         let day = selectedDate.getDay();
