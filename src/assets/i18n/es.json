@@ -168,7 +168,8 @@
         "END_TIME":"Fín",
         "MAKE_RESERVATION":"Seleccionar cita",
         "NOT_AVAILABLE":"Ese horario no está disponible",
-        "MAX_REACHED":"Ese horario ya esta lleno"
+        "MAX_REACHED":"Ese horario ya esta lleno",
+        "CHANGE_DATE":"Cambiar fecha"
     },
     "BOOKING_DETAIL": {
         "TITLE": "Reserva",

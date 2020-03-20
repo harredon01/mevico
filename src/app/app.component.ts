@@ -180,7 +180,7 @@ export class AppComponent {
             this.nav.navigateForward('tabs/opentok');
         } else if (notification.type == "booking_bookable_approved" || notification.type == "booking_bookable_denied" || notification.type == "booking_created_bookable_pending") {
             let parms = {
-                objectId: notification.payload.booking_id
+                booking_id: notification.payload.booking_id
             };
             this.params.setParams(parms);
             this.nav.navigateForward('tabs/settings/bookings/' + notification.payload.booking_id);

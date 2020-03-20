@@ -82,6 +82,9 @@
                     <ion-card-title>{{ 'BOOKING.DETAILS' | translate }}</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
+                    <ion-item  *ngIf="bookingObj">
+                        <a href="javascript:;" (click)="changeDate()">{{ 'BOOKING.CHANGE_DATE' | translate }}</a>
+                    </ion-item>
                     <ion-item>
                         <ion-label position="floating">{{ 'BOOKING.TYPE_HELP' | translate }}</ion-label>
                         <ion-input type="text" [(ngModel)]="atributesCont.type_help"></ion-input>

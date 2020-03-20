@@ -282,38 +282,17 @@ export class BookingPage implements OnInit {
             console.log("editBookingObject", resp);
             this.submitted = false;
             //this.presentAlertConfirm(data);
+            
             if (resp.status == "success") {
+                let container = this.params.getParams();
+                container.booking = new Booking(resp.booking);
+                this.params.setParams(container);
                 this.navCtrl.back();
             } else {
 
             }
         }, (err) => {
             console.log("Error editBookingObject");
-            this.dismissLoader();
-            this.api.handleError(err);
-        });
-    }
-    deleteBooking() {
-        this.showLoader();
-        let data = {
-            "object_id": this.objectId,
-        };
-        console.log("Start", this.startDate);
-        console.log("data", data);
-        this.booking.cancelBookingObject(data).subscribe((resp: any) => {
-            this.dismissLoader();
-            console.log("addBookingObject", resp);
-            this.submitted = false;
-            //this.presentAlertConfirm(data);
-            if (resp.status == "success") {
-                this.navCtrl.back();
-            } else {
-                if (resp.message == "Not Available") {
-
-                }
-            }
-        }, (err) => {
-            console.log("Error addBookingObject");
             this.dismissLoader();
             this.api.handleError(err);
         });
@@ -446,5 +425,9 @@ export class BookingPage implements OnInit {
         } else {
             this.spinnerDialog.hide();
         }
+    }
+    changeDate() {
+        this.dateSelected = false;
+        this.timeSelected = false;
     }
 }

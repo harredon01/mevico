@@ -71,9 +71,9 @@ export class BookingService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
-    cancelBookingObject(objectId: any) {
-        let endpoint = '/bookings/'+objectId+'/cancel';
-        let seq = this.api.get(endpoint);
+    deleteBookingObject(objectId: any) {
+        let endpoint = '/bookings/'+objectId;
+        let seq = this.api.delete(endpoint);
         return seq;
     }
     getMonthName(month:any){

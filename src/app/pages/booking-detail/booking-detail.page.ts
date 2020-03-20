@@ -27,13 +27,17 @@ export class BookingDetailPage implements OnInit {
         public api: ApiService,
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
-    ) {}
+    ) {
+        this.mainBooking = new Booking({});
+    }
+    
     ngOnInit(){
         
     }
-
+ 
     ionViewDidEnter() {
         let params = this.params.getParams();
+        console.log("Params",params);
         if (params) {
             if (params.booking) {
                 this.mainBooking = params.booking;
@@ -41,18 +45,26 @@ export class BookingDetailPage implements OnInit {
             if (params.modal) {
                 this.isModal = true;
             }
-            if (params.objectId) {
-                this.getBooking(params.objectId);
+            if (params.booking_id) {
+                this.getBooking(params.booking_id);
             }
         }
     }
-    cancelBooking() {
+    deleteBooking() {
         this.showLoader();
-        this.booking.cancelBookingObject(this.mainBooking.id).subscribe((data: any) => {
-            this.buildBookingResult(data);
+        this.booking.deleteBookingObject(this.mainBooking.id).subscribe((resp: any) => {
             this.dismissLoader();
+            console.log("addBookingObject", resp);
+            //this.presentAlertConfirm(data);
+            if (resp.status == "success") {
+                this.navCtrl.back();
+            } else {
+                if (resp.message == "Not Available") {
+
+                }
+            }
         }, (err) => {
-            console.log("Error cancelBooking");
+            console.log("Error addBookingObject");
             this.dismissLoader();
             this.api.handleError(err);
         });

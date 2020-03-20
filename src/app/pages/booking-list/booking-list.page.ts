@@ -110,7 +110,6 @@ export class BookingListPage implements OnInit {
     }
 
     ngOnInit() {
-        this.getBookings();
         this.getObjectsWithBookingUser(); 
     }
 
@@ -177,6 +176,7 @@ export class BookingListPage implements OnInit {
         });
     }
     ionViewDidEnter(){
+        this.getBookings();
         if(this.loadingAll){
             this.scrollToday();
             let vm = this;
