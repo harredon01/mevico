@@ -7,7 +7,9 @@ import {TranslateService} from '@ngx-translate/core';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {LanguageService} from './services/language/language.service';
 import {AlertsService} from './services/alerts/alerts.service';
-import {ParamsService} from './services/params/params.service'
+import {ParamsService} from './services/params/params.service';
+import {UserDataService} from './services/user-data/user-data.service';
+import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
 import {Friend} from './models/friend'
 @Component({
     selector: 'app-root',
@@ -32,6 +34,8 @@ export class AppComponent {
         private statusBar: StatusBar,
         private menuCtrl: MenuController,
         private alerts: AlertsService,
+        private userData: UserDataService,
+        private uniqueDeviceID: UniqueDeviceID,
         private languageService: LanguageService,
         private router: Router
     ) {
@@ -57,6 +61,14 @@ export class AppComponent {
             //this.config.set('ios', 'backButtonText', values.BACK_BUTTON_TEXT);
         });
     }
+    storeDeviceId() {
+        this.uniqueDeviceID.get()
+            .then((uuid: any) => {
+                console.log("device id", uuid);
+                this.userData.setDevice(uuid);
+            })
+            .catch((error: any) => console.log(error));
+    }
 
     initializeApp() {
         this.platform.ready().then(() => {
@@ -73,6 +85,7 @@ export class AppComponent {
                     this.getAlerts();
                 }
             });
+            this.storeDeviceId();
         });
         this.alerts.getLanguage().then((value) => {
             console.log("getLanguage");

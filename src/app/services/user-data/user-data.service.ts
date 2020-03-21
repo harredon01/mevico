@@ -35,19 +35,9 @@ export class UserDataService {
         this._headers = this._headers.set('Authorization', 'Bearer ' + token);
         this._headers = this._headers.set('X-Auth-Token', token);
         this.storage.set('token', token);
-        //    let seq = this.api.post('login', accountInfo).share();
-        //
-        //    seq.subscribe((res: any) => {
-        //      // If the API returned a successful response, mark the user as logged in
-        //      if (res.status == 'success') {
-        //        this._loggedIn(res);
-        //      } else {
-        //      }
-        //    }, err => {
-        //      console.error('ERROR', err);
-        //    });
-        //
-        //    return seq;
+    }
+    setDevice(device_id: any) {
+        this._headers = this._headers.set('X-device-id', device_id);
     }
 
     /**
