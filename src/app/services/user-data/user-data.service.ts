@@ -38,6 +38,12 @@ export class UserDataService {
     }
     setDevice(device_id: any) {
         this._headers = this._headers.set('X-device-id', device_id);
+        this.storage.set('device_id', device_id);
+    }
+    getDevice() {
+        return this.storage.get('device_id').then((value) => {
+            return value;
+        });
     }
 
     /**

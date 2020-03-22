@@ -62,12 +62,26 @@ export class AppComponent {
         });
     }
     storeDeviceId() {
+        console.log("Getting device id");
         this.uniqueDeviceID.get()
             .then((uuid: any) => {
                 console.log("device id", uuid);
                 this.userData.setDevice(uuid);
             })
-            .catch((error: any) => console.log(error));
+            .catch((error: any) => {
+                console.log(error);
+                this.userData.getDevice().then((value) => {
+                    console.log("getDevice");
+                    console.log(value);
+                    if (value) {
+                        this.userData.setDevice(value);
+                    } else {
+                        let dateR = new Date();
+                        console.log("random", dateR.getTime());
+                        this.userData.setDevice(dateR.getTime());
+                    }
+                });
+            });
     }
 
     initializeApp() {

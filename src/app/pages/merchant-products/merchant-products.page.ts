@@ -102,6 +102,9 @@ export class MerchantProductsPage implements OnInit {
         this.showLoader();
         this.loadProducts();
         this.loadOptions();
+        if (!this.orderData.cartData){
+            this.getCart();
+        }
         console.log("User: ", this.userData._user);
         events.subscribe('cart:deleteItem', (item) => {
             console.log("Deleting item", item);
@@ -564,6 +567,18 @@ export class MerchantProductsPage implements OnInit {
                 product.subtotal = (product.price * product.amount);
             }
         }
+    }
+    getCart() {
+        this.cart.getCart().subscribe((resp) => {
+            if (resp) {
+                console.log("getCart", resp);
+                this.orderData.cartData = resp;
+            }
+        }, (err) => {
+            console.log("getCartError", err);
+            this.orderData.cartData = null;
+            this.api.handleError(err);
+        });
     }
 
     ngOnInit() {

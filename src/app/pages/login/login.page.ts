@@ -9,6 +9,7 @@ import {UserService} from '../../services/user/user.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {AuthService} from '../../services/auth/auth.service';
 import {ApiService} from '../../services/api/api.service';
+import {ParamsService} from '../../services/params/params.service';
 import {ForgotPassPage} from '../forgot-pass/forgot-pass.page';
 
 @Component({
@@ -45,6 +46,7 @@ export class LoginPage implements OnInit {
         public navCtrl: NavController,
         private googlePlus: GooglePlus,
         private fb: Facebook,
+        private params:ParamsService,
         public user: UserService,
         public api: ApiService,
         private alertsCtrl: AlertController,
@@ -204,6 +206,16 @@ export class LoginPage implements OnInit {
         });
     }
 
+    viewProduct() {
+        let params = {
+            "type": "Merchant",
+            "objectId": 1303,
+            "owner": false
+        };
+        this.params.setParams(params);
+        this.navCtrl.navigateForward("merchant-products");  
+    }
+    
     ngOnInit() {
     }
     checkLogIn() {
