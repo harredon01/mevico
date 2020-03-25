@@ -53,7 +53,12 @@ export class MerchantListingPage implements OnInit {
             this.typeSearch="own";
             this.urlSearch = "tabs/settings/merchants/";
         } else {
-            this.urlSearch = 'tabs/categories/' + this.category + '/merchant/' 
+            if (this.userData._user){
+                this.urlSearch = 'tabs/categories/' + this.category + '/merchant/';
+            } else {
+                this.urlSearch = 'home/' + this.category + '/merchant/';
+            }
+            
         }
     }
     async filter() {

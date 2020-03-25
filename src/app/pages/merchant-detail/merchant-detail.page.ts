@@ -47,13 +47,13 @@ export class MerchantDetailPage implements OnInit {
         public params: ParamsService) {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
         let theParams = this.params.getParams();
-        if (theParams.owner) {
-            this.urlSearch = "tabs/settings/merchants/" + merchantId;
-            this.fromSettings = true;
-        } else {
-            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        if (this.userData._user){
             this.urlSearch = 'tabs/categories/' + category + '/merchant/' + merchantId;
+        } else {
+            this.urlSearch = 'home/' + category + '/merchant/' + merchantId;
         }
+        
         let vm = this
         this.translateService.get('BOOKING.REQUIRES_AUTH').subscribe(function (value) {
             console.log("Req", value);
@@ -99,11 +99,10 @@ export class MerchantDetailPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
+        this.params.setParams({"merchant_id": this.merchant.id});
         if (data == "Shipping") {
-            this.params.setParams({"merchant_id": this.merchant.id});
             this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant.id);
         } else if (data == "Prepare") {
-            this.params.setParams({"merchant_id": this.merchant.id});
             this.navCtrl.navigateForward('tabs/checkout/prepare');
         }
     }
@@ -114,9 +113,6 @@ export class MerchantDetailPage implements OnInit {
             container.availabilities = data.availabilities;
             container.ratings = data.ratings;
             container.files = data.files;
-            if (container.user_id == this.userData._user.id) {
-                container.owner = true;
-            }
             this.merchant = new Merchant(container);
             console.log("attributes", this.merchant.attributes);
         }, (err) => {

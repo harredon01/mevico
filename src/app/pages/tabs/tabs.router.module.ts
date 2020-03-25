@@ -158,10 +158,6 @@ const routes: Routes = [
                                     {
                                         path: 'book',
                                         loadChildren: '../booking/booking.module#BookingPageModule',
-                                    },
-                                    {
-                                        path: 'ratings',
-                                        loadChildren: '../comments/comments.module#CommentsPageModule',
                                     }
                                 ]
                             }

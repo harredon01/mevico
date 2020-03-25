@@ -6,6 +6,7 @@ import {ParamsService} from '../../services/params/params.service';
 import {CartService} from '../../services/cart/cart.service';
 import {ApiService} from '../../services/api/api.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
+import {UserDataService} from '../../services/user-data/user-data.service'
 import {Booking} from '../../models/booking';
 import {CartPage} from '../cart/cart.page';
 import {BookingService} from '../../services/booking/booking.service';
@@ -50,6 +51,7 @@ export class BookingPage implements OnInit {
         public orderData: OrderDataService,
         public modalCtrl: ModalController,
         public cart: CartService,
+        public userData: UserDataService,
         public alertsCtrl: AlertController,
         public translateService: TranslateService,
         private spinnerDialog: SpinnerDialog) {

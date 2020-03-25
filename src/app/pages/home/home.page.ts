@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
-import {NavController, ModalController, ToastController, LoadingController, Events,  AlertController} from '@ionic/angular';
+import {NavController, ModalController, ToastController, LoadingController, Events, MenuController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {CartService} from '../../services/cart/cart.service'
@@ -30,6 +30,7 @@ export class HomePage implements OnInit {
         public userData: UserDataService,
         public iab: InAppBrowser,
         public userS: UserService,
+        public menu: MenuController,
         public api: ApiService,
         public drouter:DynamicRouterService,
         public toastCtrl: ToastController,
@@ -157,7 +158,12 @@ export class HomePage implements OnInit {
      */
     openItem(item: any) {
         this.params.setParams({"item": item});
-        this.navCtrl.navigateForward('tabs/categories/' + item.id);
+        if(this.userData._user){
+            this.navCtrl.navigateForward('tabs/categories/' + item.id);
+        } else {
+            this.navCtrl.navigateForward('home/' + item.id);
+        }
+        
     }
     openMenu() {
         this.menu.enable(true, 'end');
