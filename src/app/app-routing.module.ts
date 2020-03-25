@@ -2,7 +2,8 @@ import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
-    {path: '', redirectTo: 'login', pathMatch: 'full'},
+    {path: '', redirectTo: 'home', pathMatch: 'full'},
+    {path: 'merchant-products', loadChildren: './pages/merchant-products/merchant-products.module#MerchantProductsPageModule'},
     {path: 'login', loadChildren: './pages/login/login.module#LoginPageModule'},
     {path: 'signup', loadChildren: './pages/signup/signup.module#SignupPageModule'},
     {path: 'tabs', loadChildren: './pages/tabs/tabs.module#TabsPageModule'},
@@ -18,7 +19,7 @@ const routes: Routes = [
   { path: 'cart', loadChildren: './pages/cart/cart.module#CartPageModule' },
   { path: 'chat-room', loadChildren: './pages/chat-room/chat-room.module#ChatRoomPageModule' },
   { path: 'comments', loadChildren: './pages/comments/comments.module#CommentsPageModule' },
-  { path: 'merchant-categories', loadChildren: './pages/merchant-categories/merchant-categories.module#MerchantCategoriesPageModule' },
+  { path: 'categories', loadChildren: './pages/merchant-categories/merchant-categories.module#MerchantCategoriesPageModule' },
   { path: 'merchant-listing', loadChildren: './pages/merchant-listing/merchant-listing.module#MerchantListingPageModule' },
   { path: 'merchant-detail', loadChildren: './pages/merchant-detail/merchant-detail.module#MerchantDetailPageModule' },
   { path: 'search-filtering', loadChildren: './pages/search-filtering/search-filtering.module#SearchFilteringPageModule' },
@@ -47,7 +48,8 @@ const routes: Routes = [
   { path: 'edit-products', loadChildren: './pages/edit-products/edit-products.module#EditProductsPageModule' },
   { path: 'images', loadChildren: './pages/images/images.module#ImagesPageModule' },
   { path: 'availability-create', loadChildren: './pages/availability-create/availability-create.module#AvailabilityCreatePageModule' },
-  { path: 'mercado-pago-options', loadChildren: './pages/mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule' },  { path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule' },
+  { path: 'mercado-pago-options', loadChildren: './pages/mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule' },
+  { path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule' },
   { path: 'new-merchant', loadChildren: './pages/new-merchant/new-merchant.module#NewMerchantPageModule' },
 
 

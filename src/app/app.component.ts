@@ -9,6 +9,7 @@ import {LanguageService} from './services/language/language.service';
 import {AlertsService} from './services/alerts/alerts.service';
 import {ParamsService} from './services/params/params.service';
 import {UserDataService} from './services/user-data/user-data.service';
+import {DynamicRouterService} from './services/dynamic-router/dynamic-router.service';
 import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
 import {Friend} from './models/friend'
 @Component({
@@ -25,6 +26,7 @@ export class AppComponent {
         private platform: Platform,
         private splashScreen: SplashScreen,
         private translate: TranslateService,
+        private drouter: DynamicRouterService,
         private oneSignal: OneSignal,
         private events: Events,
         private alertsCtrl: AlertController,
@@ -172,46 +174,8 @@ export class AppComponent {
         this.nav.navigateRoot(pageUrl);
     }
     openNotification(notification) {
-        console.log("openNotification", notification);
-        // Reset the content nav to have just this page
-        // we wouldn't want the back button to show in this scenario
-        if (notification.type == "order_status" || notification.type == "payment_status" || notification.type == "split_order_payment" || notification.type == "payment_successful") {
-            let parms = {
-                objectId: notification.payload.payment_id
-            };
-            this.params.setParams(parms);
-            this.nav.navigateForward('tabs/settings/payments/' + notification.payload.payment_id);
-        } else if (notification.type == "user_message") {
-            let friend = new Friend({
-                "id": notification.trigger_id,
-                "name": notification.payload.first_name + " " + notification.payload.last_name,
-                "avatar": "assets/avatar/Bentley.png",
-                "created_at": new Date(notification.created_at)
-            });
-            console.log("Chat room container", friend);
-            this.params.setParams({friend});
-            this.nav.navigateForward('tabs/settings/chat');
-        } else if (notification.type == "support_message" || notification.type == "program_reminder") {
-            let destinyUrl = notification.payload.utl;
-            let destinyPayload = notification.payload.page_payload;
-            console.log("Opening destiny notification", destinyUrl);
-            console.log("Opening destiny payload", destinyPayload);
-            this.params.setParams(destinyPayload);
-            this.nav.navigateForward(destinyUrl);
-        } else if (notification.type == "booking_starting" || notification.type == "booking_waiting") {
-            let destinyUrl = notification.payload.utl;
-            let destinyPayload = notification.payload;
-            console.log("Opening destiny notification", destinyUrl);
-            console.log("Opening destiny payload", destinyPayload);
-            this.params.setParams(destinyPayload);
-            this.nav.navigateForward('tabs/opentok');
-        } else if (notification.type == "booking_bookable_approved" || notification.type == "booking_bookable_denied" || notification.type == "booking_created_bookable_pending") {
-            let parms = {
-                booking_id: notification.payload.booking_id
-            };
-            this.params.setParams(parms);
-            this.nav.navigateForward('tabs/settings/bookings/' + notification.payload.booking_id);
-        }
+        let url= this.drouter.openNotification(notification);
+        this.nav.navigateForward(url);
     }
     sortNotificationType(data, prompt) {
         console.log("sortnotificationType", data);

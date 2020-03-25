@@ -10,6 +10,7 @@ import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {UserService} from '../../services/user/user.service';
 import {ApiService} from '../../services/api/api.service';
+import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
 @Component({
     selector: 'app-merchant-categories',
     templateUrl: './merchant-categories.page.html',
@@ -31,6 +32,7 @@ export class MerchantCategoriesPage implements OnInit {
         public userS: UserService,
         public api: ApiService,
         public menu: MenuController,
+        public drouter:DynamicRouterService,
         public toastCtrl: ToastController,
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
@@ -53,8 +55,8 @@ export class MerchantCategoriesPage implements OnInit {
         this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
             this.celError = value;
         });
-        this.getCart();
-        this.events.publish("authenticated");
+        //this.getCart();
+        //this.events.publish("authenticated");
         this.events.subscribe('cart:orderFinished', () => {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
@@ -199,6 +201,19 @@ export class MerchantCategoriesPage implements OnInit {
             this.orderData.cartData = null;
             this.api.handleError(err);
         });
+    }
+    routeNext() {
+//        this.navCtrl.navigateForward()
+//        this.cartProvider.getCheckoutCart().subscribe((resp) => {
+//            if (resp) {
+//                console.log("getCart", resp);
+//                this.orderData.cartData = resp;
+//            }
+//        }, (err) => {
+//            console.log("getCartError", err);
+//            this.orderData.cartData = null;
+//            this.api.handleError(err);
+//        });
     }
     clearCart() {
         this.cartProvider.clearCart().subscribe((resp) => {

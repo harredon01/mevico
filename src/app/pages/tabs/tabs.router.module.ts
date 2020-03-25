@@ -126,7 +126,7 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../merchant-categories/merchant-categories.module#MerchantCategoriesPageModule'
+                        loadChildren: '../home/home.module#HomePageModule'
                     },
                     {
                         path: ':categoryId',
