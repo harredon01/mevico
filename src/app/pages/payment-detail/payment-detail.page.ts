@@ -195,27 +195,10 @@ export class PaymentDetailPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    async retryPaymentModal() {
-        var addModal = await this.modalCtrl.create({
-            component: RetryPaymentPage,
-            componentProps: {"card": this.hasSavedCard}
-        });
-        await addModal.present();
-        const {data} = await addModal.onDidDismiss();
-        if (data) {
-            if (data == "QUICK") {
-                this.quickPay();
-            } else if (data == "IN_BANK") {
-                this.payInBank();
-            } else {
-                console.log("Return retry payment", data);
-                this.orderData.paymentMethod = data;
-                var nextPage = this.orderData.getStep2(data);
-                console.log("Return page");
-                this.navCtrl.navigateForward(nextPage);
-            }
-
-        }
+    retryPaymentRedirect() {
+        let container = {"payment": this.item};
+        this.params.setParams(container);
+        this.navCtrl.navigateForward("tabs/mercado-pago-options");
     }
     retryPayment(item: Payment) {
         this.showLoader();
@@ -223,7 +206,7 @@ export class PaymentDetailPage implements OnInit {
             this.dismissLoader();
             if (data.status == "success") {
                 this.orderData.payment = data.payment;
-                this.retryPaymentModal();
+                this.retryPaymentRedirect();
                 console.log(JSON.stringify(data));
             }
             else {
@@ -267,7 +250,7 @@ export class PaymentDetailPage implements OnInit {
             platform: "Food"
         };
         console.log("before payCreditCard token", container);
-        this.billing.payCreditCard(container,"PayU").subscribe((data: any) => {
+        this.billing.payCreditCard(container, "PayU").subscribe((data: any) => {
             let transaction = data.response.transactionResponse;
             this.transactionResponse(transaction);
         }, (err) => {

@@ -321,8 +321,8 @@ export class CheckoutPreparePage implements OnInit {
                     } else {
                         let container = {"payment":this.payment};
                         this.params.setParams(container);
-                        //this.navCtrl.navigateForward("tabs/mercado-pago-options");
-                        this.navCtrl.navigateForward("tabs/payu/options");
+                        this.navCtrl.navigateForward("tabs/mercado-pago-options");
+                        //this.navCtrl.navigateForward("tabs/payu/options");
                     }
                 } else {
                     this.handleCheckError(resp);

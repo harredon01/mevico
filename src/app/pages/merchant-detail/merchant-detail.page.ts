@@ -1,11 +1,12 @@
-import {Component, OnInit,ViewChild} from '@angular/core';
-import {NavController, ModalController, LoadingController, AlertController,IonSlides} from '@ionic/angular';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NavController, ModalController, LoadingController, AlertController, IonSlides} from '@ionic/angular';
 import {ActivatedRoute} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {Merchant} from '../../models/merchant';
+import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {CartPage} from '../cart/cart.page';
 import {ApiService} from '../../services/api/api.service';
@@ -18,7 +19,7 @@ import {CartService} from '../../services/cart/cart.service'
     styleUrls: ['./merchant-detail.page.scss'],
 })
 export class MerchantDetailPage implements OnInit {
-    @ViewChild('slides',{static:false}) slides: IonSlides;
+    @ViewChild('slides', {static: false}) slides: IonSlides;
     doctor: string = "about";
     Short: string = "n1";
     category: string = "";
@@ -27,7 +28,7 @@ export class MerchantDetailPage implements OnInit {
     merchant: Merchant;
     notAvailable: string;
     maxReached: string;
-    galPage:any = 1;
+    galPage: any = 1;
     requiresAuth: string;
     success: string;
 
@@ -37,6 +38,7 @@ export class MerchantDetailPage implements OnInit {
         public orderData: OrderDataService,
         public activatedRoute: ActivatedRoute,
         public api: ApiService,
+        private drouter: DynamicRouterService,
         public cart: CartService,
         public booking: BookingService,
         public spinnerDialog: SpinnerDialog,
@@ -48,12 +50,12 @@ export class MerchantDetailPage implements OnInit {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
         let theParams = this.params.getParams();
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        if (this.userData._user){
+        if (this.userData._user) {
             this.urlSearch = 'tabs/categories/' + category + '/merchant/' + merchantId;
         } else {
             this.urlSearch = 'home/' + category + '/merchant/' + merchantId;
         }
-        
+
         let vm = this
         this.translateService.get('BOOKING.REQUIRES_AUTH').subscribe(function (value) {
             console.log("Req", value);
@@ -172,6 +174,30 @@ export class MerchantDetailPage implements OnInit {
         this.params.setParams(params);
         this.navCtrl.navigateForward(this.urlSearch + "/book");
     }
+    addBookingToCart(booking: any) {
+        let extras = {
+            "type": "Booking",
+            "id": booking.id,
+            "call": true,
+            "name": "Booking appointment for: " + booking.bookable.name,
+        }
+        let item = {
+            "name": "Booking appointment for: " + booking.bookable.name,
+            "price": booking.price,
+            "quantity": booking.quantity,
+            "tax": 0,
+            "merchant_id": this.merchant.id,
+            "cost": 0,
+            "extras": extras
+        };
+        this.cart.addCustomCartItem(item).subscribe((data: any) => {
+            this.orderData.cartData = data.cart;
+            this.openCart();
+        }, (err) => {
+            console.log("Error addCustomCartItem");
+            this.api.handleError(err);
+        });
+    }
     call() {
         this.showLoader();
         let attrs = {};
@@ -181,47 +207,30 @@ export class MerchantDetailPage implements OnInit {
             "object_id": this.merchant.id,
             "attributes": attrs
         };
-        this.booking.immediateBookingObject(data).subscribe((resp: any) => {
-            this.dismissLoader();
-            console.log("addBookingObject", resp);
-            //this.presentAlertConfirm(data);
-            if (resp.status == "success") {
-                let booking = resp.booking;
-                let extras = {
-                    "type": "Booking",
-                    "id": booking.id,
-                    "call": true,
-                    "name": "Booking appointment for: " + booking.bookable.name,
+        if (this.userData._user) {
+            this.booking.immediateBookingObject(data).subscribe((resp: any) => {
+                this.dismissLoader();
+                console.log("addBookingObject", resp);
+                //this.presentAlertConfirm(data);
+                if (resp.status == "success") {
+                    this.addBookingToCart(resp.booking);
+                } else {
+                    if (resp.message == "Not available") {
+                        this.presentAlertConfirm(this.notAvailable);
+                    }
+                    if (resp.message == "Max Reached") {
+                        this.presentAlertConfirm(this.maxReached);
+                    }
                 }
-                let item = {
-                    "name": "Booking appointment for: " + booking.bookable.name,
-                    "price": booking.price,
-                    "quantity": booking.quantity,
-                    "tax": 0,
-                    "merchant_id": this.merchant.id,
-                    "cost": 0,
-                    "extras": extras
-                };
-                this.cart.addCustomCartItem(item).subscribe((data: any) => {
-                    this.orderData.cartData = data.cart;
-                    this.openCart();
-                }, (err) => {
-                    console.log("Error addCustomCartItem");
-                    this.api.handleError(err);
-                });
-            } else {
-                if (resp.message == "Not available") {
-                    this.presentAlertConfirm(this.notAvailable);
-                }
-                if (resp.message == "Max Reached") {
-                    this.presentAlertConfirm(this.maxReached);
-                }
-            }
-        }, (err) => {
-            console.log("Error addBookingObject");
-            this.dismissLoader();
-            this.api.handleError(err);
-        });
+            }, (err) => {
+                console.log("Error addBookingObject");
+                this.dismissLoader();
+                this.api.handleError(err);
+            });
+        } else {
+            
+        }
+
     }
     showLoader() {
         if (document.URL.startsWith('http')) {

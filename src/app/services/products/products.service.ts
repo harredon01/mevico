@@ -102,7 +102,7 @@ export class ProductsService {
             productInfo.unitPrice = productInfo.price;
             productInfo.unitLunches = 1;
         }
-        console.log("Update Prod Vis3", productInfo);
+//        console.log("Update Prod Vis3", productInfo);
         return productInfo;
     }
     createDeliveryDate(days) {
@@ -138,8 +138,8 @@ export class ProductsService {
     }
     createVariant(container: any) {
         let variant: any = {};
-        console.log("Variant", container);
-        console.log("Variant", container.id)
+//        console.log("Variant", container);
+//        console.log("Variant", container.id)
         variant.id = container.id;
         variant.description = container.description;
         if (container.attributes.length > 0) {
@@ -161,7 +161,7 @@ export class ProductsService {
         if (items['products_variants'].length > 0) {
             let resultsVariant = [];
             let resultsCategory = [];
-            console.log("fhfhfhfhfhf", items['products_variants'][0]);
+//            console.log("fhfhfhfhfhf", items['products_variants'][0]);
             let productInfo = this.buildProduct(items['products_variants'][0], items['merchant_products'][0], merchant_id);
             let activeCategory = {
                 "name": items['products_variants'][0]['category_name'],
@@ -173,7 +173,7 @@ export class ProductsService {
             for (let i = 0; i < items['products_variants'].length; i++) {
                 if (items['products_variants'][i].product_id != productInfo.id) {
                     productInfo.variants = resultsVariant;
-                    console.log("activeCategory", activeCategory);
+//                    console.log("activeCategory", activeCategory);
                     if (activeCategory.id) {
                         if (items['products_variants'][i - 1]['category_id'] == activeCategory.id) {
                             activeCategory.products.push(productInfo);

@@ -15,14 +15,14 @@ import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router
     selector: 'app-home',
     templateUrl: './home.page.html',
     styleUrls: ['./home.page.scss'],
-}) 
+})
 export class HomePage implements OnInit {
     location: string = "n1";
     categoriesErrorGet: string = "";
     celTitle: string = "";
     celDesc: string = "";
     celError: string = "";
-    items: any[]=[];
+    items: any[] = [];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
         public alertController: AlertController,
@@ -32,7 +32,7 @@ export class HomePage implements OnInit {
         public userS: UserService,
         public menu: MenuController,
         public api: ApiService,
-        public drouter:DynamicRouterService,
+        public drouter: DynamicRouterService,
         public toastCtrl: ToastController,
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
@@ -55,8 +55,12 @@ export class HomePage implements OnInit {
         this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
             this.celError = value;
         });
-        //this.getCart();
-        //this.events.publish("authenticated");
+
+        if (this.userData._user) {
+            this.routeNext();
+            this.events.publish("authenticated");
+        }
+        this.getCart();
         this.events.subscribe('cart:orderFinished', () => {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
@@ -71,8 +75,8 @@ export class HomePage implements OnInit {
             this.presentAlertPrompt();
         }
     }
-    
-    activateMerchant(){
+
+    activateMerchant() {
         const browser = this.iab.create("https://auth.mercadopago.com.co/authorization?client_id=7257598100783047&response_type=code&platform_id=mp&redirect_uri=https%3A%2F%2Fdev.lonchis.com.co/mercado/return?user_id=" + this.userData._user.id);
         browser.on('exit').subscribe(event => {
         });
@@ -120,7 +124,7 @@ export class HomePage implements OnInit {
             this.dismissLoader();
             console.log("after registerPhone");
             console.log(JSON.stringify(resp));
-            if(resp.status == "success"){
+            if (resp.status == "success") {
                 this.userS.postLogin();
             }
         }, (err) => {
@@ -158,12 +162,12 @@ export class HomePage implements OnInit {
      */
     openItem(item: any) {
         this.params.setParams({"item": item});
-        if(this.userData._user){
+        if (this.userData._user) {
             this.navCtrl.navigateForward('tabs/categories/' + item.id);
         } else {
             this.navCtrl.navigateForward('home/' + item.id);
         }
-        
+
     }
     openMenu() {
         this.menu.enable(true, 'end');
@@ -195,29 +199,32 @@ export class HomePage implements OnInit {
         }
     }
     getCart() {
-        this.cartProvider.getCheckoutCart().subscribe((resp) => {
-            if (resp) {
-                console.log("getCart", resp);
-                this.orderData.cartData = resp;
-            }
-        }, (err) => {
-            console.log("getCartError", err);
-            this.orderData.cartData = null;
-            this.api.handleError(err);
-        });
+        if (this.userData._user) {
+            this.cartProvider.getCheckoutCart().subscribe((resp) => {
+                if (resp) {
+                    console.log("getCart", resp);
+                    this.orderData.cartData = resp;
+                }
+            }, (err) => {
+                console.log("getCartError", err);
+                this.orderData.cartData = null;
+                this.api.handleError(err);
+            });
+        } else {
+            this.cartProvider.getCart().subscribe((resp) => {
+                if (resp) {
+                    console.log("getCart", resp);
+                    this.orderData.cartData = resp;
+                }
+            }, (err) => {
+                console.log("getCartError", err);
+                this.orderData.cartData = null;
+                this.api.handleError(err);
+            });
+        }
     }
     routeNext() {
-//        this.navCtrl.navigateForward()
-//        this.cartProvider.getCheckoutCart().subscribe((resp) => {
-//            if (resp) {
-//                console.log("getCart", resp);
-//                this.orderData.cartData = resp;
-//            }
-//        }, (err) => {
-//            console.log("getCartError", err);
-//            this.orderData.cartData = null;
-//            this.api.handleError(err);
-//        });
+        this.navCtrl.navigateForward(this.drouter.pages);
     }
     clearCart() {
         this.cartProvider.clearCart().subscribe((resp) => {

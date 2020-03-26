@@ -7,6 +7,7 @@ import {CartService} from '../../services/cart/cart.service';
 import {ApiService} from '../../services/api/api.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service'
+import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
 import {Booking} from '../../models/booking';
 import {CartPage} from '../cart/cart.page';
 import {BookingService} from '../../services/booking/booking.service';
@@ -48,6 +49,7 @@ export class BookingPage implements OnInit {
         public loadingCtrl: LoadingController,
         public navCtrl: NavController,
         public api: ApiService,
+        private drouter: DynamicRouterService,
         public orderData: OrderDataService,
         public modalCtrl: ModalController,
         public cart: CartService,

@@ -8,6 +8,7 @@ import {ProductsService} from '../../services/products/products.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {CartService} from '../../services/cart/cart.service';
+import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
 import {Product} from '../../models/product';
 import {CartPage} from '../cart/cart.page';
 import {ApiService} from '../../services/api/api.service';
@@ -52,6 +53,7 @@ export class MerchantProductsPage implements OnInit {
         public productsServ: ProductsService,
         public toastCtrl: ToastController,
         public api: ApiService,
+        private drouter: DynamicRouterService,
         public modalCtrl: ModalController,
         public alertCtrl: AlertController,
         private spinnerDialog: SpinnerDialog,
@@ -102,7 +104,7 @@ export class MerchantProductsPage implements OnInit {
         this.showLoader();
         this.loadProducts();
         this.loadOptions();
-        if (!this.orderData.cartData){
+        if (!this.orderData.cartData) {
             this.getCart();
         }
         console.log("User: ", this.userData._user);
@@ -138,7 +140,7 @@ export class MerchantProductsPage implements OnInit {
         this.params.setParams(container);
         this.navCtrl.navigateForward(this.urlSearch + "/products/images/" + productId);
     }
-    presentAlertPay(item:any) {
+    presentAlertPay(item: any) {
         this.alertCtrl.create({
             header: this.payTitle,
             inputs: [],
@@ -154,12 +156,20 @@ export class MerchantProductsPage implements OnInit {
                     text: 'Ok',
                     handler: (resp) => {
                         console.log('Confirm Ok', item);
-                        if (item.attributes.is_shippable == true) {
-                            this.params.setParams({"merchant_id": this.merchant});
-                            this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+                        this.params.setParams({"merchant_id": this.merchant});
+                        if (this.userData._user) {
+                            if (item.attributes.is_shippable == true) {
+                                this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+                            } else {
+                                this.navCtrl.navigateForward('tabs/checkout/prepare');
+                            }
                         } else {
-                            this.params.setParams({"merchant_id": this.merchant});
-                            this.navCtrl.navigateForward('tabs/checkout/prepare');
+                            if (item.attributes.is_shippable == true) {
+                                this.drouter.addPages('tabs/checkout/shipping/' + this.merchant);
+                            } else {
+                                this.drouter.addPages('tabs/checkout/prepare');
+                            }
+                            this.navCtrl.navigateForward('login');
                         }
                     }
                 }
@@ -342,53 +352,44 @@ export class MerchantProductsPage implements OnInit {
     }
     addCartItem(item: any) {
         this.showLoader();
-        return new Promise((resolve, reject) => {
-            let container = null;
-            container = {
-                product_variant_id: item.variant_id,
-                quantity: item.amount,
-                item_id: item.item_id,
-                merchant_id: this.merchant
-            };
-            console.log("Add cart item", container);
-            if (container.item_id) {
-                this.cart.updateCartItem(container).subscribe((resp: any) => {
-                    console.log("updateCartItem", resp);
-                    if (resp.status == "success") {
-                        this.handleCartSuccess(resp, item);
-                        if (resp.item) {
-                            resolve(resp.item);
-                        } else {
-                            resolve(null);
-                        }
-                    } else {
-                        this.dismissLoader();
-                        this.handleCartError(resp, item);
-                        resolve(null);
+        let container = null;
+        container = {
+            product_variant_id: item.variant_id,
+            quantity: item.amount,
+            item_id: item.item_id,
+            merchant_id: this.merchant
+        };
+        console.log("Add cart item", container);
+        if (container.item_id) {
+            this.cart.updateCartItem(container).subscribe((resp: any) => {
+                console.log("updateCartItem", resp);
+                if (resp.status == "success") {
+                    this.handleCartSuccess(resp, item);
+                    if (resp.item) {
+                        return resp.item;
                     }
-
-                }, (err) => {
-                    this.handleServerCartError();
-                    this.api.handleError(err);
-                    resolve(null);
-                });
-            } else {
-                this.cart.addCartItem(container).subscribe((resp: any) => {
-                    if (resp.status == "success") {
-                        this.handleCartSuccess(resp, item);
-                    } else {
-                        this.dismissLoader();
-                        this.handleCartError(resp, item);
-                        resolve(null);
-                    }
-                    //this.navCtrl.push(MainPage);
-                }, (err) => {
-                    this.handleServerCartError();
-                    this.api.handleError(err);
-                    resolve(null);
-                });
-            }
-        });
+                } else {
+                    this.dismissLoader();
+                    this.handleCartError(resp, item);
+                }
+            }, (err) => {
+                this.handleServerCartError();
+                this.api.handleError(err);
+            });
+        } else {
+            this.cart.addCartItem(container).subscribe((resp: any) => {
+                if (resp.status == "success") {
+                    this.handleCartSuccess(resp, item);
+                } else {
+                    this.dismissLoader();
+                    this.handleCartError(resp, item);
+                }
+                //this.navCtrl.push(MainPage);
+            }, (err) => {
+                this.handleServerCartError();
+                this.api.handleError(err);
+            });
+        }
     }
     createSlides() {
         this.slides = [];
@@ -490,12 +491,20 @@ export class MerchantProductsPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
-        if (data == "Shipping") {
-            this.params.setParams({"merchant_id": this.merchant});
-            this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
-        } else if (data == "Prepare") {
-            this.params.setParams({"merchant_id": this.merchant});
-            this.navCtrl.navigateForward('tabs/checkout/prepare');
+        this.params.setParams({"merchant_id": this.merchant});
+        if (this.userData._user) {
+            if (data == "Shipping") {
+                this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+            } else {
+                this.navCtrl.navigateForward('tabs/checkout/prepare');
+            }
+        } else {
+            if (data == "Shipping") {
+                this.drouter.addPages('tabs/checkout/shipping/' + this.merchant);
+            } else {
+                this.drouter.addPages('tabs/checkout/prepare');
+            }
+            this.navCtrl.navigateForward('login');
         }
     }
 
