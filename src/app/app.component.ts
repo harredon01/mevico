@@ -76,11 +76,17 @@ export class AppComponent {
                     console.log("getDevice");
                     console.log(value);
                     if (value) {
-                        this.userData.setDevice(value);
+                        if (isNaN(value)) {
+                            console.log("getToken2");
+                            this.userData.setDevice(value);
+                        } else {
+                            console.log("getToken3");
+                            this.userData.setDevice("token" + value + "");
+                        }
                     } else {
                         let dateR = new Date();
                         console.log("random", dateR.getTime());
-                        this.userData.setDevice(dateR.getTime());
+                        this.userData.setDevice("token" + dateR.getTime());
                     }
                 });
             });
