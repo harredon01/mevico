@@ -35,16 +35,16 @@ ion-list {
             }
         }
         .item-radio-checked.item-md ion-label {
-            color: #25a628;
+            color: var(--ion-color-success);
             font-size: 1.35rem;
         }
         .radio-icon {
             opacity: .4;
             &.radio-checked {
                 opacity: 1;
-                border-color: #25a628;
+                border-color: var(--ion-color-success);
                 .radio-inner {
-                    background-color: #25a628;
+                    background-color: var(--ion-color-success);
                 }
             }
         }

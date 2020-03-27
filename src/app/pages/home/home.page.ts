@@ -55,10 +55,12 @@ export class HomePage implements OnInit {
         this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
             this.celError = value;
         });
-
+        
         if (this.userData._user) {
             this.routeNext();
             this.events.publish("authenticated");
+        } else {
+            this.checkLogIn();
         }
         this.getCart();
         this.events.subscribe('cart:orderFinished', () => {
@@ -66,6 +68,15 @@ export class HomePage implements OnInit {
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
         this.getItems();
+    }
+    checkLogIn() {
+        this.userData.getToken().then((value) => {
+            console.log("getToken");
+            console.log(value);
+            if (value) {
+                this.navCtrl.navigateForward('login');
+            } 
+        });
     }
     /**
        * Navigate to the detail page for this item.
@@ -222,6 +233,9 @@ export class HomePage implements OnInit {
                 this.api.handleError(err);
             });
         }
+    }
+    login() {
+        this.navCtrl.navigateForward('login');
     }
     routeNext() {
         this.navCtrl.navigateForward(this.drouter.pages);

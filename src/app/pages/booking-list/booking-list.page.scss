@@ -1,7 +1,7 @@
 p.heading {
     padding: 10px 16px;
     font-size: 1.3rem;
-    color: #979797;
+    color: var(--ion-color-medium);
 }
 ion-card {
     width:100%;
@@ -17,10 +17,10 @@ ion-card {
         padding: 0;
         &.date {
             max-width: 70px;
-            border-right: 1px solid #dfdfdf;
+            border-right: 1px solid var(--ion-color-light-shade);
             small {
                 display: block;
-                color: #979797;
+                color: var(--ion-color-medium);
                 padding-top: 1px;
                 line-height: 1;
             }
@@ -52,7 +52,7 @@ ion-card {
             p {
                 font-size: 1.15rem;
                 width: calc(100% - 25px);
-                color: #979797;
+                color: var(--ion-color-medium);
             }
             ion-icon {
                 position: absolute;
@@ -60,12 +60,12 @@ ion-card {
                 right: 10px;
                 padding: 1px 0px;
                 height: 30px;
-                color: #979797;
+                color: var(--ion-color-medium);
             }
         }
     }
     ion-card-content {
-        color: #979797;
+        color: var(--ion-color-medium);
         font-size: 1.1rem;
         font-weight: 300;
         padding-bottom: 0;

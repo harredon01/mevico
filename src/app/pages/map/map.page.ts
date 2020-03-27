@@ -217,7 +217,7 @@ export class MapPage implements OnInit {
 
     getSharedLocationsPage(page: any) {
         if (this.mapActive) {
-            this.locations.getSharedLocationsExternal(page).then((data) => {
+            this.locations.getSharedLocationsExternal(page).then((data:any) => {
                 console.log("getSharedResults", data);
                 if (data['last_page'] > page) {
                     console.log("Not last page");

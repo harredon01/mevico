@@ -7,11 +7,11 @@
         <ion-title class="ion__title">
             <!-- &nbsp; -->
             {{ 'PRODUCTS.TITLE' | translate }}
-            <span class="shareIcons">
+            <!--span class="shareIcons">
                 <ion-icon name="ios-bookmark-outline" item-start></ion-icon>
                 <ion-icon name="md-share" item-start></ion-icon>
                 <ion-icon name="md-more" item-start></ion-icon>
-            </span>
+            </span-->
             <div class="content-car">
                 <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
                 <ion-button icon-only clear (click)="openCart()"><ion-icon name="cart"></ion-icon></ion-button>
@@ -41,7 +41,7 @@
     <div *ngIf="cat.more">
         <ion-card class="product__item" *ngFor="let item of cat.products">
                   <ion-card-header class="product-header__information" (click)="showMoreItem(item)">
-                <span>{{item.name}}</span>
+                <span>{{item.name}}</span><ion-icon name="arrow-dropdown" *ngIf="!item.more"></ion-icon><ion-icon name="arrow-dropup" *ngIf="item.more"></ion-icon>
             </ion-card-header>
             <ion-card-content *ngIf="item.more">
                 <ion-slides>
@@ -75,7 +75,7 @@
                         {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
                     </ion-button>
                 </div>
-                <div *ngIf="!isOwner">
+                <div *ngIf="!isOwner" class="right mt10">
                     <ion-button color="secondary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</ion-button>
                     <ion-button color="secondary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</ion-button>
                     <div class="content-increment-product" *ngIf="item.inCart">
@@ -84,8 +84,7 @@
                         <ion-button outline style="font-size:20px;" (click)="increaseCartItem(item)">+</ion-button>
                     </div> 
                 </div>
-
-
+                <div class="clear"></div>
             </ion-card-content>
         </ion-card>
     </div>

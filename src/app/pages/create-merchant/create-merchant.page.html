@@ -12,10 +12,10 @@
         <div class="profile__backgrnd">
             <img src="assets/imgs/background-1.jpg" style="width:100%" alt="merchant" />
         </div> 
-        <div class="profile__image-container">
-            <div class="profile__image-wrapper" *ngIf="merchant.icon" >
+        <div class="profile__image-container" (click)="setAvatar()">
+            <div class="profile__image-wrapper"  >
                 <div style="position: relative;width:100%;text-align: center">
-                    <img [src]="merchant.icon" class="image--large profile__image" alt="merchant" (click)="setAvatar()"/>
+                    <img [src]="merchant.icon" class="image--large profile__image" *ngIf="merchant.icon" alt="merchant" />
                 </div>
             </div>
         </div>
@@ -286,7 +286,7 @@
                     </ion-item>
                     <ion-item>
                         <ion-label>{{ 'MERCHANT_CREATE.COUNTRY' | translate }}</ion-label>
-                        <ion-select formControlName="country_id" (ionChange)="selectCountry()" name="country_id">
+                        <ion-select formControlName="country_id" (ionChange)="selectCountry(null,null)" name="country_id">
                             <ion-select-option *ngFor="let item of countries" [value]='item.id'>{{item.name}}</ion-select-option>
                         </ion-select>
                     </ion-item>
@@ -299,7 +299,7 @@
                             <ion-select-option *ngFor="let item of regions" [value]='item.id'>{{item.name}}</ion-select-option>
                         </ion-select>
                     </ion-item>
-                    <ion-item *ngIf="!form.controls.region_id.valid  && (form.controls.region_id.dirty || submitAttempt) && country">
+                    <ion-item *ngIf="!form.controls.region_id.valid  && (form.controls.region_id.dirty || submitAttempt)">
                         <p>{{ 'MERCHANT_CREATE.REGION_ERROR' | translate }}</p>
                     </ion-item>
                     <ion-item *ngIf="form.get('region_id').value">
@@ -308,7 +308,7 @@
                             <ion-select-option *ngFor="let item of cities" [value]='item.id'>{{item.name}}</ion-select-option>
                         </ion-select>
                     </ion-item>
-                    <ion-item *ngIf="!form.controls.city_id.valid  && (form.controls.city_id.dirty || submitAttempt) && region">
+                    <ion-item *ngIf="!form.controls.city_id.valid  && (form.controls.city_id.dirty || submitAttempt)">
                         <p>{{ 'MERCHANT_CREATE.CITY_ERROR' | translate }}</p>
                     </ion-item>
 

@@ -112,9 +112,7 @@ export class ImagesPage implements OnInit {
     }
     openImages() {
         let params = this.params.getParams();
-        let container = {};
-        container['type'] = params.type;
-        container['intended_id'] = params.objectId;
+        let container = {'type': params.type,'intended_id':params.objectId};
 
         let options = {
             width: 800,
@@ -129,9 +127,7 @@ export class ImagesPage implements OnInit {
     }
     setAvatar() {
         let params = this.params.getParams();
-        let container = {};
-        container['type'] = params.type+"_avatar";
-        container['intended_id'] = params.objectId;
+        let container = {'type': params.type+"_avatar",'intended_id':params.objectId};
 
         let options = {
             width: 800,

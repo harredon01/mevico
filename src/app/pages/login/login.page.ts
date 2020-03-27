@@ -224,21 +224,7 @@ export class LoginPage implements OnInit {
             console.log("getToken");
             console.log(value);
             if (value) {
-                this.userData.setToken(value);
-                this.user.postLogin().then((value) => {
-                    this.dismissLoader();
-                    this.navCtrl.navigateRoot("tabs");  
-                    this.events.publish("authenticated");
-                }, (err) => {
-                    this._loadUserData();
-                    // Unable to log in
-                    let toast = this.toastCtrl.create({
-                        message: this.loginErrorString,
-                        duration: 3000,
-                        position: 'top'
-                    }).then(toast => toast.present());
-                });
-
+                this.postTokenAuth(value);
             } else {
                 this._loadUserData();
             }

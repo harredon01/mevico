@@ -17,12 +17,7 @@
 <ion-content>
     <form [formGroup]="form" (ngSubmit)="done()">
         <input type="hidden" formControlName="id" />
-        <input type="hidden" formControlName="lat" />
-        <input type="hidden" formControlName="long" />
         <ion-list>
-            <ion-item>
-                <p>{{ 'MERCHANT_CREATE.DESCRIPTION' | translate }}</p>
-            </ion-item>
             <ion-item>
                 <ion-label position="floating">{{ 'MERCHANT_CREATE.TYPE' | translate }}</ion-label>
                 <ion-select placeholder="Que quieres crear" formControlName="type" (ionChange)="addShippingAddress()" >
@@ -59,37 +54,30 @@
                 <p>{{ 'MERCHANT_CREATE.TELEPHONE_ERROR' | translate }}</p>
             </ion-item>
             <ion-item>
-                <ion-label position="floating">{{ 'MERCHANT_CREATE.ADDRESS' | translate }}</ion-label>
-                <ion-input type="text" formControlName="address" class="tright"></ion-input>
-            </ion-item>
-            <ion-item *ngIf="!form.controls.address.valid  && (form.controls.address.dirty || submitAttempt)">
-                <p>{{ 'MERCHANT_CREATE.ADDRESS_ERROR' | translate }}</p>
-            </ion-item>
-            <ion-item>
                 <ion-label>{{ 'MERCHANT_CREATE.COUNTRY' | translate }}</ion-label>
-                <ion-select formControlName="country_id" (ionChange)="selectCountry(null)">
+                <ion-select formControlName="country_id" (ionChange)="selectCountry(null,null)">
                     <ion-select-option *ngFor="let item of countries" [value]='item.id'>{{item.name}}</ion-select-option>
                 </ion-select>
             </ion-item>
             <ion-item *ngIf="!form.controls.country_id.valid  && (form.controls.country_id.dirty || submitAttempt)">
                 <p>{{ 'MERCHANT_CREATE.COUNTRY_ERROR' | translate }}</p>
             </ion-item>
-            <ion-item *ngIf="country">
+            <ion-item *ngIf="form.controls.country_id.valid">
                 <ion-label>{{ 'MERCHANT_CREATE.REGION' | translate }}</ion-label>
                 <ion-select formControlName="region_id" (ionChange)="selectRegion()">
                     <ion-select-option *ngFor="let item of regions" [value]='item.id'>{{item.name}}</ion-select-option>
                 </ion-select>
             </ion-item>
-            <ion-item *ngIf="!form.controls.region_id.valid  && (form.controls.region_id.dirty || submitAttempt) && country">
+            <ion-item *ngIf="!form.controls.region_id.valid  && (form.controls.region_id.dirty || submitAttempt)">
                 <p>{{ 'MERCHANT_CREATE.REGION_ERROR' | translate }}</p>
             </ion-item>
-            <ion-item *ngIf="region">
+            <ion-item *ngIf="form.controls.region_id.valid">
                 <ion-label>{{ 'MERCHANT_CREATE.CITY' | translate }}</ion-label>
                 <ion-select formControlName="city_id" >
                     <ion-select-option *ngFor="let item of cities" [value]='item.id'>{{item.name}}</ion-select-option>
                 </ion-select>
             </ion-item>
-            <ion-item *ngIf="!form.controls.city_id.valid  && (form.controls.city_id.dirty || submitAttempt) && region">
+            <ion-item *ngIf="!form.controls.city_id.valid  && (form.controls.city_id.dirty || submitAttempt)">
                 <p>{{ 'MERCHANT_CREATE.CITY_ERROR' | translate }}</p>
             </ion-item>
             <ion-item>

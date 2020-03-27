@@ -61,13 +61,13 @@ export class CreateMerchantPage implements OnInit {
         });
         this.getCountries();
         this.form = formBuilder.group({
-            id: [''],
+            id: ['', Validators.required],
             type: ['', Validators.required],
             name: ['', Validators.required],
             description: ['', Validators.required],
             email: ['', Validators.required],
             telephone: ['', Validators.required],
-            address: ['', Validators.required],
+            address: [''],
             years_experience: ['', Validators.required],
             unit_cost: [''],
             booking_requires_auth: [''],

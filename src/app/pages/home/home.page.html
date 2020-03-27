@@ -1,19 +1,31 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>home</ion-title>
+        <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<div class="quick-link bg-white">
-        <div class="merchant-categories__header">
-            <p class="merchant-categories__header-title text-danger">Categorias</p>
-            <ion-button class="button merchant-categories__header-button " (click)="openMenu()" size="small" expand="block" *ngIf="userData._user">
+    <div class="quick-link bg-white">
+        <div class="m15">
+            <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="openMenu()" size="small" *ngIf="userData._user">
                 <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
             </ion-button>
+            <h2>Hola! Bienvenido a PetWorld.</h2>
+            <p>Tu lugar número uno para todo lo que tiene que ver con tu mascota</p>
+            <br/>
+            <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="login()" size="small" *ngIf="!userData._user">
+                Entrar
+            </ion-button>
+            
+        </div>
+
+        <div class="merchant-categories__header">
+
+            <p class="merchant-categories__header-title text-danger">Categorias</p>
+            
         </div>
         <div class="merchant-categories__header" *ngIf="userData._user">
             <p class="merchant-categories__header-title text-danger">Autoriza mercadopago</p>

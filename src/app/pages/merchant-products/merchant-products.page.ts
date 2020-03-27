@@ -448,6 +448,9 @@ export class MerchantProductsPage implements OnInit {
                 this.merchantObj.merchant_type = this.categories[0].products[0].merchant_type;
                 if (this.categories.length > 0) {
                     this.categories[0].more = true;
+                    if(this.categories[0].products.length > 0){
+                        this.categories[0].products[0].more = true;
+                    }
                 }
                 console.log("Merchant", this.merchantObj);
                 if (this.orderData.cartData) {

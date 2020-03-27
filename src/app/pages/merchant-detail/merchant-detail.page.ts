@@ -129,9 +129,6 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id,
             "name": this.merchant.name
         };
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
         this.params.setParams(params);
         this.navCtrl.navigateForward(this.urlSearch + "/chat");
     }
@@ -167,9 +164,6 @@ export class MerchantDetailPage implements OnInit {
             "objectDescription": this.merchant.description,
             "objectIcon": this.merchant.icon
         }
-        if (this.fromSettings) {
-            params["settings"] = true;
-        }
         console.log(params);
         this.params.setParams(params);
         this.navCtrl.navigateForward(this.urlSearch + "/book");
@@ -200,8 +194,7 @@ export class MerchantDetailPage implements OnInit {
     }
     call() {
         this.showLoader();
-        let attrs = {};
-        attrs["location"] = "opentok";
+        let attrs = {"location":"opentok"};
         let data = {
             "type": "Merchant",
             "object_id": this.merchant.id,

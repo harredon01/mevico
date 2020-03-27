@@ -55,21 +55,9 @@ export class NewMerchantPage implements OnInit {
             description: ['', Validators.required],
             email: ['', Validators.required],
             telephone: ['', Validators.required],
-            address: ['', Validators.required],
             unit_cost: [''],
             booking_requires_auth: [''],
             max_per_hour: [''],
-            lat: [''],
-            long: [''],
-            service1: [''],
-            service2: [''],
-            service3: [''],
-            specialty1: [''],
-            specialty2: [''],
-            specialty3: [''],
-            experience1: [''],
-            experience2: [''],
-            experience3: [''],
             city_id: ['', Validators.required],
             region_id: ['', Validators.required],
             country_id: ['', Validators.required],
@@ -87,7 +75,6 @@ export class NewMerchantPage implements OnInit {
                     description: editingMerchant.description,
                     email: editingMerchant.email,
                     telephone: editingMerchant.telephone,
-                    address: editingMerchant.address,
                     unit_cost: editingMerchant.unit_cost,
                     lat: editingMerchant.lat,
                     long: editingMerchant.long,
@@ -98,47 +85,6 @@ export class NewMerchantPage implements OnInit {
                 this.selectCountry(editingMerchant.region_id, editingMerchant.city_id);
                 this.typeSelected = editingMerchant.type;
                 let attributes = editingMerchant.attributes;
-                let services = [];
-                if (attributes.services) {
-                    services = attributes.services;
-
-                }
-                for (let i = 0; i < 3; i++) {
-                    let indicator = i + 1;
-                    let property = "service" + indicator;
-                    if (services[i]) {
-                        container[property] = services[i].name;
-                    } else {
-                        container[property] = "";
-                    }
-                }
-                let specialties = [];
-                if (attributes.specialties) {
-                    specialties = attributes.specialties;
-                }
-                for (let i = 0; i < 3; i++) {
-                    let indicator = i + 1;
-                    let property = "specialty" + indicator;
-                    if (specialties[i]) {
-                        container[property] = specialties[i].name;
-                    } else {
-                        container[property] = "";
-                    }
-                }
-                let experience = [];
-                if (attributes.experience) {
-                    experience = attributes.experience;
-
-                }
-                for (let i = 0; i < 3; i++) {
-                    let indicator = i + 1;
-                    let property = "experience" + indicator;
-                    if (experience[i]) {
-                        container[property] = experience[i].name;
-                    } else {
-                        container[property] = "";
-                    }
-                }
                 if (attributes.booking_requires_auth) {
                     container['booking_requires_auth'] = attributes.booking_requires_auth;
                 } else {
@@ -156,31 +102,21 @@ export class NewMerchantPage implements OnInit {
             }
         }
         if (!merchantLoaded) {
-            let lat = "";
-            let long = "";
-            let address = "";
+
+            let phone = "";
+            if(this.userData._user.cellphone.length > 0 && this.userData._user.cellphone!="11"){
+                phone = this.userData._user.cellphone;
+            }
             let container = {
                 id: "",
                 type: "",
                 name: '',
                 description: '',
-                email: '',
-                telephone: '',
-                address: address,
+                email: this.userData._user.email,
+                telephone: phone,
                 unit_cost: '',
                 booking_requires_auth: '',
                 max_per_hour: '',
-                lat: lat,
-                long: long,
-                service1: '',
-                service2: '',
-                service3: '',
-                specialty1: '',
-                specialty2: '',
-                specialty3: '',
-                experience1: '',
-                experience2: '',
-                experience3: '',
                 city_id: '',
                 region_id: '',
                 country_id: 1,
@@ -197,26 +133,7 @@ export class NewMerchantPage implements OnInit {
             this.isReadyToSave = this.form.valid;
         });
     }
-    ionViewDidEnter() {
-        let container: any = this.params.getParams();
-        if (container) {
-            let mapLocation = container.mapLocation;
-            if (mapLocation) {
-                let values = this.form.value;
-                if (this.mapData.address.lat) {
 
-                    values.lat = this.mapData.address.lat
-                }
-                if (this.mapData.address.long) {
-                    values.long = this.mapData.address.long
-                }
-                if (this.mapData.address.address) {
-                    values.address = this.mapData.address.address
-                }
-                this.form.setValue(values);
-            }
-        }
-    }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
             this.loadingCtrl.dismiss();
@@ -278,9 +195,8 @@ export class NewMerchantPage implements OnInit {
             this.dismissLoader();
             console.log("Save Address result", resp);
             if (resp.status == "success") {
-                let container = {"hasChanged": true};
-                this.params.setParams(container);
                 this.navCtrl.back();
+                this.navCtrl.navigateForward("tabs/settings/merchants/"+resp.object.id);
             } else {
                 this.toastCtrl.create({
                     message: this.merchantErrorStringSave,
