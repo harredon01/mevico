@@ -46,8 +46,6 @@ export class SignupPage implements OnInit {
         });
         this.idType = "text";
         this.registrationForm = formBuilder.group({
-            docNum: [''],
-            docType: [''],
             password: ['', Validators.compose([Validators.maxLength(30), Validators.minLength(6), Validators.required])],
             password_confirmation: ['', Validators.compose([Validators.maxLength(30), Validators.minLength(6), Validators.required])],
             area_code: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[0-9]*'), Validators.required])],
@@ -101,9 +99,6 @@ export class SignupPage implements OnInit {
             let errorString = "";
             if (message.email || message == "email_exists") {
                 errorString = this.signupErrorEmailString;
-            }
-            if (message.docNum || message == "id_exists") {
-                errorString = this.signupErrorIdString;
             }
             if (message.celphone || message == "cel_exists") {
                 errorString = this.signupErrorCelString;
