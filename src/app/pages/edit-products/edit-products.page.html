@@ -17,14 +17,14 @@
                     <ion-input type="text" formControlName="name"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formP.controls.name.valid  && (formP.controls.name.dirty || submitAttemptP)">
-                    <p>{{ 'EDIT_PRODUCTS.NAME_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.NAME_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.DESCRIPTION' | translate }}</ion-label>
                     <ion-input type="text" formControlName="description"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formP.controls.description.valid  && (formP.controls.description.dirty || submitAttemptP)">
-                    <p>{{ 'EDIT_PRODUCTS.DESCRIPTION_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.DESCRIPTION_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
@@ -70,56 +70,56 @@
                     <ion-input type="text" formControlName="sku"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.sku.valid  && (formV.controls.sku.dirty || submitAttemptV)">
-                    <p>{{ 'EDIT_PRODUCTS.SKU_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.SKU_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.DESCRIPTION2' | translate }}</ion-label>
                     <ion-input type="text" formControlName="description"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.description.valid  && (formV.controls.description.dirty || submitAttemptV)">
-                    <p>{{ 'EDIT_PRODUCTS.DESCRIPTION2_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.DESCRIPTION2_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.PRICE' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="price"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.price.valid  && (formV.controls.price.dirty || submitAttemptV)">
-                    <p>{{ 'EDIT_PRODUCTS.PRICE_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.PRICE_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.SALE' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="sale"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.sale.valid  && (formV.controls.sale.dirty || submitAttemptV)">
-                    <p>{{ 'EDIT_PRODUCTS.SALE_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.SALE_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.TAX' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="tax"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.tax.valid  && (formV.controls.tax.dirty || submitAttemptV)">
-                    <p>{{ 'EDIT_PRODUCTS.TAX_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.TAX_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.COST' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="cost"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.cost.valid  && (formV.controls.cost.dirty || submitAttemptV)">
-                    <p>{{ 'EDIT_PRODUCTS.COST_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.COST_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.MIN_QUANTITY' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="min_quantity"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.min_quantity.valid  && (formV.controls.min_quantity.dirty || submitAttemptV)">
-                    <p>{{ 'EDIT_PRODUCTS.MIN_QUANTITY_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.MIN_QUANTITY_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.QUANTITY' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="quantity"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.quantity.valid  && (formV.controls.quantity.dirty || submitAttemptV)">
-                    <p>{{ 'EDIT_PRODUCTS.QUANTITY_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.QUANTITY_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item >
                     <ion-label>{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</ion-label>
@@ -174,14 +174,14 @@
                     <ion-input type="text" formControlName="name"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.name.valid  && (formPNew.controls.name.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.NAME_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.NAME_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.DESCRIPTION' | translate }}</ion-label>
                     <ion-input type="text" formControlName="description"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.description.valid  && (formPNew.controls.description.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.DESCRIPTION_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.DESCRIPTION_ERROR' | translate }}</p>
                 </ion-item>
 
                 <ion-item>
@@ -189,56 +189,56 @@
                     <ion-input type="text" formControlName="sku"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.sku.valid  && (formPNew.controls.sku.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.SKU_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.SKU_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.DESCRIPTION2' | translate }}</ion-label>
                     <ion-input type="text" formControlName="description2"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.description2.valid  && (formPNew.controls.description2.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.DESCRIPTION2_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.DESCRIPTION2_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.PRICE' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="price"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.price.valid  && (formPNew.controls.price.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.PRICE_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.PRICE_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.SALE' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="sale"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.sale.valid  && (formPNew.controls.sale.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.SALE_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.SALE_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.TAX' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="tax"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.tax.valid  && (formPNew.controls.tax.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.TAX_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.TAX_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.COST' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="cost"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.cost.valid  && (formPNew.controls.cost.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.COST_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.COST_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.MIN_QUANTITY' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="min_quantity"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.min_quantity.valid  && (formPNew.controls.min_quantity.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.MIN_QUANTITY_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.MIN_QUANTITY_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.QUANTITY' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="quantity"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.quantity.valid  && (formPNew.controls.quantity.dirty || submitAttemptPNew)">
-                    <p>{{ 'EDIT_PRODUCTS.QUANTITY_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'EDIT_PRODUCTS.QUANTITY_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item >
                     <ion-label>{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</ion-label>

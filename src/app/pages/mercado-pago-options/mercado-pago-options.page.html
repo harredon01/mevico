@@ -51,7 +51,7 @@
                             </ion-select>
                         </ion-item>
                         <ion-item *ngIf="!payerForm.controls.financial_institution.valid  && (payerForm.controls.financial_institution.dirty || submitAttempt)">
-                            <p>{{ 'CHECKOUT_BANKS.BANK_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'CHECKOUT_BANKS.BANK_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item >
                             <ion-label>{{ 'INPUTS.MY_DATA' | translate }}</ion-label>
@@ -65,7 +65,7 @@
                             </ion-select>
                         </ion-item>
                         <ion-item *ngIf="!payerForm.controls.entity_type.valid  && (payerForm.controls.entity_type.dirty || submitAttempt)">
-                            <p>{{ 'CHECKOUT_BANKS.USER_TYPE_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'CHECKOUT_BANKS.USER_TYPE_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">{{ 'USER.DOC_TYPE' | translate }}</ion-label>
@@ -82,21 +82,21 @@
                             </ion-select>
                         </ion-item>
                         <ion-item *ngIf="!payerForm.controls.doc_type.valid  && (payerForm.controls.doc_type.dirty || submitAttempt)">
-                            <p>{{ 'USER.DOC_TYPE_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'USER.DOC_TYPE_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">{{ 'USER.ID' | translate }}</ion-label>
                             <ion-input type="text" formControlName="payer_id"></ion-input>
                         </ion-item>
                         <ion-item *ngIf="!payerForm.controls.payer_id.valid  && (payerForm.controls.payer_id.dirty || submitAttempt)">
-                            <p>{{ 'USER.ID_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'USER.ID_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">{{ 'USER.EMAIL' | translate }}</ion-label>
                             <ion-input type="text" formControlName="email"></ion-input>
                         </ion-item>
                         <ion-item *ngIf="!payerForm.controls.email.valid  && (payerForm.controls.email.dirty || submitAttempt)">
-                            <p>{{ 'USER.EMAIL_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'USER.EMAIL_ERROR' | translate }}</p>
                         </ion-item>
 
                     </ion-list>
@@ -127,14 +127,14 @@
                             </ion-select>
                         </ion-item>
                         <ion-item *ngIf="!payerForm2.controls.payment_method_id.valid  && (payerForm2.controls.payment_method_id.dirty || submitAttempt2)">
-                            <p>{{ 'CHECKOUT_CASH.TYPE_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'CHECKOUT_CASH.TYPE_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">{{ 'USER.EMAIL' | translate }}</ion-label>
                             <ion-input type="text" formControlName="email"></ion-input>
                         </ion-item>
                         <ion-item *ngIf="!payerForm2.controls.email.valid  && (payerForm2.controls.email.dirty || submitAttempt2)">
-                            <p>{{ 'USER.EMAIL_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'USER.EMAIL_ERROR' | translate }}</p>
                         </ion-item>
 
                     </ion-list>
@@ -154,21 +154,21 @@
                             </ion-select>
                         </ion-item>
                         <ion-item *ngIf="!payerForm3.controls.cardId.valid  && (payerForm3.controls.cardId.dirty || submitAttempt3)">
-                            <p>{{ 'MERCADOPAGO_PAYMENT.CARDS_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'MERCADOPAGO_PAYMENT.CARDS_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>
                             <label for="docType">{{ 'MERCADOPAGO_PAYMENT.INSTALLMENTS' | translate }}:</label>
                             <ion-select formControlName="installmentsSelected"><ion-select-option *ngFor="let item of installments" [value]='item.installments'>{{item.recommended_message}}</ion-select-option></ion-select>
                         </ion-item>
                         <ion-item *ngIf="!payerForm3.controls.installmentsSelected.valid  && (payerForm3.controls.installmentsSelected.dirty || submitAttempt3)">
-                            <p>{{ 'MERCADOPAGO_PAYMENT.INSTALLMENTS_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'MERCADOPAGO_PAYMENT.INSTALLMENTS_ERROR' | translate }}</p>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">{{ 'MERCADOPAGO_PAYMENT.CVV' | translate }}</ion-label>
                             <ion-input type="text" formControlName="cvv" data-checkout="securityCode"></ion-input>
                         </ion-item>
                         <ion-item *ngIf="!payerForm3.controls.cvv.valid  && (payerForm3.controls.cvv.dirty || submitAttempt3)">
-                            <p>{{ 'MERCADOPAGO_PAYMENT.CVV_ERROR' | translate }}</p>
+                            <p class="error-message">{{ 'MERCADOPAGO_PAYMENT.CVV_ERROR' | translate }}</p>
                         </ion-item>
 
                     </ion-list>

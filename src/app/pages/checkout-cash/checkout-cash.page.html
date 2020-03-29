@@ -52,14 +52,14 @@
                 </ion-select>
             </ion-item>
             <ion-item *ngIf="!payerForm.controls.payment_method.valid  && (payerForm.controls.payment_method.dirty || submitAttempt)">
-                <p>{{ 'CHECKOUT_CASH.TYPE_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'CHECKOUT_CASH.TYPE_ERROR' | translate }}</p>
             </ion-item>
             <ion-item>
                 <ion-label position="floating">{{ 'USER.EMAIL' | translate }}</ion-label>
                 <ion-input type="text" formControlName="payer_email"></ion-input>
             </ion-item>
             <ion-item *ngIf="!payerForm.controls.payer_email.valid  && (payerForm.controls.payer_email.dirty || submitAttempt)">
-                <p>{{ 'USER.EMAIL_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'USER.EMAIL_ERROR' | translate }}</p>
             </ion-item>
 
         </ion-list>

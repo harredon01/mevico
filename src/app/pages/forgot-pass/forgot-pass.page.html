@@ -31,21 +31,21 @@
                     <ion-input type="email" formControlName="email"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.email.valid  && (form.controls.email.dirty || submitAttempt)">
-                    <p>{{ 'USER.EMAIL_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'USER.EMAIL_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'USER.TOKEN' | translate }}</ion-label>
                     <ion-input type="text" formControlName="token"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.token.valid  && (form.controls.token.dirty || submitAttempt)">
-                    <p>{{ 'USER.TOKEN_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'USER.TOKEN_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'USER.PASSWORD' | translate }}</ion-label>
                     <ion-input type="password" formControlName="password"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.password.valid  && (form.controls.password.dirty || submitAttempt)">
-                    <p>{{ 'USER.PASSWORD_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'USER.PASSWORD_ERROR' | translate }}</p>
                 </ion-item>
 
 
@@ -54,7 +54,7 @@
                     <ion-input type="text" formControlName="password_confirmation"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="(!form.controls.password_confirmation.valid  && (form.controls.password_confirmation.dirty || submitAttempt))||passwordError">
-                    <p>{{ 'USER.REPEAT_PASSWORD_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'USER.REPEAT_PASSWORD_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>

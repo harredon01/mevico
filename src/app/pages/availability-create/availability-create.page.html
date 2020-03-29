@@ -28,21 +28,21 @@
                     </ion-select>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.from.valid  && (form.controls.from.dirty || submitAttempt)">
-                    <p>{{ 'AVAILABILITY_CREATE.RANGE_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'AVAILABILITY_CREATE.RANGE_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'AVAILABILITY_CREATE.FROM' | translate }}</ion-label>
                     <ion-datetime display-format="h:mm A" picker-format="h:mm A" formControlName="from"></ion-datetime>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.from.valid  && (form.controls.from.dirty || submitAttempt)">
-                    <p>{{ 'AVAILABILITY_CREATE.FROM_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'AVAILABILITY_CREATE.FROM_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'AVAILABILITY_CREATE.TO' | translate }}</ion-label>
                     <ion-datetime display-format="h:mm A" picker-format="h:mm A" formControlName="to"></ion-datetime>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.to.valid  && (form.controls.to.dirty || submitAttempt)">
-                    <p>{{ 'AVAILABILITY_CREATE.TO_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'AVAILABILITY_CREATE.TO_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item>
                     <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>

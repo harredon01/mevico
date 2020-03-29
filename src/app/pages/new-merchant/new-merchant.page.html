@@ -30,28 +30,28 @@
                 <ion-input type="text" formControlName="name" class="tright"></ion-input>
             </ion-item>
             <ion-item *ngIf="!form.controls.name.valid  && (form.controls.name.dirty || submitAttempt)">
-                <p>{{ 'MERCHANT_CREATE.NAME_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'MERCHANT_CREATE.NAME_ERROR' | translate }}</p>
             </ion-item>
             <ion-item>
                 <ion-label position="floating">{{ 'MERCHANT_CREATE.DESCRIPTION' | translate }}</ion-label>
                 <ion-textarea formControlName="description" rows="4"></ion-textarea>
             </ion-item>
             <ion-item *ngIf="!form.controls.description.valid  && (form.controls.description.dirty || submitAttempt)">
-                <p>{{ 'MERCHANT_CREATE.DESCRIPTION_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'MERCHANT_CREATE.DESCRIPTION_ERROR' | translate }}</p>
             </ion-item>
             <ion-item>
                 <ion-label position="floating">{{ 'MERCHANT_CREATE.EMAIL' | translate }}</ion-label>
                 <ion-input type="email" formControlName="email" class="tright"></ion-input>
             </ion-item>
             <ion-item *ngIf="!form.controls.email.valid  && (form.controls.email.dirty || submitAttempt)">
-                <p>{{ 'MERCHANT_CREATE.EMAIL_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'MERCHANT_CREATE.EMAIL_ERROR' | translate }}</p>
             </ion-item>
             <ion-item>
                 <ion-label position="floating">{{ 'MERCHANT_CREATE.TELEPHONE' | translate }}</ion-label>
                 <ion-input type="tel" formControlName="telephone" class="tright"></ion-input>
             </ion-item>
             <ion-item *ngIf="!form.controls.telephone.valid  && (form.controls.telephone.dirty || submitAttempt)">
-                <p>{{ 'MERCHANT_CREATE.TELEPHONE_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'MERCHANT_CREATE.TELEPHONE_ERROR' | translate }}</p>
             </ion-item>
             <ion-item>
                 <ion-label>{{ 'MERCHANT_CREATE.COUNTRY' | translate }}</ion-label>
@@ -60,7 +60,7 @@
                 </ion-select>
             </ion-item>
             <ion-item *ngIf="!form.controls.country_id.valid  && (form.controls.country_id.dirty || submitAttempt)">
-                <p>{{ 'MERCHANT_CREATE.COUNTRY_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'MERCHANT_CREATE.COUNTRY_ERROR' | translate }}</p>
             </ion-item>
             <ion-item *ngIf="form.controls.country_id.valid">
                 <ion-label>{{ 'MERCHANT_CREATE.REGION' | translate }}</ion-label>
@@ -69,7 +69,7 @@
                 </ion-select>
             </ion-item>
             <ion-item *ngIf="!form.controls.region_id.valid  && (form.controls.region_id.dirty || submitAttempt)">
-                <p>{{ 'MERCHANT_CREATE.REGION_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'MERCHANT_CREATE.REGION_ERROR' | translate }}</p>
             </ion-item>
             <ion-item *ngIf="form.controls.region_id.valid">
                 <ion-label>{{ 'MERCHANT_CREATE.CITY' | translate }}</ion-label>
@@ -78,7 +78,7 @@
                 </ion-select>
             </ion-item>
             <ion-item *ngIf="!form.controls.city_id.valid  && (form.controls.city_id.dirty || submitAttempt)">
-                <p>{{ 'MERCHANT_CREATE.CITY_ERROR' | translate }}</p>
+                <p class="error-message">{{ 'MERCHANT_CREATE.CITY_ERROR' | translate }}</p>
             </ion-item>
             <ion-item>
                 <p>{{ 'MERCHANT_CREATE.HOUR_COST_DESC' | translate }}</p>

@@ -39,7 +39,7 @@
                     <ion-input type="text" formControlName="address"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.address.valid  && (form.controls.address.dirty || submitAttempt)">
-                    <p>{{ 'ADDRESS_FIELDS.ADDRESS_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'ADDRESS_FIELDS.ADDRESS_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item class="ion-no-padding">
                     <ion-label position="floating">
@@ -50,7 +50,7 @@
                     <ion-input type="text" formControlName="postal"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.postal.valid  && (form.controls.postal.dirty || submitAttempt)">
-                    <p>{{ 'ADDRESS_FIELDS.POSTAL_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'ADDRESS_FIELDS.POSTAL_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item class="ion-no-padding">
                     <ion-label position="floating">
@@ -59,7 +59,7 @@
                     <ion-input type="text" formControlName="notes"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.notes.valid  && (form.controls.notes.dirty || submitAttempt)">
-                    <p>{{ 'ADDRESS_FIELDS.NOTES_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'ADDRESS_FIELDS.NOTES_ERROR' | translate }}</p>
                 </ion-item>
 
 
@@ -73,7 +73,7 @@
                     <ion-input type="text" formControlName="name"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.name.valid  && (form.controls.name.dirty || submitAttempt)">
-                    <p>{{ 'ADDRESS_FIELDS.NAME_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'ADDRESS_FIELDS.NAME_ERROR' | translate }}</p>
                 </ion-item>
 
 
@@ -88,7 +88,7 @@
                     <ion-input type="tel" formControlName="phone"></ion-input>
                 </ion-item>
                 <ion-item *ngIf="!form.controls.phone.valid  && (form.controls.phone.dirty || submitAttempt)">
-                    <p>{{ 'ADDRESS_FIELDS.PHONE_ERROR' | translate }}</p>
+                    <p class="error-message">{{ 'ADDRESS_FIELDS.PHONE_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item class="ion-no-padding">
                     <ion-button class="button__full" full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
