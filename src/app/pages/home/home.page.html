@@ -13,8 +13,9 @@
             <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="openMenu()" size="small" *ngIf="userData._user">
                 <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
             </ion-button>
-            <h2>Hola! Bienvenido a PetWorld.</h2>
-            <p>Tu lugar número uno para todo lo que tiene que ver con tu mascota</p>
+            <h2 *ngIf="userData._user">Hola {{userData._user.firstName}}! Bienvenido a PetWorld.</h2>
+            <h2 *ngIf="!userData._user">Hola! Bienvenido a PetWorld.</h2>
+            <p>Tu lugar número uno para todo lo que tiene que ver con tu mascota. Te invitamos a que visites los negocios y sus productos y servicios. </p>
             <br/>
             <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="login()" size="small" *ngIf="!userData._user">
                 Entrar
@@ -27,7 +28,7 @@
             <p class="merchant-categories__header-title text-danger">Categorias</p>
             
         </div>
-        <div class="merchant-categories__header" *ngIf="userData._user">
+        <div class="merchant-categories__header" *ngIf="false">
             <p class="merchant-categories__header-title text-danger">Autoriza mercadopago</p>
             <ion-button class="button merchant-categories__header-button " (click)="activateMerchant()" size="small" expand="block">
                 <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>

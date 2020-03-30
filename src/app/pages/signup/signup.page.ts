@@ -48,12 +48,15 @@ export class SignupPage implements OnInit {
         this.registrationForm = formBuilder.group({
             password: ['', Validators.compose([Validators.maxLength(30), Validators.minLength(6), Validators.required])],
             password_confirmation: ['', Validators.compose([Validators.maxLength(30), Validators.minLength(6), Validators.required])],
-            area_code: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[0-9]*'), Validators.required])],
+            area_code: [''],
             cellphone: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[0-9._%+-]*'), Validators.required])],
             firstName: ['', Validators.compose([Validators.maxLength(50), Validators.pattern('[a-zA-Z áúíóéÁÉÍÓÚñÑ]*'), Validators.required])],
             lastName: ['', Validators.compose([Validators.maxLength(50), Validators.pattern('[a-zA-Z áúíóéÁÉÍÓÚñÑ]*'), Validators.required])],
             email: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-.]*\.[a-zA-Z]{2,}'), Validators.required])]
         });
+        let container = this.registrationForm.value;
+        container.area_code = 57;
+        this.registrationForm.setValue(container);
     }
 
   ngOnInit() {

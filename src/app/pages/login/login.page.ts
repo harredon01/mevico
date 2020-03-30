@@ -152,7 +152,10 @@ export class LoginPage implements OnInit {
         });
     }
     loginGoogle() {
-        this.googlePlus.login({
+        if (document.URL.startsWith('http')) {
+            console.log("loginGoogle");
+        } else {
+            this.googlePlus.login({
             'webClientId': '650065312777-h6sq9leehcqo7732m0r8ot3gek1btig9.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
             'offline': true // optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
         })
@@ -161,11 +164,17 @@ export class LoginPage implements OnInit {
                 this.verifyToken(res.accessToken, "google");
             })
             .catch(err => console.error(err));
+        }
+        
     }
     loginFacebook() {
-        this.fb.login(['public_profile', 'email'])
+        if (document.URL.startsWith('http')) {
+            console.log("loginFacebook");
+        } else {
+            this.fb.login(['public_profile', 'email'])
             .then((res: FacebookLoginResponse) => {console.log('Logged into Facebook!', res); this.verifyToken(res.authResponse.accessToken, "facebook");})
             .catch(e => console.log('Error logging into Facebook', e));
+        }
     }
     verifyToken(token, platform) {
         let container = {"token": token, "driver": platform};

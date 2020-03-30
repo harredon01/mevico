@@ -76,8 +76,8 @@
                     </ion-button>
                 </div>
                 <div *ngIf="!isOwner" class="right mt10">
-                    <ion-button color="secondary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</ion-button>
-                    <ion-button color="secondary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</ion-button>
+                    <ion-button color="primary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</ion-button>
+                    <ion-button color="primary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</ion-button>
                     <div class="content-increment-product" *ngIf="item.inCart">
                         <ion-button outline style="font-size:20px;" (click)="reduceCartItem(item)">-</ion-button>
                         <label> {{item.amount}}</label>
