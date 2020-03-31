@@ -33,6 +33,7 @@ export class CreateMerchantPage implements OnInit {
     editServices: boolean = false;
     editSpecialties: boolean = false;
     editExperience: boolean = false;
+    saveAddress: boolean = false;
 
     countries: any[] = [];
     regions: any[] = [];
@@ -95,6 +96,24 @@ export class CreateMerchantPage implements OnInit {
             this.isReadyToSave = this.form.valid;
         });
     }
+    ionViewDidEnter() {
+        let container: any = this.params.getParams();
+        console.log("Params entering", container);
+        if (container) {
+            if (container.item) {
+                this.getMerchant(container.item.id);
+            }
+            if (container.type) {
+                if (container.type == "Merchant") {
+                    this.getMerchant(container.objectId);
+                }
+            }
+            let mapLocation = container.mapLocation;
+            if (mapLocation) {
+                this.saveAddress = true;
+            }
+        }
+    }
     myImages() {
         let params = {
             "objectId": this.merchant.id,
@@ -131,7 +150,7 @@ export class CreateMerchantPage implements OnInit {
         this.galPage++;
         this.slides.slideNext();
     }
-    
+
     showProducts() {
         let params = {
             "type": "Merchant",
@@ -273,42 +292,33 @@ export class CreateMerchantPage implements OnInit {
         } else {
             container['years_experience'] = 0;
         }
+        if (this.saveAddress) {
+            if (this.mapData.address.lat) {
+                container.lat = this.mapData.address.lat
+            }
+            if (this.mapData.address.long) {
+                container.long = this.mapData.address.long
+            }
+            if (this.mapData.address.address) {
+                container.address = this.mapData.address.address
+            }
+            let theParams = this.params.getParams();
+            theParams.mapLocation = null;
+            this.params.setParams(theParams);
+        }
+
         console.log("Setting form values: ", container);
         this.isReadyToSave = true;
         this.form.setValue(container);
+        if (this.saveAddress) {
+            this.saveAddress = false;
+            this.done();
+        }
         console.log("Before set company");
         this.MerchantLoaded = true;
         this.selectCountry(editingMerchant.region_id, editingMerchant.city_id);
     }
-    ionViewDidEnter() {
-        let container: any = this.params.getParams();
-        if (container) {
-            if (container.item) {
-                this.getMerchant(container.item.id);
-            }
-            if (container.type) {
-                if (container.type=="Merchant") {
-                    this.getMerchant(container.objectId);
-                }
-            }
-            let mapLocation = container.mapLocation;
-            if (mapLocation) {
-                let values = this.form.value;
-                if (this.mapData.address.lat) {
 
-                    values.lat = this.mapData.address.lat
-                }
-                if (this.mapData.address.long) {
-                    values.long = this.mapData.address.long
-                }
-                if (this.mapData.address.address) {
-                    values.address = this.mapData.address.address
-                }
-                this.form.setValue(values);
-            }
-
-        }
-    }
     dismissLoader() {
         if (document.URL.startsWith('http')) {
             this.loadingCtrl.dismiss();

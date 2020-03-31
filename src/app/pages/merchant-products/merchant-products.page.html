@@ -26,9 +26,8 @@
         <ion-card-header class="product-header__information">
             <span>{{merchantObj.merchant_name}}</span>
         </ion-card-header>
-        <img [src]="merchantObj.src"/>
+        <img [src]="merchantObj.src" *ngIf="merchantObj.src"/>
         <ion-card-content class="product-header__content">
-
             <p [innerHtml]="merchantObj.merchant_description"  class="hide-text merchant" [ngClass]="{'show' : merchantObj.merchant_description_more}">
         </p>
         <button class="btn-secondary view" (click)="showMoreM(merchantObj)">{{  merchantObj.merchant_description_more ? showLessText: showMoreText}}
