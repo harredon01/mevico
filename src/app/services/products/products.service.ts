@@ -22,7 +22,7 @@ export class ProductsService {
         return seq;
     }
     getProductCategories(merchant_id: string) {
-        let endpoint = '/products/categories/' + merchant_id;
+        let endpoint = '/merchants/' + merchant_id+'/categories';
         let seq = this.api.get(endpoint);
         return seq;
     }

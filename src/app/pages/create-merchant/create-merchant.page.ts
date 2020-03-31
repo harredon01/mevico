@@ -131,11 +131,12 @@ export class CreateMerchantPage implements OnInit {
         this.galPage++;
         this.slides.slideNext();
     }
+    
     showProducts() {
         let params = {
             "type": "Merchant",
             "objectId": this.merchant.id,
-            "owner": this.merchant.owner,
+            "owner": true,
             "settings": true
         };
         this.params.setParams(params);

@@ -20,7 +20,7 @@
         <ion-list>
             <ion-item>
                 <ion-label position="floating">{{ 'MERCHANT_CREATE.TYPE' | translate }}</ion-label>
-                <ion-select placeholder="Que quieres crear" formControlName="type" (ionChange)="addShippingAddress()" >
+                <ion-select placeholder="Que quieres crear" formControlName="type">
                     <ion-select-option value="medical">Doctor</ion-select-option>
                     <ion-select-option value="location">Sitio</ion-select-option>
                 </ion-select>
@@ -92,7 +92,7 @@
             </ion-item>
             <ion-item>
                 <ion-label>{{ 'MERCHANT_CREATE.BOOKING_REQUIRES_AUTH' | translate }}</ion-label>
-                <ion-checkbox checked="true" formControlName="booking_requires_auth"></ion-checkbox>
+                <ion-checkbox formControlName="booking_requires_auth"></ion-checkbox>
             </ion-item>
             <ion-item>
                 <p>{{ 'MERCHANT_CREATE.MAX_PER_HOUR_DESC' | translate }}</p>

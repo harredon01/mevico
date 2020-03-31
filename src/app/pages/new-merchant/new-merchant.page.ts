@@ -115,7 +115,7 @@ export class NewMerchantPage implements OnInit {
                 email: this.userData._user.email,
                 telephone: phone,
                 unit_cost: '',
-                booking_requires_auth: '',
+                booking_requires_auth: false,
                 max_per_hour: '',
                 city_id: '',
                 region_id: '',
@@ -195,6 +195,8 @@ export class NewMerchantPage implements OnInit {
             this.dismissLoader();
             console.log("Save Address result", resp);
             if (resp.status == "success") {
+                let container = {type:"Merchant",objectId:resp.object.id};
+                this.params.setParams(container);
                 this.navCtrl.back();
                 this.navCtrl.navigateForward("tabs/settings/merchants/"+resp.object.id);
             } else {
@@ -213,29 +215,6 @@ export class NewMerchantPage implements OnInit {
             }).then(toast => toast.present());
         });
     }
-
-    /**
-     * Prompt the user to add a new item. This shows our ItemCreatePage in a
-     * modal and then adds the new item to our data source if the user created one.
-     */
-    addShippingAddress() {
-        if (this.typeSelected == "location" || this.typeSelected == "medical") {
-            this.mapData.hideAll();
-            this.mapData.activeType = "Location";
-            this.mapData.activeId = "-1";
-            this.mapData.merchantId = null;
-            this.navCtrl.navigateForward('tabs/map');
-        } else {
-            let values = this.form.value;
-            values.address = "";
-            values.lat = 0;
-            values.long = 0;
-            this.form.setValue(values);
-        }
-
-    }
-
-
     /**
      * The user cancelled, so we dismiss without sending data back.
      */
@@ -248,7 +227,6 @@ export class NewMerchantPage implements OnInit {
      * back to the presenter.
      */
     done() {
-        if (!this.form.valid) {return;}
         this.saveMerchant(this.form.value);
     }
     showLoader() {

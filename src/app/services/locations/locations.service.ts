@@ -57,16 +57,15 @@ export class LocationsService {
         return seq;
     }
     getRegionsCountry(countryId: any) {
-        let url = "/regions?limit=100&country_id=" + countryId;
+        let url = "/regions?limit=100&order_by=name,asc&country_id=" + countryId;
         let seq = this.api.get(url);
         return seq;
     }
     getCitiesRegion(regionId: any) {
-        let url = "/cities?limit=100&region_id=" + regionId;
+        let url = "/cities?limit=100&order_by=name,asc&region_id=" + regionId;
         let seq = this.api.get(url);
         return seq;
     }
-
     getReportsMerchantsLocations(latit: any, longit: any, radius: any) {
         let endpoint = "/merchants/nearby_all";
         let data = {lat: latit, long: longit, radius: radius};
@@ -74,7 +73,6 @@ export class LocationsService {
         return seq;
     }
     getTrip(user_id: any, trip: any) {
-
         console.log("Get trip set");
         console.log(user_id);
         console.log(trip);
