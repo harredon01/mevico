@@ -13,39 +13,32 @@
             <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="openMenu()" size="small" *ngIf="userData._user">
                 <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
             </ion-button>
-            <h2 *ngIf="userData._user">Hola {{userData._user.firstName}}! Bienvenido a PetWorld.</h2>
-            <h2 *ngIf="!userData._user">Hola! Bienvenido a PetWorld.</h2>
+            <h2 *ngIf="userData._user">Hola {{userData._user.firstName}}!</h2>
+            <h2 *ngIf="!userData._user">Hola!</h2>
+            <h3>Bienvenido a PetWorld.</h3>
             <p>Tu lugar número uno para todo lo que tiene que ver con tu mascota. Te invitamos a que visites los negocios y sus productos y servicios. </p>
             <br/>
             <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="login()" size="small" *ngIf="!userData._user">
                 Entrar
             </ion-button>
-            
+
         </div>
 
-        <div class="merchant-categories__header">
-
-            <p class="merchant-categories__header-title text-danger">Categorias</p>
-            
-        </div>
         <div class="merchant-categories__header" *ngIf="false">
             <p class="merchant-categories__header-title text-danger">Autoriza mercadopago</p>
             <ion-button class="button merchant-categories__header-button " (click)="activateMerchant()" size="small" expand="block">
                 <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
             </ion-button>
         </div>
-        <ion-list class="mainCategories">
-            <ion-item (click)="openItem(item)" *ngFor="let item of items" class="mainCategories__list">
-                <img src="assets/imgs/dentist-1.jpg" item-start>
-                <span class="mainCategories__list--text">
-                    <span>{{item.name}}</span>
-                    <small>{{item.description}}</small>
-                </span>
-                <div class="icon__wrapper">
-                    <ion-icon name="ios-arrow-forward" item-end></ion-icon>
+            <div class="mainCategories">
+                <div (click)="openItem(item)" *ngFor="let item of items" class="mainCategories__list w50 left">
+                    <img src="assets/imgs/dentist-1.jpg" item-start>
+                    <span class="mainCategories__list--text">
+                        <span>{{item.name}}</span>
+                        <small>{{item.description}}</small>
+                    </span>
                 </div>
-            </ion-item>
-        </ion-list>
+            </div>
     </div>
 
 </ion-content>

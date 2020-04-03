@@ -304,6 +304,10 @@ export class MerchantProductsPage implements OnInit {
     }
     handleCartSuccess(resp: any, item: any) {
         this.orderData.cartData = resp.cart;
+        let showPromt = false;
+        if (!item.inCart) {
+            showPromt = true;
+        }
         if (resp.item) {
             item.inCart = true;
             item.item_id = resp.item.id;
@@ -315,7 +319,9 @@ export class MerchantProductsPage implements OnInit {
         }
         this.calculateTotals("update cart item");
         this.cartUpdateMessage();
-        this.presentAlertPay(resp.item);
+        if (showPromt) {
+            this.presentAlertPay(resp.item);
+        }
     }
     handleCartError(resp: any, item) {
         console.log("Error", resp);
@@ -448,7 +454,7 @@ export class MerchantProductsPage implements OnInit {
                 this.merchantObj.merchant_type = this.categories[0].products[0].merchant_type;
                 if (this.categories.length > 0) {
                     this.categories[0].more = true;
-                    if(this.categories[0].products.length > 0){
+                    if (this.categories[0].products.length > 0) {
                         this.categories[0].products[0].more = true;
                     }
                 }
@@ -494,20 +500,22 @@ export class MerchantProductsPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
-        this.params.setParams({"merchant_id": this.merchant});
-        if (this.userData._user) {
-            if (data == "Shipping") {
-                this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+        if (data == "Checkout") {
+            this.params.setParams({"merchant_id": this.merchant});
+            if (this.userData._user) {
+                if (data == "Shipping") {
+                    this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+                } else {
+                    this.navCtrl.navigateForward('tabs/checkout/prepare');
+                }
             } else {
-                this.navCtrl.navigateForward('tabs/checkout/prepare');
+                if (data == "Shipping") {
+                    this.drouter.addPages('tabs/checkout/shipping/' + this.merchant);
+                } else {
+                    this.drouter.addPages('tabs/checkout/prepare');
+                }
+                this.navCtrl.navigateForward('login');
             }
-        } else {
-            if (data == "Shipping") {
-                this.drouter.addPages('tabs/checkout/shipping/' + this.merchant);
-            } else {
-                this.drouter.addPages('tabs/checkout/prepare');
-            }
-            this.navCtrl.navigateForward('login');
         }
     }
 

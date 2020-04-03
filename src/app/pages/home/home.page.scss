@@ -110,9 +110,13 @@ p {
 
     &__list {
         display: flex;
-        width: 100%;
-        padding: 0 10px;
-        margin-bottom: 1rem;
+        width: 48%;
+        margin: 3px;
+        border-radius: 6px;
+        float:left;
+        overflow: hidden;
+        border:2px solid var(--ion-color-primary);
+        margin-bottom: 0.3rem;
         min-height: 120px;
         position: relative;
 

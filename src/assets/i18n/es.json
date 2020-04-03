@@ -359,6 +359,15 @@
         "COMMENT": "Comentario",
         "RATINGS": "Puntaje"
     },
+    "DAYS": {
+        "MONDAY": "Lunes",
+        "TUESDAY": "Martes",
+        "WEDNESDAY": "Miércoles",
+        "THURSDAY": "Jueves",
+        "FRIDAY": "Viernes",
+        "SATURDAY": "Sábado",
+        "SUNDAY":"Domingo"
+    },
     "DELIVERIES": {
         "TITLE": "Entregas",
         "DESCRIPTION1": "Revisa tus almuerzos por entregar, si ya está disponible el menú puedes verlo y programar tu entrega de una vez.",

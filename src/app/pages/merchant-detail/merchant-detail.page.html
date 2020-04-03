@@ -118,12 +118,20 @@
                     {{ 'MERCHANT_DETAIL.AVAILABILITIES' | translate }}</ion-card-title>
             </ion-card-header>
             <ion-card-content class="profile__overview-content">
-                <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
-                    <li *ngFor="let availability of merchant.availabilities" class="doctor-experience">
-                        <p>{{availability.range}}<span class="ion-float-right">{{availability.from}} to
-                                {{availability.to}}</span></p>
-                    </li>
-                </ul> 
+                <ion-grid>
+                    <ion-row>
+                        <ion-col *ngFor="let availability of merchant.availabilitiesOrder" size="6">
+                            <h4 *ngIf="availability.range=='monday'">{{ 'DAYS.MONDAY' | translate }}</h4>
+                            <h4 *ngIf="availability.range=='tuesday'">{{ 'DAYS.TUESDAY' | translate }}</h4>
+                            <h4 *ngIf="availability.range=='wednesday'">{{ 'DAYS.WEDNESDAY' | translate }}</h4>
+                            <h4 *ngIf="availability.range=='thursday'">{{ 'DAYS.THURSDAY' | translate }}</h4>
+                            <h4 *ngIf="availability.range=='friday'">{{ 'DAYS.FRIDAY' | translate }}</h4>
+                            <h4 *ngIf="availability.range=='saturday'">{{ 'DAYS.SATURDAY' | translate }}</h4>
+                            <h4 *ngIf="availability.range=='sunday'">{{ 'DAYS.SUNDAY' | translate }}</h4>
+                            <p *ngFor="let avs of availability.items">{{avs.from}} hasta {{avs.to}}</p>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
             </ion-card-content>
         </ion-card> 
     </div>
@@ -158,11 +166,7 @@
                         </ion-card-title>
                     </ion-card-header>
                     <ion-card-content class="profile__overview-content">
-                        <ul class="profile__overview-body" *ngIf="merchant.attributes.experience">
-                            <li *ngFor="let experience of merchant.attributes.experience" class="doctor-experience">
-                                <p>{{experience.name}}</p>
-                            </li>
-                        </ul>
+                        <p *ngFor="let experience of merchant.attributes.experience">{{experience.name}}</p>
                     </ion-card-content>
                 </ion-card>
             </div>
@@ -174,11 +178,7 @@
                     </ion-card-header>
 
                     <ion-card-content class="profile__overview-content">
-                        <ul class="profile__overview-body" *ngIf="merchant.attributes.service">
-                            <li *ngFor="let service of merchant.attributes.service" class="doctor-experience">
-                                <p>{{service.name}}</p>
-                            </li>
-                        </ul>
+                        <p *ngFor="let service of merchant.attributes.service">{{service.name}}</p>
                     </ion-card-content>
                 </ion-card>
             </div>
@@ -190,12 +190,7 @@
                     </ion-card-header>
 
                     <ion-card-content class="profile__overview-content">
-                        <ul class="profile__overview-body" *ngIf="merchant.attributes.specialty">
-                            <li *ngFor="let specialization of merchant.attributes.specialty"
-                                class="doctor-experience">
-                                <p>{{specialization.name}}</p>
-                            </li>
-                        </ul>
+                        <p *ngFor="let specialization of merchant.attributes.specialty">{{specialization.name}}</p>
                     </ion-card-content>
                 </ion-card>
             </div>

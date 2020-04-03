@@ -20,6 +20,7 @@ export class Merchant {
     item_id: any;
     owner: boolean = false;
     availabilities: any[];
+    availabilitiesOrder: any[]=[];
     attributes: any;
     ratings: any[];
     files: any[];
@@ -60,6 +61,28 @@ export class Merchant {
         if (this.availabilities) {
             this.availabilities.sort((a, b) => (a.order > b.order) ? 1 : (a.order === b.order) ? ((a.time > b.time) ? 1 : -1) : -1);
             console.log("Availabilities", this.availabilities);
+            let container = {
+                range:"monday",
+                items:[]
+            }
+            for (let item in this.availabilities) {
+                if (this.availabilities[item].range == container.range) {
+                    container.items.push(this.availabilities[item]);
+                } else {
+                    if(container.items.length > 0 ){
+                        this.availabilitiesOrder.push(container);
+                    }
+                    container = {
+                range:this.availabilities[item].range,
+                items:[]
+            }
+            container.items.push(this.availabilities[item]);
+                }
+                
+            }
+            if(container.items.length > 0 ){
+                        this.availabilitiesOrder.push(container);
+                    }
         }
     }
 }

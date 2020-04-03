@@ -30,8 +30,8 @@
         <ion-card-content class="product-header__content">
             <p [innerHtml]="merchantObj.merchant_description"  class="hide-text merchant" [ngClass]="{'show' : merchantObj.merchant_description_more}">
         </p>
-        <button class="btn-secondary view" (click)="showMoreM(merchantObj)">{{  merchantObj.merchant_description_more ? showLessText: showMoreText}}
-        </button>
+        <a class="right" href='javascript:;' (click)="showMoreM(merchantObj)">{{  merchantObj.merchant_description_more ? showLessText: showMoreText}}
+        </a>
     </ion-card-content>
 </ion-card> 
 
@@ -49,26 +49,26 @@
                     </ion-slide>
                 </ion-slides>
                 <div [innerHtml]="item.description" class="hide-text" [ngClass]="{'show' : item.description_more}"></div>
-                <button class="btn-secondary" (click)="showMore(item)" *ngIf="merchant==1299" >{{  item.description_more ? showLessText: showMoreText}}
-                </button>
-                <ion-item > 
+                <a class="right" href='javascript:;' (click)="showMore(item)" *ngIf="merchant==1299" >{{  item.description_more ? showLessText: showMoreText}}
+                </a> 
+                <ion-item >
                     <ion-label>{{ 'PRODUCTS.VARIANTS' | translate }}</ion-label> 
-                    <ion-select [(ngModel)]="item.variant_id" [disabled]="item.inCart" (ionChange)="selectVariant(item)">
+                    <ion-select [(ngModel)]="item.variant_id" (ionChange)="selectVariant(item)">
                         <ion-select-option *ngFor="let variant of item.variants" [value]='variant.id'>{{variant.description}} -
                             {{variant.unitPrice | currency }}</ion-select-option>
                     </ion-select>
                 </ion-item>
-                <ion-item>
+                <ion-item style='display:none'>
                     <ion-label>{{ 'PRODUCTS.AMOUNT' | translate }}</ion-label>
                     <ion-select [(ngModel)]="item.amount"  (ionChange)="calculateTotals()" >
                         <ion-select-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-select-option>
                     </ion-select>
                 </ion-item>
-                <ion-item>
-                    <ion-label><strong>{{ 'PRODUCTS.TOTAL' | translate }}</strong> {{item.subtotal | currency }}</ion-label>
-                </ion-item>
+                <div class="left mt15 w50">
+                    <p style="font-size: 26px"><b>{{item.subtotal | currency }}</b></p>
+                </div>
                 <div *ngIf="isOwner">
-                    <ion-button class="btn-secondary" (click)="editProduct(item.id)">{{ 'INPUTS.EDIT' | translate }}
+                    <ion-button class="btn-primary" (click)="editProduct(item.id)">{{ 'INPUTS.EDIT' | translate }}
                     </ion-button>
                     <ion-button color="primary" (click)="editImages(item.id)">
                         {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
@@ -88,6 +88,6 @@
         </ion-card>
     </div>
 </div>
-<ion-button class="btn-secondary" (click)="editProduct(0)" *ngIf="isOwner" >{{ 'PRODUCTS.NEW_PRODUCT' | translate }}
+<ion-button class="btn-primary" (click)="editProduct(0)" *ngIf="isOwner" >{{ 'PRODUCTS.NEW_PRODUCT' | translate }}
 </ion-button>
 </ion-content>
