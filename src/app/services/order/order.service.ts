@@ -35,6 +35,15 @@ export class OrderService {
         return seq;
     }
     /**
+      * Send a POST request to our signup endpoint with the data
+      * the user entered on the form.
+      */
+    getPlatformShippingPrice(order: any,platform:any) {
+        let shipping = {};
+        let seq = this.api.get('/orders/platform/shipping/'+order+"/"+platform, shipping);
+        return seq;
+    }
+    /**
      * Send a POST request to our signup endpoint with the data
      * the user entered on the form.
      */

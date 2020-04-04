@@ -12,18 +12,22 @@
         <p class="checkout-prepare__description" *ngIf="!showPayment">{{ 'CHECKOUT_PREPARE.DESCRIPTION' | translate }}</p>
         <div *ngIf="!showPayment"> 
             <ion-grid>
-                <div class="checkout-prepare__items" *ngFor="let item of currentItems">
-                     <div class="checkout__item"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}}</div>
-                    <div class="checkout__item"><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</div>
-                    <div class="checkout__item"><strong>{{ 'CART_ITEM.PRICE' | translate }}: </strong> {{item.price| currency}}</div>
+                <div class="checkout-prepare__items mb15" *ngFor="let item of currentItems">
+                     <div class="left">
+                        <div class="checkout__item"><strong>{{item.name}}</strong> </div>
+                        <div class="checkout__item">{{ 'CART_ITEM.QUANTITY' | translate }}: <strong>{{item.quantity}}</strong> </div>
+                        <div class="checkout__item">{{ 'CART_ITEM.PRICE' | translate }}: <strong>{{item.price| currency}}</strong> </div>
 
-                    <div class="checkout__item"><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumWithConditions| currency}}</div>
-                    <div class="checkout__item"><div class="content-increment-product">
-                            <ion-button fill="outline" style="font-size:20px;" (click)="reduceCartItem(item)">-</ion-button>
+                        <div class="checkout__item">{{ 'CART_ITEM.SUBTOTAL' | translate }}: <strong>{{item.priceSumWithConditions| currency}}</strong> </div>
+                    </div>
+
+                    <div class="checkout__item right mt15"><div class="content-increment-product">
+                            <ion-button fill="outline" style="font-size:15px;" (click)="reduceCartItem(item)">-</ion-button>
                             <label> {{item.quantity}}</label>
-                            <ion-button fill="outline" style="font-size:20px;" (click)="increaseCartItem(item)">+</ion-button>
+                            <ion-button fill="outline" style="font-size:15px;" (click)="increaseCartItem(item)">+</ion-button>
                         </div> 
                     </div> 
+                    <div class="clear"></div>
                     <!--div class="checkout__item checkout__item--delete">
                         <span (click)="deleteItem(item)">
                             Eliminar
@@ -33,9 +37,26 @@
             </ion-grid>
             <ion-grid>
                 <div class="checkout-prepare__items" *ngFor="let item of conditions">
-                     <div class="checkout__item">{{item.getName}}</div>
-                    <div class="checkout__item"> <strong>{{ 'CART_COND.TOTAL' | translate }}: </strong>{{item.total| currency}}</div>
+                     <div class="checkout__item"><strong>{{item.getName}}</strong></div>
+                    <div class="checkout__item"> {{ 'CART_COND.TOTAL' | translate }}: <strong>{{item.total| currency}}</strong></div>
                 </div>
+            </ion-grid>
+            <ion-grid *ngIf="selectShipping">
+                <p [className]="shippingError ? 'error-message' : ''"><strong>{{ 'CHECKOUT_PREPARE.SELECT_SHIPPING' | translate }}</strong></p>
+                <p *ngIf="expectedProviders > 0">{{ 'CHECKOUT_PREPARE.PENDING_PROVIDERS' | translate }}: {{expectedProviders}}</p>
+                <div class="checkout-prepare__items mb15" *ngFor="let item of shipping" [style.opacity]="expectedProviders > 0 ? '0.3' : '1'">
+                     <div class="left" >
+                        <div class="checkout__item"><strong>{{item.platform}}</strong> </div>
+                        <div class="checkout__item">{{ 'CART_ITEM.PRICE' | translate }}: <strong>{{item.price| currency}}</strong> </div>
+                    </div>
+                    <div class="checkout__item right mt15">
+                        <div class="content-increment-product">
+                            <ion-button fill="outline" style="font-size:15px;" (click)="setPlatformShipping(item.platform)">+</ion-button>
+                        </div> 
+                    </div> 
+                    <div class="clear"></div>
+                </div>
+                <p *ngIf="shipping.length ==0">{{ 'CHECKOUT_PREPARE.NO_COVERAGE' | translate }}</p>
             </ion-grid>
             <p><strong>Total:</strong> {{total | currency }}</p>
             <p><strong>Numero Total Productos:</strong>{{totalItems}}</p>

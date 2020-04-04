@@ -29,6 +29,10 @@ export class CheckoutPreparePage implements OnInit {
     requiresDelivery: boolean;
     currentItems: Item[] = [];
     conditions: any[] = [];
+    shipping: any[] = [];
+    selectShipping: boolean = false;
+    shippingError: boolean = false;
+    expectedProviders: any = 2;
     payment: Payment;
     order: any;
     coupon: any;
@@ -271,6 +275,7 @@ export class CheckoutPreparePage implements OnInit {
     prepareOrder() {
         this.showLoader();
         this.showPayment = false;
+        this.shippingError = false;
         let payers = [];
         let payersContainer = this.orderData.payers;
         for (let item in payersContainer) {
@@ -293,7 +298,7 @@ export class CheckoutPreparePage implements OnInit {
             "recurring_value": recurring_value,
             "merchant_id": this.orderData.currentOrder.merchant_id
         };
-        this.orderProvider.prepareOrder(container,"Booking").subscribe((resp: any) => {
+        this.orderProvider.prepareOrder(container, "Booking").subscribe((resp: any) => {
             if (resp) {
                 if (resp.status == "success") {
                     this.dismissLoader();
@@ -319,7 +324,7 @@ export class CheckoutPreparePage implements OnInit {
                             console.log("completePaidOrderError", err);
                         });
                     } else {
-                        let container = {"payment":this.payment};
+                        let container = {"payment": this.payment};
                         this.params.setParams(container);
                         this.navCtrl.navigateForward("tabs/mercado-pago-options");
                         //this.navCtrl.navigateForward("tabs/payu/options");
@@ -345,13 +350,13 @@ export class CheckoutPreparePage implements OnInit {
     }
     setDiscounts() {
         this.showLoader2()
-        this.orderProvider.setDiscounts(this.orderData.currentOrder.id,"Booking").subscribe((resp: any) => {
+        this.orderProvider.setDiscounts(this.orderData.currentOrder.id, "Booking").subscribe((resp: any) => {
 
             if (resp) {
                 console.log("setDiscounts", resp);
                 console.log(JSON.stringify(resp));
                 this.orderData.payment = resp.payment;
-                this.payment= resp.payment;
+                this.payment = resp.payment;
                 this.checkOrder();
             }
         }, (err) => {
@@ -457,12 +462,14 @@ export class CheckoutPreparePage implements OnInit {
         });
 
     }
-    setPlatformShipping(order, platform) {
+    setPlatformShipping(platform) {
         return new Promise((resolve, reject) => {
-            console.log("Setting shipping condition");
-            this.orderProvider.setPlatformShippingCondition(order, platform).subscribe((resp: any) => {
+            console.log("Setting shipping condition", platform);
+            this.showLoader();
+            this.orderProvider.setPlatformShippingCondition(this.orderData.currentOrder.id, platform).subscribe((resp: any) => {
                 console.log(JSON.stringify(resp));
                 this.orderData.cartData = resp.cart;
+                this.selectShipping = false;
                 this.updateCartTotals();
                 this.dismissLoader();
                 this.setDiscounts();
@@ -480,6 +487,32 @@ export class CheckoutPreparePage implements OnInit {
             });
         });
 
+    }
+    getPlatformShippingPrice(order, platform) {
+        return new Promise((resolve, reject) => {
+            console.log("getting shipping price");
+            this.orderProvider.getPlatformShippingPrice(order, platform).subscribe((resp: any) => {
+                if (resp.status == "success") {
+                    let container = {platform: platform, price: resp.price}
+                    this.shipping.push(container);
+                }
+                this.expectedProviders--;
+                this.dismissLoader();
+                this.selectShipping = true;
+                console.log(JSON.stringify(resp));
+            }, (err) => {
+                this.dismissLoader();
+                //this.navCtrl.push(MainPage);
+                // Unable to log in
+                let toast = this.toastCtrl.create({
+                    message: this.cartErrorString,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
+                this.api.handleError(err);
+                resolve(null);
+            });
+        });
     }
     handleCheckError(resp: any) {
         let message = "";
@@ -499,7 +532,16 @@ export class CheckoutPreparePage implements OnInit {
             this.addPayers(missing);
         } else if (resp.type == "shipping") {
             message = this.requiresShippingString;
-            this.setPlatformShipping(resp.order.id, "Basilikum");
+            if (this.currentItems.length == 0) {
+                this.getCart();
+            }
+            if (this.shipping.length == 0) {
+                this.getPlatformShippingPrice(resp.order.id, "Rapigo");
+                this.getPlatformShippingPrice(resp.order.id, "Basilikum");
+            } else {
+                this.shippingError = true;
+            }
+
         } else if (resp.type == "delivery") {
             message = this.requiresDeliveryString;
             this.dismissLoader();
@@ -524,6 +566,7 @@ export class CheckoutPreparePage implements OnInit {
     }
     checkOrder() {
         let payers = [];
+        this.shippingError = false;
         let payersContainer = this.orderData.payers;
         for (let item in payersContainer) {
             payers.push(payersContainer[item].user_id);
@@ -531,7 +574,7 @@ export class CheckoutPreparePage implements OnInit {
         let data = {"payers": payers, "platform": "Booking"};
         this.orderProvider.checkOrder(this.orderData.currentOrder.id, data).subscribe((resp: any) => {
             if (resp) {
-                console.log("setDiscounts", resp);
+                console.log("Check order result", resp);
                 console.log(JSON.stringify(resp));
                 this.orderData.payment = resp.payment;
                 this.payment = resp.payment;
@@ -693,6 +736,7 @@ export class CheckoutPreparePage implements OnInit {
             container = {
                 product_variant_id: item.attributes.product_variant_id,
                 quantity: item.quantity,
+                order_id: this.orderData.currentOrder.id,
                 item_id: item.id,
                 merchant_id: item.attributes.merchant_id
             };

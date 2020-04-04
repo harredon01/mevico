@@ -346,7 +346,10 @@
         "SPLIT_DESC": "Recuerda que la orden no será aprobada hasta que todos completen su pago.",
         "PAYERS_MEALS": "Estos amigos recibirán almuerzos cuando la orden se apruebe. Si seleccionas la opción de dividir pago, cada uno debe pagar lo que le corresponde para que la orden se apruebe. Si no la seleccionas deberás pagar el total de la orden.",
         "PAYERS": "Con estos usuarios vas a compartir el pago de la orden.",
-        "PAYERS_TITLE": "Tus amigos"
+        "PAYERS_TITLE": "Tus amigos",
+        "SELECT_SHIPPING":"Elige uno de nuestros proveedores de envíos",
+        "PENDING_PROVIDERS":"Esperando proveedores",
+        "NO_COVERAGE":"Lo sentimos. Nuestros proveedores logisticos no tienen cobertura a tu dirección. Si te parece que esto es un error porfavor comunicate con nosotros por el chat de soporte."
     },
     "CHECKOUT_SHIPPING": {
         "TITLE": "Dirección de entrega",
