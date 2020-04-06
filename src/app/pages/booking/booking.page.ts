@@ -23,6 +23,7 @@ export class BookingPage implements OnInit {
     availabilities: any[] = [];
     months: any[] = [];
     dateSelected: boolean = false;
+    virtualMeeting: boolean = false;
     timeSelected: boolean = false;
     availabilitiesDate: any[] = [];
     weekday: any[] = [];
@@ -226,7 +227,8 @@ export class BookingPage implements OnInit {
             "object_id": this.objectId,
             "from": strDate,
             "to": ndDate,
-            "attributes": this.atributesCont
+            "attributes": this.atributesCont,
+            "virtual_meeting":this.virtualMeeting 
         };
         console.log("Start", this.startDate);
         console.log("data", data);
@@ -250,6 +252,7 @@ export class BookingPage implements OnInit {
                 }
             }
         }, (err) => {
+            this.submitted = false;
             console.log("Error addBookingObject");
             this.dismissLoader();
             this.api.handleError(err);

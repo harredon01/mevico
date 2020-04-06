@@ -50,7 +50,8 @@ const routes: Routes = [
   { path: 'availability-create', loadChildren: './pages/availability-create/availability-create.module#AvailabilityCreatePageModule' },
   { path: 'mercado-pago-options', loadChildren: './pages/mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule' },
   { path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule' },
-  { path: 'new-merchant', loadChildren: './pages/new-merchant/new-merchant.module#NewMerchantPageModule' },
+  { path: 'new-merchant', loadChildren: './pages/new-merchant/new-merchant.module#NewMerchantPageModule' },  { path: 'zoom-meeting', loadChildren: './pages/zoom-meeting/zoom-meeting.module#ZoomMeetingPageModule' },
+
 
 
 

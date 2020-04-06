@@ -46,7 +46,7 @@
 
     </div>
     <div class="ion-padding" *ngIf="dateSelected">
-         <p>{{ 'BOOKING.AVAILABLE_TIMES' | translate }}:</p>
+        <p>{{ 'BOOKING.AVAILABLE_TIMES' | translate }}:</p>
         <div class="timeing">
             <ion-row>
                 <ion-col *ngFor="let item of availabilitiesDate"><span>{{item.from}}-{{item.to}}</span></ion-col>
@@ -93,9 +93,16 @@
                         <ion-label position="floating">{{ 'BOOKING.TYPE_DESC' | translate }}</ion-label>
                         <ion-textarea class="mb20" [(ngModel)]="atributesCont.desc_item"></ion-textarea>
                     </ion-item>
+                    <ion-item>
+                        <p>{{ 'BOOKING.VIRTUAL_MEETING_DESC' | translate }}</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'BOOKING.VIRTUAL_MEETING_LABEL' | translate }}</ion-label>
+                        <ion-checkbox [(ngModel)]="virtualMeeting"></ion-checkbox>
+                    </ion-item>
                 </ion-card-content>
             </ion-card>
-            <br>  
+            <br>
             <ion-button full class="btn success right" (click)="saveOrCreateBooking()"  *ngIf="timeSelected">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
         </div>
     </div>

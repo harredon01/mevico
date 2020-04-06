@@ -169,7 +169,9 @@
         "MAKE_RESERVATION":"Seleccionar cita",
         "NOT_AVAILABLE":"Ese horario no está disponible",
         "MAX_REACHED":"Ese horario ya esta lleno",
-        "CHANGE_DATE":"Cambiar fecha"
+        "CHANGE_DATE":"Cambiar fecha",
+        "VIRTUAL_MEETING_DESC":"Quieres que sea videoconferencia con descuento?",
+        "VIRTUAL_MEETING_LABEL":"Sí"
     },
     "BOOKING_DETAIL": {
         "TITLE": "Reserva",
@@ -614,6 +616,9 @@
         "TYPE": "Tipo de negocio",
         "BOOKING_REQUIRES_AUTH":"Si",
         "BOOKING_REQUIRES_AUTH_DESC":"Las reservas que recibas requieren tu autorización antes de pagar?",
+        "VIRTUAL_MEETING_DESC":"Vas a prestar servicios por medio de video Conferencia?",
+        "VIRTUAL_MEETING_LABEL":"Sí",
+        "VIRTUAL_PROVIDER":"Proveedor Virtual",
         "HOUR_COST":"Valor /h",
         "HOUR_COST_DESC":"Ingresa el valor por hora de tu servicio reservable",
         "MAX_PER_HOUR":"Reservas por hora",

@@ -74,6 +74,7 @@ export class CreateMerchantPage implements OnInit {
             booking_requires_auth: [''],
             max_per_hour: [''],
             lat: [''],
+            virtual_meeting: [''],
             long: [''],
             service1: [''],
             service2: [''],
@@ -240,6 +241,11 @@ export class CreateMerchantPage implements OnInit {
         if (attributes.service) {
             services = attributes.service;
 
+        }
+        if (attributes.virtual_meeting) {
+            container['virtual_meeting'] = attributes.virtual_meeting;
+        } else {
+            container['virtual_meeting'] = false;
         }
         for (let i = 0; i < 3; i++) {
             let indicator = i + 1;

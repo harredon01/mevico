@@ -15,6 +15,7 @@ import {HttpClientModule, HttpClient} from '@angular/common/http';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
+//import { Zoom } from '@ionic-native/zoom';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import {IonicStorageModule} from '@ionic/storage';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
@@ -62,6 +63,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         UniqueDeviceID,
         Facebook,
         OneSignal,
+//        Zoom,
         ImagePicker,
         SQLite,
         InAppBrowser,

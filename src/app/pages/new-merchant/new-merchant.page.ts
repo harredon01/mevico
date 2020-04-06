@@ -50,6 +50,7 @@ export class NewMerchantPage implements OnInit {
         this.getCountries();
         this.form = formBuilder.group({
             id: [''],
+            virtual_meeting: [''],
             type: ['', Validators.required],
             name: ['', Validators.required],
             description: ['', Validators.required],
@@ -89,6 +90,11 @@ export class NewMerchantPage implements OnInit {
                     container['booking_requires_auth'] = attributes.booking_requires_auth;
                 } else {
                     container['booking_requires_auth'] = false;
+                }
+                if (attributes.virtual_meeting) {
+                    container['virtual_meeting'] = attributes.virtual_meeting;
+                } else {
+                    container['virtual_meeting'] = false;
                 }
                 if (attributes.max_per_hour) {
                     container['max_per_hour'] = attributes.max_per_hour;

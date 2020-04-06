@@ -5,6 +5,7 @@ import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
 import {TranslateService} from '@ngx-translate/core';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
+//import { Zoom } from '@ionic-native/zoom';
 import {LanguageService} from './services/language/language.service';
 import {AlertsService} from './services/alerts/alerts.service';
 import {ParamsService} from './services/params/params.service';
@@ -23,6 +24,7 @@ export class AppComponent {
     alertLoaded = false;
     activeLanguage = "es";
     constructor(
+//        private zoomService: Zoom,
         private platform: Platform,
         private splashScreen: SplashScreen,
         private translate: TranslateService,
@@ -97,6 +99,10 @@ export class AppComponent {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
             this.languageService.setInitialAppLanguage();
+            this.storeDeviceId();
+//            this.zoomService.initialize("VNtFB87WSBW0yHl6rxHgTA", "air8HQbEbEEQZL5aZlNRwUMqPED2RH9zMx5B")
+//                .then((success: any) => console.log(success))
+//                .catch((error: any) => console.log(error));
             this.handlerNotifications();
             this.events.subscribe('authenticated', () => {
                 this.getAlerts();
@@ -107,7 +113,6 @@ export class AppComponent {
                     this.getAlerts();
                 }
             });
-            this.storeDeviceId();
         });
         this.alerts.getLanguage().then((value) => {
             console.log("getLanguage");
