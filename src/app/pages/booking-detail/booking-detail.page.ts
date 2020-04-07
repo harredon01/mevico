@@ -71,7 +71,7 @@ export class BookingDetailPage implements OnInit {
     }
     changeStatusBooking(status) {
         this.showLoader();
-        let container = {"object_id": this.mainBooking.id, "status": status};
+        let container = {"booking_id": this.mainBooking.id, "status": status};
         this.booking.changeStatusBookingObject(container).subscribe((data: any) => {
             this.buildBookingResult(data);
             this.dismissLoader();
@@ -111,12 +111,13 @@ export class BookingDetailPage implements OnInit {
         let params = {
             "availabilities": null,
             "type": "Merchant",
-            "objectId": this.mainBooking.bookable.id,
+            "objectId": "",
             "objectName": "",
             "objectDescription": "",
             "objectIcon": "",
             "settings": true,
-            "booking":this.mainBooking
+            "booking":this.mainBooking,
+            "expectedPrice":0
         }
         if (this.mainBooking.bookable) {
             params = {
@@ -127,7 +128,8 @@ export class BookingDetailPage implements OnInit {
                 "objectDescription": this.mainBooking.bookable.description,
                 "objectIcon": this.mainBooking.bookable.icon,
                 "settings": true,
-                "booking":this.mainBooking
+                "booking":this.mainBooking,
+                "expectedPrice":this.mainBooking.bookable.unit_cost
             }
         }
         console.log(params);

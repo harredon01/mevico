@@ -417,12 +417,11 @@ export class MercadoPagoOptionsPage implements OnInit {
                 }
 
             } else {
-                let values = this.payerForm.value;
                 let container = {
                     token: response.id,
                     payment_id: this.payment.id,
                     platform: "Booking",
-                    installments: values.installmentsSelected,
+                    installments: this.payerForm.get('installmentsSelected').value,
                     quick: true,
                     issuer_id: this.issuerId
                 };

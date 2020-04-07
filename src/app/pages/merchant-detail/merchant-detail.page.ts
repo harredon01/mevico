@@ -162,7 +162,8 @@ export class MerchantDetailPage implements OnInit {
             "objectId": this.merchant.id,
             "objectName": this.merchant.name,
             "objectDescription": this.merchant.description,
-            "objectIcon": this.merchant.icon
+            "objectIcon": this.merchant.icon,
+            "expectedPrice":this.merchant.unit_cost
         }
         console.log(params);
         this.params.setParams(params);

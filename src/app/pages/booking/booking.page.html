@@ -46,6 +46,7 @@
 
     </div>
     <div class="ion-padding" *ngIf="dateSelected">
+        <h2>{{ dayName }} {{startDate | date :'mediumDate'}}</h2>
         <p>{{ 'BOOKING.AVAILABLE_TIMES' | translate }}:</p>
         <div class="timeing">
             <ion-row>
@@ -72,10 +73,22 @@
                 <ion-label>{{ 'BOOKING.START_TIME' | translate }}</ion-label>
                 <ion-datetime display-format="h:mm A" picker-format="h:mm A" [(ngModel)]="startDateS" (ionChange)="selectStart()" display-timezone="cot"></ion-datetime>
             </ion-item>
-
             <ion-item *ngIf="timeSelected">
                 <ion-label>{{ 'BOOKING.END_TIME' | translate }}</ion-label>
                 <p style='color: gray'>{{endDate | date :'h:mm a'}}</p> 
+            </ion-item>
+            <ion-item>
+                <p>{{ 'BOOKING.VIRTUAL_MEETING_DESC' | translate }}</p>
+            </ion-item>
+            <ion-item>
+                <ion-label>{{ 'BOOKING.VIRTUAL_MEETING_LABEL' | translate }}</ion-label>
+                <ion-checkbox [(ngModel)]="virtualMeeting"></ion-checkbox>
+            </ion-item>
+            <ion-item  *ngIf="!virtualMeeting">
+                <p>{{ 'CART_ITEM.SUBTOTAL' | translate }}: {{ expectedPrice*amount | currency }}</p>
+            </ion-item>
+            <ion-item  *ngIf="virtualMeeting">
+                <p>{{ 'CART_ITEM.SUBTOTAL' | translate }}: {{ (expectedPrice*0.5)*amount | currency }}</p>
             </ion-item>
             <ion-card *ngIf="timeSelected">
                 <ion-card-header>
@@ -85,6 +98,7 @@
                     <ion-item  *ngIf="bookingObj">
                         <a href="javascript:;" (click)="changeDate()">{{ 'BOOKING.CHANGE_DATE' | translate }}</a>
                     </ion-item>
+
                     <ion-item>
                         <ion-label position="floating">{{ 'BOOKING.TYPE_HELP' | translate }}</ion-label>
                         <ion-input type="text" [(ngModel)]="atributesCont.type_help"></ion-input>
@@ -93,13 +107,7 @@
                         <ion-label position="floating">{{ 'BOOKING.TYPE_DESC' | translate }}</ion-label>
                         <ion-textarea class="mb20" [(ngModel)]="atributesCont.desc_item"></ion-textarea>
                     </ion-item>
-                    <ion-item>
-                        <p>{{ 'BOOKING.VIRTUAL_MEETING_DESC' | translate }}</p>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label>{{ 'BOOKING.VIRTUAL_MEETING_LABEL' | translate }}</ion-label>
-                        <ion-checkbox [(ngModel)]="virtualMeeting"></ion-checkbox>
-                    </ion-item>
+
                 </ion-card-content>
             </ion-card>
             <br>

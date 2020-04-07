@@ -1,4 +1,4 @@
-import {Component, ElementRef,ViewChild,OnInit} from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
 import {IonList} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 import {BookingService} from '../../services/booking/booking.service';
@@ -14,7 +14,7 @@ import {ParamsService} from '../../services/params/params.service';
     styleUrls: ['./booking-list.page.scss'],
 })
 export class BookingListPage implements OnInit {
-    @ViewChild(IonList, { read: ElementRef,static:false }) list: ElementRef;
+    @ViewChild(IonList, {read: ElementRef, static: false}) list: ElementRef;
     public bookings: Booking[] = [];
     public loadMore: boolean = false;
     public loadingAll: boolean = false;
@@ -44,11 +44,11 @@ export class BookingListPage implements OnInit {
         this.typeObj = paramsObj.type;
         this.target = paramsObj.target;
         this.objectId = paramsObj.objectId;
-        if(paramsObj.settings){
-            this.urlSearch = "tabs/settings/merchants/"+paramsObj.objectId;
+        if (paramsObj.settings) {
+            this.urlSearch = "tabs/settings/merchants/" + paramsObj.objectId;
         } else {
             let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-            this.urlSearch = 'tabs/categories/'+category+'/merchant/'+paramsObj.objectId;
+            this.urlSearch = 'tabs/categories/' + category + '/merchant/' + paramsObj.objectId;
         }
         this.selectedObject = {"id": paramsObj.objectId, "name": paramsObj.name};
         this.bookingObjects.push(this.selectedObject);
@@ -77,32 +77,32 @@ export class BookingListPage implements OnInit {
         });
         this.queryMod = "all";
     }
-    
-    scrollListVisible(index){
-        console.log("Index",index); 
+
+    scrollListVisible(index) {
+        console.log("Index", index);
         let arr = this.list.nativeElement.children;
-        let item = arr[index-1];
-        if(item){
-            item.scrollIntoView({behavior:"smooth",block:"center"});
+        let item = arr[index - 1];
+        if (item) {
+            item.scrollIntoView({behavior: "smooth", block: "center"});
         }
     }
-    scrollToday(){
+    scrollToday() {
         let today = new Date();
         let smallestDifference = 99999999;
         let scrollIndex = 1;
-        for(let item in this.bookings){
+        for (let item in this.bookings) {
             let bookDate = new Date(this.bookings[item].starts_at);
             let difference = Math.abs(bookDate.getTime() - today.getTime());
-            if (difference < smallestDifference){
+            if (difference < smallestDifference) {
                 smallestDifference = difference;
                 scrollIndex = this.bookings[item].position;
             }
         }
         this.scrollListVisible(scrollIndex);
     }
-    
+
     toggleFilters() {
-        if (this.viewFilters){
+        if (this.viewFilters) {
             this.viewFilters = false;
         } else {
             this.viewFilters = true;
@@ -110,7 +110,7 @@ export class BookingListPage implements OnInit {
     }
 
     ngOnInit() {
-        this.getObjectsWithBookingUser(); 
+        this.getObjectsWithBookingUser();
     }
 
     selectQuery() {
@@ -130,7 +130,7 @@ export class BookingListPage implements OnInit {
             this.target = "bookable";
         }
         this.query = this.target + "_" + this.queryMod;
-        this.getBookings(); 
+        this.getBookings();
         this.selectObj();
     }
 
@@ -147,7 +147,7 @@ export class BookingListPage implements OnInit {
             "page": this.page
         };
         this.booking.getBookingsObject(container).subscribe((data: any) => {
-            console.log("Get bookings result",data);
+            console.log("Get bookings result", data);
             let results = data.data;
             if (data.page == data.last_page) {
                 this.loadMore = false;
@@ -156,12 +156,12 @@ export class BookingListPage implements OnInit {
             }
             for (let item in results) {
                 results[item].position = this.indexList;
-                this.indexList ++;
+                this.indexList++;
                 //results[item].options = results[item].options;
                 let newBooking = new Booking(results[item]);
                 this.bookings.push(newBooking);
             }
-            if (this.queryMod == "all"){
+            if (this.queryMod == "all") {
                 this.loadingAll = true;
             }
             this.dismissLoader();
@@ -171,12 +171,12 @@ export class BookingListPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    ionViewDidEnter(){
+    ionViewDidEnter() {
         this.getBookings();
-        if(this.loadingAll){
+        if (this.loadingAll) {
             this.scrollToday();
             let vm = this;
-            setTimeout(function(){ vm.scrollToday(); }, 800);
+            setTimeout(function () {vm.scrollToday();}, 800);
         }
     }
     getObjectsWithBookingUser() {
@@ -191,13 +191,10 @@ export class BookingListPage implements OnInit {
         });
     }
     openBooking(booking: Booking) {
+        console.log("Open booking", booking);
         let param = {"booking": booking};
         this.params.setParams(param);
-        if (this.target == "bookable") {
-            this.navCtrl.navigateForward(this.urlSearch+ '/bookings/' + booking.id);
-        } else {
-            this.navCtrl.navigateForward('tabs/settings/bookings/' + booking.id);
-        }
+        this.navCtrl.navigateForward('tabs/settings/bookings/' + booking.id);
     }
     selectObj() {
         for (let item in this.bookingObjects) {

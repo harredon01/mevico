@@ -27,11 +27,13 @@ export class BookingPage implements OnInit {
     timeSelected: boolean = false;
     availabilitiesDate: any[] = [];
     weekday: any[] = [];
+    weekday2: any[] = [];
     typeObj: string;
     bookingObj: Booking = null;
     notAvailable: string;
     maxReached: string;
     requiresAuth: string;
+    dayName: string;
     success: string;
     atributesCont: any;
     objectId: string;
@@ -41,6 +43,7 @@ export class BookingPage implements OnInit {
     startDate: Date;
     endDate: Date;
     startDateS: any;
+    expectedPrice: any;
     activeBooking: any;
     amount: any = "1";
     submitted: boolean = false;
@@ -67,19 +70,24 @@ export class BookingPage implements OnInit {
         this.weekday[4] = "thursday";
         this.weekday[5] = "friday";
         this.weekday[6] = "saturday";
+        this.weekday2 = new Array(7);
+        this.weekday2[0] = "Domingo";
+        this.weekday2[1] = "Lunes";
+        this.weekday2[2] = "Martes";
+        this.weekday2[3] = "Miercoles";
+        this.weekday2[4] = "Jueves";
+        this.weekday2[5] = "Viernes";
+        this.weekday2[6] = "Sabado";
 
         let vm = this
         this.translateService.get('BOOKING.REQUIRES_AUTH').subscribe(function (value) {
-            console.log("Req", value);
             vm.requiresAuth = value;
         });
         this.translateService.get('BOOKING.NOT_AVAILABLE').subscribe(function (value) {
             vm.notAvailable = value;
-            console.log("afk", value);
         });
         this.translateService.get('BOOKING.MAX_REACHED').subscribe(function (value) {
             vm.maxReached = value;
-            console.log("afk", value);
         });
         this.translateService.get('BOOKING.SUCCESS').subscribe(function (value) {
             vm.success = value;
@@ -98,17 +106,22 @@ export class BookingPage implements OnInit {
         this.objectName = paramsArrived.objectName;
         this.objectDescription = paramsArrived.objectDescription;
         this.objectIcon = paramsArrived.objectIcon;
+        if(paramsArrived.expectedPrice){
+            this.expectedPrice = paramsArrived.expectedPrice;
+        }
         if (paramsArrived.booking) {
             this.bookingObj = paramsArrived.booking;
             this.dateSelected = true;
             this.timeSelected = true;
             this.selectDate(this.bookingObj.starts_at);
+            this.expectedPrice = this.bookingObj.price;
             this.atributesCont = this.bookingObj.options;
             console.log("Date", this.bookingObj.starts_at.toISOString());
             this.startDateS = this.bookingObj.starts_at.toISOString();
             this.selectStart();
         }
         if (paramsArrived.availabilities) {
+            this.dateSelected = false;
             this.availabilities = paramsArrived.availabilities;
             console.log("Availabilities", this.availabilities);
             this.getAvailableDates(this.availabilities);
@@ -117,6 +130,7 @@ export class BookingPage implements OnInit {
         } else {
             this.getItems();
         }
+        console.log("Get availableDays", this.dateSelected);
     }
     setOrder(item) {
         if (item.range == 'sunday') {
@@ -332,6 +346,9 @@ export class BookingPage implements OnInit {
             text: 'Ok',
             handler: () => {
                 console.log('Confirm Okay');
+                if(message == this.requiresAuth){
+                    this.navCtrl.back();
+                }
             }
         }
         const alert = await this.alertsCtrl.create({
@@ -362,6 +379,7 @@ export class BookingPage implements OnInit {
     }
 
     getDates() {
+        console.log("Get dates");
         var myDate = new Date();
         let month = myDate.getMonth();
         let monthcont = {month: month, days: [], title: this.booking.getMonthName(month)};
@@ -379,6 +397,7 @@ export class BookingPage implements OnInit {
             }
             myDate.setDate(myDate.getDate() + 1);
         }
+        console.log("Get dates months",this.months);
     }
     returnDates() {
         this.dateSelected = false;
@@ -393,6 +412,7 @@ export class BookingPage implements OnInit {
     selectDate(selectedDate: Date) {
         console.log("select date", selectedDate);
         this.showLoader();
+        this.dayName = this.weekday2[selectedDate.getDay()];
         this.startDate = selectedDate;
         this.startDateS = selectedDate.toISOString();
         this.selectStart();
