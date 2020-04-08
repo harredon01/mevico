@@ -30,14 +30,14 @@ export class BookingDetailPage implements OnInit {
     ) {
         this.mainBooking = new Booking({});
     }
-    
-    ngOnInit(){
-        
+
+    ngOnInit() {
+
     }
- 
+
     ionViewDidEnter() {
         let params = this.params.getParams();
-        console.log("Params",params);
+        console.log("Params", params);
         if (params) {
             if (params.booking) {
                 this.mainBooking = params.booking;
@@ -106,7 +106,7 @@ export class BookingDetailPage implements OnInit {
             this.spinnerDialog.hide();
         }
     }
-    
+
     editBooking() {
         let params = {
             "availabilities": null,
@@ -116,8 +116,8 @@ export class BookingDetailPage implements OnInit {
             "objectDescription": "",
             "objectIcon": "",
             "settings": true,
-            "booking":this.mainBooking,
-            "expectedPrice":0
+            "booking": this.mainBooking,
+            "expectedPrice": 0
         }
         if (this.mainBooking.bookable) {
             params = {
@@ -128,13 +128,13 @@ export class BookingDetailPage implements OnInit {
                 "objectDescription": this.mainBooking.bookable.description,
                 "objectIcon": this.mainBooking.bookable.icon,
                 "settings": true,
-                "booking":this.mainBooking,
-                "expectedPrice":this.mainBooking.bookable.unit_cost
+                "booking": this.mainBooking,
+                "expectedPrice": this.mainBooking.bookable.unit_cost
             }
         }
         console.log(params);
         this.params.setParams(params);
-        this.navCtrl.navigateForward('tabs/settings/bookings/' + this.mainBooking.id+"/edit");
+        this.navCtrl.navigateForward('tabs/settings/bookings/' + this.mainBooking.id + "/edit");
     }
     payBooking() {
         let extras = {

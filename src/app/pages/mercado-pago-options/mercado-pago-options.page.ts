@@ -421,7 +421,7 @@ export class MercadoPagoOptionsPage implements OnInit {
                     token: response.id,
                     payment_id: this.payment.id,
                     platform: "Booking",
-                    installments: this.payerForm.get('installmentsSelected').value,
+                    installments: this.payerForm3.get('installmentsSelected').value,
                     quick: true,
                     issuer_id: this.issuerId
                 };

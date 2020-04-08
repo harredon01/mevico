@@ -46,13 +46,14 @@ export class DynamicRouterService {
             console.log("Opening destiny payload", destinyPayload);
             this.params.setParams(destinyPayload);
             destinyUrl = 'tabs/opentok';
-        } else if (notification.type == "booking_bookable_approved" || notification.type == "booking_bookable_denied" || notification.type == "booking_created_bookable_pending") {
+        } else if (notification.type == "booking_bookable_approved" || notification.type == "booking_bookable_denied" || notification.type == "booking_created_bookable_pending"|| notification.type == "booking_updated_bookable_pending") {
             let parms = {
                 booking_id: notification.payload.booking_id
             };
             this.params.setParams(parms);
             destinyUrl = 'tabs/settings/bookings/' + notification.payload.booking_id;
         }
+        console.log("Destiny",destinyUrl);
         return destinyUrl;
     }
     redirectToTarger() {

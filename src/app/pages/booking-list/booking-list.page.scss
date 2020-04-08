@@ -7,6 +7,9 @@ ion-card {
     width:100%;
 }
 .doctor-list {
+    .booking-list-grid p{
+        margin:0;
+    }
     .row {
         padding-top: 15px;
         padding-bottom: 15px;
@@ -77,6 +80,7 @@ ion-card {
     }
 }
 .mainBooking__list{
+    
     ion-item{
         padding: 0 1rem
     }

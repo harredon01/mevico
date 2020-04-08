@@ -8,6 +8,8 @@ import {Booking} from '../../models/booking';
 import {ApiService} from '../../services/api/api.service';
 import {ActivatedRoute} from '@angular/router';
 import {ParamsService} from '../../services/params/params.service';
+import {CartService} from '../../services/cart/cart.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
 @Component({
     selector: 'app-booking-list',
     templateUrl: './booking-list.page.html',
@@ -35,6 +37,8 @@ export class BookingListPage implements OnInit {
         public activatedRoute: ActivatedRoute,
         public params: ParamsService,
         public api: ApiService,
+        public orderData: OrderDataService,
+        public cart: CartService,
         public translateService: TranslateService,
         public navCtrl: NavController,
         public loadingCtrl: LoadingController,
@@ -172,6 +176,7 @@ export class BookingListPage implements OnInit {
         });
     }
     ionViewDidEnter() {
+        this.bookings = [];
         this.getBookings();
         if (this.loadingAll) {
             this.scrollToday();
@@ -204,6 +209,48 @@ export class BookingListPage implements OnInit {
                 break;
             }
         }
+    }
+    
+    changeStatusBooking(item, status) {
+        this.showLoader();
+        let container = {"booking_id": item.id, "status": status};
+        this.booking.changeStatusBookingObject(container).subscribe((data: any) => {
+            item.total_paid = 0;
+            this.dismissLoader();
+        }, (err) => {
+            console.log("Error cancelBooking");
+            this.dismissLoader();
+            this.api.handleError(err);
+        });
+    }
+    payBooking(booking: any) {
+        this.cart.clearCart().subscribe((data: any) => {
+            let extras = {
+                "type": "Booking",
+                "id": booking.id,
+                "name": "Booking appointment for: " + booking.bookable.name,
+            }
+            let item = {
+                "name": "Booking appointment for: " + booking.bookable.name,
+                "price": booking.price,
+                "quantity": booking.quantity,
+                "tax": 0,
+                "merchant_id": booking.bookable.id,
+                "cost": 0,
+                "extras": extras
+            };
+            this.cart.addCustomCartItem(item).subscribe((data: any) => {
+                this.orderData.cartData = data.cart;
+                this.params.setParams({"merchant_id": booking.bookable.id});
+                this.navCtrl.navigateForward('tabs/checkout/prepare');
+            }, (err) => {
+                console.log("Error addCustomCartItem");
+                this.api.handleError(err);
+            });
+        }, (err) => {
+            console.log("Error addCustomCartItem");
+            this.api.handleError(err);
+        });
     }
     dismissLoader() {
         if (document.URL.startsWith('http')) {

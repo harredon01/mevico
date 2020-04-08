@@ -204,7 +204,7 @@
         "STARTS_AT":"Desde",
         "ENDS_AT":"Hasta",
         "PAID":"Pagado",
-        "PENDING":"Reservado",
+        "PENDING":"Confirmado",
         "PAYMENT":"Pago",
         "WAITING":"Esperando participantes",
         "STARTED":"Empezó",
@@ -601,6 +601,8 @@
         "cc_rejected_duplicated_payment":"payment_method_id no procesó el pago."       
     },
     "MERCADOPAGO_PAYMENT": {
+        "TITLE": "Mercado Pago",
+        "TITLE2": "Crédito",
         "CARDS":"Tus Tarjetas",
         "CARDS_ERROR":"Selecciona una tarjeta",
         "CVV":"CVV",

@@ -77,10 +77,10 @@
                 <ion-label>{{ 'BOOKING.END_TIME' | translate }}</ion-label>
                 <p style='color: gray'>{{endDate | date :'h:mm a'}}</p> 
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="!bookingObj">
                 <p>{{ 'BOOKING.VIRTUAL_MEETING_DESC' | translate }}</p>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="!bookingObj">
                 <ion-label>{{ 'BOOKING.VIRTUAL_MEETING_LABEL' | translate }}</ion-label>
                 <ion-checkbox [(ngModel)]="virtualMeeting"></ion-checkbox>
             </ion-item>
