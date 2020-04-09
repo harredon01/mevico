@@ -75,6 +75,7 @@ export class CreateMerchantPage implements OnInit {
             max_per_hour: [''],
             lat: [''],
             virtual_meeting: [''],
+            virtual_provider: [''],
             long: [''],
             service1: [''],
             service2: [''],
@@ -134,6 +135,16 @@ export class CreateMerchantPage implements OnInit {
         };
         this.params.setParams(params);
         this.navCtrl.navigateForward("tabs/settings/merchants/" + this.merchant.id + "/availabilities");
+    }
+    myItems() {
+        let params = {
+            "objectId": this.merchant.id,
+            "type": "Merchant",
+            "Name": this.merchant.name,
+            "settings": true
+        };
+        this.params.setParams(params);
+        this.navCtrl.navigateForward("tabs/settings/merchants/" + this.merchant.id + "/items");
     }
     addLocation() {
         console.log("Adding location");
@@ -246,6 +257,11 @@ export class CreateMerchantPage implements OnInit {
             container['virtual_meeting'] = attributes.virtual_meeting;
         } else {
             container['virtual_meeting'] = false;
+        }
+        if (attributes.virtual_provider) {
+            container['virtual_provider'] = attributes.virtual_provider;
+        } else {
+            container['virtual_provider'] = false;
         }
         for (let i = 0; i < 3; i++) {
             let indicator = i + 1;

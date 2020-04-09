@@ -83,11 +83,9 @@
         border-bottom: 1px solid var(--ion-color-light-shade);
         margin-bottom: 1rem;
     }
-    span{
+    span,h2{
         display: block;
-        &:first-child{
-            margin-bottom: .5rem;
-            color: var(--ion-color-primary); 
-        }
+        margin-bottom: .5rem;
+        color: var(--ion-color-primary); 
     }
 }

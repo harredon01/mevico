@@ -51,6 +51,7 @@ export class NewMerchantPage implements OnInit {
         this.form = formBuilder.group({
             id: [''],
             virtual_meeting: [''],
+            virtual_provider: [''],
             type: ['', Validators.required],
             name: ['', Validators.required],
             description: ['', Validators.required],
@@ -96,6 +97,11 @@ export class NewMerchantPage implements OnInit {
                 } else {
                     container['virtual_meeting'] = false;
                 }
+                if (attributes.virtual_provider) {
+                    container['virtual_provider'] = attributes.virtual_provider;
+                } else {
+                    container['virtual_provider'] = "";
+                }
                 if (attributes.max_per_hour) {
                     container['max_per_hour'] = attributes.max_per_hour;
                 } else {
@@ -125,6 +131,8 @@ export class NewMerchantPage implements OnInit {
                 max_per_hour: '',
                 city_id: '',
                 region_id: '',
+                virtual_meeting: '',
+                virtual_provider: '',
                 country_id: 1,
             };
             console.log("Setting form values2: ", container);

@@ -101,6 +101,13 @@
                 <ion-label>{{ 'MERCHANT_CREATE.VIRTUAL_MEETING_LABEL' | translate }}</ion-label>
                 <ion-checkbox formControlName="virtual_meeting"></ion-checkbox>
             </ion-item>
+            <ion-item *ngIf="form.get('virtual_meeting').value">
+                <ion-label>{{ 'MERCHANT_CREATE.VIRTUAL_PROVIDER' | translate }}</ion-label>
+                <ion-select formControlName="virtual_provider" name="virtual_provider">
+                    <ion-select-option value="OpenTok" >Vonage </ion-select-option>
+                    <ion-select-option vaue="ZoomMeetings" >Zoom</ion-select-option>
+                </ion-select>
+            </ion-item>
             <ion-item>
                 <p>{{ 'MERCHANT_CREATE.MAX_PER_HOUR_DESC' | translate }}</p>
             </ion-item>

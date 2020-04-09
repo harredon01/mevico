@@ -9,6 +9,7 @@ import {OrderDataService} from '../../services/order-data/order-data.service';
 import {CartPage} from '../cart/cart.page';
 import {ActivatedRoute} from '@angular/router';
 import {ParamsService} from '../../services/params/params.service';
+import {UserDataService} from '../../services/user-data/user-data.service';
 @Component({
     selector: 'app-booking-detail',
     templateUrl: './booking-detail.page.html',
@@ -21,6 +22,7 @@ export class BookingDetailPage implements OnInit {
         public activatedRoute: ActivatedRoute,
         public orderData: OrderDataService,
         public params: ParamsService,
+        public userData: UserDataService,
         public cart: CartService,
         public navCtrl: NavController,
         public modalCtrl: ModalController,
@@ -28,7 +30,7 @@ export class BookingDetailPage implements OnInit {
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
     ) {
-        this.mainBooking = new Booking({});
+        this.mainBooking = new Booking({total_paid:0,price:0,options:{}});
     }
 
     ngOnInit() {
@@ -85,6 +87,8 @@ export class BookingDetailPage implements OnInit {
         if (data.status == "success") {
             let result = data.booking;
             this.mainBooking = new Booking(result);
+        } else if(data.status == "denied"){
+            this.navCtrl.navigateBack("tabs/settings/bookings");
         }
 
     }

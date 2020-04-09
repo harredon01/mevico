@@ -16,8 +16,7 @@
         </div>
 
         <div class="checkout-prepare__items" *ngFor="let item of currentItems">
-             <div class="checkout__item" *ngIf="item.attributes.type=='meal-plan'"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}} x {{item.attributes.buyers}}</div>
-            <div class="checkout__item" *ngIf="item.attributes.type!='meal-plan'"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}}</div>
+            <div class="checkout__item"><strong>{{ 'CART_ITEM.NAME' | translate }}: </strong> {{item.name}}</div>
             <div class="checkout__item"><strong>{{ 'CART_ITEM.QUANTITY' | translate }}: </strong> {{item.quantity}}</div>
             <div class="checkout__item"><strong>{{ 'CART_ITEM.PRICE' | translate }}: </strong> {{item.price | currency }}</div>
             <div class="checkout__item"><strong>{{ 'CART_ITEM.SUBTOTAL' | translate }}: </strong> {{item.priceSumWithConditions | currency }}</div>
