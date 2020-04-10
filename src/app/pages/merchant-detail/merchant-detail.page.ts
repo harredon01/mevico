@@ -163,7 +163,7 @@ export class MerchantDetailPage implements OnInit {
             "objectName": this.merchant.name,
             "objectDescription": this.merchant.description,
             "objectIcon": this.merchant.icon,
-            "expectedPrice":this.merchant.unit_cost
+            "expectedPrice": this.merchant.unit_cost
         }
         console.log(params);
         this.params.setParams(params);
@@ -195,36 +195,40 @@ export class MerchantDetailPage implements OnInit {
     }
     call() {
         this.showLoader();
-        let attrs = {"location":"opentok"};
-        let data = {
-            "type": "Merchant",
-            "object_id": this.merchant.id,
-            "attributes": attrs
-        };
-        if (this.userData._user) {
-            this.booking.immediateBookingObject(data).subscribe((resp: any) => {
-                this.dismissLoader();
-                console.log("addBookingObject", resp);
-                //this.presentAlertConfirm(data);
-                if (resp.status == "success") {
-                    this.addBookingToCart(resp.booking);
-                } else {
-                    if (resp.message == "Not available") {
-                        this.presentAlertConfirm(this.notAvailable);
+        this.cart.clearCart().subscribe((resp: any) => {
+            let attrs = {"location": "opentok"};
+            let data = {
+                "type": "Merchant",
+                "object_id": this.merchant.id,
+                "attributes": attrs
+            };
+            if (this.userData._user) {
+                this.booking.immediateBookingObject(data).subscribe((resp: any) => {
+                    this.dismissLoader();
+                    console.log("addBookingObject", resp);
+                    //this.presentAlertConfirm(data);
+                    if (resp.status == "success") {
+                        this.addBookingToCart(resp.booking);
+                    } else {
+                        if (resp.message == "Not available") {
+                            this.presentAlertConfirm(this.notAvailable);
+                        }
+                        if (resp.message == "Max Reached") {
+                            this.presentAlertConfirm(this.maxReached);
+                        }
                     }
-                    if (resp.message == "Max Reached") {
-                        this.presentAlertConfirm(this.maxReached);
-                    }
-                }
-            }, (err) => {
-                console.log("Error addBookingObject");
-                this.dismissLoader();
-                this.api.handleError(err);
-            });
-        } else {
-            
-        }
+                }, (err) => {
+                    console.log("Error addBookingObject");
+                    this.dismissLoader();
+                    this.api.handleError(err);
+                });
+            } else {
 
+            }
+        }, (err) => {
+            console.log("Error addCustomCartItem");
+            this.api.handleError(err);
+        });
     }
     showLoader() {
         if (document.URL.startsWith('http')) {

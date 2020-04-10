@@ -38,7 +38,7 @@
                 <div *ngIf="editType" class="input-box">
                     <ion-item>
                         <ion-label position="floating">{{ 'MERCHANT_CREATE.TYPE' | translate }}</ion-label>
-                        <ion-select placeholder="Que quieres crear" formControlName="type" (ionChange)="addShippingAddress()" >
+                        <ion-select placeholder="Que quieres crear" formControlName="type">
                             <ion-select-option value="medical">Doctor</ion-select-option>
                             <ion-select-option value="location">Sitio</ion-select-option>
                         </ion-select>

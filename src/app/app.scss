@@ -159,7 +159,9 @@ ion-tab-button{
         color:var(--ion-color-primary-contrast);
     }
 }
-
+.error-message{
+    color:var(--ion-color-danger);
+}
 .item .sc-ion-label-md-h {
     color: rgba($color: #000000, $alpha: .8);
 }
