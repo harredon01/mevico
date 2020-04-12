@@ -196,7 +196,7 @@ export class MerchantDetailPage implements OnInit {
     call() {
         this.showLoader();
         this.cart.clearCart().subscribe((resp: any) => {
-            let attrs = {"location": "opentok"};
+            let attrs = {"virtual_provider": "zoom"};
             let data = {
                 "type": "Merchant",
                 "object_id": this.merchant.id,

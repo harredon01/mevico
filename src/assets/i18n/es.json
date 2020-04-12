@@ -171,7 +171,13 @@
         "MAX_REACHED":"Ese horario ya esta lleno",
         "CHANGE_DATE":"Cambiar fecha",
         "VIRTUAL_MEETING_DESC":"Quieres que sea videoconferencia con descuento?",
-        "VIRTUAL_MEETING_LABEL":"Sí"
+        "VIRTUAL_MEETING_LABEL":"Sí",
+        "access_denied":"No tienes acceso",
+        "not_found":"No encontrado",
+        "only_allowed_online":"Lo sentimos, llamada a ese negocio ya no está disponible",
+        "merchant_limit":"El negocio no tiene disponibilidad",
+        "zoom_limit":"Por restricciones del proveedor de llamadas debes escoger otro",
+        "left_meeting":"Sesion terminada"
     },
     "BOOKING_DETAIL": {
         "TITLE": "Reserva",

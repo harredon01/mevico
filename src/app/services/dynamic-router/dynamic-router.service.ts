@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {ApiService} from '../api/api.service';
 import {CartService} from '../cart/cart.service';
 import {ParamsService} from '../params/params.service';
-import {Friend} from '../../models/friend'
+import {Friend} from '../../models/friend';
+import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 @Injectable({
     providedIn: 'root'
 })
@@ -11,7 +12,7 @@ export class DynamicRouterService {
     pages: any[] = [];
     postPurchasePages: any[] = [];
 
-    constructor(public api: ApiService, public cart: CartService, public params:ParamsService) {}
+    constructor(public api: ApiService, public cart: CartService, public params: ParamsService, public iab: InAppBrowser) {}
 
     openNotification(notification) {
         console.log("openNotification", notification);
@@ -44,17 +45,35 @@ export class DynamicRouterService {
             let destinyPayload = notification.payload;
             console.log("Opening destiny notification", destinyUrl);
             console.log("Opening destiny payload", destinyPayload);
-            this.params.setParams(destinyPayload);
-            destinyUrl = 'tabs/opentok';
-        } else if (notification.type == "booking_bookable_approved" || notification.type == "booking_bookable_denied" || notification.type == "booking_created_bookable_pending"|| notification.type == "booking_updated_bookable_pending") {
+            if (destinyPayload.booking.options.virtual_meeting) {
+                if (destinyPayload.booking.options.virtual_provider == "zoom") {
+                    this.browser(destinyPayload.url);
+                    destinyUrl = 'tabs';
+                } else {
+                    this.params.setParams(destinyPayload);
+                    destinyUrl = 'tabs/opentok';
+                }
+            } else {
+                let parms = {
+                    booking_id: notification.payload.booking_id
+                };
+                this.params.setParams(parms);
+                destinyUrl = 'tabs/settings/bookings/' + notification.payload.booking_id;
+            }
+        } else if (notification.type == "booking_bookable_approved" || notification.type == "booking_bookable_denied" || notification.type == "booking_created_bookable_pending" || notification.type == "booking_updated_bookable_pending") {
             let parms = {
                 booking_id: notification.payload.booking_id
             };
             this.params.setParams(parms);
             destinyUrl = 'tabs/settings/bookings/' + notification.payload.booking_id;
         }
-        console.log("Destiny",destinyUrl);
+        console.log("Destiny", destinyUrl);
         return destinyUrl;
+    }
+    browser(url) {
+        const browser = this.iab.create(url);
+        browser.on('exit').subscribe(event => {
+        });
     }
     redirectToTarger() {
         let pagesArray = []
@@ -70,7 +89,7 @@ export class DynamicRouterService {
                         container.page = 'CheckoutShippingPage';
                         container.params = {objectId: page.object_id};
                         pagesArray.push(container);
-                    } 
+                    }
                 }, (err) => {
 
                 });

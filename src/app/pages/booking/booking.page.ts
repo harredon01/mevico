@@ -235,7 +235,7 @@ export class BookingPage implements OnInit {
         let strDate = startDate.toISOString();
         startDate = new Date(startDate.getTime() + parseInt(this.amount) * 3600 * 1000 /*4 hrs in ms*/);
         let ndDate = startDate.toISOString();
-        this.atributesCont.location = "opentok";
+        this.atributesCont.virtual_provider = "zoom";
         let data = {
             "type": this.typeObj,
             "object_id": this.objectId,
@@ -258,12 +258,7 @@ export class BookingPage implements OnInit {
                     this.addBookingToCart(resp.booking);
                 }
             } else {
-                if (resp.message == "Not available") {
-                    this.presentAlertConfirm(this.notAvailable);
-                }
-                if (resp.message == "Max Reached") {
-                    this.presentAlertConfirm(this.maxReached);
-                }
+                this.showAlertTranslation("BOOKING."+resp.message);
             }
         }, (err) => {
             this.submitted = false;
@@ -338,6 +333,13 @@ export class BookingPage implements OnInit {
             this.params.setParams({"merchant_id": this.objectId});
             this.navCtrl.navigateForward('tabs/checkout/prepare');
         }
+    }
+    showAlertTranslation(alert) {
+        this.translateService.get(alert).subscribe(
+            value => {
+                this.presentAlertConfirm(value);
+            }
+        )
     }
 
     async presentAlertConfirm(message) {
