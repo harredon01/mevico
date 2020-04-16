@@ -21,10 +21,11 @@ export class AppComponent {
     items: any[] = [];
     page = 0;
     alertsmore = false;
+    isFocused = true;
     alertLoaded = false;
     activeLanguage = "es";
     constructor(
-//        private zoomService: Zoom,
+        //        private zoomService: Zoom,
         private platform: Platform,
         private splashScreen: SplashScreen,
         private translate: TranslateService,
@@ -93,16 +94,15 @@ export class AppComponent {
                 });
             });
     }
-
     initializeApp() {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
             this.languageService.setInitialAppLanguage();
             this.storeDeviceId();
-//            this.zoomService.initialize("VNtFB87WSBW0yHl6rxHgTA", "air8HQbEbEEQZL5aZlNRwUMqPED2RH9zMx5B")
-//                .then((success: any) => console.log(success))
-//                .catch((error: any) => console.log(error));
+            //            this.zoomService.initialize("VNtFB87WSBW0yHl6rxHgTA", "air8HQbEbEEQZL5aZlNRwUMqPED2RH9zMx5B")
+            //                .then((success: any) => console.log(success))
+            //                .catch((error: any) => console.log(error));
             this.handlerNotifications();
             this.events.subscribe('authenticated', () => {
                 this.getAlerts();
@@ -112,6 +112,34 @@ export class AppComponent {
                 if (this.items.length == 0) {
                     this.getAlerts();
                 }
+            });
+            this.events.subscribe('cart:orderFinished', () => {
+                let last_notif = 0;
+                if (this.items.length > 0) {
+                    last_notif = this.items[0].notification_id;
+                }
+                let vm = this;
+                setTimeout(function () {vm.updateAlerts(1, last_notif);}, 3000);
+                // user and time are the same arguments passed in `events.publish(user, time)`
+            });
+            this.events.subscribe('app:updateNotifsWeb', (counter,timer) => {
+                this.isFocused = true;
+                if (document.URL.startsWith('http')) {
+                    let last_notif = 0;
+                    if (this.items.length > 0) {
+                        last_notif = this.items[0].notification_id;
+                    }
+                    this.fetchNotisWeb(1,last_notif,counter,timer);
+                }
+            });
+            this.events.subscribe('app:stopNotifsWeb', (counter,timer) => {
+                this.isFocused = false;
+            });
+            window.addEventListener('focus', (e: any) => {
+                this.events.publish('app:updateNotifsWeb', 20,30000);
+            });
+            window.addEventListener('blur', (e: any) => {
+                this.events.publish('app:stopNotifsWeb');
             });
         });
         this.alerts.getLanguage().then((value) => {
@@ -185,7 +213,7 @@ export class AppComponent {
         this.nav.navigateRoot(pageUrl);
     }
     openNotification(notification) {
-        let url= this.drouter.openNotification(notification);
+        let url = this.drouter.openNotification(notification);
         this.nav.navigateForward(url);
     }
     sortNotificationType(data, prompt) {
@@ -308,24 +336,41 @@ export class AppComponent {
             });
         });
     }
-    updateAlerts(page, last_notif) {
-        this.alerts.getLanguage().then((value) => {
-            console.log("getToken");
-            console.log(value);
-            if (!value) {
-                value = "es";
+    fetchNotisWeb(page, last_notif, counter: any, timer: any) {
+        console.log("Notifs triggered");
+        this.updateAlerts(page, last_notif).then((value) => {
+            counter--;
+            if (counter > 0 && this.isFocused) {
+                let vm = this;
+                setTimeout(function () {vm.fetchNotisWeb(page, last_notif, counter);}, timer);
             }
-            let where = "page=" + page + "&notification_id>" + last_notif + "&limit=20&order_by=id,asc";
-            this.alerts.getAlerts(where).subscribe((results: any) => {
-                if (results.total > 0) {
-                    let more = this.handleResults(results, true, value);
-                    if (more) {
-                        page++
-                        this.updateAlerts(page, last_notif);
-                    }
-                }
-            }, (err) => {
+        }, (err) => {
 
+        });
+    }
+    updateAlerts(page, last_notif) {
+        return new Promise((resolve, reject) => {
+            this.alerts.getLanguage().then((value) => {
+                console.log("getToken");
+                console.log(value);
+                if (!value) {
+                    value = "es";
+                }
+                let where = "page=" + page + "&notification_id>" + last_notif + "&limit=20&order_by=id,asc";
+                this.alerts.getAlerts(where).subscribe((results: any) => {
+                    if (results.total > 0) {
+                        let more = this.handleResults(results, true, value);
+                        resolve("Done");
+                        if (more) {
+                            page++
+                            this.updateAlerts(page, last_notif);
+                        }
+                    }
+                }, (err) => {
+                    reject("updateAlerts error")
+                });
+            }, (err) => {
+                reject("getLanguage error")
             });
         });
     }
