@@ -80,6 +80,7 @@ export class ChatRoomPage implements OnInit {
         this.events.subscribe('notification:received', (message) => {
             this.receiveMessage(message);
         });
+        this.events.publish('app:updateNotifsWeb', 500,5000);
         this.page = 0;
         console.log("using ionViewDidEnter", this.lastId);
         console.log("Friend", this.friend);
@@ -87,6 +88,7 @@ export class ChatRoomPage implements OnInit {
 
     ionViewDidLeave() {
         console.log("onPageWillLeave");
+        this.events.publish('app:stopNotifsWeb');
         //this.tabBarElement.style.display = 'flex';
         this.events.unsubscribe('notification:received');
     }

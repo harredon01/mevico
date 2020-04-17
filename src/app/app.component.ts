@@ -20,6 +20,7 @@ import {Friend} from './models/friend'
 export class AppComponent {
     items: any[] = [];
     page = 0;
+    last_notif = 0;
     alertsmore = false;
     isFocused = true;
     alertLoaded = false;
@@ -114,29 +115,23 @@ export class AppComponent {
                 }
             });
             this.events.subscribe('cart:orderFinished', () => {
-                let last_notif = 0;
-                if (this.items.length > 0) {
-                    last_notif = this.items[0].notification_id;
-                }
                 let vm = this;
-                setTimeout(function () {vm.updateAlerts(1, last_notif);}, 3000);
+                setTimeout(function () {vm.updateAlerts(1);}, 3000);
                 // user and time are the same arguments passed in `events.publish(user, time)`
             });
-            this.events.subscribe('app:updateNotifsWeb', (counter,timer) => {
+            this.events.subscribe('app:updateNotifsWeb', (counter, timer) => {
+                console.log("Update Notifs web triggered");
                 this.isFocused = true;
                 if (document.URL.startsWith('http')) {
-                    let last_notif = 0;
-                    if (this.items.length > 0) {
-                        last_notif = this.items[0].notification_id;
-                    }
-                    this.fetchNotisWeb(1,last_notif,counter,timer);
+                    this.fetchNotisWeb(1,  counter, timer);
                 }
             });
-            this.events.subscribe('app:stopNotifsWeb', (counter,timer) => {
+            this.events.subscribe('app:stopNotifsWeb', (counter, timer) => {
                 this.isFocused = false;
+                console.log("Update Notifs web OFF");
             });
             window.addEventListener('focus', (e: any) => {
-                this.events.publish('app:updateNotifsWeb', 20,30000);
+                this.events.publish('app:updateNotifsWeb', 8, 30000);
             });
             window.addEventListener('blur', (e: any) => {
                 this.events.publish('app:stopNotifsWeb');
@@ -157,8 +152,7 @@ export class AppComponent {
         });
         this.platform.resume.subscribe(() => {
             if (this.items.length > 0) {
-                let last_notif = this.items[0].notification_id;
-                this.updateAlerts(1, last_notif);
+                this.updateAlerts(1);
             } else {
                 this.getAlerts();
             }
@@ -278,13 +272,22 @@ export class AppComponent {
             if (language == "es") {
                 data[msg].subject = data[msg].subject_es;
             }
+            if (data[msg].id > this.last_notif) {
+                this.last_notif = data[msg].id;
+            }
             if (triggerEvent) {
                 this.events.publish('notification:received', data[msg], Date.now());
                 this.items.unshift(data[msg]);
             } else {
                 this.items.push(data[msg]);
             }
-
+            if (document.URL.startsWith('http')) {
+                this.toastCtrl.create({
+                    message: data[msg].subject_es,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
+            }
         }
         if (results.page < results.last_page) {
             more = true;
@@ -336,36 +339,42 @@ export class AppComponent {
             });
         });
     }
-    fetchNotisWeb(page, last_notif, counter: any, timer: any) {
-        console.log("Notifs triggered");
-        this.updateAlerts(page, last_notif).then((value) => {
+    fetchNotisWeb(page, counter: any, timer: any) {
+        console.log("Notifs triggered", counter, timer, this.isFocused);
+        this.updateAlerts(page).then((value) => {
+            console.log("Notifs update fetched", this.isFocused);
             counter--;
             if (counter > 0 && this.isFocused) {
+                console.log("Notifs timeout triggered");
                 let vm = this;
-                setTimeout(function () {vm.fetchNotisWeb(page, last_notif, counter);}, timer);
+                setTimeout(function () {vm.fetchNotisWeb(page, counter, timer);}, timer);
+            } else {
+                this.isFocused = false;
             }
         }, (err) => {
 
         });
     }
-    updateAlerts(page, last_notif) {
+    updateAlerts(page) {
         return new Promise((resolve, reject) => {
             this.alerts.getLanguage().then((value) => {
-                console.log("getToken");
+                console.log("Notifs Get language");
                 console.log(value);
                 if (!value) {
                     value = "es";
                 }
-                let where = "page=" + page + "&notification_id>" + last_notif + "&limit=20&order_by=id,asc";
+                let where = "page=" + page + "&notification_id>" + this.last_notif + "&limit=20&order_by=id,asc";
                 this.alerts.getAlerts(where).subscribe((results: any) => {
                     if (results.total > 0) {
                         let more = this.handleResults(results, true, value);
-                        resolve("Done");
+
                         if (more) {
                             page++
-                            this.updateAlerts(page, last_notif);
+                            this.updateAlerts(page);
                         }
                     }
+                    console.log("Notifs Get Done");
+                    resolve("Done");
                 }, (err) => {
                     reject("updateAlerts error")
                 });

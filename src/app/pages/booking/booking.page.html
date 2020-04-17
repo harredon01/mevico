@@ -43,7 +43,6 @@
                 </div>
             </ion-card-content>
         </ion-card>
-
     </div>
     <div class="ion-padding" *ngIf="dateSelected">
         <h2>{{ dayName }} {{startDate | date :'mediumDate'}}</h2>
@@ -98,7 +97,6 @@
                     <ion-item  *ngIf="bookingObj">
                         <a href="javascript:;" (click)="changeDate()">{{ 'BOOKING.CHANGE_DATE' | translate }}</a>
                     </ion-item>
-
                     <ion-item>
                         <ion-label position="floating">{{ 'BOOKING.TYPE_HELP' | translate }}</ion-label>
                         <ion-input type="text" [(ngModel)]="atributesCont.type_help"></ion-input>
@@ -107,11 +105,9 @@
                         <ion-label position="floating">{{ 'BOOKING.TYPE_DESC' | translate }}</ion-label>
                         <ion-textarea class="mb20" [(ngModel)]="atributesCont.desc_item"></ion-textarea>
                     </ion-item>
-
+                    <ion-button full class="btn success right mt15 mb15" (click)="saveOrCreateBooking()"  *ngIf="timeSelected">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
                 </ion-card-content>
             </ion-card>
-            <br>
-            <ion-button full class="btn success right" (click)="saveOrCreateBooking()"  *ngIf="timeSelected">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
         </div>
     </div>
 </ion-content>

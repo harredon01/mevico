@@ -354,7 +354,13 @@ export class MercadoPagoOptionsPage implements OnInit {
                 if (status !== 200) {
                     console.log("Error", response)
                 } else {
+                    console.log("Get installments",response);
                     this.installments = response[0].payer_costs;
+                    if (this.installments.length>0){
+                        console.log("Patching",this.installments[0].installments);
+                        this.payerForm3.patchValue({installmentsSelected: this.installments[0].installments });
+                    }
+                    
                     this.issuerId = response[0].issuer.id;
                     console.log("Issuer id");
                     console.log("Exito", response)
@@ -377,7 +383,8 @@ export class MercadoPagoOptionsPage implements OnInit {
             this.paymentM = 'pse';
             console.log("Item", item);
             this.pse = item;
-            this.currentItems = item.financial_institutions
+            this.currentItems = item.financial_institutions;
+            this.payerForm.patchValue({payment_method_id: item.id });
         }
         this.cdr.detectChanges();
     }

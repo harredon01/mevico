@@ -132,13 +132,14 @@
                         </ion-col>
                     </ion-row>
                 </ion-grid>
+                <ion-button  (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0" class="right">
+                    <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
+                </ion-button>
             </ion-card-content>
         </ion-card> 
     </div>
 
-    <ion-button  (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0" style="float:right">
-        <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
-    </ion-button>
+
     <br/>
     <br/>
     <div class="profile__tab defult-tab bg-white">
