@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
 import {IonList} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 import {BookingService} from '../../services/booking/booking.service';
-import {NavController, LoadingController} from '@ionic/angular';
+import {NavController, LoadingController,AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Booking} from '../../models/booking';
 import {ApiService} from '../../services/api/api.service';
@@ -37,6 +37,7 @@ export class BookingListPage implements OnInit {
         public activatedRoute: ActivatedRoute,
         public params: ParamsService,
         public api: ApiService,
+        public alertsCtrl: AlertController,
         public orderData: OrderDataService,
         public cart: CartService,
         public translateService: TranslateService,
@@ -184,6 +185,30 @@ export class BookingListPage implements OnInit {
             setTimeout(function () {vm.scrollToday();}, 800);
         }
     }
+    showAlertTranslation(alert) {
+        this.translateService.get(alert).subscribe(
+            value => {
+                this.presentAlertConfirm(value);
+            }
+        )
+    }
+
+    async presentAlertConfirm(message) {
+        console.log("Present alert", message);
+        let button = {
+            text: 'Ok',
+            handler: () => {
+                console.log('Confirm Okay');
+            }
+        }
+        const alert = await this.alertsCtrl.create({
+            message: message,
+            buttons: [
+                button
+            ]
+        });
+        await alert.present();
+    }
     getObjectsWithBookingUser() {
         this.booking.getObjectsWithBookingUser().subscribe((data: any) => {
             this.bookingObjects = data.data;
@@ -223,7 +248,7 @@ export class BookingListPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    payBooking(booking: any) {
+    addToCart(booking: any) {
         this.cart.clearCart().subscribe((data: any) => {
             let extras = {
                 "type": "Booking",
@@ -249,6 +274,19 @@ export class BookingListPage implements OnInit {
             });
         }, (err) => {
             console.log("Error addCustomCartItem");
+            this.api.handleError(err);
+        });
+    }
+    payBooking(booking: any) {
+        this.booking.checkExistingBooking(booking.id).subscribe((data: any) => {
+            if (data.status == "success") {
+                this.addToCart(booking);
+            } else {
+                this.showAlertTranslation("BOOKING." + data.message);
+            }
+        }, (err) => {
+            console.log("Error cancelBooking");
+            this.dismissLoader();
             this.api.handleError(err);
         });
     }

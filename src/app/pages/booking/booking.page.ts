@@ -301,14 +301,13 @@ export class BookingPage implements OnInit {
             console.log("editBookingObject", resp);
             this.submitted = false;
             //this.presentAlertConfirm(data);
-
             if (resp.status == "success") {
                 let container = this.params.getParams();
                 container.booking = new Booking(resp.booking);
                 this.params.setParams(container);
                 this.navCtrl.back();
             } else {
-
+                this.showAlertTranslation("BOOKING."+resp.message);
             }
         }, (err) => {
             console.log("Error editBookingObject");

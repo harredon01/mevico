@@ -274,6 +274,7 @@ export class AppComponent {
             }
             if (data[msg].id > this.last_notif) {
                 this.last_notif = data[msg].id;
+                console.log("Last notif increased3",this.last_notif);
             }
             if (triggerEvent) {
                 this.events.publish('notification:received', data[msg], Date.now());
@@ -340,12 +341,9 @@ export class AppComponent {
         });
     }
     fetchNotisWeb(page, counter: any, timer: any) {
-        console.log("Notifs triggered", counter, timer, this.isFocused);
         this.updateAlerts(page).then((value) => {
-            console.log("Notifs update fetched", this.isFocused);
             counter--;
             if (counter > 0 && this.isFocused) {
-                console.log("Notifs timeout triggered");
                 let vm = this;
                 setTimeout(function () {vm.fetchNotisWeb(page, counter, timer);}, timer);
             } else {
@@ -358,12 +356,10 @@ export class AppComponent {
     updateAlerts(page) {
         return new Promise((resolve, reject) => {
             this.alerts.getLanguage().then((value) => {
-                console.log("Notifs Get language");
-                console.log(value);
                 if (!value) {
                     value = "es";
                 }
-                let where = "page=" + page + "&notification_id>" + this.last_notif + "&limit=20&order_by=id,asc";
+                let where = "page=" + page + "&id>" + this.last_notif + "&limit=20&order_by=id,asc";
                 this.alerts.getAlerts(where).subscribe((results: any) => {
                     if (results.total > 0) {
                         let more = this.handleResults(results, true, value);
@@ -371,9 +367,8 @@ export class AppComponent {
                         if (more) {
                             page++
                             this.updateAlerts(page);
-                        }
                     }
-                    console.log("Notifs Get Done");
+                    }
                     resolve("Done");
                 }, (err) => {
                     reject("updateAlerts error")

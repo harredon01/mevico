@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {BookingService} from '../../services/booking/booking.service';
-import {NavController, LoadingController, ModalController} from '@ionic/angular';
+import {NavController, LoadingController, ModalController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Booking} from '../../models/booking';
+import {TranslateService} from '@ngx-translate/core';
 import {ApiService} from '../../services/api/api.service';
 import {CartService} from '../../services/cart/cart.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
@@ -18,9 +19,12 @@ import {UserDataService} from '../../services/user-data/user-data.service';
 export class BookingDetailPage implements OnInit {
     public mainBooking: Booking;
     public isModal: boolean = false;
+    public deniedMsg: string = "";
     constructor(public booking: BookingService,
         public activatedRoute: ActivatedRoute,
         public orderData: OrderDataService,
+        public alertsCtrl: AlertController,
+        public translateService: TranslateService,
         public params: ParamsService,
         public userData: UserDataService,
         public cart: CartService,
@@ -30,7 +34,11 @@ export class BookingDetailPage implements OnInit {
         public loadingCtrl: LoadingController,
         public spinnerDialog: SpinnerDialog
     ) {
-        this.mainBooking = new Booking({total_paid:0,price:0,options:{}});
+        this.mainBooking = new Booking({total_paid: 0, price: 0, options: {}});
+        let vm = this
+        this.translateService.get('BOOKING.DENIED_MSG').subscribe(function (value) {
+            vm.deniedMsg = value;
+        });
     }
 
     ngOnInit() {
@@ -72,11 +80,19 @@ export class BookingDetailPage implements OnInit {
         });
     }
     changeStatusBooking(status) {
+        if(status == "approved"){
+            this.changeStatusServer(status,"");
+        } else {
+            this.presentAlertDeny();
+        }
+    }
+    changeStatusServer(status,reason) {
         this.showLoader();
-        let container = {"booking_id": this.mainBooking.id, "status": status};
+        let container = {"booking_id": this.mainBooking.id, "status": status, "reason": reason};
         this.booking.changeStatusBookingObject(container).subscribe((data: any) => {
-            this.buildBookingResult(data);
+
             this.dismissLoader();
+            this.navCtrl.back();
         }, (err) => {
             console.log("Error cancelBooking");
             this.dismissLoader();
@@ -86,8 +102,9 @@ export class BookingDetailPage implements OnInit {
     buildBookingResult(data: any) {
         if (data.status == "success") {
             let result = data.booking;
+            console.log("building booking");
             this.mainBooking = new Booking(result);
-        } else if(data.status == "denied"){
+        } else if (data.status == "denied") {
             this.navCtrl.navigateBack("tabs/settings/bookings");
         }
 
@@ -115,7 +132,7 @@ export class BookingDetailPage implements OnInit {
         let params = {
             "availabilities": null,
             "type": "Merchant",
-            "objectId": "",
+            "objectId": this.mainBooking.bookable_id,
             "objectName": "",
             "objectDescription": "",
             "objectIcon": "",
@@ -140,7 +157,7 @@ export class BookingDetailPage implements OnInit {
         this.params.setParams(params);
         this.navCtrl.navigateForward('tabs/settings/bookings/' + this.mainBooking.id + "/edit");
     }
-    payBooking() {
+    addToCart() {
         let extras = {
             "type": "Booking",
             "id": this.mainBooking.id,
@@ -160,6 +177,77 @@ export class BookingDetailPage implements OnInit {
             this.openCart();
         }, (err) => {
             console.log("Error addCustomCartItem");
+            this.api.handleError(err);
+        });
+    }
+    showAlertTranslation(alert) {
+        this.translateService.get(alert).subscribe(
+            value => {
+                this.presentAlertConfirm(value);
+            }
+        )
+    }
+
+    async presentAlertConfirm(message) {
+        console.log("Present alert", message);
+        let button = {
+            text: 'Ok',
+            handler: () => {
+                console.log('Confirm Okay');
+            }
+        }
+        const alert = await this.alertsCtrl.create({
+            message: message,
+            buttons: [
+                button
+            ]
+        });
+        await alert.present();
+    }
+    async presentAlertDeny() {
+        let button = {
+            text: 'Ok',
+            handler: (data) => {
+                console.log('Confirm Okay',data);
+                if(data=="no-spec"){
+                    this.changeStatusServer("denied","No es mi especialidad");
+                } else {
+                    this.changeStatusServer("denied","No estoy disponible");
+                }
+            }
+        }
+        const alert = await this.alertsCtrl.create({
+            message: this.deniedMsg,
+            inputs: [
+                {
+                    name: 'radio1',
+                    type: 'radio',
+                    label: 'No es mi especialidad',
+                    value: 'no-spec'
+                },
+                {
+                    name: 'radio2',
+                    type: 'radio',
+                    label: 'No estoy disponible',
+                    value: 'no-disp'
+                }
+            ],
+            buttons: [
+                button
+            ]
+        });
+        await alert.present();
+    }
+    payBooking() {
+        this.booking.checkExistingBooking(this.mainBooking.id).subscribe((data: any) => {
+            if (data.status == "success") {
+                this.addToCart();
+            } else {
+                this.showAlertTranslation("BOOKING." + data.message);
+            }
+        }, (err) => {
+            console.log("Error cancelBooking");
+            this.dismissLoader();
             this.api.handleError(err);
         });
     }

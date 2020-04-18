@@ -55,7 +55,7 @@ export class HomePage implements OnInit {
         this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
             this.celError = value;
         });
-        
+
         if (this.userData._user) {
             this.routeNext();
             this.events.publish("authenticated");
@@ -75,7 +75,7 @@ export class HomePage implements OnInit {
             console.log(value);
             if (value) {
                 this.navCtrl.navigateForward('login');
-            } 
+            }
         });
     }
     /**
@@ -181,9 +181,9 @@ export class HomePage implements OnInit {
 
     }
     openMenu() {
-        this.menu.enable(true, 'end');
-        this.menu.open('end');
-    }
+            this.menu.enable(true, 'end');
+            this.menu.open('end');
+        }
     searchItems(ev: any) {
         // set val to the value of the searchbar
         const val = ev.target.value;
