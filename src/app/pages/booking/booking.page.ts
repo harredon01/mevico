@@ -22,6 +22,7 @@ export class BookingPage implements OnInit {
     selectedSpots: any[] = [];
     availabilities: any[] = [];
     months: any[] = [];
+    newVisit: boolean = true;
     dateSelected: boolean = false;
     virtualMeeting: boolean = false;
     timeSelected: boolean = false;
@@ -106,7 +107,7 @@ export class BookingPage implements OnInit {
         this.objectName = paramsArrived.objectName;
         this.objectDescription = paramsArrived.objectDescription;
         this.objectIcon = paramsArrived.objectIcon;
-        if(paramsArrived.expectedPrice){
+        if (paramsArrived.expectedPrice) {
             this.expectedPrice = paramsArrived.expectedPrice;
         }
         if (paramsArrived.booking) {
@@ -197,6 +198,33 @@ export class BookingPage implements OnInit {
 
     }
     addBookingToCart(booking: any) {
+        if (this.orderData.cartData.items) {
+            let items = this.orderData.cartData.items;
+            for (let i in items) {
+                let attrs = items[i].attributes;
+                if (attrs.type == "Booking") {
+                    if (attrs.id == booking.id) {
+                        this.openCart();
+                        return;
+                    }
+                }
+            }
+        }
+        if (this.newVisit) {
+            this.newVisit = false;
+            if (this.orderData.cartData.items) {
+                this.cart.clearCart().subscribe((data: any) => {
+                    this.addBookingToCartServer(booking);
+                }, (err) => {
+                    console.log("Error addCustomCartItem");
+                    this.api.handleError(err);
+                });
+            }
+        } else {
+            this.addBookingToCartServer(booking);
+        }
+    }
+    addBookingToCartServer(booking: any) {
         let extras = {
             "type": "Booking",
             "id": booking.id,
@@ -233,16 +261,19 @@ export class BookingPage implements OnInit {
         console.log("offset", this.startDate.getTimezoneOffset() * 60000);
         let startDate = new Date(this.startDate.getTime() - this.startDate.getTimezoneOffset() * 60000);
         let strDate = startDate.toISOString();
-        startDate = new Date(startDate.getTime() + parseInt(this.amount) * 3600 * 1000 /*4 hrs in ms*/);
+        startDate = new Date(startDate.getTime() + parseInt(this.amount) * 3000 * 1000 /*4 hrs in ms*/);
         let ndDate = startDate.toISOString();
-        this.atributesCont.virtual_provider = "zoom";
+        if (this.virtualMeeting) {
+            this.atributesCont.virtual_provider = "zoom";
+            this.atributesCont.virtual_meeting = true;
+        }
         let data = {
             "type": this.typeObj,
             "object_id": this.objectId,
             "from": strDate,
             "to": ndDate,
             "attributes": this.atributesCont,
-            "virtual_meeting":this.virtualMeeting 
+            "virtual_meeting": this.virtualMeeting
         };
         console.log("Start", this.startDate);
         console.log("data", data);
@@ -258,7 +289,7 @@ export class BookingPage implements OnInit {
                     this.addBookingToCart(resp.booking);
                 }
             } else {
-                this.showAlertTranslation("BOOKING."+resp.message);
+                this.showAlertTranslation("BOOKING." + resp.message);
             }
         }, (err) => {
             this.submitted = false;
@@ -283,7 +314,7 @@ export class BookingPage implements OnInit {
         console.log("offset", this.startDate.getTimezoneOffset() * 60000);
         let startDate = new Date(this.startDate.getTime() - this.startDate.getTimezoneOffset() * 60000);
         let strDate = startDate.toISOString();
-        startDate = new Date(startDate.getTime() + parseInt(this.amount) * 3600 * 1000 /*4 hrs in ms*/);
+        startDate = new Date(startDate.getTime() + parseInt(this.amount) * 3000 * 1000 /*4 hrs in ms*/);
         let ndDate = startDate.toISOString();
         this.atributesCont.location = "opentok";
         let data = {
@@ -307,7 +338,7 @@ export class BookingPage implements OnInit {
                 this.params.setParams(container);
                 this.navCtrl.back();
             } else {
-                this.showAlertTranslation("BOOKING."+resp.message);
+                this.showAlertTranslation("BOOKING." + resp.message);
             }
         }, (err) => {
             console.log("Error editBookingObject");
@@ -347,7 +378,7 @@ export class BookingPage implements OnInit {
             text: 'Ok',
             handler: () => {
                 console.log('Confirm Okay');
-                if(message == this.requiresAuth){
+                if (message == this.requiresAuth) {
                     this.navCtrl.back();
                 }
             }
@@ -398,15 +429,14 @@ export class BookingPage implements OnInit {
             }
             myDate.setDate(myDate.getDate() + 1);
         }
-        console.log("Get dates months",this.months);
+        console.log("Get dates months", this.months);
     }
     returnDates() {
         this.dateSelected = false;
     }
     selectStart() {
         this.startDate = new Date(this.startDateS);
-        this.endDate = new Date(this.startDateS);
-        this.endDate.setHours(this.startDate.getHours() + parseInt(this.amount));
+        this.endDate = new Date(this.startDate.getTime() + (parseInt(this.amount) * 50) * 60000);;
         this.timeSelected = true;
     }
 

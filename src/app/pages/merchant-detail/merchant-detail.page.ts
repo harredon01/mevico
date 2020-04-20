@@ -196,11 +196,12 @@ export class MerchantDetailPage implements OnInit {
     call() {
         this.showLoader();
         this.cart.clearCart().subscribe((resp: any) => {
-            let attrs = {"virtual_provider": "zoom"};
+            let attrs = {"virtual_provider": "zoom","virtual_meeting": true};
             let data = {
                 "type": "Merchant",
                 "object_id": this.merchant.id,
-                "attributes": attrs
+                "attributes": attrs,
+                "virtual_meeting": true
             };
             if (this.userData._user) {
                 this.booking.immediateBookingObject(data).subscribe((resp: any) => {

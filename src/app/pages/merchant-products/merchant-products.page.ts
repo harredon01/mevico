@@ -441,7 +441,6 @@ export class MerchantProductsPage implements OnInit {
     }
 
     loadProducts() {
-
         this.productsServ.getProductsMerchant(this.merchant, this.page).subscribe((resp) => {
             if (resp.products_total > 0) {
                 this.categories = this.productsServ.buildProductInformation(resp, this.merchant);
@@ -463,24 +462,35 @@ export class MerchantProductsPage implements OnInit {
                     let items = this.orderData.cartData.items;
                     for (let key in items) {
                         let contItem = items[key].attributes;
-                        contItem.id = items[key].id;
-                        contItem.quantity = items[key].quantity;
-                        for (let j in this.products) {
-                            let contProd = this.products[j];
-                            for (let i in contProd.variants) {
-                                let contVariant = contProd.variants[i];
-                                if (contItem.product_variant_id == contVariant.id) {
-                                    contProd.inCart = true;
-                                    contProd.item_id = contItem.id;
-                                    contProd.amount = contItem.quantity;
-                                    contProd = this.productsServ.updateProductVisual(contVariant, contProd);
+                        if (contItem.type == "Product") {
+                            contItem.id = items[key].id;
+                            contItem.quantity = items[key].quantity;
+                            for (let k in this.categories) {
+                                for (let j in this.categories[k].products) {
+                                    for (let i in this.categories[k].products[j].variants) {
+                                        if (contItem.product_variant_id == this.categories[k].products[j].variants[i].id) {
+                                            this.categories[k].products[j].inCart = true;
+                                            this.categories[k].products[j].item_id = contItem.id;
+                                            this.categories[k].products[j].amount = contItem.quantity;
+                                            this.categories[k].products[j] = this.productsServ.updateProductVisual(this.categories[k].products[j].variants[i], this.categories[k].products[j]);
+                                        }
+                                    }
 
+                                }
+                            }
+                            for (let j in this.products) {
+                                for (let i in this.products[j].variants) {
+                                    if (contItem.product_variant_id == this.products[j].variants[i].id) {
+                                        this.products[j].inCart = true;
+                                        this.products[j].item_id = contItem.id;
+                                        this.products[j].amount = contItem.quantity;
+                                        this.products[j] = this.productsServ.updateProductVisual(this.products[j].variants[i], this.products[j]);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
                 this.calculateTotals("load products");
                 //this.createSlides();
             } else {

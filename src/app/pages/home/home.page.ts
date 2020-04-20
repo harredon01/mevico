@@ -43,17 +43,18 @@ export class HomePage implements OnInit {
         public events: Events) {}
 
     ngOnInit() {
+        let vm = this;
         this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
-            this.categoriesErrorGet = value;
+            vm.categoriesErrorGet = value;
         });
         this.translateService.get('USER.CEL_TITLE').subscribe((value) => {
-            this.celTitle = value;
+            vm.celTitle = value;
         });
         this.translateService.get('USER.CEL_DESC').subscribe((value) => {
-            this.celDesc = value;
+            vm.celDesc = value;
         });
         this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
-            this.celError = value;
+            vm.celError = value;
         });
 
         if (this.userData._user) {
@@ -62,12 +63,15 @@ export class HomePage implements OnInit {
         } else {
             this.checkLogIn();
         }
-        this.getCart();
+        
         this.events.subscribe('cart:orderFinished', () => {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
         this.getItems();
+    }
+    ionViewDidEnter() {
+        this.getCart();
     }
     checkLogIn() {
         this.userData.getToken().then((value) => {

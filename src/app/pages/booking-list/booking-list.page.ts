@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
 import {IonList} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 import {BookingService} from '../../services/booking/booking.service';
-import {NavController, LoadingController,AlertController} from '@ionic/angular';
+import {NavController, LoadingController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Booking} from '../../models/booking';
 import {ApiService} from '../../services/api/api.service';
@@ -235,7 +235,7 @@ export class BookingListPage implements OnInit {
             }
         }
     }
-    
+
     changeStatusBooking(item, status) {
         this.showLoader();
         let container = {"booking_id": item.id, "status": status};
@@ -248,7 +248,7 @@ export class BookingListPage implements OnInit {
             this.api.handleError(err);
         });
     }
-    addToCart(booking: any) {
+    addToCartServer(booking: any) {
         this.cart.clearCart().subscribe((data: any) => {
             let extras = {
                 "type": "Booking",
@@ -276,6 +276,24 @@ export class BookingListPage implements OnInit {
             console.log("Error addCustomCartItem");
             this.api.handleError(err);
         });
+    }
+    
+    addToCart(booking: any) {
+        console.log("addToCart",this.orderData.cartData.items);
+        if (this.orderData.cartData.items) {
+            let items = this.orderData.cartData.items;
+            for (let i in items) {
+                let container = items[i].attributes;
+                if (container.type == "Booking") {
+                    if (container.id == booking.id) {
+                        this.params.setParams({"merchant_id": booking.bookable_id});
+                        this.navCtrl.navigateForward('tabs/checkout/prepare');
+                        return;
+                    }
+                }
+            }
+        }
+        this.addToCartServer(booking);
     }
     payBooking(booking: any) {
         this.booking.checkExistingBooking(booking.id).subscribe((data: any) => {

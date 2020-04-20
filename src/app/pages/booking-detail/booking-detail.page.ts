@@ -35,6 +35,7 @@ export class BookingDetailPage implements OnInit {
         public spinnerDialog: SpinnerDialog
     ) {
         this.mainBooking = new Booking({total_paid: 0, price: 0, options: {}});
+
         let vm = this
         this.translateService.get('BOOKING.DENIED_MSG').subscribe(function (value) {
             vm.deniedMsg = value;
@@ -44,6 +45,74 @@ export class BookingDetailPage implements OnInit {
     ngOnInit() {
 
     }
+    getTranslation(text) {
+        return new Promise((resolve, reject) => {
+            this.translateService.get("BOOKING."+text).subscribe(
+                value => {
+                    resolve(value);
+                }
+            )
+        });
+    }
+    translateKeys(attributes: any) {
+        return new Promise((resolve, reject) => {
+            let arrKeys = Object.keys(attributes);
+            let counter = arrKeys.length;
+            console.log("Total tranlate",counter);
+            arrKeys.forEach(key => {
+                let value = attributes[key];
+
+                this.getTranslation(key).then((keytrans: any) => {
+                    attributes[keytrans] = value
+                    delete attributes[key];
+                    console.log("progress1",attributes);
+                    counter--;
+                    console.log("progress2",counter);
+                    if (counter < 1) {
+                        resolve(attributes);
+                    }
+                }, (err) => {
+
+                });
+            });
+        });
+    }
+    translateValues(attributes: any) {
+        return new Promise((resolve, reject) => {
+            let arrKeys = Object.keys(attributes);
+            let counter = arrKeys.length;
+            arrKeys.forEach(key => {
+                let value = attributes[key];
+                if(key!='item_id'&& key!='Agenda de la reunion'&& key!='Mascota'&& key!='Pagado'&& key!='Rechazada por'){
+                    this.getTranslation(value).then((valuetrans: any) => {
+                    if(valuetrans.length > 0 ){
+                        attributes[key] = valuetrans
+                    }
+                    counter--
+                    if (counter < 1) {
+                        resolve(attributes);
+                    }
+                }, (err) => {
+
+                });
+                }
+                
+            });
+        });
+    }
+    translateAttributes(attributes: any) {
+        console.log("Translated article", attributes);
+        this.translateKeys(attributes).then((attrResp) => {
+            console.log("phase 1", attrResp);
+            this.translateValues(attrResp).then((attrResp2) => {
+                console.log("phase 2", attrResp2);
+            }, (err) => {
+
+            });
+        }, (err) => {
+
+        });
+    }
 
     ionViewDidEnter() {
         let params = this.params.getParams();
@@ -51,6 +120,7 @@ export class BookingDetailPage implements OnInit {
         if (params) {
             if (params.booking) {
                 this.mainBooking = params.booking;
+                this.translateAttributes(this.mainBooking.options);
             }
             if (params.modal) {
                 this.isModal = true;
@@ -80,13 +150,13 @@ export class BookingDetailPage implements OnInit {
         });
     }
     changeStatusBooking(status) {
-        if(status == "approved"){
-            this.changeStatusServer(status,"");
+        if (status == "approved") {
+            this.changeStatusServer(status, "");
         } else {
             this.presentAlertDeny();
         }
     }
-    changeStatusServer(status,reason) {
+    changeStatusServer(status, reason) {
         this.showLoader();
         let container = {"booking_id": this.mainBooking.id, "status": status, "reason": reason};
         this.booking.changeStatusBookingObject(container).subscribe((data: any) => {
@@ -104,6 +174,7 @@ export class BookingDetailPage implements OnInit {
             let result = data.booking;
             console.log("building booking");
             this.mainBooking = new Booking(result);
+            this.translateAttributes(this.mainBooking.options);
         } else if (data.status == "denied") {
             this.navCtrl.navigateBack("tabs/settings/bookings");
         }
@@ -157,7 +228,24 @@ export class BookingDetailPage implements OnInit {
         this.params.setParams(params);
         this.navCtrl.navigateForward('tabs/settings/bookings/' + this.mainBooking.id + "/edit");
     }
+
     addToCart() {
+        let booking = this.mainBooking;
+        if (this.orderData.cartData.items) {
+            let items = this.orderData.cartData.items;
+            for (let i in items) {
+                let cont = items[i].attributes;
+                if (cont.type == "Booking") {
+                    if (cont.id == booking.id) {
+                        this.openCart();
+                        return;
+                    }
+                }
+            }
+        }
+        this.addToCartServer();
+    }
+    addToCartServer() {
         let extras = {
             "type": "Booking",
             "id": this.mainBooking.id,
@@ -208,11 +296,11 @@ export class BookingDetailPage implements OnInit {
         let button = {
             text: 'Ok',
             handler: (data) => {
-                console.log('Confirm Okay',data);
-                if(data=="no-spec"){
-                    this.changeStatusServer("denied","No es mi especialidad");
+                console.log('Confirm Okay', data);
+                if (data == "no-spec") {
+                    this.changeStatusServer("denied", "No es mi especialidad");
                 } else {
-                    this.changeStatusServer("denied","No estoy disponible");
+                    this.changeStatusServer("denied", "No estoy disponible");
                 }
             }
         }
