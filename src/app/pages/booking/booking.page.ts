@@ -175,6 +175,10 @@ export class BookingPage implements OnInit {
             console.log("Availabilities", this.availabilities);
             this.getAvailableDates(this.availabilities);
             this.getDates();
+            console.log("in get items", this.bookingObj);
+            if(this.bookingObj){
+                this.selectDate(this.bookingObj.starts_at);
+            }
             console.log("Get availableDays", this.availableDays);
             console.log(JSON.stringify(data));
         }, (err) => {
@@ -253,16 +257,18 @@ export class BookingPage implements OnInit {
         }
         this.submitted = true;
         this.showLoader();
-        console.log("toLocaleString", this.startDate.toLocaleString());
-        console.log("toString ", this.startDate.toString());
-        console.log("toTimeString ", this.startDate.toTimeString());
-        console.log("toLocaleDateString ", this.startDate.toLocaleDateString());
-        console.log("toLocaleTimeString ", this.startDate.toLocaleTimeString());
-        console.log("offset", this.startDate.getTimezoneOffset() * 60000);
+//        console.log("toLocaleString", this.startDate.toLocaleString());
+//        console.log("toString ", this.startDate.toString());
+//        console.log("toTimeString ", this.startDate.toTimeString());
+//        console.log("toLocaleDateString ", this.startDate.toLocaleDateString());
+//        console.log("toLocaleTimeString ", this.startDate.toLocaleTimeString());
+//        console.log("offset", this.startDate.getTimezoneOffset() * 60000);
         let startDate = new Date(this.startDate.getTime() - this.startDate.getTimezoneOffset() * 60000);
+//        console.log("start date",startDate);
         let strDate = startDate.toISOString();
-        startDate = new Date(startDate.getTime() + parseInt(this.amount) * 3000 * 1000 /*4 hrs in ms*/);
-        let ndDate = startDate.toISOString();
+//        console.log("start date2",startDate.toISOString());
+        let endDate = new Date(startDate.getTime() + parseInt(this.amount) * 3000 * 1000 /*4 hrs in ms*/);
+        let ndDate = endDate.toISOString();
         if (this.virtualMeeting) {
             this.atributesCont.virtual_provider = "zoom";
             this.atributesCont.virtual_meeting = true;
@@ -314,8 +320,8 @@ export class BookingPage implements OnInit {
         console.log("offset", this.startDate.getTimezoneOffset() * 60000);
         let startDate = new Date(this.startDate.getTime() - this.startDate.getTimezoneOffset() * 60000);
         let strDate = startDate.toISOString();
-        startDate = new Date(startDate.getTime() + parseInt(this.amount) * 3000 * 1000 /*4 hrs in ms*/);
-        let ndDate = startDate.toISOString();
+        let endDate = new Date(startDate.getTime() + parseInt(this.amount) * 3000 * 1000 /*4 hrs in ms*/);
+        let ndDate = endDate.toISOString();
         this.atributesCont.location = "opentok";
         let data = {
             "booking_id": this.bookingObj.id,

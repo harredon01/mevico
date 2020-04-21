@@ -185,20 +185,21 @@ export class BookingListPage implements OnInit {
             setTimeout(function () {vm.scrollToday();}, 800);
         }
     }
-    showAlertTranslation(alert) {
+    showAlertTranslation(alert,booking) {
         this.translateService.get(alert).subscribe(
             value => {
-                this.presentAlertConfirm(value);
+                this.presentAlertConfirm(value,booking);
             }
         )
     }
 
-    async presentAlertConfirm(message) {
+    async presentAlertConfirm(message,booking) {
         console.log("Present alert", message);
         let button = {
             text: 'Ok',
             handler: () => {
                 console.log('Confirm Okay');
+                this.editBooking(booking);
             }
         }
         const alert = await this.alertsCtrl.create({
@@ -277,6 +278,35 @@ export class BookingListPage implements OnInit {
             this.api.handleError(err);
         });
     }
+    editBooking(booking:any) {
+        let params = {
+            "availabilities": null,
+            "type": "Merchant",
+            "objectId": booking.bookable_id,
+            "objectName": "",
+            "objectDescription": "",
+            "objectIcon": "",
+            "settings": true,
+            "booking": booking,
+            "expectedPrice": booking.price
+        }
+        if (booking.bookable) {
+            params = {
+                "availabilities": null,
+                "type": "Merchant",
+                "objectId": booking.bookable.id,
+                "objectName": booking.bookable.name,
+                "objectDescription": booking.bookable.description,
+                "objectIcon": booking.bookable.icon,
+                "settings": true,
+                "booking": booking,
+                "expectedPrice": booking.bookable.unit_cost
+            }
+        }
+        console.log(params);
+        this.params.setParams(params);
+        this.navCtrl.navigateForward('tabs/settings/bookings/' + booking.id + "/edit");
+    }
     
     addToCart(booking: any) {
         console.log("addToCart",this.orderData.cartData.items);
@@ -300,7 +330,7 @@ export class BookingListPage implements OnInit {
             if (data.status == "success") {
                 this.addToCart(booking);
             } else {
-                this.showAlertTranslation("BOOKING." + data.message);
+                this.showAlertTranslation("BOOKING." + data.message,booking);
             }
         }, (err) => {
             console.log("Error cancelBooking");
