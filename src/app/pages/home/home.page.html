@@ -23,13 +23,6 @@
             </ion-button>
 
         </div>
-
-        <div class="merchant-categories__header" *ngIf="false">
-            <p class="merchant-categories__header-title text-danger">Autoriza mercadopago</p>
-            <ion-button class="button merchant-categories__header-button " (click)="activateMerchant()" size="small" expand="block">
-                <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
-            </ion-button>
-        </div>
         <div class="clear"></div>
             <div class="mainCategories">
                 <div (click)="openItem(item)" *ngFor="let item of items" class="mainCategories__list w50 left">

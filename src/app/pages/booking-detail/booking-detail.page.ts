@@ -102,16 +102,16 @@ export class BookingDetailPage implements OnInit {
     }
     translateAttributes(attributes: any) {
         console.log("Translated article", attributes);
-        this.translateKeys(attributes).then((attrResp) => {
-            console.log("phase 1", attrResp);
-            this.translateValues(attrResp).then((attrResp2) => {
-                console.log("phase 2", attrResp2);
-            }, (err) => {
-
-            });
-        }, (err) => {
-
-        });
+//        this.translateKeys(attributes).then((attrResp) => {
+//            console.log("phase 1", attrResp);
+//            this.translateValues(attrResp).then((attrResp2) => {
+//                console.log("phase 2", attrResp2);
+//            }, (err) => {
+//
+//            });
+//        }, (err) => {
+//
+//        });
     }
 
     ionViewDidEnter() {

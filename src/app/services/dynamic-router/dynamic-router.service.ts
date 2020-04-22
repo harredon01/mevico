@@ -66,6 +66,9 @@ export class DynamicRouterService {
             };
             this.params.setParams(parms);
             destinyUrl = 'tabs/settings/bookings/' + notification.payload.booking_id;
+        } else if (notification.type == "mercadopago" ) {
+            this.browser(notification.payload.url);
+            destinyUrl = 'tabs';
         } else if(notification.type == "order_status_Merchant"){
             let params = {
                 "objectId": notification.payload.merchant_id,

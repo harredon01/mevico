@@ -60,12 +60,17 @@
                         <span>{{mainBooking.bookable.name}}</span>
                     </ion-col>
                 </ion-row>
-                <ion-row class="appot-detail" >
-                    <ion-col class="detail" *ngFor="let item of mainBooking.options | keyvalue">
-                             <p>
-                            <span>{{item.key}}</span>
-                            <span>{{item.value}}</span>
-                        </p>
+            </ion-grid>
+            <p *ngIf="mainBooking.options.type_help"><span>{{ 'BOOKING.type_help' | translate }}</span>: {{mainBooking.options.type_help}}</p>
+            <h4 *ngIf="mainBooking.options.desc_item">{{ 'BOOKING.desc_item' | translate }}</h4>
+            <p *ngIf="mainBooking.options.desc_item">{{mainBooking.options.desc_item}}</p>
+            <ion-grid>
+                <ion-row>
+                    <ion-col *ngIf="mainBooking.options.paid">
+                             <p><span>{{ 'BOOKING.paid' | translate }}: </span>{{mainBooking.options.paid | date : 'mediumDate'}}</p>
+                    </ion-col>
+                    <ion-col *ngIf="mainBooking.options.virtual_provider">
+                             <p><span>{{ 'BOOKING.virtual_provider' | translate }}: </span>{{'BOOKING.'+mainBooking.options.virtual_provider | translate}}</p>
                     </ion-col>
                 </ion-row>
             </ion-grid>
