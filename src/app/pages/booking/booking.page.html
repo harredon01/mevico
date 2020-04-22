@@ -77,17 +77,30 @@
                 <ion-label>{{ 'BOOKING.END_TIME' | translate }}</ion-label>
                 <p style='color: gray'>{{endDate | date :'h:mm a'}}</p> 
             </ion-item>
-            <ion-item *ngIf="!bookingObj">
+            <!--ion-item *ngIf="!bookingObj">
                 <p>{{ 'BOOKING.VIRTUAL_MEETING_DESC' | translate }}</p>
             </ion-item>
             <ion-item *ngIf="!bookingObj">
                 <ion-label>{{ 'BOOKING.VIRTUAL_MEETING_LABEL' | translate }}</ion-label>
                 <ion-checkbox [(ngModel)]="virtualMeeting"></ion-checkbox>
-            </ion-item>
-            <ion-item  *ngIf="!virtualMeeting">
+            </ion-item-->
+            <ion-list *ngIf="!bookingObj">
+                <ion-radio-group name="radio-group" (ionChange)="selectRadio($event)">
+                    <ion-item>
+                        <ion-label>{{ 'BOOKING.VIRTUAL_MEETING_LABEL' | translate }}</ion-label>
+                        <ion-radio value="virtual"></ion-radio>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ 'BOOKING.PHYSICAL_MEETING_LABEL' | translate }}</ion-label>
+                        <ion-radio value="physical"></ion-radio>
+                    </ion-item>
+                </ion-radio-group>
+
+            </ion-list>
+            <ion-item  *ngIf="virtualMeeting=='physical'">
                 <p>{{ 'CART_ITEM.SUBTOTAL' | translate }}: {{ expectedPrice*amount | currency }}</p>
             </ion-item>
-            <ion-item  *ngIf="virtualMeeting">
+            <ion-item  *ngIf="virtualMeeting=='virtual'">
                 <p>{{ 'CART_ITEM.SUBTOTAL' | translate }}: {{ (expectedPrice*0.5)*amount | currency }}</p>
             </ion-item>
             <ion-card *ngIf="timeSelected">

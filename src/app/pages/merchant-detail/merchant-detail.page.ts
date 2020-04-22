@@ -101,11 +101,22 @@ export class MerchantDetailPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
-        this.params.setParams({"merchant_id": this.merchant.id});
-        if (data == "Shipping") {
-            this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant.id);
-        } else if (data == "Prepare") {
-            this.navCtrl.navigateForward('tabs/checkout/prepare');
+        if (data == "Shipping" || data == 'Prepare') {
+            this.params.setParams({"merchant_id": this.merchant.id});
+            if (this.userData._user) {
+                if (data == "Shipping") {
+                    this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+                } else {
+                    this.navCtrl.navigateForward('tabs/checkout/prepare');
+                }
+            } else {
+                if (data == "Shipping") {
+                    this.drouter.addPages('tabs/checkout/shipping/' + this.merchant);
+                } else {
+                    this.drouter.addPages('tabs/checkout/prepare');
+                }
+                this.navCtrl.navigateForward('login');
+            }
         }
     }
 
@@ -156,18 +167,24 @@ export class MerchantDetailPage implements OnInit {
         this.navCtrl.navigateForward(this.urlSearch + "/products");
     }
     appointmentbook() {
-        let params = {
-            "availabilities": this.merchant.availabilities,
-            "type": "Merchant",
-            "objectId": this.merchant.id,
-            "objectName": this.merchant.name,
-            "objectDescription": this.merchant.description,
-            "objectIcon": this.merchant.icon,
-            "expectedPrice": this.merchant.unit_cost
+
+        if (this.userData._user) {
+            let params = {
+                "availabilities": this.merchant.availabilities,
+                "type": "Merchant",
+                "objectId": this.merchant.id,
+                "objectName": this.merchant.name,
+                "objectDescription": this.merchant.description,
+                "objectIcon": this.merchant.icon,
+                "expectedPrice": this.merchant.unit_cost
+            }
+            console.log(params);
+            this.params.setParams(params);
+            this.navCtrl.navigateForward(this.urlSearch + "/book");
+        } else {
+            this.drouter.addPages(this.urlSearch);
+            this.navCtrl.navigateForward('login');
         }
-        console.log(params);
-        this.params.setParams(params);
-        this.navCtrl.navigateForward(this.urlSearch + "/book");
     }
     addBookingToCart(booking: any) {
         let extras = {
@@ -196,7 +213,7 @@ export class MerchantDetailPage implements OnInit {
     call() {
         this.showLoader();
         this.cart.clearCart().subscribe((resp: any) => {
-            let attrs = {"virtual_provider": "zoom","virtual_meeting": true};
+            let attrs = {"virtual_provider": "zoom", "virtual_meeting": true};
             let data = {
                 "type": "Merchant",
                 "object_id": this.merchant.id,

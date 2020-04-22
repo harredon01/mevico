@@ -5,18 +5,15 @@
         </ion-buttons>
         <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
         <ion-title class="ion__title">
-            <!-- &nbsp; -->
             {{ 'PRODUCTS.TITLE' | translate }}
-            <!--span class="shareIcons">
-                <ion-icon name="ios-bookmark-outline" item-start></ion-icon>
-                <ion-icon name="md-share" item-start></ion-icon>
-                <ion-icon name="md-more" item-start></ion-icon>
-            </span-->
-            <div class="content-car">
-                <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
-                <ion-button icon-only clear (click)="openCart()"><ion-icon name="cart"></ion-icon></ion-button>
-            </div>
         </ion-title>
+        <ion-buttons slot="end">
+            <ion-button size="small" icon-only clear (click)="openCart()">
+                        <ion-icon name="cart"></ion-icon>
+                <div *ngIf="orderData.cartData.totalItems" id="counter-items">({{orderData.cartData.totalItems}})</div>
+            </ion-button>
+        </ion-buttons>
+
     </ion-toolbar>
 </ion-header>
 

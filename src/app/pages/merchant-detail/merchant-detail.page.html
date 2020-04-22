@@ -11,9 +11,10 @@
                 <ion-icon name="md-more" item-start></ion-icon>
             </span>
             <div class="content-car">
-                <!--div *ngIf="orderData.cartData.totalItems" id="counter-items">{{orderData.cartData.totalItems}}</div-->
+                
                 <ion-button size="small" icon-only clear (click)="openCart()">
-                            <ion-icon name="cart"></ion-icon>
+                    <ion-icon name="cart"></ion-icon>
+                    <div *ngIf="orderData.cartData.totalItems" id="counter-items">({{orderData.cartData.totalItems}})</div>
                 </ion-button>
             </div>
         </div>

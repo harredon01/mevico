@@ -510,8 +510,8 @@ export class MerchantProductsPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
-        if (data == "Checkout") {
-            this.params.setParams({"merchant_id": this.merchant});
+        this.params.setParams({"merchant_id": this.merchant});
+        if (data == "Shipping" || data == 'Prepare') {
             if (this.userData._user) {
                 if (data == "Shipping") {
                     this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);

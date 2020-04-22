@@ -24,7 +24,7 @@ export class BookingPage implements OnInit {
     months: any[] = [];
     newVisit: boolean = true;
     dateSelected: boolean = false;
-    virtualMeeting: boolean = false;
+    virtualMeeting: string = 'physical'; 
     timeSelected: boolean = false;
     availabilitiesDate: any[] = [];
     weekday: any[] = [];
@@ -251,6 +251,11 @@ export class BookingPage implements OnInit {
             this.api.handleError(err);
         });
     }
+    selectRadio(event){
+        this.virtualMeeting = event.detail.value;
+        console.log("Virtual meeting radio ",event);
+        console.log("Virtual meeting radio ",this.virtualMeeting);
+    }
     createBooking() {
         if (this.submitted) {
             return true;
@@ -269,7 +274,10 @@ export class BookingPage implements OnInit {
 //        console.log("start date2",startDate.toISOString());
         let endDate = new Date(startDate.getTime() + parseInt(this.amount) * 3000 * 1000 /*4 hrs in ms*/);
         let ndDate = endDate.toISOString();
-        if (this.virtualMeeting) {
+        let virtual = false;
+        console.log("Virtual meeting",this.virtualMeeting);
+        if (this.virtualMeeting=='virtual') {
+            virtual = true;
             this.atributesCont.virtual_provider = "zoom";
             this.atributesCont.virtual_meeting = true;
         }
@@ -279,7 +287,7 @@ export class BookingPage implements OnInit {
             "from": strDate,
             "to": ndDate,
             "attributes": this.atributesCont,
-            "virtual_meeting": this.virtualMeeting
+            "virtual_meeting": virtual
         };
         console.log("Start", this.startDate);
         console.log("data", data);
@@ -322,7 +330,7 @@ export class BookingPage implements OnInit {
         let strDate = startDate.toISOString();
         let endDate = new Date(startDate.getTime() + parseInt(this.amount) * 3000 * 1000 /*4 hrs in ms*/);
         let ndDate = endDate.toISOString();
-        this.atributesCont.location = "opentok";
+        this.atributesCont.location = "zoom";
         let data = {
             "booking_id": this.bookingObj.id,
             "type": this.typeObj,

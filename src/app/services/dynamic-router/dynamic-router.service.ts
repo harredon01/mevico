@@ -18,7 +18,7 @@ export class DynamicRouterService {
         console.log("openNotification", notification);
         let destinyUrl = "";
         // Reset the content nav to have just this page
-        // we wouldn't want the back button to show in this scenario
+        // we wouldn't want the back button to show in this scenario 
         if (notification.type == "order_status" || notification.type == "payment_status" || notification.type == "split_order_payment" || notification.type == "payment_successful") {
             let parms = {
                 objectId: notification.payload.payment_id
@@ -66,6 +66,15 @@ export class DynamicRouterService {
             };
             this.params.setParams(parms);
             destinyUrl = 'tabs/settings/bookings/' + notification.payload.booking_id;
+        } else if(notification.type == "order_status_Merchant"){
+            let params = {
+                "objectId": notification.payload.merchant_id,
+                "type": "Merchant",
+                "Name": "",
+                "settings": true
+            };
+            this.params.setParams(params);
+            destinyUrl = "tabs/settings/merchants/" + notification.payload.merchant_id + "/items";
         }
         console.log("Destiny", destinyUrl);
         return destinyUrl;
