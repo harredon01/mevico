@@ -12,6 +12,7 @@
         <div class="profile__backgrnd">
             <img src="assets/imgs/background-1.jpg" style="width:100%" alt="merchant" />
         </div> 
+        <h1>{{ 'MERCHANT_CREATE.DESC' | translate }}</h1>
         <div class="profile__image-container" (click)="setAvatar()">
             <div class="profile__image-wrapper"  >
                 <div style="position: relative;width:100%;text-align: center">
@@ -105,7 +106,7 @@
             </div> 
             <ion-button (click)="addLocation()" class="right">{{ 'MERCHANT_DETAIL.ADD_LOCATION' | translate }}</ion-button>
             <div class="clear"></div>
-            <ion-button (click)="showProducts()" class="right">{{ 'MERCHANT_DETAIL.STORE' | translate }}</ion-button>
+            <ion-button (click)="showProducts()" class="right">{{ 'MERCHANT_DETAIL.STORE2' | translate }}</ion-button>
             <div class="clear"></div>
             <ion-button (click)="myItems()" class="right">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
             <div class="clear"></div>

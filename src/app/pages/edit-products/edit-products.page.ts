@@ -67,10 +67,8 @@ export class EditProductsPage implements OnInit {
             description: ['', Validators.required],
             price: ['', Validators.required],
             tax: [''],
-            cost: ['', Validators.required],
             sale: ['', Validators.required],
             quantity: [''],
-            min_quantity: [''],
             requires_authorization: [''],
             is_on_sale: [''],
             is_digital: [''],
@@ -85,10 +83,8 @@ export class EditProductsPage implements OnInit {
             description2: ['', Validators.required],
             price: ['', Validators.required],
             tax: [''],
-            cost: ['', Validators.required],
             sale: [''],
             quantity: [''],
-            min_quantity: [''],
             requires_authorization: [''],
             is_on_sale: [''],
             is_digital: [''],
@@ -249,7 +245,15 @@ export class EditProductsPage implements OnInit {
         container['merchant_id'] = merchant;
         this.productsServ.saveOrCreateProduct(container).subscribe((data: any) => {
             this.dismissLoader();
-            this.filterResults(data);
+            if(data.status == "success"){
+                this.filterResults(data);
+            } else {
+                this.toastCtrl.create({
+                message: this.productsErrorStringSave,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            }
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
@@ -338,11 +342,9 @@ export class EditProductsPage implements OnInit {
             id: variant.id,
             product_id: variant.product_id,
             price: variant.price,
-            cost: variant.cost,
             tax: variant.tax,
             sale: variant.sale,
             quantity: variant.quantity,
-            min_quantity: variant.min_quantity,
             sku: variant.sku,
             description: variant.description,
             requires_authorization: variant.requires_authorization,
@@ -359,11 +361,9 @@ export class EditProductsPage implements OnInit {
             id: "",
             product_id: this.product.id,
             price: "",
-            cost: "",
             tax: "",
             sale: "",
             quantity: "",
-            min_quantity: "",
             sku: "",
             description: "",
             requires_authorization: false,

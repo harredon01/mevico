@@ -483,8 +483,8 @@
         "DESCRIPTION2": "Detalle de la opción",
         "DESCRIPTION2_ERROR":"Ingresa una descripción para tu opcion de compra",
         "DESCRIPTION_ERROR":"Ingresa una descripción para tu producto",
-        "NEW_CATEGORY":"Debes tener minimo una categoria para tus productos",
-        "SELECT_CATEGORY":"Selecciona una categoria existente o crea una nueva para tu producto",
+        "NEW_CATEGORY":"Si te gustaría alguna otra puedes crearla aca.",
+        "SELECT_CATEGORY":"Selecciona una categoria para tu producto",
         "NEW_PRODUCT":"Ingresa los datos de tu producto",
         "NEW_VARIANT":"Crea la primera opcion de compra para tu producto",
         "CATEGORY":"Nueva Categoria",
@@ -643,6 +643,7 @@
     },
     "MERCHANT_CREATE": {
         "TITLE": "Negocio",
+        "DESC": "Edita los detalles de tu negocio",
         "DESCRIPTION": "¿Qué te gustaría crear?",
         "TYPE": "Tipo de negocio",
         "BOOKING_REQUIRES_AUTH":"Si",
