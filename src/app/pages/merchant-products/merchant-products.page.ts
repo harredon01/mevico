@@ -540,7 +540,16 @@ export class MerchantProductsPage implements OnInit {
         for (let i in item.variants) {
             let container = item.variants[i];
             if (container.id == item.variant_id) {
-                item.price = container.price;
+                if (container.is_on_sale) {
+                    console.log("selectVariantsale",container);
+                    item.exprice = container.exprice;
+                    item.price = container.price;
+                    item.onsale = true;
+                } else {
+                    item.onsale = false;
+                    item.price = container.price;
+                }
+
                 if (item.type == "meal-plan") {
                     if (container.attributes.buyers) {
                         item.unitLunches = container.attributes.buyers;
@@ -582,20 +591,22 @@ export class MerchantProductsPage implements OnInit {
         }
     }
     calculateTotalsProduct(product: Product) {
-        if (product.amount > 0 && product.amount < 10) {
-            product.subtotal = product.price * product.amount;
-            //type meal
-            if (product.type == "meal-plan") {
+        if (product.type == "meal-plan") {
+            if (product.amount > 0 && product.amount < 10) {
                 product.unitPrice = product.subtotal / (product.unitLunches * product.amount);
-            }
-        } else {
-            if (product.type == "meal-plan") {
+            } else {
                 let counter2 = Math.floor(product.amount / 11);
                 product.subtotal = (product.price * product.amount) - (counter2 * product.unitLunches * 11000);
                 product.unitPrice = product.subtotal / (product.unitLunches * product.amount);
-            } else {
-                product.subtotal = (product.price * product.amount);
             }
+        } else {
+            if (product.onsale) {
+                product.exsubtotal = product.exprice * product.amount;
+                product.subtotal = product.price * product.amount;
+            } else {
+                product.subtotal = product.price * product.amount;
+            }
+
         }
     }
     getCart() {

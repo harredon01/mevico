@@ -67,9 +67,8 @@ export class EditProductsPage implements OnInit {
             description: ['', Validators.required],
             price: ['', Validators.required],
             tax: [''],
-            sale: ['', Validators.required],
+            sale: [''],
             quantity: [''],
-            requires_authorization: [''],
             is_on_sale: [''],
             is_digital: [''],
             is_shippable: [''],
@@ -85,7 +84,6 @@ export class EditProductsPage implements OnInit {
             tax: [''],
             sale: [''],
             quantity: [''],
-            requires_authorization: [''],
             is_on_sale: [''],
             is_digital: [''],
             is_shippable: [''],
@@ -175,7 +173,6 @@ export class EditProductsPage implements OnInit {
     selectCategory(categoryId) {
         let container = this.formPNew.value;
         container.category_id = categoryId;
-        container.requires_authorization = true;
         container.is_shippable = true;
         container.is_on_sale = true;
         container.is_digital = true;
@@ -185,7 +182,6 @@ export class EditProductsPage implements OnInit {
     addCategory() {
         let container = this.formPNew.value;
         container.category_name = this.category;
-        container.requires_authorization = true;
         container.is_shippable = true;
         container.is_on_sale = true;
         container.is_digital = true;
@@ -204,7 +200,16 @@ export class EditProductsPage implements OnInit {
         }
         this.productsServ.saveOrCreateProduct(container).subscribe((data: any) => {
             this.dismissLoader();
-            this.filterResults(data);
+            if (data.status == "success") {
+                this.filterResults(data);
+            } else {
+                this.toastCtrl.create({
+                    message: this.productsErrorStringSave,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
+            }
+
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
@@ -221,10 +226,10 @@ export class EditProductsPage implements OnInit {
         let results = data.product;
         results.variants = results.product_variants;
         this.product = new Product(results);
-        if(results.variants){
+        if (results.variants) {
             this.variants = results.variants;
         }
-        
+
         let container = {
             id: this.product.id,
             name: this.product.name,
@@ -245,14 +250,14 @@ export class EditProductsPage implements OnInit {
         container['merchant_id'] = merchant;
         this.productsServ.saveOrCreateProduct(container).subscribe((data: any) => {
             this.dismissLoader();
-            if(data.status == "success"){
+            if (data.status == "success") {
                 this.filterResults(data);
             } else {
                 this.toastCtrl.create({
-                message: this.productsErrorStringSave,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
+                    message: this.productsErrorStringSave,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
             }
         }, (err) => {
             this.dismissLoader();
@@ -269,9 +274,18 @@ export class EditProductsPage implements OnInit {
         this.showLoader();
         this.productsServ.deleteProduct(this.product.id).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after deleteProduct");
-            this.navCtrl.back();
-            console.log(JSON.stringify(data));
+            if (data.status == "success") {
+                console.log("after deleteProduct");
+                this.navCtrl.back();
+                console.log(JSON.stringify(data));
+            } else {
+                this.toastCtrl.create({
+                    message: this.productsErrorStringSave,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
+            }
+
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
@@ -287,13 +301,25 @@ export class EditProductsPage implements OnInit {
         this.showLoader();
         this.productsServ.deleteVariant(variantId).subscribe((data: any) => {
             this.dismissLoader();
-            console.log("after deleteVariant");
-            for (let item in this.variants) {
-                if (this.variants[item].id == variantId) {
-                    this.variants.splice(parseInt(item), 1);
+            if (data.status == "success") {
+                console.log("after deleteVariant");
+                for (let item in this.variants) {
+                    if (this.variants[item].id == variantId) {
+                        this.variants.splice(parseInt(item), 1);
+                    }
                 }
+                if (this.variants.length == 0 ){
+                    this.navCtrl.back();
+                }
+                console.log(JSON.stringify(data));
+            } else {
+                this.toastCtrl.create({
+                    message: this.variantsErrorStringSave,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
             }
-            console.log(JSON.stringify(data));
+
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
@@ -311,20 +337,30 @@ export class EditProductsPage implements OnInit {
         if (!this.formV.valid) {return;}
         this.showLoader();
         this.productsServ.saveOrCreateVariant(this.formV.value).subscribe((data: any) => {
+
             this.dismissLoader();
-            this.editingVariant = false;
-            let variant = data.variant;
-            let found = false;
-            for (let item in this.variants) {
-                if (this.variants[item].id == variant.id) {
-                    this.variants[item] = variant;
-                    found = true;
+            if (data.status == "success") {
+                this.editingVariant = false;
+                let variant = data.variant;
+                let found = false;
+                for (let item in this.variants) {
+                    if (this.variants[item].id == variant.id) {
+                        this.variants[item] = variant;
+                        found = true;
+                    }
                 }
+                if (!found) {
+                    this.variants.push(variant);
+                }
+                console.log(JSON.stringify(data));
+            } else {
+                this.toastCtrl.create({
+                    message: this.variantsErrorStringSave,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
             }
-            if (!found) {
-                this.variants.push(variant);
-            }
-            console.log(JSON.stringify(data));
+
         }, (err) => {
             this.dismissLoader();
             // Unable to log in
@@ -347,7 +383,6 @@ export class EditProductsPage implements OnInit {
             quantity: variant.quantity,
             sku: variant.sku,
             description: variant.description,
-            requires_authorization: variant.requires_authorization,
             is_digital: variant.is_digital,
             is_shippable: variant.is_shippable,
             is_on_sale: variant.is_on_sale,
@@ -366,7 +401,6 @@ export class EditProductsPage implements OnInit {
             quantity: "",
             sku: "",
             description: "",
-            requires_authorization: false,
             is_digital: false,
             is_shippable: false,
             is_on_sale: false,

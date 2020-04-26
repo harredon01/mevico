@@ -61,10 +61,13 @@
                         <ion-select-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-select-option>
                     </ion-select>
                 </ion-item>
-                <div class="left mt15 w50">
+                <div class="left mt15 w50" *ngIf="item.onsale">
+                    <p style="font-size: 26px"><b>{{item.exsubtotal | currency }}</b><br/><b>{{item.subtotal | currency }}</b></p>
+                </div>
+                <div class="left mt15 w50" *ngIf="!item.onsale">
                     <p style="font-size: 26px"><b>{{item.subtotal | currency }}</b></p>
                 </div>
-                <div *ngIf="isOwner">
+                <div *ngIf="isOwner" class="right mt10">
                     <ion-button class="btn-primary" (click)="editProduct(item.id)">{{ 'INPUTS.EDIT' | translate }}
                     </ion-button>
                     <ion-button color="primary" (click)="editImages(item.id)">
@@ -85,6 +88,13 @@
         </ion-card>
     </div>
 </div>
-<ion-button class="btn-primary" (click)="editProduct(0)" *ngIf="isOwner" >{{ 'PRODUCTS.NEW_PRODUCT' | translate }}
+    <ion-card *ngIf="isOwner">
+        <ion-card-content class="info">
+            <h2>{{ 'EDIT_PRODUCTS.DESC5' | translate }}</h2>
+            <p class="mt15 mb15">{{ 'EDIT_PRODUCTS.DESC6' | translate }} </p>
+            <ion-button class="btn-primary right mt15 mb15" (click)="editProduct(0)"  >{{ 'PRODUCTS.NEW_PRODUCT' | translate }}
 </ion-button>
+        </ion-card-content>
+    </ion-card>
+
 </ion-content>

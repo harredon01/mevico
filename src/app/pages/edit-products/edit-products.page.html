@@ -8,10 +8,21 @@
 </ion-header>
 
 <ion-content>
+    <ion-card>
+        <ion-card-content class="info" >
+            <p>{{ 'EDIT_PRODUCTS.DESC1' | translate }}</p>
+            <p>{{ 'EDIT_PRODUCTS.DESC2' | translate }} </p>
+            <p>{{ 'EDIT_PRODUCTS.DESC3' | translate }} </p>
+            <p>{{ 'EDIT_PRODUCTS.DESC4' | translate }} </p>
+        </ion-card-content>
+    </ion-card>
     <div *ngIf="!isNew">
         <form [formGroup]="formP" (ngSubmit)="saveProduct()" *ngIf="!editingVariant"  class="mr10 ml10">
             <input type="hidden" formControlName="id" />
             <ion-list>
+                <ion-item>
+                    <h3>{{ 'EDIT_PRODUCTS.SUBTITLE' | translate }}</h3>
+                </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.NAME' | translate }}</ion-label>
                     <ion-input type="text" formControlName="name"></ion-input>
@@ -27,36 +38,38 @@
                     <p class="error-message">{{ 'EDIT_PRODUCTS.DESCRIPTION_ERROR' | translate }}</p>
                 </ion-item>
                 <ion-item class="right">
-                    <ion-button full type="submit">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
+                    <ion-button color="danger" (click)="deleteProduct()" *ngIf="!isNew">
+                        {{ 'INPUTS.DELETE' | translate }}
+                    </ion-button>
+                    <ion-button color="secondary" (click)="createVariant()" *ngIf="!isNew">
+                        {{ 'EDIT_PRODUCTS.CREATE_VARIANT' | translate }}
+                    </ion-button>
+                    <ion-button full type="submit" *ngIf="formP.controls.name.dirty||formP.controls.description.dirty">{{ 'MAP.DONE_SHIPPING' | translate}}</ion-button>
                 </ion-item>
             </ion-list>
         </form>
 
-        <ion-button color="danger" (click)="deleteProduct()" *ngIf="!isNew">
-            {{ 'INPUTS.DELETE' | translate }}
-        </ion-button>
-        <ion-button color="secondary" (click)="createVariant()" *ngIf="!isNew">
-            {{ 'EDIT_PRODUCTS.CREATE_VARIANT' | translate }}
-        </ion-button>
-        <h3>{{ 'EDIT_PRODUCTS.PURCHASE_TITLE' | translate }}</h3>
+
+        <h3 class="ml15">{{ 'EDIT_PRODUCTS.PURCHASE_TITLE' | translate }}</h3>
         <ion-list *ngIf="!editingVariant">
             <ion-card *ngFor="let item of variants">
-                <ion-item>
-                    <h2>{{item.sku}}</h2>
-                </ion-item>
-                <ion-card-content >
-                    <p>{{item.description}}</p>
+                <ion-card-header>
+                    <ion-card-title>{{item.sku}}</ion-card-title>
+                    <ion-card-subtitle>{{item.description}}</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content class="info">
                     <p>{{ 'EDIT_PRODUCTS.PRICE' | translate }}: {{item.price | currency}}</p>
                     <p>{{ 'EDIT_PRODUCTS.SALE' | translate }}: {{item.sale | currency}}</p>
                     <p>{{ 'EDIT_PRODUCTS.TAX' | translate }}: {{item.tax | currency}}</p>
                     <p>{{ 'EDIT_PRODUCTS.COST' | translate }}: {{item.cost | currency}}</p>
                     <p>{{ 'EDIT_PRODUCTS.QUANTITY' | translate }}: {{item.quantity}}</p>
-                    <ion-button color="danger" (click)="deleteVariant(item.id)">
+                    <ion-button color="danger" class="right" (click)="deleteVariant(item.id)">
                         {{ 'INPUTS.DELETE' | translate }}
                     </ion-button>
-                    <ion-button color="primary" (click)="editVariant(item)">
+                    <ion-button color="primary" class="right" (click)="editVariant(item)">
                         {{ 'INPUTS.EDIT' | translate }}
                     </ion-button>
+                    <div class="clear"></div>
                 </ion-card-content>
 
 
@@ -99,10 +112,6 @@
                 </ion-item>
                 <ion-item *ngIf="!formV.controls.tax.valid  && (formV.controls.tax.dirty || submitAttemptV)">
                     <p class="error-message">{{ 'EDIT_PRODUCTS.TAX_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item >
-                    <ion-label>{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</ion-label>
-                    <ion-checkbox formControlName="requires_authorization"></ion-checkbox>
                 </ion-item>
                 <ion-item >
                     <ion-label>{{ 'EDIT_PRODUCTS.IS_SHIPPABLE' | translate }}</ion-label>
@@ -186,7 +195,7 @@
                 <ion-item *ngIf="!formPNew.controls.sku.valid  && (formPNew.controls.sku.dirty || submitAttemptPNew)">
                     <p class="error-message">{{ 'EDIT_PRODUCTS.SKU_ERROR' | translate }}</p>
                 </ion-item>
-                
+
                 <ion-item>
                     <ion-label position="floating">{{ 'EDIT_PRODUCTS.PRICE' | translate }}</ion-label>
                     <ion-input type="tel" formControlName="price"></ion-input>
@@ -214,10 +223,6 @@
                 </ion-item>
                 <ion-item *ngIf="!formPNew.controls.description2.valid  && (formPNew.controls.description2.dirty || submitAttemptPNew)">
                     <p class="error-message">{{ 'EDIT_PRODUCTS.DESCRIPTION2_ERROR' | translate }}</p>
-                </ion-item>
-                <ion-item >
-                    <ion-label>{{ 'EDIT_PRODUCTS.REQUIRES_AUTHORIZATION' | translate }}</ion-label>
-                    <ion-checkbox formControlName="requires_authorization"></ion-checkbox>
                 </ion-item>
                 <ion-item >
                     <ion-label>{{ 'EDIT_PRODUCTS.IS_SHIPPABLE' | translate }}</ion-label>

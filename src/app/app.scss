@@ -152,6 +152,16 @@
         display: block;
     }
 }
+.info {
+    h2 {
+        color:var(--ion-color-light-contrast);
+    }
+    p {
+        color:var(--ion-color-light-contrast);
+        text-align: justify;
+        font-size: 15px;
+    }
+}
 
 ion-item{
     --inner-padding-end: 0px;
@@ -240,3 +250,4 @@ ion-tab-button{
 .m10 {margin: 10px}
 .m15 {margin: 15px}
 .m20 {margin: 20px}
+.black {color: black}

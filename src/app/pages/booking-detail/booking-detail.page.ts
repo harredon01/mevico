@@ -44,76 +44,8 @@ export class BookingDetailPage implements OnInit {
 
     ngOnInit() {
 
-    }
-    getTranslation(text) {
-        return new Promise((resolve, reject) => {
-            this.translateService.get("BOOKING."+text).subscribe(
-                value => {
-                    resolve(value);
-                }
-            )
-        });
-    }
-    translateKeys(attributes: any) {
-        return new Promise((resolve, reject) => {
-            let arrKeys = Object.keys(attributes);
-            let counter = arrKeys.length;
-            console.log("Total tranlate",counter);
-            arrKeys.forEach(key => {
-                let value = attributes[key];
-
-                this.getTranslation(key).then((keytrans: any) => {
-                    attributes[keytrans] = value
-                    delete attributes[key];
-                    console.log("progress1",attributes);
-                    counter--;
-                    console.log("progress2",counter);
-                    if (counter < 1) {
-                        resolve(attributes);
-                    }
-                }, (err) => {
-
-                });
-            });
-        });
-    }
-    translateValues(attributes: any) {
-        return new Promise((resolve, reject) => {
-            let arrKeys = Object.keys(attributes);
-            let counter = arrKeys.length;
-            arrKeys.forEach(key => {
-                let value = attributes[key];
-                if(key!='item_id'&& key!='Agenda de la reunion'&& key!='Mascota'&& key!='Pagado'&& key!='Rechazada por'){
-                    this.getTranslation(value).then((valuetrans: any) => {
-                    if(valuetrans.length > 0 ){
-                        attributes[key] = valuetrans
-                    }
-                    counter--
-                    if (counter < 1) {
-                        resolve(attributes);
-                    }
-                }, (err) => {
-
-                });
-                }
-                
-            });
-        });
-    }
-    translateAttributes(attributes: any) {
-        console.log("Translated article", attributes);
-//        this.translateKeys(attributes).then((attrResp) => {
-//            console.log("phase 1", attrResp);
-//            this.translateValues(attrResp).then((attrResp2) => {
-//                console.log("phase 2", attrResp2);
-//            }, (err) => {
-//
-//            });
-//        }, (err) => {
-//
-//        });
-    }
-
+    }   
+    
     ionViewDidEnter() {
         let params = this.params.getParams();
         console.log("Params", params);

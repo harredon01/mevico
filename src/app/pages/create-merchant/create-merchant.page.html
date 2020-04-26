@@ -12,7 +12,7 @@
         <div class="profile__backgrnd">
             <img src="assets/imgs/background-1.jpg" style="width:100%" alt="merchant" />
         </div> 
-        <h1>{{ 'MERCHANT_CREATE.DESC' | translate }}</h1>
+        
         <div class="profile__image-container" (click)="setAvatar()">
             <div class="profile__image-wrapper"  >
                 <div style="position: relative;width:100%;text-align: center">
@@ -22,6 +22,8 @@
         </div> 
         <div class="doctor-detail profile">
             <div class="profile__main-info">
+                <h1>{{ 'MERCHANT_CREATE.DESC' | translate }}</h1>
+                <p class="tcenter mt15 mb15">{{ 'MERCHANT_CREATE.DESC2' | translate }}</p>
                 <h2 class="text-white text--bold" >{{merchant.name}}</h2>
                 <a href="javascript:;" (click)="editField('Name')">edit</a>
                 <div *ngIf="editName" class="input-box">

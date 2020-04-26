@@ -8,6 +8,7 @@ export class Product {
     description: any;
     quantity: any;
     min_quantity: any;
+    exprice: any;
     price: any;
     unitPrice: any;
     unitLunches: any; 
@@ -22,6 +23,9 @@ export class Product {
     variant_id: any;
     amount: any;
     subtotal: any;
+    exsubtotal: any;
+    sale: any;
+    onsale: boolean= false;
     merchant_name: any;
     merchant_description: any;
     merchant_type: any;

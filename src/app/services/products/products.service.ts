@@ -22,7 +22,7 @@ export class ProductsService {
         return seq;
     }
     getProductCategories(merchant_id: string) {
-        let endpoint = '/merchants/' + merchant_id+'/categories';
+        let endpoint = '/merchants/' + merchant_id + '/categories';
         let seq = this.api.get(endpoint);
         return seq;
     }
@@ -57,9 +57,10 @@ export class ProductsService {
     }
     buildProduct(container: any, merchant: any, merchant_id: any) {
         let productInfo = new Product({});
-            productInfo.id = container.product_id;
-            productInfo.name = container.prod_name;
-            productInfo.description = container.prod_desc;
+        
+        productInfo.id = container.product_id;
+        productInfo.name = container.prod_name;
+        productInfo.description = container.prod_desc;
         productInfo.description_more = false;
         productInfo.more = false;
         productInfo.type = container.type;
@@ -73,7 +74,18 @@ export class ProductsService {
         }
 
         productInfo.inCart = false;
-        productInfo.subtotal = productInfo.price;
+        console.log("Buildprodsale",productInfo);
+        console.log("Buildprodsale2",container);
+        if (container.is_on_sale) {
+            
+            productInfo.onsale = true;
+            productInfo.subtotal = productInfo.price;
+            productInfo.exsubtotal = productInfo.exprice;
+        } else {
+            productInfo.subtotal = productInfo.price;
+            productInfo.onsale = false;
+        }
+
         productInfo = this.updateProductVisual(container, productInfo);
         productInfo.item_id = null;
         if (merchant_id == 1299) {
@@ -82,10 +94,21 @@ export class ProductsService {
             productInfo.amount = container.min_quantity;
         }
         productInfo.imgs = [];
+        console.log("Build product", productInfo);
         return productInfo;
     }
     updateProductVisual(container: any, productInfo: Product) {
-        productInfo.price = container.price;
+        if (container.is_on_sale) {
+            console.log("updateProductVisualsale",productInfo);
+            console.log("updateProductVisualsale2",container);
+            productInfo.price = container.price;
+            productInfo.onsale = true;
+            productInfo.exprice = container.exprice;
+        } else {
+            productInfo.price = container.price;
+            productInfo.onsale = false;
+        }
+
         productInfo.variant_id = container.id;
         console.log("Update Prod Vis1", container);
         if (container.attributes) {
@@ -102,7 +125,7 @@ export class ProductsService {
             productInfo.unitPrice = productInfo.price;
             productInfo.unitLunches = 1;
         }
-//        console.log("Update Prod Vis3", productInfo);
+        //        console.log("Update Prod Vis3", productInfo);
         return productInfo;
     }
     createDeliveryDate(days) {
@@ -138,8 +161,8 @@ export class ProductsService {
     }
     createVariant(container: any) {
         let variant: any = {};
-//        console.log("Variant", container);
-//        console.log("Variant", container.id)
+        //        console.log("Variant", container);
+        //        console.log("Variant", container.id)
         variant.id = container.id;
         variant.description = container.description;
         if (container.attributes.length > 0) {
@@ -152,7 +175,13 @@ export class ProductsService {
         } else {
             variant.attributes = "";
         }
-        variant.price = container.price;
+        if (container.is_on_sale) {
+            variant.exprice = container.price;
+            variant.price = container.sale;
+        } else {
+            variant.price = container.price;
+        }
+        variant.is_on_sale = container.is_on_sale;
         variant.min_quantity = container.min_quantity;
         return variant;
     }
@@ -161,7 +190,7 @@ export class ProductsService {
         if (items['products_variants'].length > 0) {
             let resultsVariant = [];
             let resultsCategory = [];
-//            console.log("fhfhfhfhfhf", items['products_variants'][0]);
+            //            console.log("fhfhfhfhfhf", items['products_variants'][0]);
             let productInfo = this.buildProduct(items['products_variants'][0], items['merchant_products'][0], merchant_id);
             let activeCategory = {
                 "name": items['products_variants'][0]['category_name'],
@@ -173,7 +202,7 @@ export class ProductsService {
             for (let i = 0; i < items['products_variants'].length; i++) {
                 if (items['products_variants'][i].product_id != productInfo.id) {
                     productInfo.variants = resultsVariant;
-//                    console.log("activeCategory", activeCategory);
+                    //                    console.log("activeCategory", activeCategory);
                     if (activeCategory.id) {
                         if (items['products_variants'][i - 1]['category_id'] == activeCategory.id) {
                             activeCategory.products.push(productInfo);
@@ -233,7 +262,7 @@ export class ProductsService {
             }
             console.log('resultbuildCat', resultsCategory);
             return resultsCategory;
-        } 
+        }
         return null;
     }
 }
