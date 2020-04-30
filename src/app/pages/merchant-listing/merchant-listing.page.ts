@@ -135,7 +135,7 @@ export class MerchantListingPage implements OnInit {
             this.typeSearch = "nearby";
             this.merchants = [];
             this.page = 0;
-            this.location = {lat: resp.coords.latitude, long: resp.coords.longitude};
+            this.location = {lat: resp.coords.latitude, long: resp.coords.longitude,category:this.category};
             this.dismissLoader();
             this.getMerchants(null);
         }).catch((error) => {

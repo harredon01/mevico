@@ -21,8 +21,8 @@ export class ProductsService {
         let seq = this.api.get(endpoint);
         return seq;
     }
-    getProductCategories(merchant_id: string) {
-        let endpoint = '/merchants/' + merchant_id + '/categories';
+    getProductCategories(merchant_id: string,typeS: string) {
+        let endpoint = '/merchants/' + merchant_id + '/categories/'+typeS;
         let seq = this.api.get(endpoint);
         return seq;
     }

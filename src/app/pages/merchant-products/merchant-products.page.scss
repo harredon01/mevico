@@ -176,3 +176,12 @@ button.view {
 button.picker-opt{
     min-width: 30px;
 }
+.exprice{
+    text-decoration: line-through;
+    color: var(--ion-color-danger);
+    font-size: 18px;
+}
+.price{
+    color: var(--ion-color-primary);
+    font-size: 24px;
+}

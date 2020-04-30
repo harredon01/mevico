@@ -138,7 +138,7 @@ export class EditProductsPage implements OnInit {
     getCategories() {
         this.showLoader();
         let merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
-        this.productsServ.getProductCategories(merchant).subscribe((data: any) => {
+        this.productsServ.getProductCategories(merchant,"Product").subscribe((data: any) => {
             this.dismissLoader();
             console.log(JSON.stringify(data));
             this.categories = data.data;

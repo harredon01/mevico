@@ -52,7 +52,6 @@ export class BookingDetailPage implements OnInit {
         if (params) {
             if (params.booking) {
                 this.mainBooking = params.booking;
-                this.translateAttributes(this.mainBooking.options);
             }
             if (params.modal) {
                 this.isModal = true;
@@ -106,7 +105,6 @@ export class BookingDetailPage implements OnInit {
             let result = data.booking;
             console.log("building booking");
             this.mainBooking = new Booking(result);
-            this.translateAttributes(this.mainBooking.options);
         } else if (data.status == "denied") {
             this.navCtrl.navigateBack("tabs/settings/bookings");
         }

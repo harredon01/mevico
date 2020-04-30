@@ -62,10 +62,10 @@
                     </ion-select>
                 </ion-item>
                 <div class="left mt15 w50" *ngIf="item.onsale">
-                    <p style="font-size: 26px"><b>{{item.exsubtotal | currency }}</b><br/><b>{{item.subtotal | currency }}</b></p>
+                    <p><b class="exprice">{{item.exsubtotal | currency }}</b><br/><b class="price">{{item.subtotal | currency }}</b></p>
                 </div>
                 <div class="left mt15 w50" *ngIf="!item.onsale">
-                    <p style="font-size: 26px"><b>{{item.subtotal | currency }}</b></p>
+                    <p class="price"><b>{{item.subtotal | currency }}</b></p>
                 </div>
                 <div *ngIf="isOwner" class="right mt10">
                     <ion-button class="btn-primary" (click)="editProduct(item.id)">{{ 'INPUTS.EDIT' | translate }}

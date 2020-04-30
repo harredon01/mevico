@@ -52,20 +52,26 @@
             <div class="card-component__stats">
                 <ion-grid>
                     <ion-row>
-                        <ion-col><div class="card-component__stats-item" *ngIf="item.attributes">
+                        <ion-col><div class="card-component__stats-item" *ngIf="item.attributes.years_experience">
                                 <strong>
                                     {{ 'MERCHANT_LISTING.EXPERIENCE' | translate }}:</strong>
                                 {{item.attributes.years_experience }}
                                 {{ 'MERCHANT_LISTING.YEARS' | translate }}
                             </div>
-                            <div class="card-component__stats-item">
+                            <div class="card-component__stats-item" *ngIf="item.unit_cost">
                                 <strong> 
                                     {{ 'MERCHANT_LISTING.FEE' | translate }}:
                                 </strong>
                                 {{item.unit_cost | currency}}
                             </div> 
+                            <div class="card-component__stats-item" *ngIf="item.Distance">
+                                <strong> 
+                                    {{ 'MERCHANT_LISTING.DISTANCE' | translate }}:
+                                </strong>
+                                {{item.Distance}}
+                            </div> 
                         </ion-col>
-                        <ion-col ><div class="card-component__stats-item">
+                        <ion-col *ngIf="item.rating"><div class="card-component__stats-item">
                                 <strong>
                                     {{ 'MERCHANT_LISTING.FEEDBACK' | translate }}:
                                 </strong>
