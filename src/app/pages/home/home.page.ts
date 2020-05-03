@@ -3,6 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {NavController, ModalController, ToastController, LoadingController, Events, MenuController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {AlertsService} from '../../services/alerts/alerts.service';
 import {CartService} from '../../services/cart/cart.service'
 import {OrderDataService} from '../../services/order-data/order-data.service'
 import {ParamsService} from '../../services/params/params.service';
@@ -19,12 +20,14 @@ export class HomePage implements OnInit {
     location: string = "n1";
     categoriesErrorGet: string = "";
     celTitle: string = "";
+    notifs: any = 0;
     celDesc: string = "";
     celError: string = "";
     items: any[] = [];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
         public alertController: AlertController,
+        public alerts: AlertsService,
         public params: ParamsService,
         public userData: UserDataService,
         public userS: UserService,
@@ -41,6 +44,7 @@ export class HomePage implements OnInit {
         public events: Events) {}
 
     ngOnInit() {
+
         let vm = this;
         this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
             vm.categoriesErrorGet = value;
@@ -58,10 +62,17 @@ export class HomePage implements OnInit {
         if (this.userData._user) {
             this.routeNext();
             this.events.publish("authenticated");
+            console.log("Counting unread")
+            this.alerts.countUnread().subscribe((resp: any) => {
+                console.log("Counting unread resp",resp);
+                this.notifs = resp.total;
+            }, (err) => {
+            });
+
         } else {
             this.checkLogIn();
         }
-        
+
         this.events.subscribe('cart:orderFinished', () => {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
@@ -70,6 +81,14 @@ export class HomePage implements OnInit {
     }
     ionViewDidEnter() {
         this.getCart();
+        if (this.userData._user) {
+            console.log("Counting unread")
+            this.alerts.countUnread().subscribe((resp: any) => {
+                console.log("Counting unread resp",resp);
+                this.notifs = resp.total;
+            }, (err) => {
+            });
+        }
     }
     checkLogIn() {
         this.userData.getToken().then((value) => {
@@ -178,9 +197,11 @@ export class HomePage implements OnInit {
 
     }
     openMenu() {
-            this.menu.enable(true, 'end');
-            this.menu.open('end');
-        }
+        this.menu.enable(true, 'end');
+        this.menu.open('end');
+        this.notifs = 0;
+        this.alerts.readAll();
+    }
     searchItems(ev: any) {
         // set val to the value of the searchbar
         const val = ev.target.value;

@@ -355,6 +355,7 @@ export class AppComponent {
     }
     updateAlerts(page) {
         return new Promise((resolve, reject) => {
+            console.log("Headers", this.userData._headers);
             this.alerts.getLanguage().then((value) => {
                 if (!value) {
                     value = "es";

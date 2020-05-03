@@ -16,7 +16,7 @@
 }
 
 * {
-    font-family: 'Source Sans Pro', sans-serif !important;
+    font-family: var(--ion-font-family);
 }
 
 .button-back {
@@ -220,7 +220,7 @@ ion-tab-button{
 .pr10 {padding-right: 10px}
 .pr15 {padding-right: 15px}
 .pr20 {padding-right: 20px}
-.p0 {padding: 5}
+.p0 {padding: 0}
 .p5 {padding: 5px}
 .p10 {padding: 10px}
 .p15 {padding: 15px}

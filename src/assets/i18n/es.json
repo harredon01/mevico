@@ -234,6 +234,7 @@
         "ENDS_AT":"Hasta",
         "PAID":"Pagado",
         "PENDING":"Confirmado",
+        "COMPLETED":"Terminado",
         "PAYMENT":"Pago",
         "WAITING":"Esperando participantes",
         "STARTED":"Empezó",

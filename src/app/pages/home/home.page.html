@@ -1,8 +1,11 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>home</ion-title>
-        <ion-buttons slot="end">
-            <ion-menu-button></ion-menu-button>
+        <ion-buttons slot="end" *ngIf="userData._user">
+            <ion-button size="small" icon-only clear (click)="openMenu()">
+                        <ion-icon name="notifications"></ion-icon>
+                <div id="counter-items">({{notifs}})</div>
+            </ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -10,9 +13,6 @@
 <ion-content>
     <div class="quick-link bg-white">
         <div class="m15">
-            <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="openMenu()" size="small" *ngIf="userData._user">
-                <ion-icon ios="ios-notifications" md="md-notifications"></ion-icon>
-            </ion-button>
             <h2 *ngIf="userData._user">Hola {{userData._user.firstName}}!</h2>
             <h2 *ngIf="!userData._user">Hola!</h2>
             <h3>Bienvenido a PetWorld.</h3>
@@ -24,15 +24,15 @@
 
         </div>
         <div class="clear"></div>
-            <div class="mainCategories">
-                <div (click)="openItem(item)" *ngFor="let item of items" class="mainCategories__list w50 left">
-                    <img src="assets/imgs/dentist-1.jpg" item-start>
-                    <span class="mainCategories__list--text">
-                        <span>{{item.name}}</span>
-                        <small>{{item.description}}</small>
-                    </span>
-                </div>
+        <div class="mainCategories">
+            <div (click)="openItem(item)" *ngFor="let item of items" class="mainCategories__list w50 left">
+                <img src="assets/imgs/dentist-1.jpg" item-start>
+                <span class="mainCategories__list--text">
+                    <span>{{item.name}}</span>
+                    <small>{{item.description}}</small>
+                </span>
             </div>
+        </div>
     </div>
 
 </ion-content>

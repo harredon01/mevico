@@ -31,7 +31,7 @@
                     <div class="calander-row"> 
                         <ion-grid>
                             <ion-row>
-                                <ion-col *ngFor="let item of month.days" (click)="selectDate(item)">
+                                <ion-col *ngFor="let item of month.days" (click)="selectDate(item)" class="p0">
                                     <div class="day active" >
                                         <span>{{item | date :'E'}}</span>{{item | date :'d'}}
                                     </div>
@@ -103,25 +103,26 @@
             <ion-item  *ngIf="virtualMeeting=='virtual'">
                 <p>{{ 'CART_ITEM.SUBTOTAL' | translate }}: {{ (expectedPrice*0.5)*amount | currency }}</p>
             </ion-item>
-            <ion-card *ngIf="timeSelected">
-                <ion-card-header>
-                    <ion-card-title>{{ 'BOOKING.DETAILS' | translate }}</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                    <ion-item  *ngIf="bookingObj">
-                        <a href="javascript:;" (click)="changeDate()">{{ 'BOOKING.CHANGE_DATE' | translate }}</a>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label position="floating">{{ 'BOOKING.TYPE_HELP' | translate }}</ion-label>
-                        <ion-input type="text" [(ngModel)]="atributesCont.type_help"></ion-input>
-                    </ion-item>
-                    <ion-item>
-                        <ion-label position="floating">{{ 'BOOKING.TYPE_DESC' | translate }}</ion-label>
-                        <ion-textarea class="mb20" [(ngModel)]="atributesCont.desc_item"></ion-textarea>
-                    </ion-item>
-                    <ion-button full class="btn success right mt15 mb15" (click)="saveOrCreateBooking()"  *ngIf="timeSelected">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
-                </ion-card-content>
-            </ion-card>
+
         </div>
     </div>
+    <ion-card *ngIf="timeSelected" class="m0">
+        <ion-card-header>
+            <ion-card-title>{{ 'BOOKING.DETAILS' | translate }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item  *ngIf="bookingObj">
+                <a href="javascript:;" (click)="changeDate()">{{ 'BOOKING.CHANGE_DATE' | translate }}</a>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'BOOKING.TYPE_HELP' | translate }}</ion-label>
+                <ion-input type="text" [(ngModel)]="atributesCont.type_help"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">{{ 'BOOKING.TYPE_DESC' | translate }}</ion-label>
+                <ion-textarea class="mb20" [(ngModel)]="atributesCont.desc_item"></ion-textarea>
+            </ion-item>
+            <ion-button full class="btn success right mt15 mb15" (click)="saveOrCreateBooking()"  *ngIf="timeSelected">{{ 'BOOKING.MAKE_RESERVATION' | translate }}</ion-button>
+        </ion-card-content>
+    </ion-card>
 </ion-content>
