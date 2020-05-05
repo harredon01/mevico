@@ -37,6 +37,8 @@
             <p class="text--italic text-white">{{merchant.type}}</p> 
             <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
             <span class="text--block">{{ merchant.unit_cost | currency }}</span>
+            <p class="text--bold">{{ 'MERCHANT_LISTING.EXPERIENCE' | translate }}:</p>
+            <span class="text--block">{{ merchant.attributes.years_experience }} {{ 'MERCHANT_LISTING.YEARS' | translate }}</span>
             <div class="rating-container">
 
                 <div class="rating-box">
