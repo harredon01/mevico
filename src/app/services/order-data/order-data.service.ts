@@ -49,8 +49,8 @@ export class OrderDataService {
     }
     buildPayment(container: any) {
         console.log("Build payment", container);
-        container.created_at = container.created_at.replace(" ", "T");
-        container.updated_at = container.updated_at.replace(" ", "T");
+        container.created_at = container.created_at.replace(/-/g, '/');
+        container.updated_at = container.updated_at.replace(/-/g, '/');
         let result = new Payment(container)
         result.order = new Order(container.order);
         result.order.attributes = JSON.parse(result.order.attributes);

@@ -176,7 +176,7 @@ export class AppComponent {
                 console.log("Notification received", message);
                 message.subject_es = message.subject;
                 if (message.created_at.date) {
-                    message.created_at.date = message.created_at.date.replace(" ", "T");
+                    message.created_at.date = message.created_at.date.replace(/-/g, '/');
                     message.created_at = new Date(message.created_at.date);
                 }
                 if (message.type == "user_message") {
@@ -266,7 +266,7 @@ export class AppComponent {
         let more = false;
         let data = results.data;
         for (let msg in data) {
-            data[msg].created_at = data[msg].created_at.replace(" ", "T");
+            data[msg].created_at = data[msg].created_at.replace(/-/g, '/');
             data[msg].created_at = new Date(data[msg].created_at);
             data[msg].payload = JSON.parse(data[msg].payload);
             if (language == "es") {

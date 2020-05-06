@@ -92,8 +92,8 @@ export class ItemsPage implements OnInit {
                     if (order) {
                         order.items.push(newItem);
                     } else {
-                        results[item].order.created_at = results[item].order.created_at.replace(" ", "T");
-                        results[item].order.updated_at = results[item].order.updated_at.replace(" ", "T");
+                        results[item].order.created_at = results[item].order.created_at.replace(/-/g, '/');
+                        results[item].order.updated_at = results[item].order.updated_at.replace(/-/g, '/');
                         results[item].order.created_at = new Date(results[item].order.created_at);
                         results[item].order.updated_at = new Date(results[item].order.updated_at);
                         order = new Order(results[item].order);
