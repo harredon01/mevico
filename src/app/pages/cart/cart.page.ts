@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
-import {ModalController, NavController, ToastController, Events, LoadingController} from '@ionic/angular';
+import {ModalController, NavController, ToastController, LoadingController} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
+import {Events} from '../../services/events/events.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ApiService} from '../../services/api/api.service';
 import {Item} from '../../models/item';
@@ -182,7 +183,7 @@ export class CartPage implements OnInit {
             if (resp.status == "success") {
                 this.orderData.cartData = resp.cart;
                 this.loadCart();
-                this.events.publish('cart:deleteItem', item, Date.now());
+                this.events.publish('cart:deleteItem', {item:item, time:Date.now()});
                 //this.navCtrl.push(MainPage);
             }
             this.dismissLoader();
@@ -241,7 +242,7 @@ export class CartPage implements OnInit {
             this.orderData.cartData.totalItems = 0;
             this.loadCart();
             this.dismissLoader();
-            this.events.publish('cart:clear');
+            this.events.publish('cart:clear',{});
             //this.navCtrl.push(MainPage);
         }, (err) => {
             this.dismissLoader();

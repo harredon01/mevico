@@ -10,7 +10,7 @@
                 <ion-icon name="md-share" item-start></ion-icon>
                 <ion-icon name="md-more" item-start></ion-icon>
             </span>-->
-            <div class="content-car">
+            <div class="content-car" *ngIf="orderData.cartData">
                 
                 <ion-button size="small" icon-only clear (click)="openCart()">
                     <ion-icon name="cart"></ion-icon>

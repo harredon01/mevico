@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Events} from '@ionic/angular';
+import {Events} from '../events/events.service';
 import {Storage} from '@ionic/storage';
 import {Address} from '../../models/address';
 import {Payment} from '../../models/payment';
@@ -175,7 +175,7 @@ export class OrderDataService {
         this.creditProduct = null;
         this.payment = null;
         this.payers = [];
-        this.events.publish('cart:orderFinished');
+        this.events.publish('cart:orderFinished',{});
     }
     clearOtherPayers(order_id: any) {
 

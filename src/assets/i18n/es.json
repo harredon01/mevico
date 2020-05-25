@@ -740,6 +740,8 @@
         "DISTANCE": "Distancia",
         "VIEW":"Ver más",
         "FEE":"Tarifa",
+        "FEE2":"Tarifa Virtual",
+        "FEE3":"Consulta rápida (20 mins)",
         "FEEDBACK":"Calificaciones"
     },
     "MY_ACCOUNT": {

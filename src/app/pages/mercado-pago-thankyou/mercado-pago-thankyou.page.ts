@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Payment} from '../../models/payment'
 import {ParamsService} from '../../services/params/params.service';
-import {NavController,Events} from '@ionic/angular';
+import {NavController} from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 @Component({
     selector: 'app-mercado-pago-thankyou',
@@ -19,7 +19,6 @@ export class MercadoPagoThankyouPage implements OnInit {
 
     constructor(
         private params: ParamsService,
-        private events:Events,
         private translateService: TranslateService,
         private navCtrl: NavController) {
         let container = this.params.getParams();

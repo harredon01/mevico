@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
-import {NavController, ModalController, ToastController, LoadingController, Events, MenuController, AlertController} from '@ionic/angular';
+import {NavController, ModalController, ToastController, LoadingController, MenuController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {Events} from '../../services/events/events.service';
 import {AlertsService} from '../../services/alerts/alerts.service';
 import {CartService} from '../../services/cart/cart.service'
 import {OrderDataService} from '../../services/order-data/order-data.service'
@@ -61,7 +62,7 @@ export class HomePage implements OnInit {
 
         if (this.userData._user) {
             this.routeNext();
-            this.events.publish("authenticated");
+            this.events.publish("authenticated",{});
             console.log("Counting unread")
             this.alerts.countUnread().subscribe((resp: any) => {
                 console.log("Counting unread resp",resp);
@@ -73,7 +74,7 @@ export class HomePage implements OnInit {
             this.checkLogIn();
         }
 
-        this.events.subscribe('cart:orderFinished', () => {
+        this.events.subscribe('cart:orderFinished', (data:any) => {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });

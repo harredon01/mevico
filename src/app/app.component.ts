@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router, RouterEvent, NavigationEnd} from '@angular/router';
-import {Platform, Events, MenuController, NavController, AlertController, ToastController} from '@ionic/angular';
+import {Platform,  MenuController, NavController, AlertController, ToastController} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
 import {TranslateService} from '@ngx-translate/core';
@@ -9,6 +9,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {LanguageService} from './services/language/language.service';
 import {AlertsService} from './services/alerts/alerts.service';
 import {ParamsService} from './services/params/params.service';
+import {Events} from './services/events/events.service';
 import {UserDataService} from './services/user-data/user-data.service';
 import {DynamicRouterService} from './services/dynamic-router/dynamic-router.service';
 import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
@@ -105,36 +106,36 @@ export class AppComponent {
             //                .then((success: any) => console.log(success))
             //                .catch((error: any) => console.log(error));
             this.handlerNotifications();
-            this.events.subscribe('authenticated', () => {
+            this.events.subscribe('authenticated', (data:any) => {
                 this.getAlerts();
                 // user and time are the same arguments passed in `events.publish(user, time)`
             });
-            this.events.subscribe('notifsOpen', () => {
+            this.events.subscribe('notifsOpen', (data:any) => {
                 if (this.items.length == 0) {
                     this.getAlerts();
                 }
             });
-            this.events.subscribe('cart:orderFinished', () => {
+            this.events.subscribe('cart:orderFinished', (data:any) => {
                 let vm = this;
                 setTimeout(function () {vm.updateAlerts(1);}, 3000);
                 // user and time are the same arguments passed in `events.publish(user, time)`
             });
-            this.events.subscribe('app:updateNotifsWeb', (counter, timer) => {
+            this.events.subscribe('app:updateNotifsWeb', (data:any) => {
                 console.log("Update Notifs web triggered");
                 this.isFocused = true;
                 if (document.URL.startsWith('http')) {
-                    this.fetchNotisWeb(1,  counter, timer);
+                    this.fetchNotisWeb(1,  data.counter, data.timer);
                 }
             });
-            this.events.subscribe('app:stopNotifsWeb', (counter, timer) => {
+            this.events.subscribe('app:stopNotifsWeb', (data:any) => {
                 this.isFocused = false;
                 console.log("Update Notifs web OFF");
             });
             window.addEventListener('focus', (e: any) => {
-                this.events.publish('app:updateNotifsWeb', 8, 30000);
+                this.events.publish('app:updateNotifsWeb', {iterations:8, interval:30000});
             });
             window.addEventListener('blur', (e: any) => {
-                this.events.publish('app:stopNotifsWeb');
+                this.events.publish('app:stopNotifsWeb',{});
             });
         });
         this.alerts.getLanguage().then((value) => {
@@ -166,7 +167,7 @@ export class AppComponent {
         this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
         this.oneSignal.handleNotificationOpened()
             .subscribe(jsonData => {
-                this.events.publish('notification:opened', jsonData, Date.now());
+                this.events.publish('notification:opened', {notification:jsonData, time:Date.now()});
                 console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
                 this.sortNotificationType(jsonData, false);
             });
@@ -189,7 +190,7 @@ export class AppComponent {
                 this.items.push(message);
                 this.cleanResults();
                 console.log('notification received: ', message);
-                this.events.publish('notification:received', message, Date.now());
+                this.events.publish('notification:received', {notification:message, time:Date.now()});
                 this.toastCtrl.create({
                     message: message.subject_es,
                     duration: 3000,
@@ -277,7 +278,7 @@ export class AppComponent {
                 console.log("Last notif increased3",this.last_notif);
             }
             if (triggerEvent) {
-                this.events.publish('notification:received', data[msg], Date.now());
+                this.events.publish('notification:received', {notification:data[msg], time:Date.now()});
                 this.items.unshift(data[msg]);
             } else {
                 this.items.push(data[msg]);

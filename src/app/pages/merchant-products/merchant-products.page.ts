@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, ToastController, ModalController, AlertController, Events, LoadingController} from '@ionic/angular';
+import {NavController, ToastController, ModalController, AlertController, LoadingController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {Events} from '../../services/events/events.service';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {ProductsService} from '../../services/products/products.service';
@@ -108,12 +109,12 @@ export class MerchantProductsPage implements OnInit {
             this.getCart();
         }
         console.log("User: ", this.userData._user);
-        events.subscribe('cart:deleteItem', (item) => {
-            console.log("Deleting item", item);
-            this.clearCartItem(item);
+        events.subscribe('cart:deleteItem', (resp:any) => {
+            console.log("Deleting item", resp.item);
+            this.clearCartItem(resp.item);
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
-        events.subscribe('cart:clear', () => {
+        events.subscribe('cart:clear', (resp:any) => {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
@@ -230,7 +231,7 @@ export class MerchantProductsPage implements OnInit {
             this.orderData.cartData.total = 0;
             this.orderData.cartData.subtotal = 0;
             this.orderData.cartData.totalItems = 0;
-            this.events.publish('cart:clear');
+            this.events.publish('cart:clear',{});
             this.addCartItem(item);
             //this.navCtrl.push(MainPage);
         }, (err) => {

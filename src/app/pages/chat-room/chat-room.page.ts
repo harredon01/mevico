@@ -2,8 +2,9 @@ import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {Friend} from "../../models/friend";
 import {Message} from "../../models/message";
 import {IonInfiniteScroll} from '@ionic/angular';
-import {NavController, ToastController, LoadingController, Events, AlertController, IonContent} from '@ionic/angular';
+import {NavController, ToastController, LoadingController, AlertController, IonContent} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {Events} from '../../services/events/events.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {ChatService} from '../../services/chat/chat.service';
 import {ApiService} from '../../services/api/api.service';
@@ -77,10 +78,11 @@ export class ChatRoomPage implements OnInit {
             this.getSupportAgent(typeObject, objectId);
         }
         console.log("onPageWillEnter");
-        this.events.subscribe('notification:received', (message) => {
-            this.receiveMessage(message);
+        this.events.subscribe('notification:received', (data:any) => {
+            console.log("result warnshoov",data.notification);
+            this.receiveMessage(data.notification);
         });
-        this.events.publish('app:updateNotifsWeb', 500,5000);
+        this.events.publish('app:updateNotifsWeb',{iterations:500, interval:5000} );
         this.page = 0;
         console.log("using ionViewDidEnter", this.lastId);
         console.log("Friend", this.friend);
@@ -88,9 +90,9 @@ export class ChatRoomPage implements OnInit {
 
     ionViewDidLeave() {
         console.log("onPageWillLeave");
-        this.events.publish('app:stopNotifsWeb');
+        this.events.publish('app:stopNotifsWeb',{});
         //this.tabBarElement.style.display = 'flex';
-        this.events.unsubscribe('notification:received');
+        this.events.destroy('notification:received');
     }
 
     checkAddMessage(id) {

@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
-import {NavController, ModalController, ToastController, LoadingController, Events, MenuController, AlertController} from '@ionic/angular';
+import {NavController, ModalController, ToastController, LoadingController, MenuController, AlertController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {Events} from '../../services/events/events.service';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {CartService} from '../../services/cart/cart.service'
 import {OrderDataService} from '../../services/order-data/order-data.service'
@@ -57,7 +58,7 @@ export class MerchantCategoriesPage implements OnInit {
         });
         //this.getCart();
         //this.events.publish("authenticated");
-        this.events.subscribe('cart:orderFinished', () => {
+        this.events.subscribe('cart:orderFinished', (resp:any) => {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });

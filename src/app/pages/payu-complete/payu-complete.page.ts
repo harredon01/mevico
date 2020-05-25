@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, Events} from '@ionic/angular';
+import {NavController } from '@ionic/angular';
+import {Events} from '../../services/events/events.service';
 import {TranslateService} from '@ngx-translate/core';
 import {ParamsService} from '../../services/params/params.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
@@ -31,12 +32,12 @@ export class PayuCompletePage implements OnInit {
             if (this.transaction.state == 'APPROVED') {
                 //this.fb.logPurchase(total, "COP");
                 let vm = this;
-                setTimeout(function () {vm.events.publish("home:loadDeliveries");}, 1500);
+                setTimeout(function () {vm.events.publish("home:loadDeliveries",{});}, 1500);
             }
         } else {
             //this.fb.logPurchase(0, "COP");
             let vm = this;
-            setTimeout(function () {vm.events.publish("home:loadDeliveries");}, 1500);
+            setTimeout(function () {vm.events.publish("home:loadDeliveries",{});}, 1500);
         }
 
     }

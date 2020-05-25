@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Events} from '@ionic/angular';
+import {Events} from '../events/events.service';
 //import BackgroundGeolocation, {
 //    State,
 //    Config,
@@ -51,7 +51,7 @@ export class TrackingService {
 //        });
 //        BackgroundGeolocation.onGeofence(geofence => {
 //            console.log('[geofence] ', geofence.identifier, geofence.action);
-//            this.events.publish('location:onGeofence', geofence);
+//            this.events.publish('location:onGeofence', {geofence:geofence});
 //        });
         // 2.  Configure the plugin with #ready
         this.callReady(false);

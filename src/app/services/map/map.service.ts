@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MapDataService} from '../map-data/map-data.service';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
-import {Events} from '@ionic/angular';
+import {Events} from '../events/events.service';
 import {
     GoogleMaps,
     Environment,
@@ -135,7 +135,7 @@ export class MapService {
      * Creates google maps object
      */
     shippingAddressInCoverage(markerlatlong: any) {
-        this.events.publish('map:shippingAddressInCoverage');
+        this.events.publish('map:shippingAddressInCoverage',{});
         console.log("Address valid getting data", markerlatlong);
         this.mapData.address.lat = markerlatlong.lat;
         this.mapData.address.long = markerlatlong.lng;
@@ -192,7 +192,7 @@ export class MapService {
                         if (result) {
                             this.shippingAddressInCoverage(markerlatlong);
                         } else {
-                            this.events.publish('map:shippingAddressNotInCoverage');
+                            this.events.publish('map:shippingAddressNotInCoverage',{});
                             console.log("Address not in coverage");
                         }
                     } else {
@@ -205,7 +205,7 @@ export class MapService {
             });
         container.on(GoogleMapsEvent.MARKER_DRAG_START)
             .subscribe(() => {
-                this.events.publish('map:checkingShippingAddressCoverage');
+                this.events.publish('map:checkingShippingAddressCoverage',{});
             });
         this.mapData.newAddressMarker = container;
         let defaultValuesReport = {
@@ -240,7 +240,7 @@ export class MapService {
         let container3 = this.createMarker(defaultValuesMe, "Me");
         container3.setVisible(false);
         this.mapData.meMarker = container3;
-        this.events.publish('map:loaded');
+        this.events.publish('map:loaded',{});
     }
     /**
      * prepares sharer data for creating a marker

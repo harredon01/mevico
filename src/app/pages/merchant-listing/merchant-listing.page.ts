@@ -21,7 +21,7 @@ import {ApiService} from '../../services/api/api.service';
 export class MerchantListingPage implements OnInit {
     @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
     location: any;
-    typeSearch: string = "category"; 
+    typeSearch: string = "category";
     urlSearch: string = "";
     totalResults: any;
     textSearch: string = "";
@@ -36,12 +36,12 @@ export class MerchantListingPage implements OnInit {
     constructor(public navCtrl: NavController,
         private activatedRoute: ActivatedRoute,
         public params: ParamsService,
-        public userData:UserDataService,
+        public userData: UserDataService,
         public geolocation: Geolocation,
         public mapData: MapDataService,
         public categories: CategoriesService,
         public merchantsServ: MerchantsService,
-        public toastCtrl: ToastController, 
+        public toastCtrl: ToastController,
         public modalCtrl: ModalController,
         public loadingCtrl: LoadingController,
         public translateService: TranslateService,
@@ -49,16 +49,10 @@ export class MerchantListingPage implements OnInit {
         private spinnerDialog: SpinnerDialog) {
         this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
         let paramsContainer = this.params.getParams();
-        if(paramsContainer.owner){
-            this.typeSearch="own";
-            this.urlSearch = "tabs/settings/merchants/";
+        if (this.userData._user) {
+            this.urlSearch = 'tabs/categories/' + this.category + '/merchant/';
         } else {
-            if (this.userData._user){
-                this.urlSearch = 'tabs/categories/' + this.category + '/merchant/';
-            } else {
-                this.urlSearch = 'home/' + this.category + '/merchant/';
-            }
-            
+            this.urlSearch = 'home/' + this.category + '/merchant/';
         }
     }
     async filter() {
@@ -80,17 +74,17 @@ export class MerchantListingPage implements OnInit {
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
-        if (data) { 
+        if (data) {
             this.getMerchants(null);
         }
     }
     getItems() {
-        let query = "merchants"; 
+        let query = "merchants";
         this.categories.getCategories(query).subscribe((data: any) => {
             console.log("after getCategories");
             this.categoryItems = data.categories;
             this.category = parseInt(this.activatedRoute.snapshot.paramMap.get('categoryId'));
-            console.log(JSON.stringify(data)); 
+            console.log(JSON.stringify(data));
             //this.cdr.detectChanges();
         }, (err) => {
             // Unable to log in
@@ -106,8 +100,8 @@ export class MerchantListingPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     openItem(item: Merchant) {
-        if(this.typeSearch=="own"){
-            this.params.setParams({"item": item, "category": this.category,"owner":true});
+        if (this.typeSearch == "own") {
+            this.params.setParams({"item": item, "category": this.category, "owner": true});
         } else {
             this.params.setParams({"item": item, "category": this.category});
         }
@@ -118,9 +112,9 @@ export class MerchantListingPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     createItem() {
-        if(this.typeSearch=="own"){
+        if (this.typeSearch == "own") {
             this.navCtrl.navigateForward(this.urlSearch + "create-merchant");
-        } 
+        }
         console.log("Creating merchant");
     }
     /**
@@ -135,7 +129,7 @@ export class MerchantListingPage implements OnInit {
             this.typeSearch = "nearby";
             this.merchants = [];
             this.page = 0;
-            this.location = {lat: resp.coords.latitude, long: resp.coords.longitude,category:this.category};
+            this.location = {lat: resp.coords.latitude, long: resp.coords.longitude, category: this.category};
             this.dismissLoader();
             this.getMerchants(null);
         }).catch((error) => {
@@ -167,7 +161,7 @@ export class MerchantListingPage implements OnInit {
     }
     searchCategory() {
         this.merchants = [];
-        this.page = 0; 
+        this.page = 0;
         this.typeSearch = "category";
         this.getMerchants(null);
     }
@@ -188,7 +182,7 @@ export class MerchantListingPage implements OnInit {
         }
         searchObj.subscribe((data: any) => {
             data.data = this.merchantsServ.prepareObjects(data.data);
-            if(data.total){
+            if (data.total) {
                 this.totalResults = data.total;
             }
             let results = data.data;
@@ -196,7 +190,7 @@ export class MerchantListingPage implements OnInit {
                 this.infiniteScroll.disabled = true;
             }
             for (let one in results) {
-                if(results[one].merchant_id){
+                if (results[one].merchant_id) {
                     results[one].id = results[one].merchant_id;
                 }
                 let container = new Merchant(results[one]);
@@ -219,9 +213,15 @@ export class MerchantListingPage implements OnInit {
         });
     }
 
-    dismissLoader() {
+    async dismissLoader() {
         if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
+            let topLoader = await this.loadingCtrl.getTop();
+            while (topLoader) {
+                if (!(await topLoader.dismiss())) {
+                    throw new Error('Could not dismiss the topmost loader. Aborting...');
+                }
+                topLoader = await this.loadingCtrl.getTop();
+            }
         } else {
             this.spinnerDialog.hide();
         }

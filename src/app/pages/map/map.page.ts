@@ -1,8 +1,9 @@
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
-import {NavController, ModalController, AlertController, Platform, LoadingController, Events} from '@ionic/angular';
+import {NavController, ModalController, AlertController, Platform, LoadingController} from '@ionic/angular';
 import {MapService} from '../../services/map/map.service';
+import {Events} from '../../services/events/events.service';
 import {MapDataService} from '../../services/map-data/map-data.service';
 import {ApiService} from '../../services/api/api.service';
 import {FoodService} from '../../services/food/food.service';
@@ -49,17 +50,17 @@ export class MapPage implements OnInit {
         this.translateService.get('MAP.DELIVERY_NO_ROUTE_DESC').subscribe((value) => {
             this.deliveryNoRouteDesc = value;
         });
-        events.subscribe('map:checkingShippingAddressCoverage', () => {
+        events.subscribe('map:checkingShippingAddressCoverage', (resp:any) => {
             console.log("Checking Shipping address coverage");
             this.showLoader();
         });
-        events.subscribe('map:loaded', () => {
+        events.subscribe('map:loaded', (resp:any) => {
             console.log("Map Loaded");
             this.mapLoaded = true;
             this.mapActive = true;
             this.buildMapStatus();
         });
-        events.subscribe('map:shippingAddressInCoverage', () => {
+        events.subscribe('map:shippingAddressInCoverage', (resp:any) => {
             this.loadingComplete = true;
 
             console.log("Shipping address in coverage event triggered");
@@ -67,7 +68,7 @@ export class MapPage implements OnInit {
             this.dismissLoader();
             this.cdr.detectChanges();
         });
-        events.subscribe('map:shippingAddressNotInCoverage', () => {
+        events.subscribe('map:shippingAddressNotInCoverage', (resp:any) => {
             this.shippingAddressInCoverage = false;
             console.log("Event Address not in coverage");
             this.loadingComplete = true;

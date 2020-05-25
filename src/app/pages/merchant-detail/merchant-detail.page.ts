@@ -258,9 +258,15 @@ export class MerchantDetailPage implements OnInit {
             this.spinnerDialog.show();
         }
     }
-    dismissLoader() {
+    async dismissLoader() {
         if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
+            let topLoader = await this.loadingCtrl.getTop();
+            while (topLoader) {
+                if (!(await topLoader.dismiss())) {
+                    throw new Error('Could not dismiss the topmost loader. Aborting...');
+                }
+                topLoader = await this.loadingCtrl.getTop();
+            }
         } else {
             this.spinnerDialog.hide();
         }

@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, ModalController, LoadingController, Events} from '@ionic/angular';
+import {NavController, ToastController, ModalController, LoadingController} from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {ParamsService} from '../../services/params/params.service';

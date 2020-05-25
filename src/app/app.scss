@@ -4,6 +4,17 @@
 // styles are for the entire app and not just one component. Additionally, this 
 // file can hold Sass mixins, functions, and placeholder classes to be imported 
 // and used throughout the application.
+@media (min-width: 800px) {
+  .app-root {
+    width: 800px;
+    margin: auto;
+    position: relative;
+  }
+
+  .scroll-content {
+    overflow-y:auto;
+  }
+}
 .menu__toggle{
     .notif {
         border-bottom: 1px solid var(--ion-color-primary-shade);

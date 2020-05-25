@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Facebook, FacebookLoginResponse} from '@ionic-native/facebook/ngx';
 import {GooglePlus} from '@ionic-native/google-plus/ngx';
-import {NavController, ToastController, LoadingController, Events, AlertController, ModalController} from '@ionic/angular';
+import {NavController, ToastController, LoadingController, AlertController, ModalController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {Events} from '../../services/events/events.service';
 import {InAppBrowser} from '@ionic-native/in-app-browser/ngx';
 import {UserService} from '../../services/user/user.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
@@ -203,7 +204,7 @@ export class LoginPage implements OnInit {
         this.user.postLogin().then((value) => {
             this.dismissLoader();
             this.navCtrl.navigateRoot("tabs");
-            this.events.publish("authenticated");
+            this.events.publish("authenticated",{});
         }, (err) => {
             this._loadUserData();
             // Unable to log in
@@ -252,7 +253,7 @@ export class LoginPage implements OnInit {
                 this.dismissLoader();
                 console.log("Post login complete");
                 this.navCtrl.navigateRoot("tabs");
-                this.events.publish("authenticated");
+                this.events.publish("authenticated",{});
             }, (err) => {
                 console.log("Post login error on registration");
             });

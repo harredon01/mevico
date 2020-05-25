@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, ToastController, ModalController, AlertController, Events, LoadingController} from '@ionic/angular';
+import {NavController, ToastController, ModalController, AlertController, LoadingController} from '@ionic/angular';
 import {ParamsService} from '../../services/params/params.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {TranslateService} from '@ngx-translate/core';
@@ -41,7 +41,6 @@ export class EditProductsPage implements OnInit {
         public alertCtrl: AlertController,
         private spinnerDialog: SpinnerDialog,
         public loadingCtrl: LoadingController,
-        public events: Events,
         public params: ParamsService,
         public translateService: TranslateService) {
 

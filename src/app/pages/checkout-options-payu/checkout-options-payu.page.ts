@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, ModalController, AlertController, Events, LoadingController, IonContent} from '@ionic/angular';
+import {NavController, ToastController, ModalController, AlertController, LoadingController, IonContent} from '@ionic/angular';
 import {Item} from '../../models/item';
 import {Payment} from '../../models/payment';
 import {ParamsService} from '../../services/params/params.service';
@@ -65,7 +65,6 @@ export class CheckoutOptionsPayuPage implements OnInit {
         public userData: UserDataService,
         public api: ApiService,
         public user: UserService,
-        public events: Events,
         public orderProvider: OrderService,
         public modalCtrl: ModalController,
         public toastCtrl: ToastController,

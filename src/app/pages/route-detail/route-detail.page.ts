@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Route} from '../../models/route';
-import {NavController, ModalController, ToastController, Events, LoadingController} from '@ionic/angular';
+import {NavController, ModalController, ToastController, LoadingController} from '@ionic/angular';
 import {ApiService} from '../../services/api/api.service';
+import {Events} from '../../services/events/events.service';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {RoutingService} from '../../services/routing/routing.service';
 import {ParamsService} from '../../services/params/params.service';
@@ -115,7 +116,8 @@ export class RouteDetailPage implements OnInit {
     ngOnInit() {
     }
     subscribeEvents() {
-        this.events.subscribe('location:onGeofence', (geofence) => {
+        this.events.subscribe('location:onGeofence', (resp:any) => {
+            let geofence = resp.geofence;
             if (geofence.action == "ENTER") {
                 this.stopArrived(geofence.identifier);
             } else if (geofence.action == "EXIT") {
