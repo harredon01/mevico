@@ -50,7 +50,8 @@ export class UserService {
         });
     }
     saveTokenServer() {
-        this.oneSignal.getIds().then((ids) => {
+        if (!document.URL.startsWith('http')) {
+            this.oneSignal.getIds().then((ids) => {
             console.log('platform: food  getIds: ' + JSON.stringify(ids));
             let token = {
                 "platform": "food",
@@ -58,6 +59,8 @@ export class UserService {
             }
             this.registerToken(token);
         });
+        }
+        
     }
     /**
      * Send a POST request to our login endpoint with the data

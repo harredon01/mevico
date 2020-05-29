@@ -125,6 +125,11 @@ export class MerchantProductsPage implements OnInit {
         this.showLoader();
         this.loadProducts();
         this.loadOptions();
+        if (document.URL.startsWith('http')) {
+            let vm = this;
+            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 1000);
+            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 2000);
+        }
     }
     addCart(item: any) {
         this.addCartItem(item);
@@ -340,9 +345,16 @@ export class MerchantProductsPage implements OnInit {
             }).then(toast => toast.present());
         }
     }
-    dismissLoader() {
+    async dismissLoader() {
         if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
+            let topLoader = await this.loadingCtrl.getTop();
+            while (topLoader) {
+                if (!(await topLoader.dismiss())) {
+                    console.log('Could not dismiss the topmost loader. Aborting...');
+                    return;
+                }
+                topLoader = await this.loadingCtrl.getTop();
+            }
         } else {
             this.spinnerDialog.hide();
         }

@@ -55,6 +55,13 @@ export class MerchantListingPage implements OnInit {
             this.urlSearch = 'home/' + this.category + '/merchant/';
         }
     }
+    ionViewDidEnter() {        
+        if (document.URL.startsWith('http')) {
+            let vm = this;
+            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 1000);
+            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 2000);
+        }
+    }
     async filter() {
         let container;
         container = {
@@ -218,7 +225,8 @@ export class MerchantListingPage implements OnInit {
             let topLoader = await this.loadingCtrl.getTop();
             while (topLoader) {
                 if (!(await topLoader.dismiss())) {
-                    throw new Error('Could not dismiss the topmost loader. Aborting...');
+                    console.log('Could not dismiss the topmost loader. Aborting...');
+                    return;
                 }
                 topLoader = await this.loadingCtrl.getTop();
             }

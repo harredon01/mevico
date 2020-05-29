@@ -14,6 +14,8 @@ export class DatabaseService {
 
     constructor(private platform: Platform, private sqlite: SQLite) {
         this.platform.ready().then(() => {
+                    
+if (!document.URL.startsWith('http')) {
             this.sqlite.create({
                 name: 'food.db',
                 location: 'default'
@@ -25,8 +27,10 @@ export class DatabaseService {
                         //we loaded or created tables, so, set dbReady to true
                         this.dbReady.next(true);
                     });
-                })
-
+                }).catch((error: any) => {
+                console.log(error);
+            });
+}
         });
     }
 

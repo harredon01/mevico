@@ -105,7 +105,9 @@ export class AppComponent {
             //            this.zoomService.initialize("VNtFB87WSBW0yHl6rxHgTA", "air8HQbEbEEQZL5aZlNRwUMqPED2RH9zMx5B")
             //                .then((success: any) => console.log(success))
             //                .catch((error: any) => console.log(error));
-            this.handlerNotifications();
+            if (!document.URL.startsWith('http')) {
+                this.handlerNotifications();
+            }
             this.events.subscribe('authenticated', (data:any) => {
                 this.getAlerts();
                 // user and time are the same arguments passed in `events.publish(user, time)`
@@ -158,7 +160,10 @@ export class AppComponent {
                 this.getAlerts();
             }
             console.log('****UserdashboardPage RESUMED****');
-            this.oneSignal.clearOneSignalNotifications();
+            if (!document.URL.startsWith('http')) {
+                this.oneSignal.clearOneSignalNotifications();
+            }
+            
             //this.performManualUpdate();
         });
     }

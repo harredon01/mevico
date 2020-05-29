@@ -82,6 +82,13 @@ export class HomePage implements OnInit {
     }
     ionViewDidEnter() {
         this.getCart();
+        
+        if (document.URL.startsWith('http')) {
+            let vm = this;
+            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 1000);
+            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 2000);
+        }
+        
         if (this.userData._user) {
             console.log("Counting unread")
             this.alerts.countUnread().subscribe((resp: any) => {
@@ -211,9 +218,16 @@ export class HomePage implements OnInit {
 
         }
     }
-    dismissLoader() {
+    async dismissLoader() {
         if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
+            let topLoader = await this.loadingCtrl.getTop();
+            while (topLoader) {
+                if (!(await topLoader.dismiss())) {
+                    console.log('Could not dismiss the topmost loader. Aborting...');
+                    return;
+                }
+                topLoader = await this.loadingCtrl.getTop();
+            }
         } else {
             this.spinnerDialog.hide();
         }

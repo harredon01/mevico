@@ -290,9 +290,16 @@ export class MercadoPagoOptionsPage implements OnInit {
             this.spinnerDialog.show(null, this.gettingBanks);
         }
     }
-    dismissLoader() {
+    async dismissLoader() {
         if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
+            let topLoader = await this.loadingCtrl.getTop();
+            while (topLoader) {
+                if (!(await topLoader.dismiss())) {
+                    console.log('Could not dismiss the topmost loader. Aborting...');
+                    return;
+                }
+                topLoader = await this.loadingCtrl.getTop();
+            }
         } else {
             this.spinnerDialog.hide();
         }

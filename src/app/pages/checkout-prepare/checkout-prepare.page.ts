@@ -167,11 +167,13 @@ export class CheckoutPreparePage implements OnInit {
         this.conditions = [];
         this.payers = [];
         let paramsSent = this.params.getParams();
-        if (paramsSent.is_meal) {
-            let isMeal = paramsSent.is_meal;
-            console.log("Is meal", isMeal);
-            if (isMeal == 0) {
-                this.showSplit = true;
+        if (paramsSent) {
+            if (paramsSent.is_meal) {
+                let isMeal = paramsSent.is_meal;
+                console.log("Is meal", isMeal);
+                if (isMeal == 0) {
+                    this.showSplit = true;
+                }
             }
         }
         if (this.orderData.currentOrder) {
@@ -182,9 +184,16 @@ export class CheckoutPreparePage implements OnInit {
         }
     }
 
-    dismissLoader() {
+    async dismissLoader() {
         if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
+            let topLoader = await this.loadingCtrl.getTop();
+            while (topLoader) {
+                if (!(await topLoader.dismiss())) {
+                    console.log('Could not dismiss the topmost loader. Aborting...');
+                    return;
+                }
+                topLoader = await this.loadingCtrl.getTop();
+            }
         } else {
             this.spinnerDialog.hide();
         }

@@ -101,9 +101,16 @@ export class MyAccountPage implements OnInit {
             }, 1000);
         });
     }
-    dismissLoader() {
+    async dismissLoader() {
         if (document.URL.startsWith('http')) {
-            this.loadingCtrl.dismiss();
+            let topLoader = await this.loadingCtrl.getTop();
+            while (topLoader) {
+                if (!(await topLoader.dismiss())) {
+                    console.log('Could not dismiss the topmost loader. Aborting...');
+                    return;
+                }
+                topLoader = await this.loadingCtrl.getTop();
+            }
         } else {
             this.spinnerDialog.hide();
         }

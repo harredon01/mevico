@@ -145,8 +145,15 @@ export class MerchantDetailPage implements OnInit {
     }
     ionViewDidEnter() {
         let container = this.params.getParams();
-        if (container.hasChanged) {
-            this.getMerchant(this.merchant.id);
+        if(container){
+            if (container.hasChanged) {
+                this.getMerchant(this.merchant.id);
+            }
+        }
+        if (document.URL.startsWith('http')) {
+            let vm = this;
+            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 1000);
+            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 2000);
         }
     }
     slidePrev() {
@@ -263,7 +270,7 @@ export class MerchantDetailPage implements OnInit {
             let topLoader = await this.loadingCtrl.getTop();
             while (topLoader) {
                 if (!(await topLoader.dismiss())) {
-                    throw new Error('Could not dismiss the topmost loader. Aborting...');
+                    console.log('Could not dismiss the topmost loader. Aborting...');
                 }
                 topLoader = await this.loadingCtrl.getTop();
             }

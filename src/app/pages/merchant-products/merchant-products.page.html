@@ -10,7 +10,7 @@
         <ion-buttons slot="end">
             <ion-button size="small" icon-only clear (click)="openCart()">
                         <ion-icon name="cart"></ion-icon>
-                <div *ngIf="orderData.cartData.totalItems" id="counter-items">({{orderData.cartData.totalItems}})</div>
+                <div *ngIf="orderData.cartData" id="counter-items">({{orderData.cartData.totalItems}})</div>
             </ion-button>
         </ion-buttons>
 
