@@ -13,7 +13,27 @@ const routes: Routes = [
                     {
                         path: '',
                         loadChildren: '../home/home.module#HomePageModule'
-                    }
+                    },
+                    {
+                        path: '',
+                        loadChildren: '../lonchis/lonchis.module#LonchisPageModule'
+                    },
+                    {
+                        path: 'calculadora',
+                        loadChildren: '../calculadora/calculadora.module#CalculadoraPageModule'
+                    },
+                    {
+                        path: 'programar',
+                        loadChildren: '../programar/programar.module#ProgramarPageModule'
+                    },
+                    {
+                        path: 'conversion',
+                        loadChildren: '../conversion/conversion.module#ConversionPageModule'
+                    },
+                    {
+                        path: 'products/:objectId',
+                        loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
+                    },
                 ]
             },
             {
@@ -22,6 +42,15 @@ const routes: Routes = [
                     {
                         path: '',
                         loadChildren: '../map/map.module#MapPageModule'
+                    }
+                ]
+            },
+            {
+                path: 'guest',
+                children: [
+                    {
+                        path: '',
+                        loadChildren: '../guest/guest.module#GuestPageModule'
                     }
                 ]
             },

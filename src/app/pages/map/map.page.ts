@@ -306,7 +306,7 @@ export class MapPage implements OnInit {
         console.log("handleAddressActive", this.mapData.activeId);
         this.mapData.newAddressMarker.setDraggable(true);
         this.mapData.newAddressMarker.setVisible(true);
-        if (this.mapData.activeId == "-1" || this.mapData.activeId == "0"|| this.mapData.activeId == "2") {
+        if (this.mapData.activeId == "-1" || this.mapData.activeId == "0"|| this.mapData.activeId == "2"|| this.mapData.activeId == "-2") {
             console.log("Fetching poligons for merchant", this.mapData.merchantId);
             if (this.mapData.merchantId) {
                 this.locations.getActivePolygons(this.mapData.merchantId).subscribe((data: any) => {

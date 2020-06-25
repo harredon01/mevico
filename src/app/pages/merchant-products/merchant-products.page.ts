@@ -92,7 +92,12 @@ export class MerchantProductsPage implements OnInit {
         this.page = 1;
         this.slides = [];
         let paramsSent = this.params.getParams();
-        this.merchant = paramsSent.objectId;
+        let merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
+        if(merchant){
+            this.merchant = merchant;
+        } else {
+            this.merchant = paramsSent.objectId;
+        }
         this.isOwner = paramsSent.owner;
         if (paramsSent.settings) {
             this.urlSearch = "tabs/settings/merchants/" + this.merchant;

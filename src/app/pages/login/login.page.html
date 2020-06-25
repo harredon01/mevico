@@ -38,6 +38,11 @@
                         <p class="btn-text"><b>Sign in with Google</b></p>
                     </div>
                 </div>
+                <div class="login__buttons" *ngIf="showGuest">
+                    <div class="login__third login__third--facebook" (click)="goToGuest()">
+                        <p class="btn-text"><b>Guest Checkout</b></p>
+                    </div>
+                </div>
                 <div class="login__create-account">
                     No tiene cuenta?  
                     <span (click)="singup()" class="login__create-text">Crear cuenta</span>

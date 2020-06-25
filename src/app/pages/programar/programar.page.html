@@ -1,0 +1,158 @@
+<!--
+  Generated template for the DeliveryProgramPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="section__header">
+    <ion-navbar>
+        <ion-title>{{ 'DELIVERY_PROGRAM.TITLE' | translate }}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="delivery-lunch" *ngIf="!isDeposit">
+        <p class="title">{{ 'DELIVERY_PROGRAM.DESCRIPTION' | translate }} {{deliveryParams.delivery_text }}</p>
+        <div *ngIf="!isProgrammed">
+            <ion-card *ngFor="let foodItem of listArticles">
+                <div (click)="selectMeal(foodItem.id)" class='food-item'>
+                    <ion-card-header class="product-header-information">
+                        <span  class="delivery-lunch__name">{{foodItem.name}}</span>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <p><b>{{ 'DELIVERY_PROGRAM.CHOOSE' | translate }}</b></p>
+                        <h2 class="delivery-lunch__entries" *ngIf="foodItem.attributes.entradas.length>0">{{ 'DELIVERY_PROGRAM.STARTER' | translate }}</h2>
+                        <div *ngFor="let dishItem of foodItem.attributes.entradas">
+                            <img [src]="dishItem.imagen" *ngIf="dishItem.imagen.length>0"/>
+                            <p><b>{{dishItem.valor}}</b></p>
+                            <p>{{dishItem.descripcion}}</p>
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col *ngFor="let peso of dishItem.pesos" class="nutri">{{peso.name}} {{peso.value}}<span *ngIf="peso.name!='Cal.'">g.</span></ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </div>
+
+
+                        <h2 class="delivery-lunch__entries">{{ 'DELIVERY_PROGRAM.MAIN' | translate }}</h2>
+                        <div *ngFor="let dishItem of foodItem.attributes.plato">
+                            <img [src]="dishItem.imagen" *ngIf="dishItem.imagen.length>0"/>
+                            <p><b>{{dishItem.valor}}:</b></p>
+                            <p>{{dishItem.descripcion}}</p>
+                            <ion-grid>
+                                <ion-row>
+                                    <ion-col *ngFor="let peso of dishItem.pesos" class="nutri">{{peso.name}} {{peso.value}}<span *ngIf="peso.name!='Cal.'">g.</span></ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </div>
+                        <div *ngIf="foodItem.hasDrink">
+                            <h2 class="delivery-lunch__entries">{{ 'DELIVERY_PROGRAM.DRINK' | translate }}</h2>
+                            <div *ngFor="let dishItem of foodItem.attributes.bebidas">
+                                <p><b>{{dishItem.valor}}:</b>{{dishItem.descripcion}}</p>
+                                <ion-grid>
+                                    <ion-row>
+                                        <ion-col *ngFor="let peso of dishItem.pesos" class="nutri">{{peso.name}} {{peso.value}}<span *ngIf="peso.name!='Cal.'">g.</span></ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </div>
+                        </div>
+
+                        <br/>
+                        <a href='javascript:;'>{{ 'DELIVERY_PROGRAM.SELECT' | translate }}</a>
+                    </ion-card-content>
+                </div>
+            </ion-card>
+        </div>
+        <div *ngIf="deliveryParams.address">
+            <p><b>{{ 'DELIVERY_PROGRAM.ADDRESS' | translate }}: {{deliveryParams.address.address}}</b></p>
+        </div>
+        <button class=" help btn-secondary" (click)="openChangeAddress()" style="margin-left:10px">{{ 'DELIVERY_PROGRAM.CHANGE_ADDRESS' | translate }}</button>
+        <button class=" help btn-secondary" (click)="openTutorials()" >{{ 'DELIVERY_PROGRAM.HELP' | translate }}</button>
+        <div style="clear:both"></div>
+        <br/>
+        <form  (submit)="updateDelivery()" [formGroup]="deliveryForm" >
+            <a href="javascript:;" *ngIf="isProgrammed" (click)="changeSelection()">{{ 'DELIVERY_PROGRAM.VIEW_MENU' | translate }}</a> 
+            <ion-list>
+                <div>
+                    <p><b>{{ 'DELIVERY_PROGRAM.LUNCH_TYPE' | translate }}</b></p>
+                    <ion-list radio-group [(ngModel)]="saveDelivery.type_id" (ionChange)="selectFoodType()" formControlName="lunch_type">
+                              <ion-item *ngFor="let foodItem of listArticles">
+                            <ion-label>{{foodItem.name}}</ion-label>
+                            <ion-radio [value]="foodItem.id"></ion-radio>
+                        </ion-item>
+                    </ion-list>
+                </div>
+                <ion-item *ngIf="!deliveryForm.controls.lunch_type.valid  && (deliveryForm.controls.lunch_type.dirty || submitAttempt)">
+                    <p class="error-message">{{ 'DELIVERY_PROGRAM.MISSING_TYPE' | translate }}</p>
+                </ion-item>
+                <div *ngIf="hasStarter">
+                    <p *ngIf="attributes.entradas"><b>{{ 'DELIVERY_PROGRAM.STARTER' | translate }}</b></p>
+                    <ion-list radio-group [(ngModel)]="saveDelivery.starter_id" formControlName="starter">
+                              <ion-item *ngFor="let initFoodItem of attributes.entradas">
+                            <ion-label>{{initFoodItem.valor}}</ion-label>
+                            <ion-radio [value]="initFoodItem.codigo"></ion-radio>
+                        </ion-item>
+                    </ion-list>
+                </div>
+                <ion-item *ngIf="submitAttempt && starterError && hasStarter">
+                    <p class="error-message">{{ 'DELIVERY_PROGRAM.MISSING_STARTER' | translate }}</p>
+                </ion-item>
+                <div>
+                    <p *ngIf="attributes.plato"><b>{{ 'DELIVERY_PROGRAM.MAIN' | translate }}</b></p>
+                    <ion-list radio-group [(ngModel)]="saveDelivery.main_id" (ionChange)="selectStandarFood()" formControlName="main_dish">
+                              <ion-item *ngFor="let initFoodItem of attributes.plato">
+                            <ion-label>{{initFoodItem.valor}}</ion-label>
+                            <ion-radio [value]="initFoodItem.codigo"></ion-radio>
+                        </ion-item>
+                    </ion-list>
+                </div>
+                <ion-item *ngIf="!deliveryForm.controls.main_dish.valid  && (deliveryForm.controls.main_dish.dirty || submitAttempt)">
+                    <p class="error-message">{{ 'DELIVERY_PROGRAM.MISSING_MAIN' | translate }}</p>
+                </ion-item>
+                <ion-item *ngIf="hasDrink">
+                    <p  *ngIf="attributes.bebidas"><b>{{ 'DELIVERY_PROGRAM.DRINK' | translate }}</b></p>
+                    <ion-list radio-group [(ngModel)]="saveDelivery.drink_id" (ionChange)="selectDrink()" formControlName="drink">
+                              <ion-item *ngFor="let initFoodItem of attributes.bebidas">
+                            <ion-label>{{initFoodItem.valor}}</ion-label>
+                            <ion-radio [value]="initFoodItem.codigo"></ion-radio>
+                        </ion-item>
+                    </ion-list>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>{{ 'DELIVERY_PROGRAM.OBSERVATIONS' | translate }}</ion-label>
+                    <ion-input type="text" [(ngModel)]="saveDelivery.observation" formControlName="description"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="submitAttempt && drinkError && hasDrink">
+                    <p class="error-message">{{ 'DELIVERY_PROGRAM.MISSING_DRINK' | translate }}</p>
+                </ion-item>
+                <div class="delivery-lunch__button">
+                    <input class="button btn-primary" type="submit" value="{{ 'INPUTS.SUBMIT' | translate }}" />
+                </div>
+                <div class="delivery-lunch__button">
+                    <button class="btn-secondary" *ngIf="isProgrammed" (click)="cancelSelection()" >{{ 'DELIVERY_PROGRAM.CANCEL' | translate }}</button>
+                </div>
+            </ion-list>
+        </form>
+
+    </div>
+    <div *ngIf="isDeposit">
+        <ion-card *ngIf="!isProgrammed">
+            <ion-card-header class="product-header-information">
+                <span  class="delivery-lunch__name">{{ 'DELIVERY_PROGRAM.DEPOSIT_TITLE' | translate }}</span>
+            </ion-card-header>
+            <ion-card-content>
+                <p><b>{{ 'DELIVERY_PROGRAM.DEPOSIT_DESC' | translate }}</b></p>
+                <button class="btn-secondary" (click)="sendDelivery()" >{{ 'INPUTS.SUBMIT' | translate }}</button>
+            </ion-card-content>
+            <p>{{ 'DELIVERY_PROGRAM.DEPOSIT_DESC' | translate }}</p>
+        </ion-card>
+        <ion-card *ngIf="isProgrammed">
+            <ion-card-header class="product-header-information">
+                <span  class="delivery-lunch__name">{{ 'DELIVERY_PROGRAM.DEPOSIT_TITLE' | translate }}</span>
+            </ion-card-header>
+            <ion-card-content>
+                <p><b>{{ 'DELIVERY_PROGRAM.DEPOSIT_DESC2' | translate }}</b></p>
+                <button class="btn-secondary" (click)="cancelSelection()" >{{ 'DELIVERY_PROGRAM.CANCEL' | translate }}</button>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>

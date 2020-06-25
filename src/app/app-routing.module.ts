@@ -20,14 +20,19 @@ const routes: Routes = [
   { path: 'chat-room', loadChildren: './pages/chat-room/chat-room.module#ChatRoomPageModule' },
   { path: 'comments', loadChildren: './pages/comments/comments.module#CommentsPageModule' },
   { path: 'categories', loadChildren: './pages/merchant-categories/merchant-categories.module#MerchantCategoriesPageModule' },
+  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
+//  { path: 'home', loadChildren: './pages/lonchis/lonchis.module#LonchisPageModule' },
+  { path: 'home/calculadora', loadChildren: './pages/calculadora/calculadora.module#CalculadoraPageModule' },
+  { path: 'home/conversion', loadChildren: './pages/conversion/conversion.module#ConversionPageModule' },
+  { path: 'home/programar', loadChildren: './pages/programar/programar.module#ProgramarPageModule' },
+  { path: 'home/products/:objectId', loadChildren: './pages/merchant-products/merchant-products.module#MerchantProductsPageModule' },
   { path: 'home/:categoryId', loadChildren: './pages/merchant-listing/merchant-listing.module#MerchantListingPageModule' },
   { path: 'home/:categoryId/merchant/:objectId', loadChildren: './pages/merchant-detail/merchant-detail.module#MerchantDetailPageModule' },
-  { path: 'search-filtering', loadChildren: './pages/search-filtering/search-filtering.module#SearchFilteringPageModule' },
   { path: 'home/:categoryId/merchant/:objectId/products', loadChildren: './pages/merchant-products/merchant-products.module#MerchantProductsPageModule' },
   { path: 'home/:categoryId/merchant/:objectId/book', loadChildren: './pages/booking/booking.module#BookingPageModule' },
+  { path: 'search-filtering', loadChildren: './pages/search-filtering/search-filtering.module#SearchFilteringPageModule' },
   { path: 'booking-list', loadChildren: './pages/booking-list/booking-list.module#BookingListPageModule' },
   { path: 'booking-detail', loadChildren: './pages/booking-detail/booking-detail.module#BookingDetailPageModule' },
-  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
   { path: 'routes', loadChildren: './pages/routes/routes.module#RoutesPageModule' },
   { path: 'route-detail', loadChildren: './pages/route-detail/route-detail.module#RouteDetailPageModule' },
   { path: 'medical', loadChildren: './pages/medical/medical.module#MedicalPageModule' },
@@ -50,7 +55,16 @@ const routes: Routes = [
   { path: 'availability-create', loadChildren: './pages/availability-create/availability-create.module#AvailabilityCreatePageModule' },
   { path: 'mercado-pago-options', loadChildren: './pages/mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule' },
   { path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule' },
-  { path: 'new-merchant', loadChildren: './pages/new-merchant/new-merchant.module#NewMerchantPageModule' },  { path: 'zoom-meeting', loadChildren: './pages/zoom-meeting/zoom-meeting.module#ZoomMeetingPageModule' },
+  { path: 'new-merchant', loadChildren: './pages/new-merchant/new-merchant.module#NewMerchantPageModule' },
+  { path: 'zoom-meeting', loadChildren: './pages/zoom-meeting/zoom-meeting.module#ZoomMeetingPageModule' },  {
+    path: 'program-complete',
+    loadChildren: () => import('./pages/program-complete/program-complete.module').then( m => m.ProgramCompletePageModule)
+  },
+  {
+    path: 'tutorial',
+    loadChildren: () => import('./pages/tutorial/tutorial.module').then( m => m.TutorialPageModule)
+  },
+
 
 
 

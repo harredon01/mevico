@@ -5,8 +5,8 @@ import {NavController, ModalController, ToastController, LoadingController, Menu
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Events} from '../../services/events/events.service';
 import {AlertsService} from '../../services/alerts/alerts.service';
-import {CartService} from '../../services/cart/cart.service'
-import {OrderDataService} from '../../services/order-data/order-data.service'
+import {CartService} from '../../services/cart/cart.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {UserService} from '../../services/user/user.service';

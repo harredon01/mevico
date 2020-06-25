@@ -7,6 +7,15 @@ import {Merchant} from '../../models/merchant';
 export class MerchantsService {
 
     constructor(public api: ApiService) {}
+    
+    getMerchantsFromServer(where: any) {
+        let url = "/merchants";
+        if (where) {
+            url = url + "?" + where;
+        }
+        let seq = this.api.get(url);
+        return seq;
+    }
 
     prepareObjects(objects: any) {
         for (let item in objects) {
