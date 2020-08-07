@@ -1,5 +1,8 @@
 <ion-content class="login">
     <div class="login__wrapper">
+        <ion-button class="back" (click)="goBack()">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
         <form (submit)="doLogin()">
             <div class="login__messages">
                 <p class="login__title">{{ 'LOGIN.TITLE' | translate }}</p>
@@ -7,7 +10,7 @@
             </div>
             <ion-list class="login__create">
                 <div class="login__image">
-                    <img src="assets/sign_up.png" alt="">
+                    <img src="assets/logo-home.svg" alt="">
                 </div>
                 <ion-item class="login__item ion-no-padding">
                     <ion-label position="floating">{{ 'LOGIN.USERNAME' | translate }}</ion-label>
@@ -36,11 +39,6 @@
                     </div>
                     <div class="login__third login__third--google" (click)="loginGoogle()">
                         <p class="btn-text"><b>Sign in with Google</b></p>
-                    </div>
-                </div>
-                <div class="login__buttons" *ngIf="showGuest">
-                    <div class="login__third login__third--facebook" (click)="goToGuest()">
-                        <p class="btn-text"><b>Guest Checkout</b></p>
                     </div>
                 </div>
                 <div class="login__create-account">

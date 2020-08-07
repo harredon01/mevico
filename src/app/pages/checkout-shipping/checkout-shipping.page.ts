@@ -173,7 +173,7 @@ export class CheckoutShippingPage implements OnInit {
         let params = {"is_meal": isMeal, "merchant_id": this.merchant};
         console.log("Prepare order", params);
         this.params.setParams(params)
-        this.navCtrl.navigateForward('tabs/checkout/prepare');
+        this.navCtrl.navigateForward('tabs/home/checkout/prepare');
     }
     getAddresses() {
         this.currentItems = [];

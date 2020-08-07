@@ -206,16 +206,15 @@ export class CheckoutPayerPage implements OnInit {
        * The view loaded, let's query our items for the list
        */
     ionViewDidEnter() {
-        this.showLoader();
         let paramsSent = this.params.getParams();
         this.currentItems = paramsSent.items;
         if (this.orderData.payerAddress) {
             this.showAddressCard = true;
             this.selectedAddress = this.orderData.payerAddress;
-            this.dismissLoader();
+
         } else {
 
-            this.dismissLoader();
+
         }
     }
     keytab(event) {

@@ -103,7 +103,7 @@ export class MerchantProductsPage implements OnInit {
             this.urlSearch = "tabs/settings/merchants/" + this.merchant;
         } else {
             let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-            this.urlSearch = 'tabs/categories/' + category + '/merchant/' + this.merchant;
+            this.urlSearch = 'tabs/home/categories/' + category + '/merchant/' + this.merchant;
         }
         this.products = [];
         this.possibleAmounts = [];
@@ -170,15 +170,15 @@ export class MerchantProductsPage implements OnInit {
                         this.params.setParams({"merchant_id": this.merchant});
                         if (this.userData._user) {
                             if (item.attributes.is_shippable == true) {
-                                this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+                                this.navCtrl.navigateForward('tabs/home/checkout/shipping/' + this.merchant);
                             } else {
-                                this.navCtrl.navigateForward('tabs/checkout/prepare');
+                                this.navCtrl.navigateForward('tabs/home/checkout/prepare');
                             }
                         } else {
                             if (item.attributes.is_shippable == true) {
-                                this.drouter.addPages('tabs/checkout/shipping/' + this.merchant);
+                                this.drouter.addPages('tabs/home/checkout/shipping/' + this.merchant);
                             } else {
-                                this.drouter.addPages('tabs/checkout/prepare');
+                                this.drouter.addPages('tabs/home/checkout/prepare');
                             }
                             this.navCtrl.navigateForward('login');
                         }
@@ -532,15 +532,15 @@ export class MerchantProductsPage implements OnInit {
         if (data == "Shipping" || data == 'Prepare') {
             if (this.userData._user) {
                 if (data == "Shipping") {
-                    this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+                    this.navCtrl.navigateForward('tabs/home/checkout/shipping/' + this.merchant);
                 } else {
-                    this.navCtrl.navigateForward('tabs/checkout/prepare');
+                    this.navCtrl.navigateForward('tabs/home/checkout/prepare');
                 }
             } else {
                 if (data == "Shipping") {
-                    this.drouter.addPages('tabs/checkout/shipping/' + this.merchant);
+                    this.drouter.addPages('tabs/home/checkout/shipping/' + this.merchant);
                 } else {
-                    this.drouter.addPages('tabs/checkout/prepare');
+                    this.drouter.addPages('tabs/home/checkout/prepare');
                 }
                 this.navCtrl.navigateForward('login');
             }

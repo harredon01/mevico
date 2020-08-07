@@ -198,7 +198,7 @@ export class HomePage implements OnInit {
     openItem(item: any) {
         this.params.setParams({"item": item});
         if (this.userData._user) {
-            this.navCtrl.navigateForward('tabs/categories/' + item.id);
+            this.navCtrl.navigateForward('tabs/home/categories/' + item.id);
         } else {
             this.navCtrl.navigateForward('home/' + item.id);
         }

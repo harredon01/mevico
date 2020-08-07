@@ -33,8 +33,7 @@ export class MercadoPagoThankyouPage implements OnInit {
     ngOnInit() {
     }
     done() {
-        this.navCtrl.navigateRoot("tabs");
-        this.navCtrl.navigateRoot("tabs/categories")
+        this.navCtrl.navigateRoot("tabs/home");
     }
 
 }

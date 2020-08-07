@@ -49,12 +49,7 @@ export class BookingListPage implements OnInit {
         this.typeObj = paramsObj.type;
         this.target = paramsObj.target;
         this.objectId = paramsObj.objectId;
-        if (paramsObj.settings) {
-            this.urlSearch = "tabs/settings/merchants/" + paramsObj.objectId;
-        } else {
-            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-            this.urlSearch = 'tabs/categories/' + category + '/merchant/' + paramsObj.objectId;
-        }
+        this.urlSearch = "tabs/settings/merchants/" + paramsObj.objectId;
         this.selectedObject = {"id": paramsObj.objectId, "name": paramsObj.name};
         this.bookingObjects.push(this.selectedObject);
         this.query = this.target + "_all";
@@ -268,7 +263,7 @@ export class BookingListPage implements OnInit {
             this.cart.addCustomCartItem(item).subscribe((data: any) => {
                 this.orderData.cartData = data.cart;
                 this.params.setParams({"merchant_id": booking.bookable.id});
-                this.navCtrl.navigateForward('tabs/checkout/prepare');
+                this.navCtrl.navigateForward('tabs/home/checkout/prepare');
             }, (err) => {
                 console.log("Error addCustomCartItem");
                 this.api.handleError(err);
@@ -317,7 +312,7 @@ export class BookingListPage implements OnInit {
                 if (container.type == "Booking") {
                     if (container.id == booking.id) {
                         this.params.setParams({"merchant_id": booking.bookable_id});
-                        this.navCtrl.navigateForward('tabs/checkout/prepare');
+                        this.navCtrl.navigateForward('tabs/home/checkout/prepare');
                         return;
                     }
                 }

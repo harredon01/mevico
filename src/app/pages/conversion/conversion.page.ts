@@ -1,11 +1,11 @@
 import {Component,OnInit} from '@angular/core';
-import { NavController, NavParams, ToastController, ModalController, AlertController, LoadingController} from '@ionic/angular';
+import { NavController, ToastController, ModalController, AlertController, LoadingController} from '@ionic/angular';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {TranslateService} from '@ngx-translate/core';
 import {CartService} from '../../services/cart/cart.service';
-import {Facebook} from '@ionic-native/facebook';
+import {Facebook} from '@ionic-native/facebook/ngx';
 import {OrderDataService} from '../../services/order-data/order-data.service';
-import {SpinnerDialog} from '@ionic-native/spinner-dialog';
+import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 
 @Component({
   selector: 'app-conversion',
@@ -30,7 +30,6 @@ variant: any;
         public loadingCtrl: LoadingController,
         public cart: CartService,
         public fb: Facebook,
-        public navParams: NavParams,
         public userData: UserDataService,
         public orderData: OrderDataService,
         public translateService: TranslateService) {

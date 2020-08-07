@@ -3,10 +3,7 @@
         <ion-title>{{ 'ADDRESS_CREATE.TITLE' | translate }}</ion-title>
         <ion-buttons class="my-addresses__button my-addresses__button--left" slot="secondary">
             <ion-button (click)="cancel()">
-                <span color="primary" showWhen="ios">
-                    {{ 'INPUTS.CANCEL' | translate }}
-                </span>
-                <ion-icon class="close-button" name="md-close" showWhen="android,windows"></ion-icon>
+                <ion-icon name="close-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
         <ion-buttons class="my-addresses__button my-addresses__button--right" slot="primary">
@@ -25,7 +22,6 @@
             <input type="hidden" formControlName="lat" />
             <input type="hidden" formControlName="long" />
             <input type="hidden" formControlName="address_id" />
-            <input type="hidden" formControlName="postal" />
             <ion-list>
                 <ion-item class="ion-no-padding">
                     <p>{{ 'ADDRESS_FIELDS.ADDRESS_CONFIRM' | translate }}</p>

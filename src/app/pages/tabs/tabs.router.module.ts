@@ -10,10 +10,10 @@ const routes: Routes = [
             {
                 path: 'home',
                 children: [
-                    {
-                        path: '',
-                        loadChildren: '../home/home.module#HomePageModule'
-                    },
+                    //                    {
+                    //                        path: '',
+                    //                        loadChildren: '../home/home.module#HomePageModule'
+                    //                    },
                     {
                         path: '',
                         loadChildren: '../lonchis/lonchis.module#LonchisPageModule'
@@ -23,8 +23,16 @@ const routes: Routes = [
                         loadChildren: '../calculadora/calculadora.module#CalculadoraPageModule'
                     },
                     {
+                        path: 'comments',
+                        loadChildren: '../comments/comments.module#CommentsPageModule'
+                    },
+                    {
                         path: 'programar',
                         loadChildren: '../programar/programar.module#ProgramarPageModule'
+                    },
+                    {
+                        path: 'programar/complete',
+                        loadChildren: '../program-complete/program-complete.module#ProgramCompletePageModule'
                     },
                     {
                         path: 'conversion',
@@ -34,6 +42,118 @@ const routes: Routes = [
                         path: 'products/:objectId',
                         loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
                     },
+                    {
+                        path: 'tutorial',
+                        loadChildren: '../tutorial/tutorial.module#TutorialPageModule',
+                    },
+                    {
+                        path: 'checkout',
+                        children: [
+                            {
+                                path: 'shipping/:merchant_id',
+                                loadChildren: '../checkout-shipping/checkout-shipping.module#CheckoutShippingPageModule'
+                            },
+                            {
+                                path: 'prepare',
+                                loadChildren: '../checkout-prepare/checkout-prepare.module#CheckoutPreparePageModule'
+                            },
+                            {
+                                path: 'mercado-pago-options',
+                                children: [
+                                    {
+                                        path: '',
+                                        loadChildren: '../mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule'
+                                    },
+                                    {
+                                        path: 'card',
+                                        loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
+                                    },
+                                    {
+                                        path: 'thankyou',
+                                        loadChildren: '../mercado-pago-thankyou/mercado-pago-thankyou.module#MercadoPagoThankyouPageModule'
+                                    }
+                                ]
+                            },
+                            {
+                            path: 'payu',
+                            children: [
+                                {
+                                    path: 'credit',
+                                    children: [
+                                        {
+                                            path: 'buyer',
+                                            loadChildren: '../checkout-buyer/checkout-buyer.module#CheckoutBuyerPageModule'
+                                        },
+                                        {
+                                            path: 'payer',
+                                            loadChildren: '../checkout-payer/checkout-payer.module#CheckoutPayerPageModule'
+                                        },
+                                        {
+                                            path: 'card',
+                                            loadChildren: '../checkout-card/checkout-card.module#CheckoutCardPageModule'
+                                        }
+                                    ]
+                                },
+                                {
+                                    path: 'cash',
+                                    loadChildren: '../checkout-cash/checkout-cash.module#CheckoutCashPageModule'
+                                },
+                                {
+                                    path: 'banks',
+                                    loadChildren: '../checkout-banks/checkout-banks.module#CheckoutBanksPageModule'
+                                },
+                                {
+                                    path: 'complete',
+                                    loadChildren: '../payu-complete/payu-complete.module#PayuCompletePageModule'
+                                },
+                                {
+                                    path: 'options',
+                                    loadChildren: '../checkout-options-payu/checkout-options-payu.module#CheckoutOptionsPayuPageModule'
+                                },
+                            ]
+                        },
+                        ]
+                    },
+                    {
+                        path: 'categories',
+                        children: [
+                            {
+                                path: ':categoryId',
+                                children: [
+                                    {
+                                        path: '',
+                                        loadChildren: '../merchant-listing/merchant-listing.module#MerchantListingPageModule',
+                                    },
+                                    {
+                                        path: 'merchant/:objectId',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                            },
+                                            {
+                                                path: 'products',
+                                                children: [
+                                                    {
+                                                        path: '',
+                                                        loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                path: 'chat',
+                                                loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                                            },
+                                            {
+                                                path: 'book',
+                                                loadChildren: '../booking/booking.module#BookingPageModule',
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
                 ]
             },
             {
@@ -42,15 +162,6 @@ const routes: Routes = [
                     {
                         path: '',
                         loadChildren: '../map/map.module#MapPageModule'
-                    }
-                ]
-            },
-            {
-                path: 'guest',
-                children: [
-                    {
-                        path: '',
-                        loadChildren: '../guest/guest.module#GuestPageModule'
                     }
                 ]
             },
@@ -151,50 +262,6 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'categories',
-                children: [
-                    {
-                        path: '',
-                        loadChildren: '../home/home.module#HomePageModule'
-                    },
-                    {
-                        path: ':categoryId',
-                        children: [
-                            {
-                                path: '',
-                                loadChildren: '../merchant-listing/merchant-listing.module#MerchantListingPageModule',
-                            },
-                            {
-                                path: 'merchant/:objectId',
-                                children: [
-                                    {
-                                        path: '',
-                                        loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
-                                    },
-                                    {
-                                        path: 'products',
-                                        children: [
-                                            {
-                                                path: '',
-                                                loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        path: 'chat',
-                                        loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
-                                    },
-                                    {
-                                        path: 'book',
-                                        loadChildren: '../booking/booking.module#BookingPageModule',
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
                 path: 'checkout',
                 children: [
                     {
@@ -255,10 +322,6 @@ const routes: Routes = [
                     {
                         path: 'my-account',
                         loadChildren: '../my-account/my-account.module#MyAccountPageModule'
-                    },
-                    {
-                        path: 'mercado-pago',
-                        loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
                     },
                     {
                         path: 'payments',
@@ -395,14 +458,14 @@ const routes: Routes = [
             },
             {
                 path: '',
-                redirectTo: '/tabs/categories',
+                redirectTo: '/tabs/home',
                 pathMatch: 'full'
             }
         ]
     },
     {
         path: '',
-        redirectTo: '/tabs/categories',
+        redirectTo: '/tabs/home',
         pathMatch: 'full'
     }
 ];

@@ -106,7 +106,6 @@ export class CheckoutBuyerPage implements OnInit {
        * The view loaded, let's query our items for the list
        */
     ionViewDidEnter() {
-        this.showLoader();
         if (this.orderData.buyerAddress) {
             this.showAddressCard = true;
             this.selectedAddress = this.orderData.buyerAddress;
@@ -117,7 +116,6 @@ export class CheckoutBuyerPage implements OnInit {
     }
     getAddresses() {
         this.addresses.getAddresses().subscribe((data: any) => {
-            this.dismissLoader();
             console.log("after get addresses");
             let results = data.addresses;
             let buyerAddress = null;

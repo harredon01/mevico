@@ -38,7 +38,6 @@ export class LoginPage implements OnInit {
     // Our translated text strings
     private loginErrorString: string;
     private loginStartString: string;
-    public showGuest: boolean = false;
     // Our translated text strings
     private updateErrorString: string;
     private updateStartString: string;
@@ -86,12 +85,7 @@ export class LoginPage implements OnInit {
         this.checkLogIn();
     }
     ionViewDidEnter() {
-        this.showGuest = false;
-        let container = this.dr.pages;
-        console.log("Checking for guest: ",container);
-        if (container.includes("checkout")) {
-            this.showGuest = true;
-        }
+
     }
     async dismissLoader() {
         if (document.URL.startsWith('http')) {
@@ -137,18 +131,9 @@ export class LoginPage implements OnInit {
         });
         await alert.present();
     }
-    goToGuest() {
-        let container = this.dr.pages + "";
-        if (container.includes("checkout/shipping")) {
-            let arr = container.split("checkout/shipping/");
-            this.mapData.hideAll();
-            this.mapData.activeType = "Address";
-            this.mapData.activeId = "-2";
-            this.mapData.merchantId = arr[1];
-            this.navCtrl.navigateForward('tabs/map');
-        } else {
-            this.navCtrl.navigateForward('tabs/guest');
-        }
+
+    goBack() {
+        this.navCtrl.navigateBack('home');
 
     }
     async performForgotPass(container) {

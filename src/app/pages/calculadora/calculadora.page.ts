@@ -3,10 +3,12 @@ import {Chart} from "chart.js";
 import {TranslateService} from '@ngx-translate/core';
 import {ParamsService} from '../../services/params/params.service';
 import {ModalController, NavController, ToastController, AlertController, LoadingController} from '@ionic/angular';
-import {SpinnerDialog} from '@ionic-native/spinner-dialog';
+import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Delivery} from '../../models/delivery';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {FoodService} from '../../services/food/food.service';
+import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
+import {ConversionPage} from '../conversion/conversion.page';
 
 @Component({
   selector: 'app-calculadora',
@@ -52,6 +54,7 @@ export class CalculadoraPage implements OnInit {
         public userData: UserDataService,
         public alertCtrl: AlertController,
         private params: ParamsService,
+        private drouter:DynamicRouterService,
         public translateService: TranslateService,
         public loadingCtrl: LoadingController,
         private spinnerDialog: SpinnerDialog) {
@@ -81,16 +84,33 @@ export class CalculadoraPage implements OnInit {
         }
         this.getIndicators();
     }
-    buyLunches() {
+    openConversion() {
         this.navCtrl.pop();
-        this.params.setParams({
-            objectId: 1299
-        })
         if (this.userData._user){
-            this.navCtrl.navigateForward('tabs/home/products/1299');
+            this.navCtrl.navigateForward('tabs/home/conversion');
         } else {
-            this.navCtrl.navigateForward('home/products/1299');
+            this.navCtrl.navigateForward('home/conversion');
         }
+    }
+    async buyLunches() {
+        this.navCtrl.pop();
+        let addModal = await this.modalCtrl.create({
+            component: ConversionPage
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        if (data == "Checkout") {
+            console.log("User: ", this.userData._user);
+            if (this.userData._user) {
+                this.params.setParams({"merchant_id": 1299});
+                this.navCtrl.navigateForward('tabs/home/checkout/shipping/' + 1299);
+            } else {
+                this.params.setParams({"merchant_id": 1299});
+                this.drouter.addPages('tabs/home/checkout/shipping/' + 1299);
+                console.log("Pushing login");
+                this.navCtrl.navigateForward('login');
+            }
+        } 
     }
     findLabel(daLabel) {
         for (let item in this.totalLabels) {

@@ -20,10 +20,11 @@ const routes: Routes = [
   { path: 'chat-room', loadChildren: './pages/chat-room/chat-room.module#ChatRoomPageModule' },
   { path: 'comments', loadChildren: './pages/comments/comments.module#CommentsPageModule' },
   { path: 'categories', loadChildren: './pages/merchant-categories/merchant-categories.module#MerchantCategoriesPageModule' },
-  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
-//  { path: 'home', loadChildren: './pages/lonchis/lonchis.module#LonchisPageModule' },
+//  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
+  { path: 'home', loadChildren: './pages/lonchis/lonchis.module#LonchisPageModule' },
   { path: 'home/calculadora', loadChildren: './pages/calculadora/calculadora.module#CalculadoraPageModule' },
   { path: 'home/conversion', loadChildren: './pages/conversion/conversion.module#ConversionPageModule' },
+  { path: 'home/tutorial', loadChildren: './pages/tutorial/tutorial.module#TutorialPageModule' },
   { path: 'home/programar', loadChildren: './pages/programar/programar.module#ProgramarPageModule' },
   { path: 'home/products/:objectId', loadChildren: './pages/merchant-products/merchant-products.module#MerchantProductsPageModule' },
   { path: 'home/:categoryId', loadChildren: './pages/merchant-listing/merchant-listing.module#MerchantListingPageModule' },
@@ -56,19 +57,7 @@ const routes: Routes = [
   { path: 'mercado-pago-options', loadChildren: './pages/mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule' },
   { path: 'forgot-pass', loadChildren: './pages/forgot-pass/forgot-pass.module#ForgotPassPageModule' },
   { path: 'new-merchant', loadChildren: './pages/new-merchant/new-merchant.module#NewMerchantPageModule' },
-  { path: 'zoom-meeting', loadChildren: './pages/zoom-meeting/zoom-meeting.module#ZoomMeetingPageModule' },  {
-    path: 'program-complete',
-    loadChildren: () => import('./pages/program-complete/program-complete.module').then( m => m.ProgramCompletePageModule)
-  },
-  {
-    path: 'tutorial',
-    loadChildren: () => import('./pages/tutorial/tutorial.module').then( m => m.TutorialPageModule)
-  },
-
-
-
-
-
+  { path: 'zoom-meeting', loadChildren: './pages/zoom-meeting/zoom-meeting.module#ZoomMeetingPageModule' },
 ];
 
 @NgModule({

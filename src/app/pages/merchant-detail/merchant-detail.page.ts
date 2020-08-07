@@ -51,7 +51,7 @@ export class MerchantDetailPage implements OnInit {
         let theParams = this.params.getParams();
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
         if (this.userData._user) {
-            this.urlSearch = 'tabs/categories/' + category + '/merchant/' + merchantId;
+            this.urlSearch = 'tabs/home/categories/' + category + '/merchant/' + merchantId;
         } else {
             this.urlSearch = 'home/' + category + '/merchant/' + merchantId;
         }
@@ -105,15 +105,15 @@ export class MerchantDetailPage implements OnInit {
             this.params.setParams({"merchant_id": this.merchant.id});
             if (this.userData._user) {
                 if (data == "Shipping") {
-                    this.navCtrl.navigateForward('tabs/checkout/shipping/' + this.merchant);
+                    this.navCtrl.navigateForward('tabs/home/checkout/shipping/' + this.merchant);
                 } else {
-                    this.navCtrl.navigateForward('tabs/checkout/prepare');
+                    this.navCtrl.navigateForward('tabs/home/checkout/prepare');
                 }
             } else {
                 if (data == "Shipping") {
-                    this.drouter.addPages('tabs/checkout/shipping/' + this.merchant);
+                    this.drouter.addPages('tabs/home/checkout/shipping/' + this.merchant);
                 } else {
-                    this.drouter.addPages('tabs/checkout/prepare');
+                    this.drouter.addPages('tabs/home/checkout/prepare');
                 }
                 this.navCtrl.navigateForward('login');
             }

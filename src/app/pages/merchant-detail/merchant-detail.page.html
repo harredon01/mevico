@@ -109,8 +109,8 @@
         </div>
 
         <div class="profile__description">
-            <p class="profile__description-title">About Doctor</p>
-            <p class="profile__description-body">{{merchant.description}}</p>
+            <p class="profile__description-title">Perfil</p>
+            <p class="profile__description-body" [innerHTML]="merchant.description"></p>
 
         </div>
     </div>
@@ -170,7 +170,7 @@
                         </ion-card-title>
                     </ion-card-header>
                     <ion-card-content class="profile__overview-content">
-                        <p *ngFor="let experience of merchant.attributes.experience">{{experience.name}}</p>
+                        <p *ngFor="let experience of merchant.attributes.experience" [innerHTML]="experience.name"> </p>
                     </ion-card-content>
                 </ion-card>
             </div>
@@ -182,7 +182,7 @@
                     </ion-card-header>
 
                     <ion-card-content class="profile__overview-content">
-                        <p *ngFor="let service of merchant.attributes.service">{{service.name}}</p>
+                        <p *ngFor="let service of merchant.attributes.service" [innerHTML]="service.name"> </p>
                     </ion-card-content>
                 </ion-card>
             </div>
@@ -194,7 +194,7 @@
                     </ion-card-header>
 
                     <ion-card-content class="profile__overview-content">
-                        <p *ngFor="let specialization of merchant.attributes.specialty">{{specialization.name}}</p>
+                        <p *ngFor="let specialization of merchant.attributes.specialty" [innerHTML]="specialization.name"> </p>
                     </ion-card-content>
                 </ion-card>
             </div>

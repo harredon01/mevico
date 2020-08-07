@@ -23,7 +23,7 @@
         <ion-card-header class="product-header__information">
             <span>{{merchantObj.merchant_name}}</span>
         </ion-card-header>
-        <img [src]="merchantObj.src" *ngIf="merchantObj.src"/>
+        <img [src]="merchantObj.src" *ngIf="merchantObj.src" style="width:100%"/>
         <ion-card-content class="product-header__content">
             <p [innerHtml]="merchantObj.merchant_description"  class="hide-text merchant" [ngClass]="{'show' : merchantObj.merchant_description_more}">
         </p>
@@ -55,9 +55,9 @@
                             {{variant.unitPrice | currency }}</ion-select-option>
                     </ion-select>
                 </ion-item>
-                <ion-item style='display:none'>
+                <ion-item>
                     <ion-label>{{ 'PRODUCTS.AMOUNT' | translate }}</ion-label>
-                    <ion-select [(ngModel)]="item.amount"  (ionChange)="calculateTotals()" >
+                    <ion-select [(ngModel)]="item.amount"  (ionChange)="calculateTotals()" (ionChange)="selectVariant(item)">
                         <ion-select-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-select-option>
                     </ion-select>
                 </ion-item>

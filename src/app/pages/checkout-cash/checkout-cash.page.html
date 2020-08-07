@@ -2,7 +2,7 @@
 
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="tabs/checkout/prepare"></ion-back-button>
+            <ion-back-button defaultHref="tabs/home/checkout/prepare"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ 'CHECKOUT_CASH.TITLE' | translate }}</ion-title>
     </ion-toolbar>
@@ -10,6 +10,8 @@
 </ion-header>
 
 <ion-content>
+    <ion-card>
+        <ion-card-content>
     <ion-item >
         <p>{{ 'CHECKOUT_CASH.OTHERS' | translate }}</p>
     </ion-item>
@@ -41,28 +43,32 @@
             <ion-checkbox [(ngModel)]="v" (click)="useUser()"></ion-checkbox>
         </ion-item>
     </ion-list>   
-    <form  (submit)="payCash()" [formGroup]="payerForm" >
-        <ion-list>
-            <ion-item>
-                <ion-label position="floating">{{ 'CHECKOUT_CASH.OPTIONS' | translate }}</ion-label>
-                <ion-select formControlName="payment_method">
-                    <ion-select-option value="BALOTO">Baloto</ion-select-option>
-                    <ion-select-option value="EFECTY">Efecty</ion-select-option>
-                    <ion-select-option value="OTHERS_CASH">Otros metodos</ion-select-option>
-                </ion-select>
-            </ion-item>
-            <ion-item *ngIf="!payerForm.controls.payment_method.valid  && (payerForm.controls.payment_method.dirty || submitAttempt)">
-                <p class="error-message">{{ 'CHECKOUT_CASH.TYPE_ERROR' | translate }}</p>
-            </ion-item>
-            <ion-item>
-                <ion-label position="floating">{{ 'USER.EMAIL' | translate }}</ion-label>
-                <ion-input type="text" formControlName="payer_email"></ion-input>
-            </ion-item>
-            <ion-item *ngIf="!payerForm.controls.payer_email.valid  && (payerForm.controls.payer_email.dirty || submitAttempt)">
-                <p class="error-message">{{ 'USER.EMAIL_ERROR' | translate }}</p>
-            </ion-item>
+    
+        
+            <form  (submit)="payCash()" [formGroup]="payerForm" >
+                <ion-list>
+                    <ion-item>
+                        <ion-label position="floating">{{ 'CHECKOUT_CASH.OPTIONS' | translate }}</ion-label>
+                        <ion-select formControlName="payment_method">
+                            <ion-select-option value="BALOTO">Baloto</ion-select-option>
+                            <ion-select-option value="EFECTY">Efecty</ion-select-option>
+                            <ion-select-option value="OTHERS_CASH">Otros metodos</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                    <ion-item *ngIf="!payerForm.controls.payment_method.valid  && (payerForm.controls.payment_method.dirty || submitAttempt)">
+                        <p class="error-message">{{ 'CHECKOUT_CASH.TYPE_ERROR' | translate }}</p>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label position="floating">{{ 'USER.EMAIL' | translate }}</ion-label>
+                        <ion-input type="text" formControlName="payer_email"></ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!payerForm.controls.payer_email.valid  && (payerForm.controls.payer_email.dirty || submitAttempt)">
+                        <p class="error-message">{{ 'USER.EMAIL_ERROR' | translate }}</p>
+                    </ion-item>
 
-        </ion-list>
-        <ion-button class="btn-secondary" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
-    </form>
+                </ion-list>
+                <ion-button class="btn-secondary right m10" type="submit" >{{ 'INPUTS.SUBMIT' | translate }}</ion-button>
+            </form>
+        </ion-card-content>
+    </ion-card>
 </ion-content>

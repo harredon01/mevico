@@ -1,7 +1,7 @@
 <ion-header class="section__header">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="tabs/checkout/prepare"></ion-back-button>
+            <ion-back-button defaultHref="tabs/home/checkout/prepare"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ 'CHECKOUT_BUYER.TITLE' | translate }}</ion-title>
     </ion-toolbar>
@@ -16,12 +16,15 @@
         <ion-list *ngIf="!showAddressCard">
             <ion-item-sliding class="checkout-shipping__item" *ngFor="let item of currentItems">
                 <ion-item (click)="saveBilling(item,true)">
-                    <h2>{{item.name}}</h2>
-                    <p>{{item.address}}</p>
+                    <ion-label class="ion-text-wrap">
+                        <h2>{{item.name}}</h2>
+                        <p>{{item.address}}</p>
+                    </ion-label>
                 </ion-item>
             </ion-item-sliding>
         </ion-list>
-        <ion-button class="btn-primary" *ngIf="!showAddressCard" shape="round" (click)="createAddress()">{{'INPUTS.CREATE_ADDRESS' |translate }}</ion-button>
+        <ion-button class="btn-primary" *ngIf="!showAddressCard" (click)="createAddress()">{{'INPUTS.CREATE_ADDRESS' |translate }}</ion-button>
+        <div class="clear:both"></div>
         <ion-card *ngIf="showAddressCard">
             <ion-card-header>
                 <p class="checkout-shipping__description"><b>{{ 'CHECKOUT_BUYER.SELECTED' | translate }}</b></p>
@@ -35,7 +38,7 @@
                 <p>{{selectedAddress.countryName}}</p>
             </ion-card-content>
         </ion-card>
-        <ion-button class="btn-primary" shape="round" (click)="continuePayer()" *ngIf="showAddressCard">{{'INPUTS.CONTINUE' | translate }}</ion-button>
-        <ion-button class="btn-secondary" shape="round" (click)="changeAddress()" *ngIf="showAddressCard">{{'INPUTS.CHANGE_ADDRESS' | translate }}</ion-button>
+        <ion-button class="btn-primary" (click)="continuePayer()" *ngIf="showAddressCard">{{'INPUTS.CONTINUE' | translate }}</ion-button>
+        <ion-button class="btn-secondary" (click)="changeAddress()" *ngIf="showAddressCard">{{'INPUTS.CHANGE_ADDRESS' | translate }}</ion-button>
     </div>
 </ion-content>

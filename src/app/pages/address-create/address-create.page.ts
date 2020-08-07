@@ -137,11 +137,6 @@ export class AddressCreatePage implements OnInit {
            * the user entered on the form.
            */
     saveAddress(address: any) {
-        this.submitAttempt = true;
-        console.log("saveAddress");
-        this.cdr.detectChanges();
-        if (!this.form.valid) {return;}
-
         return new Promise((resolve, reject) => {
             console.log("Save Address", address);
             if (address) {
@@ -179,6 +174,8 @@ export class AddressCreatePage implements OnInit {
      * back to the presenter.
      */
     done() {
+        this.submitAttempt = true;
+        this.cdr.detectChanges();
         if (!this.form.valid) {return;}
         this.saveAddress(this.form.value).then((value) => {
             console.log("saveAddress result", value);

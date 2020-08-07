@@ -17,6 +17,7 @@ export class AddressesPage implements OnInit {
 
     currentItems: Address[];
     loading: any;
+    isSelect:boolean = false;
     private addressErrorString: string;
     private addressErrorStringSave: string;
 
@@ -103,8 +104,17 @@ export class AddressesPage implements OnInit {
      */
     ionViewDidEnter() {
         this.showLoader();
+        let result = null;
+        let container = this.params.getParams();
+        if (container) {
+            if (container.select) {
+                result = "type="+container.select;
+                this.isSelect = true;
+            }
+        }
+        this.showLoader();
         this.currentItems = [];
-        this.addresses.getAddresses().subscribe((data: any) => {
+        this.addresses.getAddresses(result).subscribe((data: any) => {
             this.dismissLoader();
             console.log("after get addresses");
             let results = data.addresses;
@@ -202,6 +212,10 @@ export class AddressesPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     async editAddress(address: Address) {
+        if (this.isSelect){
+            this.modalCtrl.dismiss(address);
+            return null;
+        }
         if (address.type == "shipping") {
             this.mapData.hideAll();
             this.mapData.activeType = "Address";

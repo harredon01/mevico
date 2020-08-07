@@ -16,12 +16,15 @@
         <ion-list *ngIf="!showAddressCard">
             <ion-item-sliding  class="checkout-shipping__item" *ngFor="let item of currentItems">
                 <ion-item (click)="savePayer(item)">
-                    <h2>{{item.name}}</h2>
-                    <p>{{item.address}}</p>
+                    <ion-label class="ion-text-wrap">
+                        <h2>{{item.name}}</h2>
+                        <p>{{item.address}}</p>
+                    </ion-label>
                 </ion-item>
             </ion-item-sliding>
         </ion-list>
-        <ion-button class="btn-primary" *ngIf="!showAddressCard" shape="round" (click)="createAddress()">Crear Dirección</ion-button>
+        <ion-button class="btn-primary" *ngIf="!showAddressCard" (click)="createAddress()">Crear Dirección</ion-button>
+        <div class="clear"></div>
         <ion-card *ngIf="showAddressCard">
             <ion-card-header>
                 <p class="checkout-shipping__description"><b>{{ 'CHECKOUT_BUYER.SELECTED' | translate }}</b></p>
@@ -34,8 +37,9 @@
                 <p>{{selectedAddress.countryName}}</p>
             </ion-card-content>
         </ion-card>
-        <ion-button shape="round" class="btn-primary" (click)="changeAddress()" *ngIf="showAddressCard">{{ 'INPUTS.CHANGE_ADDRESS' |
+        <ion-button class="btn-primary" (click)="changeAddress()" *ngIf="showAddressCard">{{ 'INPUTS.CHANGE_ADDRESS' |
                 translate }}</ion-button>
+        <div class="clear"></div>
         <ion-list *ngIf="showAddressCard">
             <ion-item>
                 <p>{{ 'CHECKOUT_PAYER.DESCRIPTION2' | translate }}</p>

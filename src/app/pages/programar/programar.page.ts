@@ -1,15 +1,17 @@
-
 import {Component, ViewChild, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
-import {SpinnerDialog} from '@ionic-native/spinner-dialog';
+import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {NavController, AlertController, LoadingController, ModalController, ToastController, IonContent} from '@ionic/angular';
 import {FoodService} from '../../services/food/food.service';
+import {UserDataService} from '../../services/user-data/user-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {Events} from '../../services/events/events.service';
-import {Facebook} from '@ionic-native/facebook';
-import {AddressesPage} from '../addresses/addresses.page'
-import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service'
+import {Facebook} from '@ionic-native/facebook/ngx';
+import {ConversionPage} from '../conversion/conversion.page';
+import {AddressesPage} from '../addresses/addresses.page';
+import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
+
 @Component({
     selector: 'app-programar',
     templateUrl: './programar.page.html',
@@ -22,7 +24,7 @@ export class ProgramarPage implements OnInit {
 
     private foodTypeSelected: any = {}
     private attributes: any = [];
-    private submitting: boolean;
+    private submitting: boolean = false;
     private isProgrammed: boolean;
     private isDeposit: boolean;
     weekenddateError: boolean = false;
@@ -87,9 +89,11 @@ export class ProgramarPage implements OnInit {
         };
 
     private deliveryParams: any;
+    isDelivery:boolean = false;
     loading: any;
     constructor(public navCtrl: NavController,
         public events: Events,
+        public userData: UserDataService,
         private drouter: DynamicRouterService,
         public fb: Facebook,
         private params: ParamsService,
@@ -159,35 +163,7 @@ export class ProgramarPage implements OnInit {
         this.translateService.get('DELIVERY_PROGRAM.DRINK').subscribe((value) => {
             this.deliveryDrinkTitle = value;
         });
-        this.hasStarter = true;
-        this.hasDrink = false;
-        this.shouldDrink = false;
-        this.starterError = false;
-        this.drinkError = false;
-        let container = this.params.getParams();
-        if (container) {
-            if (container.delivery) {
-                this.deliveryParams = container.delivery;
-            }
-        }
-        console.log("Parsing", this.deliveryParams);
-        if (typeof this.deliveryParams.details == 'string') {
-            this.deliveryParams.details = JSON.parse(this.deliveryParams.details);
-        }
-        if (this.deliveryParams.details.drink) {
-            if (this.deliveryParams.details.drink == "yes") {
-                this.hasDrink = true;
-                this.shouldDrink = true;
-            }
-        }
-        this.saveDelivery.delivery_id = this.deliveryParams.id;
-        this.deliveryParams.delivery = this.deliveryParams.delivery.replace(/-/g, '/');
-        let date = new Date(this.deliveryParams.delivery);
-        let startDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        //        console.log("start date",startDate);
-        this.saveDelivery.date = startDate.toISOString();
-
-        this.deliveryParams.delivery = date;
+        this.loadDelivery();
         this.deliveryForm = formBuilder.group({
             lunch_type: ['', Validators.compose([Validators.required])],
             starter: [''],
@@ -198,6 +174,9 @@ export class ProgramarPage implements OnInit {
     }
 
     ngOnInit() {
+        console.log('ngOnInit DeliveryProgramPage');
+        this.submitting = false;
+        this.getArticles();
     }
 
     changeSelection() {
@@ -210,6 +189,7 @@ export class ProgramarPage implements OnInit {
             let message = this.deliveriesChangeAddressError;
             if (resp.status == "success") {
                 message = this.deliveriesChangeAddressSuccess;
+                this.deliveryParams.address = item;
             } else if (resp.message == "Forbidden product") {
                 message = this.deliveriesChangeAddressErrorProduct;
             }
@@ -252,8 +232,8 @@ export class ProgramarPage implements OnInit {
         }).then(toast => toast.present());
     }
     async openChangeAddress() {
-        let container = {"origin": "delivery"};
-
+        let container = {"select": "shipping"};
+        this.params.setParams(container);
         let addModal = await this.modalCtrl.create({
             component: AddressesPage,
             componentProps: container
@@ -268,15 +248,22 @@ export class ProgramarPage implements OnInit {
 
     checkDelivery() {
         console.log("checkDelivery", this.deliveryParams);
-        if (this.deliveryParams.id > 0) {
+        if (this.deliveryParams.details) {
+            this.isDelivery = true;
             if (this.deliveryParams.status == "enqueue") {
                 this.isProgrammed = true;
                 if (this.deliveryParams.details.dish) {
                     this.saveDelivery.type_id = this.deliveryParams.details.dish.type_id;
+                    this.deliveryForm.patchValue({lunch_type: this.saveDelivery.type_id});
                     this.selectFoodType();
                     if (this.deliveryParams.details.dish.starter_id) {
-                        this.saveDelivery.starter_id = this.deliveryParams.details.dish.starter_id;
-                        this.selectInitFood();
+                        this.hasStarter = true;
+                        console.log(" loading starter");
+                        let vm = this;
+                        setTimeout(function () {
+                            vm.saveDelivery.starter_id = vm.deliveryParams.details.dish.starter_id;
+                            vm.selectInitFood();
+                        }, 500);
                     }
                     if (this.deliveryParams.details.dish.drink_id) {
                         this.saveDelivery.drink_id = this.deliveryParams.details.dish.drink_id;
@@ -284,6 +271,7 @@ export class ProgramarPage implements OnInit {
                     }
                     if (this.deliveryParams.details.dish.main_id) {
                         this.saveDelivery.main_id = this.deliveryParams.details.dish.main_id;
+                        this.deliveryForm.patchValue({main_dish: this.saveDelivery.main_id});
                         this.selectStandarFood();
                     }
                 }
@@ -293,13 +281,80 @@ export class ProgramarPage implements OnInit {
                     this.isDeposit = true;
                 }
             }
+        } 
+        if (this.deliveryParams.provider) {
+            this.isDelivery = true;
         }
     }
-
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad DeliveryProgramPage');
-        this.getArticles();
+    
+    async openConversion() {
+        this.navCtrl.navigateRoot('home');
+        let addModal = await this.modalCtrl.create({
+            component: ConversionPage
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        if (data == "Checkout") {
+            console.log("User: ", this.userData._user);
+            if (this.userData._user) {
+                this.params.setParams({"merchant_id": 1299});
+                this.navCtrl.navigateForward('tabs/home/checkout/shipping/' + 1299);
+            } else {
+                this.params.setParams({"merchant_id": 1299});
+                this.drouter.addPages('tabs/home/checkout/shipping/' + 1299);
+                console.log("Pushing login");
+                this.navCtrl.navigateForward('login');
+            }
+        } 
     }
+    loadDelivery(){
+        this.hasStarter = true;
+        this.hasDrink = false;
+        this.shouldDrink = false;
+        this.starterError = false;
+        this.drinkError = false;
+        let container = this.params.getParams();
+        console.log("Programar Params", container);
+        if (container) {
+            if (container.item) {
+                this.deliveryParams = container.item;
+            }
+        }
+        console.log("Parsing", this.deliveryParams);
+        if (this.deliveryParams.details) {
+            if (typeof this.deliveryParams.details == 'string') {
+                this.deliveryParams.details = JSON.parse(this.deliveryParams.details);
+            }
+            if (this.deliveryParams.details.drink) {
+                if (this.deliveryParams.details.drink == "yes") {
+                    this.hasDrink = true;
+                    this.shouldDrink = true;
+                }
+            }
+            this.saveDelivery.delivery_id = this.deliveryParams.id;
+        }
+
+        if (this.deliveryParams.delivery) {
+            if (typeof this.deliveryParams.delivery == 'string') {
+                this.deliveryParams.delivery = this.deliveryParams.delivery.replace(/-/g, '/');
+            }
+        } else if (this.deliveryParams.created_at) {
+            let sdate = this.deliveryParams.start_date;
+            this.deliveryParams.delivery = sdate.getFullYear()+"/"+(sdate.getMonth()+1)+"/"+sdate.getDate()+" 12:00:00";
+        }
+        console.log("date1",this.deliveryParams.delivery);
+        let date = new Date(this.deliveryParams.delivery);
+        console.log("date2",date);
+        let startDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        console.log("date3",startDate);
+        this.saveDelivery.date = startDate.toISOString();
+        console.log("date4",startDate.toISOString());
+        this.deliveryParams.delivery = date;
+    }
+    ionViewDidEnter(){
+        this.loadDelivery();
+    }
+
     scrollToBottom() {
         setTimeout(() => {
             this.content.scrollToBottom(300);
@@ -307,6 +362,7 @@ export class ProgramarPage implements OnInit {
     }
     selectMeal(item_id) {
         this.saveDelivery.type_id = item_id;
+        this.deliveryForm.patchValue({lunch_type: this.saveDelivery.type_id});
         this.scrollToBottom();
         console.log('ionViewDidLoad DeliveryProgramPage');
         this.selectFoodType();
@@ -386,14 +442,21 @@ export class ProgramarPage implements OnInit {
      */
     openTutorials() {
         console.log("Pre slides", this.slides);
-        this.navCtrl.push('TutorialDisplayPage', {
+        this.params.setParams({
             slides: this.slides
         });
+        if (this.userData._user) {
+            this.navCtrl.navigateForward('home/tutorials');
+        } else {
+            this.navCtrl.navigateForward('tabs/home/tutorials');
+        }
+
     }
     programComplete() {
-        this.navCtrl.push('ProgramCompletePage', {
+        this.params.setParams({
             delivery: this.deliveryParams
         });
+        this.navCtrl.navigateForward('tabs/home/programar/complete');
     }
 
     autoSelectSingles() {
@@ -408,6 +471,7 @@ export class ProgramarPage implements OnInit {
             let plato = this.attributes.plato[0];
             this.saveDelivery.main_id = plato.codigo;
             this.saveDelivery.main_name = plato.valor;
+            this.deliveryForm.patchValue({main_dish: this.saveDelivery.main_id});
         }
         if (this.attributes.bebidas) {
             if (this.attributes.bebidas.length == 1) {
@@ -421,36 +485,38 @@ export class ProgramarPage implements OnInit {
 
     selectFoodType() {
         this.submitAttempt = false;
-        this.foodTypeSelected = this.listArticles.find(i => i.id == this.saveDelivery.type_id);
-        console.log("selected", this.foodTypeSelected);
-        if (this.foodTypeSelected) {
-            this.attributes = this.foodTypeSelected.attributes;
-            if (this.attributes.entradas.length == 0) {
-                this.hasStarter = false;
-            } else {
-                this.hasStarter = true;
-            }
-            if (this.attributes.bebidas) {
-                if (this.attributes.bebidas.length == 0) {
-                    this.hasDrink = false;
+        let typeval = this.deliveryForm.get('lunch_type').value;
+        if (typeval > 0) {
+            this.saveDelivery.type_id = typeval;
+            this.foodTypeSelected = this.listArticles.find(i => i.id == this.saveDelivery.type_id);
+            console.log("selected", this.foodTypeSelected);
+            if (this.foodTypeSelected) {
+                this.attributes = this.foodTypeSelected.attributes;
+                if (this.attributes.entradas.length == 0) {
+                    this.hasStarter = false;
                 } else {
-                    if (this.shouldDrink) {
-                        this.hasDrink = true;
-                    }
+                    this.hasStarter = true;
                 }
-            } else {
-                this.hasDrink = false;
+                if (this.attributes.bebidas) {
+                    if (this.attributes.bebidas.length == 0) {
+                        this.hasDrink = false;
+                    } else {
+                        if (this.shouldDrink) {
+                            this.hasDrink = true;
+                        }
+                    }
+                } else {
+                    this.hasDrink = false;
+                }
+                this.saveDelivery.type_name = this.foodTypeSelected.name
+                this.saveDelivery.starter_id = "";
+                this.saveDelivery.starter_name = "";
+                this.saveDelivery.drink_id = "";
+                this.saveDelivery.drink_name = "";
+                this.saveDelivery.main_name = "";
+                this.saveDelivery.main_id = "";
+                this.autoSelectSingles();
             }
-
-            this.saveDelivery.type_name = this.foodTypeSelected.name
-
-            this.saveDelivery.starter_id = "";
-            this.saveDelivery.starter_name = "";
-            this.saveDelivery.drink_id = "";
-            this.saveDelivery.drink_name = "";
-            this.saveDelivery.main_name = "";
-            this.saveDelivery.main_id = "";
-            this.autoSelectSingles();
         }
     }
 
@@ -488,15 +554,18 @@ export class ProgramarPage implements OnInit {
     selectStandarFood() {
         this.submitAttempt = false;
         if (this.attributes.plato) {
-            let theMain = this.attributes.plato.find(i => i.codigo == this.saveDelivery.main_id);
-            if (theMain) {
-                this.saveDelivery.main_id = theMain['codigo'];
-                this.saveDelivery.main_name = theMain['valor'];
-                console.log("selectStandar", this.saveDelivery);
-                console.log("selectInit", theMain);
+            let typeval = this.deliveryForm.get('main_dish').value;
+            if (typeval > 0) {
+                this.saveDelivery.main_id = typeval;
+                let theMain = this.attributes.plato.find(i => i.codigo == this.saveDelivery.main_id);
+                if (theMain) {
+                    this.saveDelivery.main_id = theMain['codigo'];
+                    this.saveDelivery.main_name = theMain['valor'];
+                    console.log("selectStandar", this.saveDelivery);
+                    console.log("selectInit", theMain);
+                }
             }
         }
-
     }
     cancelSelection() {
         if (!this.submitting) {
@@ -568,6 +637,7 @@ export class ProgramarPage implements OnInit {
         this.fb.logEvent("Program Delivery");
         if (this.deliveryParams.id > 0) {
             this.food.updateDeliveryInformation(this.saveDelivery).subscribe((resp: any) => {
+                this.submitting = false;
                 this.dismissLoader();
                 if (resp.status == "success") {
                     this.deliveryParams.status = "enqueue";
@@ -634,6 +704,7 @@ export class ProgramarPage implements OnInit {
     }
 
     updateDelivery() {
+        console.log("Update Delivery",this.submitting);
         if (!this.submitting) {
             this.submitting = true;
         } else {

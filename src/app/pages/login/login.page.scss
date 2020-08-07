@@ -22,6 +22,12 @@ $button-active-blue: var(--ion-color-primary-tint);
         padding: 40px 0 20px;
         font-size: 18px;
     }
+    &__image {
+        text-align: center;
+        img {
+            width:50%;
+        }
+    }
 
     &__text,
     &__forgot-account {

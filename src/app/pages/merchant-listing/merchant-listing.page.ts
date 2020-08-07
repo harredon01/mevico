@@ -50,7 +50,7 @@ export class MerchantListingPage implements OnInit {
         this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
         let paramsContainer = this.params.getParams();
         if (this.userData._user) {
-            this.urlSearch = 'tabs/categories/' + this.category + '/merchant/';
+            this.urlSearch = 'tabs/home/categories/' + this.category + '/merchant/';
         } else {
             this.urlSearch = 'home/' + this.category + '/merchant/';
         }
@@ -175,6 +175,9 @@ export class MerchantListingPage implements OnInit {
     getMerchants(event) {
         this.showLoader();
         this.page++;
+        if(this.page ==1){
+            this.merchants=[];
+        }
         let searchObj = null
         if (this.typeSearch == "category") {
             let query = "page=" + this.page + "&category_id=" + this.category;
@@ -257,7 +260,7 @@ export class MerchantListingPage implements OnInit {
         this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
             this.merchantsErrorGet = value;
         });
-
+        this.merchants = [];
         this.getMerchants(null);
         this.getItems();
     }

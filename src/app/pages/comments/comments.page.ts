@@ -49,7 +49,7 @@ export class CommentsPage implements OnInit {
     postComment() {
         this.ratings.postRating(this.comment).subscribe((resp) => {
             //this.navCtrl.push(MainPage);
-            this.modalCtrl.dismiss("Close");
+            this.navCtrl.navigateRoot("tabs/home");
         }, (err) => {
             //this.navCtrl.push(MainPage);
             // Unable to log in

@@ -1,13 +1,13 @@
-
 import {Component, ChangeDetectorRef, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, NavParams, ModalController, AlertController, ToastController, LoadingController} from '@ionic/angular';
+import {Router} from '@angular/router';
+import {NavController, ModalController, AlertController, ToastController, MenuController, LoadingController} from '@ionic/angular';
 import {FoodService} from '../../services/food/food.service';
 import {CartService} from '../../services/cart/cart.service'
 import {Events} from '../../services/events/events.service';
 import {AlertsService} from '../../services/alerts/alerts.service';
 import {ParamsService} from '../../services/params/params.service';
-import {SpinnerDialog} from '@ionic-native/spinner-dialog';
+import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {MapDataService} from '../../services/map-data/map-data.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
@@ -16,6 +16,7 @@ import {UserService} from '../../services/user/user.service';
 import {Merchant} from '../../models/merchant';
 import {ConversionPage} from '../conversion/conversion.page';
 import {CartPage} from '../cart/cart.page';
+import {Delivery} from '../../models/delivery';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 
 @Component({
@@ -41,9 +42,10 @@ export class LonchisPage implements OnInit {
     celError: string;
     constructor(
         public navCtrl: NavController,
-        public navParams: NavParams,
         public food: FoodService,
+        public menu: MenuController,
         public mapData: MapDataService,
+        private router: Router,
         private drouter: DynamicRouterService,
         public userData: UserDataService,
         public userS: UserService,
@@ -114,13 +116,10 @@ export class LonchisPage implements OnInit {
     }
 
     ngOnInit() {
-    }
+        console.log("ionViewDidLoad");
 
-    ionViewDidLoad() {
-        this.getCart();
-        this.getMerchants();
         if (this.userData._user) {
-            this.navCtrl.navigateForward(this.drouter.pages);
+
             this.alerts.countUnread().subscribe((resp: any) => {
                 this.notifs = resp.total;
             }, (err) => {
@@ -129,13 +128,85 @@ export class LonchisPage implements OnInit {
             this.checkLogIn();
         }
     }
+    getDayName(item: any) {
+        if (item == 0) {
+            return "Domingo";
+        }
+        if (item == 1) {
+            return "Lunes";
+        }
+        if (item == 2) {
+            return "Martes";
+        }
+        if (item == 3) {
+            return "Miércoles";
+        }
+        if (item == 4) {
+            return "Jueves";
+        }
+        if (item == 5) {
+            return "Viernes";
+        }
+        if (item == 6) {
+            return "Sábado";
+        }
+    }
+    getMonthName(item: any) {
+        if (item == 0) {
+            return "Ene";
+        }
+        if (item == 1) {
+            return "Feb";
+        }
+        if (item == 2) {
+            return "Mar";
+        }
+        if (item == 3) {
+            return "Abr";
+        }
+        if (item == 4) {
+            return "May";
+        }
+        if (item == 5) {
+            return "Jun";
+        }
+        if (item == 6) {
+            return "Jul";
+        }
+        if (item == 7) {
+            return "Ago";
+        }
+        if (item == 8) {
+            return "Sept";
+        }
+        if (item == 9) {
+            return "Oct";
+        }
+        if (item == 10) {
+            return "Nov";
+        }
+        if (item == 11) {
+            return "Dic";
+        }
+    }
     ionViewDidEnter() {
+        console.log("ionViewDidEnter");
         this.getArticles();
         if (this.userData._user) {
+            console.log("Before get count deliveries");
+            this.getCountDeliveries();
+            console.log("Before get count deliveries", this.drouter.pages);
+            this.navCtrl.navigateForward(this.drouter.pages);
+            this.drouter.pages = null;
             this.events.publish("authenticated", {});
             this.getDeliveries(false);
-            this.getCountDeliveries();
+        } else {
+            if (this.router.url.includes("tabs")) {
+                this.navCtrl.navigateBack("home");
+            }
         }
+        this.getCart();
+        this.getMerchants();
         //        console.log("dismiss");
         //        this.dismissLoader();
         //        console.log("dismiss");
@@ -144,8 +215,11 @@ export class LonchisPage implements OnInit {
         //        this.dismissLoader();
     }
     menuOpen() {
-        console.log("Menu opened");
+        console.log("Menu opened", this.menu.isOpen());
         this.events.publish("notifsOpen", {});
+
+        this.menu.enable(true, 'end');
+        this.menu.toggle('end');
         this.notifs = 0;
         this.alerts.readAll();
     }
@@ -247,11 +321,12 @@ export class LonchisPage implements OnInit {
         let endDate = new Date();
         let day = endDate.getDay();
         if (day < 5) {
-            endDate.setDate(endDate.getDate() + (6 - day));
+            endDate.setDate(endDate.getDate() + (8 - day));
+            console.log("Adding ", (8 - day));
         } else if (day == 5) {
-            endDate.setDate(endDate.getDate() + 7);
+            endDate.setDate(endDate.getDate() + 9);
         } else if (day == 6) {
-            endDate.setDate(endDate.getDate() + 6);
+            endDate.setDate(endDate.getDate() + 8);
         }
         let where = "";
         let stringEndDate = endDate.getFullYear() + "-" + (endDate.getMonth() + 1) + "-" + endDate.getDate() + " 23:59:59";
@@ -259,9 +334,9 @@ export class LonchisPage implements OnInit {
         startDate.setDate(startDate.getDate() - 1);
         let stringStartDate = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate() + " 00:00:00";
         if (typeW == "articles") {
-            where = `start_date>=${stringStartDate}&start_date<=${stringEndDate}&includes=file&order_by=start_date,asc&page=1`;
+            where = `start_date>=${stringStartDate}&start_date<=${stringEndDate}&includes=file&limit=25&order_by=start_date,asc&page=1`;
         } else {
-            where = `delivery>${stringStartDate}&delivery<${stringEndDate}&status!=pending&includes=address&order_by=delivery,asc`;
+            where = `delivery>${stringStartDate}&delivery<${stringEndDate}&status!=pending&includes=address&limit=25&order_by=delivery,asc`;
         }
 
         return where;
@@ -367,6 +442,7 @@ export class LonchisPage implements OnInit {
 
     getMerchants() {
         let where = "id>1290&order_by=id,asc";
+        console.log("Getting merchants");
         this.merchants.getMerchantsFromServer(where).subscribe((data: any) => {
             data.data = this.merchants.prepareObjects(data.data);
             this.currentItems = data.data;
@@ -384,9 +460,9 @@ export class LonchisPage implements OnInit {
             objectId: item.id
         });
         if (this.userData._user) {
-            this.navCtrl.navigateForward('tabs/home/products/'+item.id);
+            this.navCtrl.navigateForward('tabs/home/products/' + item.id);
         } else {
-            this.navCtrl.navigateForward('home/products/'+item.id);
+            this.navCtrl.navigateForward('home/products/' + item.id);
         }
     }
     showProducts(item: Merchant) {
@@ -397,9 +473,9 @@ export class LonchisPage implements OnInit {
         };
         this.params.setParams(params);
         if (this.userData._user) {
-            this.navCtrl.navigateForward('tabs/home/products/'+item.id);
+            this.navCtrl.navigateForward('tabs/home/products/' + item.id);
         } else {
-            this.navCtrl.navigateForward('home/products/'+item.id);
+            this.navCtrl.navigateForward('home/products/' + item.id);
         }
     }
     openMenuOption(item: any) {
@@ -434,7 +510,17 @@ export class LonchisPage implements OnInit {
             if (showLoader) {
                 this.dismissLoader();
             }
-            let deliveries = resp.data;
+            let results = resp.data;
+            let itemList1 = [];
+            for (let one in results) {
+                results[one].delivery = results[one].delivery.replace(/-/g, '/');
+                let date = new Date(results[one].delivery);
+                let day = this.getDayName(date.getDay()) + " " + date.getDate() + " " + this.getMonthName(date.getMonth());
+                results[one].delivery_text = day;
+                let container = new Delivery(results[one])
+                itemList1.push(container);
+            }
+            let deliveries = itemList1;
             for (let item in this.itemList) {
                 this.itemList[item].deliveries = [];
                 for (let meal in this.itemList[item].meals) {
@@ -444,7 +530,6 @@ export class LonchisPage implements OnInit {
                             this.itemList[item].delivery = deliveries[del];
                             if (!deliveries[del].pushed) {
                                 deliveries[del].pushed = true;
-                                deliveries[del].details = JSON.parse(deliveries[del].details);
                                 this.itemList[item].deliveries.push(deliveries[del]);
                             }
 
@@ -460,6 +545,14 @@ export class LonchisPage implements OnInit {
             }
         });
     }
+    openNutricion() {
+        console.log("Opening menu");
+        if (this.userData._user) {
+            this.navCtrl.navigateForward('tabs/home/categories/' + 10);
+        } else {
+            this.navCtrl.navigateForward('home/' + 10);
+        }
+    }
 
     programAnother(delivery: any) {
         let theDate = new Date(delivery.delivery);
@@ -470,7 +563,7 @@ export class LonchisPage implements OnInit {
         this.food.updateDeliveryDate(container).subscribe((resp: any) => {
             if (resp.status == "success") {
                 resp.delivery.delivery = resp.delivery.delivery.replace(/-/g, '/');
-                this.params.setParams({delivery: resp.delivery});
+                this.params.setParams({item: resp.delivery});
                 this.navCtrl.navigateForward("tabs/home/programar");
             } else {
                 let toast = this.toastCtrl.create({
@@ -493,12 +586,10 @@ export class LonchisPage implements OnInit {
             console.log("User: ", this.userData._user);
             if (this.userData._user) {
                 this.params.setParams({"merchant_id": 1299});
-                this.navCtrl.navigateForward('tabs/checkout/shipping/' + 1299);
+                this.navCtrl.navigateForward('tabs/home/checkout/shipping/' + 1299);
             } else {
-                this.drouter.addPages([{
-                    type: 'Checkout',
-                    object_id: 1299
-                }]);
+                this.params.setParams({"merchant_id": 1299});
+                this.drouter.addPages('tabs/home/checkout/shipping/' + 1299);
                 console.log("Pushing login");
                 this.navCtrl.navigateForward('login');
             }
@@ -534,9 +625,10 @@ export class LonchisPage implements OnInit {
         }
     }
     getCountDeliveries() {
+        console.log("Get count deliveries");
         let url = "status=pending";
         this.food.getDeliveries(url).subscribe((resp: any) => {
-            console.log("results", resp);
+            console.log("results getCountDeliveries", resp);
             this.totalDeliveries = resp.total;
         }, (err) => {
 
@@ -570,16 +662,16 @@ export class LonchisPage implements OnInit {
     selectDelivery(item) {
         if (item.status == "pending" || item.status == "enqueue" || item.status == "deposit") {
             console.log("Select delivery", item);
-            this.params.setParams({delivery: item});
-            this.navCtrl.navigateForward("tabs/home/programar" );
+            this.params.setParams({item: item});
+            this.navCtrl.navigateForward("tabs/home/programar");
         } else if (item.status == "transit") {
             this.mapData.hideAll();
             this.mapData.activeDelivery = item.id;
             this.mapData.activeType = "Delivery";
-            this.navCtrl.navigateForward("tabs/map", );
+            this.navCtrl.navigateForward("tabs/map");
         } else if (item.status == "completed") {
-        this.params.setParams({objectJson: item, type_object: "Delivery", object_id: item.id});
-            this.navCtrl.navigateForward("tabs/home/comments", );
+            this.params.setParams({objectJson: item, type_object: "Delivery", object_id: item.id});
+            this.navCtrl.navigateForward("tabs/home/comments");
         } else if (item.status == "enqueue" || item.status == "preparing") {
             this.showPrompt()
         } else if (!item.status) {
@@ -590,8 +682,8 @@ export class LonchisPage implements OnInit {
                     merchant_id: 1299
                 }
             };
-            this.params.setParams({delivery: container});
-            this.navCtrl.navigateForward("tabs/home/programar" );
+            this.params.setParams({item: container});
+            this.navCtrl.navigateForward("tabs/home/programar");
         }
     }
     showPrompt() {
@@ -620,7 +712,7 @@ export class LonchisPage implements OnInit {
         console.log("Cart closing", data);
         if (data == "Prepare") {
             this.params.setParams({"merchant_id": 1});
-            this.navCtrl.navigateForward('tabs/checkout/prepare');
+            this.navCtrl.navigateForward('tabs/home/checkout/prepare');
         }*/
     }
 }
