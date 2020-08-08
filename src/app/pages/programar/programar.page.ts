@@ -18,7 +18,7 @@ import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router
     styleUrls: ['./programar.page.scss'],
 })
 export class ProgramarPage implements OnInit {
-    @ViewChild(IonContent, {static: false}) content: IonContent;
+    @ViewChild(IonContent) content: IonContent;
     private listArticles: any = [];
     private slides: any = [];
 
@@ -26,7 +26,7 @@ export class ProgramarPage implements OnInit {
     private attributes: any = [];
     private submitting: boolean = false;
     private isProgrammed: boolean;
-    private isDeposit: boolean;
+    public isDeposit: boolean;
     weekenddateError: boolean = false;
     dateError: boolean = false;
     submitAttempt: boolean = false;

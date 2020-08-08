@@ -19,7 +19,7 @@ import {ApiService} from '../../services/api/api.service';
     styleUrls: ['./checkout-options-payu.page.scss'],
 })
 export class CheckoutOptionsPayuPage implements OnInit {
-    @ViewChild(IonContent, {static: false}) content: IonContent;
+    @ViewChild(IonContent) content: IonContent;
     showPayment: boolean;
     showPayers: boolean;
     showSplit: boolean;

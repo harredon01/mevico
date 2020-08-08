@@ -16,7 +16,7 @@ import {OrderDataService} from '../../services/order-data/order-data.service';
     styleUrls: ['./booking-list.page.scss'],
 })
 export class BookingListPage implements OnInit {
-    @ViewChild(IonList, {read: ElementRef, static: false}) list: ElementRef;
+    @ViewChild(IonList, { read: ElementRef }) list: ElementRef;
     public bookings: Booking[] = [];
     public loadMore: boolean = false;
     public loadingAll: boolean = false;

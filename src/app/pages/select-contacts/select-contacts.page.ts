@@ -13,7 +13,7 @@ import {Contact} from '../../models/contact'
     styleUrls: ['./select-contacts.page.scss'],
 })
 export class SelectContactsPage implements OnInit {
-    @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
+    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     contacts: Contact[] = [];
     contacts2: Contact[] = [];
     invites: any[] = [];

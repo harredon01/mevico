@@ -9,7 +9,7 @@ import {AuthService} from '../../services/auth/auth.service';
     styleUrls: ['./medical.page.scss'],
 })
 export class MedicalPage implements OnInit { 
-    @ViewChild(IonContent, {static: false}) content: IonContent;
+    @ViewChild(IonContent) content: IonContent;
     private data: any = {};
     public showForm = false;
     private medicalSuccess:string = "";

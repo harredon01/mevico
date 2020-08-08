@@ -16,8 +16,8 @@ import {Router} from '@angular/router';
     styleUrls: ['./chat-room.page.scss'],
 })
 export class ChatRoomPage implements OnInit {
-    @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
-    @ViewChild(IonContent, {static: false}) content: IonContent;
+    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+    @ViewChild(IonContent) content: IonContent;
     public friend: Friend = new Friend({});
     public messages: Message[] = [];
     public tabBarElement: any;

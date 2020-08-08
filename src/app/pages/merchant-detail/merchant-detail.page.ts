@@ -19,7 +19,7 @@ import {CartService} from '../../services/cart/cart.service'
     styleUrls: ['./merchant-detail.page.scss'],
 })
 export class MerchantDetailPage implements OnInit {
-    @ViewChild('slides', {static: false}) slides: IonSlides;
+    @ViewChild('slides') slides: IonSlides;
     doctor: string = "about";
     Short: string = "n1";
     category: string = "";

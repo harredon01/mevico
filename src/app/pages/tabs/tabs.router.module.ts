@@ -16,61 +16,61 @@ const routes: Routes = [
                     //                    },
                     {
                         path: '',
-                        loadChildren: '../lonchis/lonchis.module#LonchisPageModule'
+                        loadChildren: () => import('../lonchis/lonchis.module').then(m => m.LonchisPageModule)
                     },
                     {
                         path: 'calculadora',
-                        loadChildren: '../calculadora/calculadora.module#CalculadoraPageModule'
+                        loadChildren: () => import('../calculadora/calculadora.module').then(m => m.CalculadoraPageModule)
                     },
                     {
                         path: 'comments',
-                        loadChildren: '../comments/comments.module#CommentsPageModule'
+                        loadChildren: () => import('../comments/comments.module').then(m => m.CommentsPageModule)
                     },
                     {
                         path: 'programar',
-                        loadChildren: '../programar/programar.module#ProgramarPageModule'
+                        loadChildren: () => import('../programar/programar.module').then(m => m.ProgramarPageModule)
                     },
                     {
                         path: 'programar/complete',
-                        loadChildren: '../program-complete/program-complete.module#ProgramCompletePageModule'
+                        loadChildren: () => import('../program-complete/program-complete.module').then(m => m.ProgramCompletePageModule)
                     },
                     {
                         path: 'conversion',
-                        loadChildren: '../conversion/conversion.module#ConversionPageModule'
+                        loadChildren: () => import('../conversion/conversion.module').then(m => m.ConversionPageModule)
                     },
                     {
                         path: 'products/:objectId',
-                        loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
+                        loadChildren: () => import('../merchant-products/merchant-products.module').then(m => m.MerchantProductsPageModule),
                     },
                     {
                         path: 'tutorial',
-                        loadChildren: '../tutorial/tutorial.module#TutorialPageModule',
+                        loadChildren: () => import('../tutorial/tutorial.module').then(m => m.TutorialPageModule),
                     },
                     {
                         path: 'checkout',
                         children: [
                             {
                                 path: 'shipping/:merchant_id',
-                                loadChildren: '../checkout-shipping/checkout-shipping.module#CheckoutShippingPageModule'
+                                loadChildren: () => import('../checkout-shipping/checkout-shipping.module').then(m => m.CheckoutShippingPageModule)
                             },
                             {
                                 path: 'prepare',
-                                loadChildren: '../checkout-prepare/checkout-prepare.module#CheckoutPreparePageModule'
+                                loadChildren: () => import('../checkout-prepare/checkout-prepare.module').then(m => m.CheckoutPreparePageModule)
                             },
                             {
                                 path: 'mercado-pago-options',
                                 children: [
                                     {
                                         path: '',
-                                        loadChildren: '../mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule'
+                                        loadChildren: () => import('../mercado-pago-options/mercado-pago-options.module').then(m => m.MercadoPagoOptionsPageModule)
                                     },
                                     {
                                         path: 'card',
-                                        loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
+                                        loadChildren: () => import('../mercado-pago/mercado-pago.module').then(m => m.MercadoPagoPageModule)
                                     },
                                     {
                                         path: 'thankyou',
-                                        loadChildren: '../mercado-pago-thankyou/mercado-pago-thankyou.module#MercadoPagoThankyouPageModule'
+                                        loadChildren: () => import('../mercado-pago-thankyou/mercado-pago-thankyou.module').then(m => m.MercadoPagoThankyouPageModule)
                                     }
                                 ]
                             },
@@ -82,33 +82,33 @@ const routes: Routes = [
                                     children: [
                                         {
                                             path: 'buyer',
-                                            loadChildren: '../checkout-buyer/checkout-buyer.module#CheckoutBuyerPageModule'
+                                            loadChildren: () => import('../checkout-buyer/checkout-buyer.module').then(m => m.CheckoutBuyerPageModule)
                                         },
                                         {
                                             path: 'payer',
-                                            loadChildren: '../checkout-payer/checkout-payer.module#CheckoutPayerPageModule'
+                                            loadChildren: () => import('../checkout-payer/checkout-payer.module').then(m => m.CheckoutPayerPageModule)
                                         },
                                         {
                                             path: 'card',
-                                            loadChildren: '../checkout-card/checkout-card.module#CheckoutCardPageModule'
+                                            loadChildren: () => import('../checkout-card/checkout-card.module').then(m => m.CheckoutCardPageModule)
                                         }
                                     ]
                                 },
                                 {
                                     path: 'cash',
-                                    loadChildren: '../checkout-cash/checkout-cash.module#CheckoutCashPageModule'
+                                    loadChildren: () => import('../checkout-cash/checkout-cash.module').then(m => m.CheckoutCashPageModule)
                                 },
                                 {
                                     path: 'banks',
-                                    loadChildren: '../checkout-banks/checkout-banks.module#CheckoutBanksPageModule'
+                                    loadChildren: () => import('../checkout-banks/checkout-banks.module').then(m => m.CheckoutBanksPageModule)
                                 },
                                 {
                                     path: 'complete',
-                                    loadChildren: '../payu-complete/payu-complete.module#PayuCompletePageModule'
+                                    loadChildren: () => import('../payu-complete/payu-complete.module').then(m => m.PayuCompletePageModule)
                                 },
                                 {
                                     path: 'options',
-                                    loadChildren: '../checkout-options-payu/checkout-options-payu.module#CheckoutOptionsPayuPageModule'
+                                    loadChildren: () => import('../checkout-options-payu/checkout-options-payu.module').then(m => m.CheckoutOptionsPayuPageModule)
                                 },
                             ]
                         },
@@ -122,31 +122,31 @@ const routes: Routes = [
                                 children: [
                                     {
                                         path: '',
-                                        loadChildren: '../merchant-listing/merchant-listing.module#MerchantListingPageModule',
+                                        loadChildren: () => import('../merchant-listing/merchant-listing.module').then(m => m.MerchantListingPageModule),
                                     },
                                     {
                                         path: 'merchant/:objectId',
                                         children: [
                                             {
                                                 path: '',
-                                                loadChildren: '../merchant-detail/merchant-detail.module#MerchantDetailPageModule',
+                                                loadChildren: () => import('../merchant-detail/merchant-detail.module').then(m => m.MerchantDetailPageModule),
                                             },
                                             {
                                                 path: 'products',
                                                 children: [
                                                     {
                                                         path: '',
-                                                        loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
+                                                        loadChildren: () => import('../merchant-products/merchant-products.module').then(m => m.MerchantProductsPageModule),
                                                     }
                                                 ]
                                             },
                                             {
                                                 path: 'chat',
-                                                loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                                                loadChildren: () => import('../chat-room/chat-room.module').then(m => m.ChatRoomPageModule)
                                             },
                                             {
                                                 path: 'book',
-                                                loadChildren: '../booking/booking.module#BookingPageModule',
+                                                loadChildren: () => import('../booking/booking.module').then(m => m.BookingPageModule),
                                             }
                                         ]
                                     }
@@ -161,7 +161,7 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../map/map.module#MapPageModule'
+                        loadChildren: () => import('../map/map.module').then(m => m.MapPageModule)
                     }
                 ]
             },
@@ -170,15 +170,15 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../mercado-pago-options/mercado-pago-options.module#MercadoPagoOptionsPageModule'
+                        loadChildren: () => import('../mercado-pago-options/mercado-pago-options.module').then(m => m.MercadoPagoOptionsPageModule)
                     },
                     {
                         path: 'card',
-                        loadChildren: '../mercado-pago/mercado-pago.module#MercadoPagoPageModule'
+                        loadChildren: () => import('../mercado-pago/mercado-pago.module').then(m => m.MercadoPagoPageModule)
                     },
                     {
                         path: 'thankyou',
-                        loadChildren: '../mercado-pago-thankyou/mercado-pago-thankyou.module#MercadoPagoThankyouPageModule'
+                        loadChildren: () => import('../mercado-pago-thankyou/mercado-pago-thankyou.module').then(m => m.MercadoPagoThankyouPageModule)
                     }
                 ]
             },
@@ -187,7 +187,7 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../opentok/opentok.module#OpentokPageModule'
+                        loadChildren: () => import('../opentok/opentok.module').then(m => m.OpentokPageModule)
                     }
                 ]
             },
@@ -196,11 +196,11 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../routes/routes.module#RoutesPageModule'
+                        loadChildren: () => import('../routes/routes.module').then(m => m.RoutesPageModule)
                     },
                     {
                         path: ':objectId',
-                        loadChildren: '../route-detail/route-detail.module#RouteDetailPageModule'
+                        loadChildren: () => import('../route-detail/route-detail.module').then(m => m.RouteDetailPageModule)
                     }
                 ]
             },
@@ -209,7 +209,7 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                        loadChildren: () => import('../chat-room/chat-room.module').then(m => m.ChatRoomPageModule)
                     }
                 ]
             },
@@ -218,22 +218,22 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../contacts/contacts.module#ContactsPageModule'
+                        loadChildren: () => import('../contacts/contacts.module').then(m => m.ContactsPageModule)
                     },
                     {
                         path: 'import',
-                        loadChildren: '../import-contacts/import-contacts.module#ImportContactsPageModule'
+                        loadChildren: () => import('../import-contacts/import-contacts.module').then(m => m.ImportContactsPageModule)
                     },
                     {
                         path: ':objectId',
                         children: [
                             {
                                 path: '',
-                                loadChildren: '../contact-detail/contact-detail.module#ContactDetailPageModule'
+                                loadChildren: () => import('../contact-detail/contact-detail.module').then(m => m.ContactDetailPageModule)
                             },
                             {
                                 path: 'chat',
-                                loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                                loadChildren: () => import('../chat-room/chat-room.module').then(m => m.ChatRoomPageModule)
                             }
                         ]
                     },
@@ -244,18 +244,18 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../groups/groups.module#GroupsPageModule'
+                        loadChildren: () => import('../groups/groups.module').then(m => m.GroupsPageModule)
                     },
                     {
                         path: ':objectId',
                         children: [
                             {
                                 path: '',
-                                loadChildren: '../group-detail/group-detail.module#GroupDetailPageModule'
+                                loadChildren: () => import('../group-detail/group-detail.module').then(m => m.GroupDetailPageModule)
                             },
                             {
                                 path: 'chat',
-                                loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                                loadChildren: () => import('../chat-room/chat-room.module').then(m => m.ChatRoomPageModule)
                             }
                         ]
                     }
@@ -266,11 +266,11 @@ const routes: Routes = [
                 children: [
                     {
                         path: 'shipping/:merchant_id',
-                        loadChildren: '../checkout-shipping/checkout-shipping.module#CheckoutShippingPageModule'
+                        loadChildren: () => import('../checkout-shipping/checkout-shipping.module').then(m => m.CheckoutShippingPageModule)
                     },
                     {
                         path: 'prepare',
-                        loadChildren: '../checkout-prepare/checkout-prepare.module#CheckoutPreparePageModule'
+                        loadChildren: () => import('../checkout-prepare/checkout-prepare.module').then(m => m.CheckoutPreparePageModule)
                     },
                 ]
             },
@@ -282,33 +282,33 @@ const routes: Routes = [
                         children: [
                             {
                                 path: 'buyer',
-                                loadChildren: '../checkout-buyer/checkout-buyer.module#CheckoutBuyerPageModule'
+                                loadChildren: () => import('../checkout-buyer/checkout-buyer.module').then(m => m.CheckoutBuyerPageModule)
                             },
                             {
                                 path: 'payer',
-                                loadChildren: '../checkout-payer/checkout-payer.module#CheckoutPayerPageModule'
+                                loadChildren: () => import('../checkout-payer/checkout-payer.module').then(m => m.CheckoutPayerPageModule)
                             },
                             {
                                 path: 'card',
-                                loadChildren: '../checkout-card/checkout-card.module#CheckoutCardPageModule'
+                                loadChildren: () => import('../checkout-card/checkout-card.module').then(m => m.CheckoutCardPageModule)
                             }
                         ]
                     },
                     {
                         path: 'cash',
-                        loadChildren: '../checkout-cash/checkout-cash.module#CheckoutCashPageModule'
+                        loadChildren: () => import('../checkout-cash/checkout-cash.module').then(m => m.CheckoutCashPageModule)
                     },
                     {
                         path: 'banks',
-                        loadChildren: '../checkout-banks/checkout-banks.module#CheckoutBanksPageModule'
+                        loadChildren: () => import('../checkout-banks/checkout-banks.module').then(m => m.CheckoutBanksPageModule)
                     },
                     {
                         path: 'complete',
-                        loadChildren: '../payu-complete/payu-complete.module#PayuCompletePageModule'
+                        loadChildren: () => import('../payu-complete/payu-complete.module').then(m => m.PayuCompletePageModule)
                     },
                     {
                         path: 'options',
-                        loadChildren: '../checkout-options-payu/checkout-options-payu.module#CheckoutOptionsPayuPageModule'
+                        loadChildren: () => import('../checkout-options-payu/checkout-options-payu.module').then(m => m.CheckoutOptionsPayuPageModule)
                     },
                 ]
             },
@@ -317,22 +317,22 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren: '../settings/settings.module#SettingsPageModule'
+                        loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
                     },
                     {
                         path: 'my-account',
-                        loadChildren: '../my-account/my-account.module#MyAccountPageModule'
+                        loadChildren: () => import('../my-account/my-account.module').then(m => m.MyAccountPageModule)
                     },
                     {
                         path: 'payments',
                         children: [
                             {
                                 path: '',
-                                loadChildren: '../payments/payments.module#PaymentsPageModule'
+                                loadChildren: () => import('../payments/payments.module').then(m => m.PaymentsPageModule)
                             },
                             {
                                 path: ':objectId',
-                                loadChildren: '../payment-detail/payment-detail.module#PaymentDetailPageModule'
+                                loadChildren: () => import('../payment-detail/payment-detail.module').then(m => m.PaymentDetailPageModule)
                             }
                         ]
                     },
@@ -341,54 +341,54 @@ const routes: Routes = [
                         children: [
                             {
                                 path: '',
-                                loadChildren: '../merchant-listing/merchant-listing.module#MerchantListingPageModule'
+                                loadChildren: () => import('../merchant-listing/merchant-listing.module').then(m => m.MerchantListingPageModule)
                             },
                             {
                                 path: 'create-merchant',
-                                loadChildren: '../new-merchant/new-merchant.module#NewMerchantPageModule'
+                                loadChildren: () => import('../new-merchant/new-merchant.module').then(m => m.NewMerchantPageModule)
                             },
                             {
                                 path: ':objectId',
                                 children: [
                                     {
                                         path: '',
-                                        loadChildren: '../create-merchant/create-merchant.module#CreateMerchantPageModule'
+                                        loadChildren: () => import('../create-merchant/create-merchant.module').then(m => m.CreateMerchantPageModule)
                                     },
                                     {
                                         path: 'products',
                                         children: [
                                             {
                                                 path: '',
-                                                loadChildren: '../merchant-products/merchant-products.module#MerchantProductsPageModule',
+                                                loadChildren: () => import('../merchant-products/merchant-products.module').then(m => m.MerchantProductsPageModule),
                                             },
                                             {
                                                 path: 'edit/:productId',
-                                                loadChildren: '../edit-products/edit-products.module#EditProductsPageModule',
+                                                loadChildren: () => import('../edit-products/edit-products.module').then(m => m.EditProductsPageModule),
                                             },
                                             {
                                                 path: 'images/:productId',
-                                                loadChildren: '../images/images.module#ImagesPageModule',
+                                                loadChildren: () => import('../images/images.module').then(m => m.ImagesPageModule),
                                             }
                                         ]
                                     },
                                     {
                                         path: 'chat',
-                                        loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                                        loadChildren: () => import('../chat-room/chat-room.module').then(m => m.ChatRoomPageModule)
                                     },
                                     {
                                         path: 'bookings',
                                         children: [
                                             {
                                                 path: '',
-                                                loadChildren: '../booking-list/booking-list.module#BookingListPageModule',
+                                                loadChildren: () => import('../booking-list/booking-list.module').then(m => m.BookingListPageModule),
                                             },
                                             {
                                                 path: ':bookingId',
-                                                loadChildren: '../booking-detail/booking-detail.module#BookingDetailPageModule',
+                                                loadChildren: () => import('../booking-detail/booking-detail.module').then(m => m.BookingDetailPageModule),
                                             },
                                             {
                                                 path: ':bookingId/edit',
-                                                loadChildren: '../booking/booking.module#BookingPageModule',
+                                                loadChildren: () => import('../booking/booking.module').then(m => m.BookingPageModule),
                                             }
                                         ]
                                     },
@@ -397,21 +397,21 @@ const routes: Routes = [
                                         children: [
                                             {
                                                 path: '',
-                                                loadChildren: '../items/items.module#ItemsPageModule',
+                                                loadChildren: () => import('../items/items.module').then(m => m.ItemsPageModule),
                                             },
                                             {
                                                 path: ':itemId',
-                                                loadChildren: '../item-detail/item-detail.module#ItemDetailPageModule',
+                                                loadChildren: () => import('../item-detail/item-detail.module').then(m => m.ItemDetailPageModule),
                                             }
                                         ]
                                     },
                                     {
                                         path: 'availabilities',
-                                        loadChildren: '../availabilities/availabilities.module#AvailabilitiesPageModule',
+                                        loadChildren: () => import('../availabilities/availabilities.module').then(m => m.AvailabilitiesPageModule),
                                     },
                                     {
                                         path: 'images',
-                                        loadChildren: '../images/images.module#ImagesPageModule',
+                                        loadChildren: () => import('../images/images.module').then(m => m.ImagesPageModule),
                                     }
                                 ]
                             }
@@ -419,38 +419,38 @@ const routes: Routes = [
                     },
                     {
                         path: 'addresses',
-                        loadChildren: '../addresses/addresses.module#AddressesPageModule'
+                        loadChildren: () => import('../addresses/addresses.module').then(m => m.AddressesPageModule)
                     },
                     {
                         path: 'medical',
-                        loadChildren: '../medical/medical.module#MedicalPageModule'
+                        loadChildren: () => import('../medical/medical.module').then(m => m.MedicalPageModule)
                     },
                     {
                         path: 'codes',
-                        loadChildren: '../codes/codes.module#CodesPageModule'
+                        loadChildren: () => import('../codes/codes.module').then(m => m.CodesPageModule)
                     },
                     {
                         path: 'chat',
-                        loadChildren: '../chat-room/chat-room.module#ChatRoomPageModule'
+                        loadChildren: () => import('../chat-room/chat-room.module').then(m => m.ChatRoomPageModule)
                     },
                     {
                         path: 'password',
-                        loadChildren: '../password/password.module#PasswordPageModule'
+                        loadChildren: () => import('../password/password.module').then(m => m.PasswordPageModule)
                     },
                     {
                         path: 'bookings',
                         children: [
                             {
                                 path: '',
-                                loadChildren: '../booking-list/booking-list.module#BookingListPageModule',
+                                loadChildren: () => import('../booking-list/booking-list.module').then(m => m.BookingListPageModule),
                             },
                             {
                                 path: ':bookingId',
-                                loadChildren: '../booking-detail/booking-detail.module#BookingDetailPageModule',
+                                loadChildren: () => import('../booking-detail/booking-detail.module').then(m => m.BookingDetailPageModule),
                             },
                             {
                                 path: ':bookingId/edit',
-                                loadChildren: '../booking/booking.module#BookingPageModule',
+                                loadChildren: () => import('../booking/booking.module').then(m => m.BookingPageModule),
                             }
                         ]
                     },

@@ -17,15 +17,15 @@ import {ConversionPage} from '../conversion/conversion.page';
 })
 export class CalculadoraPage implements OnInit {
     
-    @ViewChild("barCanvas1", {static: false}) barCanvas1: ElementRef;
-    @ViewChild("barCanvas2", {static: false}) barCanvas2: ElementRef;
-    @ViewChild("barCanvas3", {static: false}) barCanvas3: ElementRef;
-    @ViewChild("barCanvas4", {static: false}) barCanvas4: ElementRef;
-    @ViewChild("barCanvas5", {static: false}) barCanvas5: ElementRef;
-    @ViewChild("barCanvas6", {static: false}) barCanvas6: ElementRef;
-    @ViewChild("barCanvas4", {static: false}) barCanvas7: ElementRef;
-    @ViewChild("barCanvas5", {static: false}) barCanvas8: ElementRef;
-    @ViewChild("barCanvas6", {static: false}) barCanvas9: ElementRef;
+    @ViewChild("barCanvas1") barCanvas1: ElementRef;
+    @ViewChild("barCanvas2") barCanvas2: ElementRef;
+    @ViewChild("barCanvas3") barCanvas3: ElementRef;
+    @ViewChild("barCanvas4") barCanvas4: ElementRef;
+    @ViewChild("barCanvas5") barCanvas5: ElementRef;
+    @ViewChild("barCanvas6") barCanvas6: ElementRef;
+    @ViewChild("barCanvas4") barCanvas7: ElementRef;
+    @ViewChild("barCanvas5") barCanvas8: ElementRef;
+    @ViewChild("barCanvas6") barCanvas9: ElementRef;
 
     private barChart: Chart;
     show1: boolean = true;

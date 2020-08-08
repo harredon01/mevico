@@ -18,7 +18,7 @@ export class CheckoutCashPage implements OnInit {
     // The account fields for the login form.
     // If you're using the username field with or without email, make
     // sure to add it to the type
-    @ViewChild(IonContent, {static: false}) content: IonContent;
+    @ViewChild(IonContent) content: IonContent;
     option: any;
     submitAttempt: boolean = false;
     v: any;

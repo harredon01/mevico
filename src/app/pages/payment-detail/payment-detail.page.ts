@@ -11,7 +11,6 @@ import {UserDataService} from '../../services/user-data/user-data.service';
 import {Payment} from '../../models/payment';
 import {Order} from '../../models/order';
 import {ApiService} from '../../services/api/api.service';
-import {Tab2Page as RetryPaymentPage} from '../tab2/tab2.page';
 @Component({
     selector: 'app-payment-detail',
     templateUrl: './payment-detail.page.html',

@@ -16,7 +16,7 @@ import {Merchant} from '../../models/merchant';
     styleUrls: ['./create-merchant.page.scss'],
 })
 export class CreateMerchantPage implements OnInit {
-    @ViewChild('slides', {static: false}) slides: IonSlides;
+    @ViewChild('slides') slides: IonSlides;
     isReadyToSave: boolean;
     locationLoaded: boolean = false;
     MerchantLoaded: boolean = false;
