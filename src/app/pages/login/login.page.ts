@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Facebook, FacebookLoginResponse} from '@ionic-native/facebook/ngx';
 import {GooglePlus} from '@ionic-native/google-plus/ngx';
+import {SignInWithApple, AppleSignInResponse, AppleSignInErrorResponse, ASAuthorizationAppleIDRequest} from '@ionic-native/sign-in-with-apple/ngx';
 import {NavController, ToastController, LoadingController, AlertController, ModalController} from '@ionic/angular';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Events} from '../../services/events/events.service';
@@ -49,9 +50,10 @@ export class LoginPage implements OnInit {
         private googlePlus: GooglePlus,
         private fb: Facebook,
         private params: ParamsService,
+        private signInWithApple: SignInWithApple,
         public user: UserService,
         public api: ApiService,
-        private mapData:MapDataService,
+        private mapData: MapDataService,
         public dr: DynamicRouterService,
         private alertsCtrl: AlertController,
         private modalCtrl: ModalController,
@@ -180,7 +182,7 @@ export class LoginPage implements OnInit {
             })
                 .then(res => {
                     console.log(res);
-                    this.verifyToken(res.accessToken, "google");
+                    this.verifyToken(res.accessToken, "google",null);
                 })
                 .catch(err => console.error(err));
         }
@@ -191,12 +193,36 @@ export class LoginPage implements OnInit {
             console.log("loginFacebook");
         } else {
             this.fb.login(['public_profile', 'email'])
-                .then((res: FacebookLoginResponse) => {console.log('Logged into Facebook!', res); this.verifyToken(res.authResponse.accessToken, "facebook");})
+                .then((res: FacebookLoginResponse) => {console.log('Logged into Facebook!', res); this.verifyToken(res.authResponse.accessToken, "facebook",null);})
                 .catch(e => console.log('Error logging into Facebook', e));
         }
     }
-    verifyToken(token, platform) {
-        let container = {"token": token, "driver": platform};
+    loginApple() {
+        this.signInWithApple.signin({
+            requestedScopes: [
+                ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
+                ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail
+            ]
+        })
+            .then((succ: AppleSignInResponse) => {
+                // https://developer.apple.com/documentation/signinwithapplerestapi/verifying_a_user
+                alert('Send token to apple for verification: ' + succ.identityToken);
+                console.log(succ)
+                let userData = {
+                    firstName: succ.fullName.givenName,
+                    lastName: succ.fullName.familyName,
+                    name: succ.fullName.givenName + ' ' + succ.fullName.familyName,
+                    email: succ.email,
+                };
+                this.verifyToken(succ.identityToken, "apple", userData);
+            })
+            .catch((error: AppleSignInErrorResponse) => {
+                alert(error.code + ' ' + error.localizedDescription);
+                console.error(error);
+            });
+    }
+    verifyToken(token, platform,extra) {
+        let container = {"token": token, "driver": platform,"extra":extra};
         this.auth.checkSocialToken(container).subscribe((resp: any) => {
             if (resp.status == "success") {
                 this.postTokenAuth(resp.token);
