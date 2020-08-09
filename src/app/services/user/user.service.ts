@@ -191,7 +191,7 @@ export class UserService {
 
             this.userData.setUsername(accountInfo.username);
             this.userData.setPassword(accountInfo.password);
-            this.userData.setRemember(accountInfo.remember);
+            this.userData.setRemember("true");
         }
         this.saveTokenServer();
 

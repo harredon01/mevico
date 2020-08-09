@@ -98,10 +98,11 @@ export class AppComponent {
     }
     initializeApp() {
         this.platform.ready().then(() => {
+            this.userData.initSecureStorage();
             this.statusBar.styleDefault();
             this.splashScreen.hide();
             this.languageService.setInitialAppLanguage();
-            this.storeDeviceId();
+            
             //            this.zoomService.initialize("VNtFB87WSBW0yHl6rxHgTA", "air8HQbEbEEQZL5aZlNRwUMqPED2RH9zMx5B")
             //                .then((success: any) => console.log(success))
             //                .catch((error: any) => console.log(error));
@@ -110,6 +111,10 @@ export class AppComponent {
             }
             this.events.subscribe('authenticated', (data:any) => {
                 this.getAlerts();
+                // user and time are the same arguments passed in `events.publish(user, time)`
+            });
+            this.events.subscribe('storageInitialized', (data:any) => {
+                this.storeDeviceId();
                 // user and time are the same arguments passed in `events.publish(user, time)`
             });
             this.events.subscribe('notifsOpen', (data:any) => {
@@ -139,6 +144,7 @@ export class AppComponent {
             window.addEventListener('blur', (e: any) => {
                 this.events.publish('app:stopNotifsWeb',{});
             });
+            
         });
         this.alerts.getLanguage().then((value) => {
             console.log("getLanguage");

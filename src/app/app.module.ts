@@ -9,9 +9,11 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {Contacts } from '@ionic-native/contacts/ngx';
 import {FileTransfer} from '@ionic-native/file-transfer/ngx';
+import {SecureStorageEcho} from '@ionic-native/secure-storage-echo/ngx';
 import {GooglePlus} from '@ionic-native/google-plus/ngx';
 import {Facebook} from '@ionic-native/facebook/ngx';
 import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
@@ -63,6 +65,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         FileTransfer,
         SpinnerDialog,
         Geolocation,
+        SecureStorageEcho,
+        SignInWithApple,
         GooglePlus,
         UniqueDeviceID,
         Facebook,

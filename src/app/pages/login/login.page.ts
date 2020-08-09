@@ -84,10 +84,16 @@ export class LoginPage implements OnInit {
         this.translateService.get('LOGIN.UPDATE_START').subscribe((value) => {
             this.updateStartString = value;
         });
-        this.checkLogIn();
+        this.events.subscribe('storageInitialized', (data: any) => {
+            this.checkLogIn();
+            // user and time are the same arguments passed in `events.publish(user, time)`
+        });
+
     }
     ionViewDidEnter() {
-
+        if (this.userData.storageLoaded){
+            this.checkLogIn();
+        }
     }
     async dismissLoader() {
         if (document.URL.startsWith('http')) {
@@ -182,7 +188,7 @@ export class LoginPage implements OnInit {
             })
                 .then(res => {
                     console.log(res);
-                    this.verifyToken(res.accessToken, "google",null);
+                    this.verifyToken(res.accessToken, "google", null);
                 })
                 .catch(err => console.error(err));
         }
@@ -193,7 +199,7 @@ export class LoginPage implements OnInit {
             console.log("loginFacebook");
         } else {
             this.fb.login(['public_profile', 'email'])
-                .then((res: FacebookLoginResponse) => {console.log('Logged into Facebook!', res); this.verifyToken(res.authResponse.accessToken, "facebook",null);})
+                .then((res: FacebookLoginResponse) => {console.log('Logged into Facebook!', res); this.verifyToken(res.authResponse.accessToken, "facebook", null);})
                 .catch(e => console.log('Error logging into Facebook', e));
         }
     }
@@ -221,8 +227,8 @@ export class LoginPage implements OnInit {
                 console.error(error);
             });
     }
-    verifyToken(token, platform,extra) {
-        let container = {"token": token, "driver": platform,"extra":extra};
+    verifyToken(token, platform, extra) {
+        let container = {"token": token, "driver": platform, "extra": extra};
         this.auth.checkSocialToken(container).subscribe((resp: any) => {
             if (resp.status == "success") {
                 this.postTokenAuth(resp.token);
@@ -278,7 +284,12 @@ export class LoginPage implements OnInit {
             console.log("getToken");
             console.log(value);
             if (value) {
-                this.postTokenAuth(value);
+                if (value.length > 0) {
+                    this.postTokenAuth(value);
+                } else {
+                    this._loadUserData();
+                }
+
             } else {
                 this._loadUserData();
             }
@@ -323,13 +334,18 @@ export class LoginPage implements OnInit {
         this.userData.getUsername().then((value) => {
             console.log("getUsername", value);
             if (value) {
-                this.account.username = value;
+                if (value.length > 0) {
+                    this.account.username = value;
+                }
+
             }
         });
         this.userData.getPassword().then((value) => {
             console.log("getPassword", value);
             if (value) {
-                this.account.password = value;
+                if (value.length > 0) {
+                    this.account.password = value;
+                }
             }
         });
         this.userData.getRemember().then((value) => {

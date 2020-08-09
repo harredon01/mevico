@@ -113,6 +113,10 @@ export class LonchisPage implements OnInit {
             }
             this.cdr.detectChanges();
         });
+        this.events.subscribe('storageInitialized', (data: any) => {
+            this.checkLogIn();
+            // user and time are the same arguments passed in `events.publish(user, time)`
+        });
     }
 
     ngOnInit() {
@@ -125,7 +129,9 @@ export class LonchisPage implements OnInit {
             }, (err) => {
             });
         } else {
-            this.checkLogIn();
+            if (this.userData.storageLoaded){
+                this.checkLogIn();
+            }
         }
     }
     getDayName(item: any) {

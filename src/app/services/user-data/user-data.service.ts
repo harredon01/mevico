@@ -1,16 +1,19 @@
 import {HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Storage} from '@ionic/storage';
-
+import {Events} from '../events/events.service';
+import {SecureStorageEcho, SecureStorageEchoObject} from '@ionic-native/secure-storage-echo/ngx';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class UserDataService {
     _user: any;
     _headers: any;
-
-   constructor(public storage: Storage) {
+    storage: any;
+    useSecure: boolean = false;
+    storageLoaded: boolean = false;
+    constructor(private secureStorageEcho: SecureStorageEcho, private events: Events, public storage2: Storage) {
         console.log("Building headers");
         this._headers = new HttpHeaders({
             'Content-Type': 'application/json',
@@ -18,120 +21,264 @@ export class UserDataService {
             'Accept': 'application/json'
         });
     }
-    getLanguage(): Promise<string> {
-        return this.storage.get('language').then((value) => {
-            return value;
-        });
+    initSecureStorage() {
+        console.log("Init secure storage");
+        try {
+            this.secureStorageEcho.create('my_store_name')
+                .then((storage: SecureStorageEchoObject) => {
+                    this.storage = storage;
+                    this.useSecure = true;
+                    this.storageLoaded = true;
+                    this.events.publish('storageInitialized', {});
+                    console.log("Secure storage initialized");
+
+                }).catch((error) => {
+                    this.storageLoaded = true;
+                    this.events.publish('storageInitialized', {});
+                    console.log("Secure storage failed");
+
+                });
+        }
+        catch (err) {
+            this.storageLoaded = true;
+            this.events.publish('storageInitialized', {});
+            console.log("Secure storage failed");
+        }
     }
-    setLanguage(lang) {
-        this.storage.set('language', lang);
+    getLanguage(): Promise<string> {
+        if (this.useSecure) {
+            return this.storage.get('language').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.get('language').then((value) => {
+                return value;
+            });
+        }
+
+    }
+    setLanguage(lang: string) {
+        if (this.useSecure) {
+            this.storage.set('language', lang);
+        } else {
+            this.storage2.set('language', lang);
+        }
     }
 
     /**
      * Send a POST request to our login endpoint with the data
      * the user entered on the form.
      */
-    setToken(token: any) {
+    setToken(token: string) {
         this._headers = this._headers.set('Authorization', 'Bearer ' + token);
         this._headers = this._headers.set('X-Auth-Token', token);
-        this.storage.set('token', token);
+        if (this.useSecure) {
+            this.storage.set('token', token);
+        } else {
+            this.storage2.set('token', token);
+        }
+
+
     }
-    setDevice(device_id: any) {
+    setDevice(device_id: string) {
         this._headers = this._headers.set('X-device-id', device_id);
-        this.storage.set('device_id', device_id);
+        if (this.useSecure) {
+            this.storage.set('device_id', device_id);
+        } else {
+            this.storage2.set('device_id', device_id);
+        }
+
     }
     getDevice() {
-        return this.storage.get('device_id').then((value) => {
-            return value;
-        });
+        if (this.useSecure) {
+            return this.storage.get('device_id').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.get('device_id').then((value) => {
+                return value;
+            });
+        }
+
     }
 
     /**
      * get username from local storage.
      */
     getToken(): Promise<string> {
-        return this.storage.get('token').then((value) => {
-            return value;
-        });
+        if (this.useSecure) {
+            return this.storage.get('token').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.get('token').then((value) => {
+                return value;
+            });
+        }
+
     }
     deleteToken(): Promise<string> {
-        return this.storage.remove('token').then((value) => {
-            return value;
-        });
+        if (this.useSecure) {
+            return this.storage.remove('token').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.remove('token').then((value) => {
+                return value;
+            });
+        }
+
     }
     deleteAllSession(): Promise<string> {
-        return this.storage.remove('token').then((value) => {
-            this.storage.remove('username');
-            this.storage.remove('password');
-            this.storage.remove('remember');
+        if (this.useSecure) {
+            return this.storage.remove('token').then((value) => {
+                this.storage.remove('username');
+                this.storage.remove('password');
+                this.storage.remove('remember');
 
-            this._headers = this._headers.set('Authorization', 'Bearer ');
-            this._headers = this._headers.set('X-Auth-Token', '');
-            this.storage.set('token', null);
-            return value;
-        });
+                this._headers = this._headers.set('Authorization', 'Bearer ');
+                this._headers = this._headers.set('X-Auth-Token', '');
+                this.storage.set('token', "");
+                return value;
+            });
+        } else {
+            return this.storage2.remove('token').then((value) => {
+                this.storage2.remove('username');
+                this.storage2.remove('password');
+                this.storage2.remove('remember');
+
+                this._headers = this._headers.set('Authorization', 'Bearer ');
+                this._headers = this._headers.set('X-Auth-Token', '');
+                this.storage2.set('token', null);
+                return value;
+            });
+        }
+
     }
 
     /**
      * Saves username in local storage.
      */
     setUsername(username: string): Promise<any> {
-        return this.storage.set('username', username);
+        if (this.useSecure) {
+            return this.storage.set('username', username);
+        } else {
+            return this.storage2.set('username', username);
+        }
     }
 
     /**
    * get username from local storage.
    */
     getUsername(): Promise<string> {
-        return this.storage.get('username').then((value) => {
-            return value;
-        });
+        if (this.useSecure) {
+            return this.storage.get('username').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.get('username').then((value) => {
+                return value;
+            });
+        }
+
     }
 
     /**
      * Saves username in local storage.
      */
     setQuickPay(username: string): Promise<any> {
-        return this.storage.set('username', username);
+        if (this.useSecure) {
+            return this.storage.set('username', username);
+        } else {
+            return this.storage2.set('username', username);
+        }
+
     }
 
     /**
    * get username from local storage.
    */
     getQuickPay(): Promise<string> {
-        return this.storage.get('username').then((value) => {
-            return value;
-        });
+        if (this.useSecure) {
+            return this.storage.get('username').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.get('username').then((value) => {
+                return value;
+            });
+        }
+
     }
     /**
      * Saves username in local storage.
      */
     setPassword(password: string): Promise<any> {
-        return this.storage.set('password', password);
+        if (this.useSecure) {
+            return this.storage.set('password', password);
+        } else {
+            return this.storage2.set('password', password);
+        }
+
     }
 
     /**
    * get username from local storage.
    */
     getPassword(): Promise<string> {
-        return this.storage.get('password').then((value) => {
-            return value;
-        });
+        if (this.useSecure) {
+            return this.storage.get('password').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.get('password').then((value) => {
+                return value;
+            });
+        }
+
     }
     /**
      * Saves username in local storage.
      */
-    setRemember(remember: boolean): Promise<any> {
-        return this.storage.set('remember', remember);
+    setRemember(remember: string): Promise<any> {
+        if (this.useSecure) {
+            return this.storage.set('remember', remember);
+        } else {
+            return this.storage2.set('remember', remember);
+        }
+
     }
 
     /**
    * get username from local storage.
    */
     getRemember(): Promise<string> {
-        return this.storage.get('remember').then((value) => {
-            return value;
-        });
+        if (this.useSecure) {
+            return this.storage.get('remember').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.get('remember').then((value) => {
+                return value;
+            });
+        }
+
     }
 
     /**
@@ -158,11 +305,15 @@ export class UserDataService {
      */
     logout() {
         this._user = null;
-        this.storage.remove('token');
-
         this._headers = this._headers.set('Authorization', 'Bearer ');
         this._headers = this._headers.set('X-Auth-Token', '');
-        this.storage.set('token', null);
+        if (this.useSecure) {
+            this.storage.remove('token');
+            this.storage.set('token', "");
+        } else {
+            this.storage2.remove('token');
+            this.storage2.set('token', "");
+        }
     }
 
     /**
