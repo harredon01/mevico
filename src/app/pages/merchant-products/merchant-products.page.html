@@ -46,10 +46,12 @@
                     </ion-slide>
                 </ion-slides>
                 <div [innerHtml]="item.description" class="hide-text" [ngClass]="{'show' : item.description_more}"></div>
-                <a class="right" href='javascript:;' (click)="showMore(item)" *ngIf="merchant==1299" >{{  item.description_more ? showLessText: showMoreText}}
+                <a class="right" href='javascript:;' (click)="showMore(item)">{{  item.description_more ? showLessText: showMoreText}}
                 </a> 
+                <div class="clear"></div>
                 <ion-item >
-                    <ion-label>{{ 'PRODUCTS.VARIANTS' | translate }}</ion-label> 
+                    <ion-label *ngIf="item.id==80 || item.id==81">{{ 'PRODUCTS.VARIANTS2' | translate }}</ion-label> 
+                    <ion-label *ngIf="item.id!=80&&item.id!=81">{{ 'PRODUCTS.VARIANTS' | translate }}</ion-label> 
                     <ion-select [(ngModel)]="item.variant_id" (ionChange)="selectVariant(item)">
                         <ion-select-option *ngFor="let variant of item.variants" [value]='variant.id'>{{variant.description}} -
                             {{variant.unitPrice | currency }}</ion-select-option>

@@ -109,45 +109,14 @@ export class LoginPage implements OnInit {
             this.spinnerDialog.hide();
         }
     }
-    async presentAlertForgotPass() {
-        const alert = await this.alertsCtrl.create({
-            subHeader: this.forgotString,
-            inputs: [
-                {
-                    name: 'email',
-                    type: 'email',
-                    placeholder: 'camila@lonchis.com.co',
-                    value: this.account.username
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: () => {
-                        console.log('Confirm Cancel');
-                    }
-                }, {
-                    text: 'Ok',
-                    handler: (data) => {
-                        console.log('Confirm Ok', data);
-                        this.submitForgot(data);
-                    }
-                }
-            ]
-        });
-        await alert.present();
-    }
 
     goBack() {
         this.navCtrl.navigateBack('home');
 
     }
-    async performForgotPass(container) {
+    async performForgotPass() {
         let addModal = await this.modalCtrl.create({
             component: ForgotPassPage,
-            componentProps: container
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
@@ -155,28 +124,6 @@ export class LoginPage implements OnInit {
             console.log("Process complete, address created", data);
             this.postTokenAuth(data);
         }
-    }
-    submitForgot(data) {
-        this.auth.requestForgotPassword(data).subscribe((resp: any) => {
-            console.log("Resp", resp);
-            if (resp.status == "success") {
-                this.performForgotPass(data);
-            } else {
-                this.toastCtrl.create({
-                    message: this.forgotErrorString,
-                    duration: 3000,
-                    position: 'top'
-                }).then(toast => toast.present());
-            }
-            console.log("requestForgotPassword result", resp);
-        }, (err) => {
-            console.log("requestForgotPassword err", err);
-            this.toastCtrl.create({
-                message: this.forgotErrorString,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
-        });
     }
     loginGoogle() {
         if (document.URL.startsWith('http')) {

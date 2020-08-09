@@ -527,8 +527,11 @@
     },
     "FORGOT_PASS": {
         "TITLE": "Recuperar contraseña",
+        "DESC2": "Si tu cuenta existe te enviaremos un código para que puedas actualizar tu contraseña.",
         "DESC": "Ingresa el código que recibiste por correo ademas de los demas campos para actualizar tu contraseña. Gracias.",
-        "ERROR_SAVE":"Error actualizando tu contraseña. Porfavor intenta mas tarde."
+        "ERROR_SAVE":"Error actualizando tu contraseña. Porfavor intenta mas tarde.",
+        "CODE_EXISTS":"Ya tengo código",
+        "RESEND_CODE":"Reenviarme un código"
     },
     "HOME": {
         "TITLE": "Home",
@@ -884,7 +887,8 @@
         "AMOUNT_CATERING": "Cantidad/p",
         "REQUIRED_ITEM": "Minimo 1 obligatorio",
         "PRICE": "Precio",
-        "VARIANTS":"Opciones"
+        "VARIANTS":"Opciones",
+        "VARIANTS2":"Personas"
     },
     "PROGRAM_COMPLETE": {
         "TITLE": "Listo",

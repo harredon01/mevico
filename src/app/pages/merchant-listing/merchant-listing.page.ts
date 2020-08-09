@@ -55,11 +55,11 @@ export class MerchantListingPage implements OnInit {
             this.urlSearch = 'home/' + this.category + '/merchant/';
         }
     }
-    ionViewDidEnter() {        
+    ionViewDidEnter() {
         if (document.URL.startsWith('http')) {
             let vm = this;
-            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 1000);
-            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 2000);
+            setTimeout(function () {vm.dismissLoader(); console.log("Retrying closing")}, 1000);
+            setTimeout(function () {vm.dismissLoader(); console.log("Retrying closing")}, 2000);
         }
     }
     async filter() {
@@ -175,9 +175,7 @@ export class MerchantListingPage implements OnInit {
     getMerchants(event) {
         this.showLoader();
         this.page++;
-        if(this.page ==1){
-            this.merchants=[];
-        }
+
         let searchObj = null
         if (this.typeSearch == "category") {
             let query = "page=" + this.page + "&category_id=" + this.category;
@@ -191,6 +189,9 @@ export class MerchantListingPage implements OnInit {
             searchObj = this.merchantsServ.getMerchants(query);
         }
         searchObj.subscribe((data: any) => {
+            if (this.page == 1) {
+                this.merchants = [];
+            }
             data.data = this.merchantsServ.prepareObjects(data.data);
             if (data.total) {
                 this.totalResults = data.total;

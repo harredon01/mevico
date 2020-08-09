@@ -1,22 +1,26 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {NavController, ToastController, ModalController, NavParams, LoadingController } from '@ionic/angular';
+import {NavController, ToastController, ModalController, NavParams, LoadingController} from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {AuthService} from '../../services/auth/auth.service';
 @Component({
-  selector: 'app-forgot-pass',
-  templateUrl: './forgot-pass.page.html',
-  styleUrls: ['./forgot-pass.page.scss'],
+    selector: 'app-forgot-pass',
+    templateUrl: './forgot-pass.page.html',
+    styleUrls: ['./forgot-pass.page.scss'],
 })
 export class ForgotPassPage implements OnInit {
 
-  isReadyToSave: boolean;
+    isReadyToSave: boolean;
     item: any;
+    forgotErrorString: any;
     loading: any;
     submitAttempt: boolean;
+    submitAttempt2: boolean;
     passwordError: boolean = false;
+    submitEmail: boolean = true;
     form: FormGroup;
+    form2: FormGroup;
     private passwordErrorStringSave: string;
 
     constructor(public navCtrl: NavController,
@@ -33,34 +37,18 @@ export class ForgotPassPage implements OnInit {
         this.translateService.get('FORGOT_PASS.ERROR_SAVE').subscribe((value) => {
             this.passwordErrorStringSave = value;
         });
+        this.translateService.get('LOGIN.FORGOT_ERROR').subscribe((value) => {
+            this.forgotErrorString = value;
+        });
         this.form = formBuilder.group({
             email: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-.]*\.[a-zA-Z]{2,}'), Validators.required])],
             token: ['', Validators.required],
             password: ['', Validators.required],
             password_confirmation: ['', Validators.required],
         });
-        let email: string = navParams.get('email');
-        if (email) {
-            let container = {
-                email: email,
-                token: '',
-                password: '',
-                password_confirmation: '',
-            };
-            console.log("Setting form values: ", container);
-            this.isReadyToSave = true;
-            this.form.setValue(container);
-
-        } else {
-            let container = {
-                email: email,
-                token: '',
-                password: '',
-                password_confirmation: '',
-            };
-            console.log("Setting form values2: ", container);
-            this.form.setValue(container);
-        }
+        this.form2 = formBuilder.group({
+            email: ['', Validators.compose([Validators.maxLength(100), Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-.]*\.[a-zA-Z]{2,}'), Validators.required])],
+        });
         // Watch the form for changes, and
         this.form.valueChanges.subscribe((v) => {
             console.log("form change", v);
@@ -90,7 +78,7 @@ export class ForgotPassPage implements OnInit {
            * the user entered on the form.
            */
     submitChange(passwordData: any) {
-        
+
         this.cdr.detectChanges();
         if (!this.form.valid) {return;}
 
@@ -118,7 +106,6 @@ export class ForgotPassPage implements OnInit {
 
     }
 
-
     /**
      * The user cancelled, so we dismiss without sending data back.
      */
@@ -134,13 +121,13 @@ export class ForgotPassPage implements OnInit {
         this.passwordError = false;
         this.submitAttempt = true;
         let container = this.form.value;
-        if(container.password != container.password_confirmation){
+        if (container.password != container.password_confirmation) {
             this.passwordError = true;
             return;
         }
         console.log("saveAddress");
-        if (!this.form.valid) {return;} 
-        this.submitChange(container).then((value:any) => {
+        if (!this.form.valid) {return;}
+        this.submitChange(container).then((value: any) => {
             console.log("update password result", value);
             if (value) {
                 this.modalCtrl.dismiss(value);
@@ -162,6 +149,32 @@ export class ForgotPassPage implements OnInit {
         });;
 
     }
+    getToken() {
+        this.submitAttempt2 = true;
+        let container = this.form2.value;
+        if (!this.form2.valid) {return;}
+        this.auth.requestForgotPassword(container).subscribe((resp: any) => {
+            console.log("Resp", resp);
+            if (resp.status == "success") {
+                this.submitEmail = false;
+                this.form.patchValue({email: container.email});
+            } else {
+                this.toastCtrl.create({
+                    message: this.forgotErrorString,
+                    duration: 3000,
+                    position: 'top'
+                }).then(toast => toast.present());
+            }
+            console.log("requestForgotPassword result", resp);
+        }, (err) => {
+            console.log("requestForgotPassword err", err);
+            this.toastCtrl.create({
+                message: this.forgotErrorString,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+        });
+    }
     showLoader() {
         if (document.URL.startsWith('http')) {
             this.loadingCtrl.create({
@@ -173,7 +186,14 @@ export class ForgotPassPage implements OnInit {
         }
     }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
+    showPassForm() {
+        this.submitEmail = false;
+    }
+    showEmailForm() {
+        this.submitEmail = true;
+        this.form2.patchValue({email: this.form.get('email').value});
+    }
 
 }
