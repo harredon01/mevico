@@ -14,9 +14,9 @@
 </ion-header>
 <ion-content padding>
     <div class="delivery-lunch" *ngIf="!isDeposit">
-        <p class="title">{{ 'DELIVERY_PROGRAM.DESCRIPTION' | translate }} {{deliveryParams.delivery_text }}</p>
+        <p class="title pl15">{{ 'DELIVERY_PROGRAM.DESCRIPTION' | translate }} {{deliveryParams.delivery_text }}</p>
         <div *ngIf="!isProgrammed">
-            <ion-card *ngFor="let foodItem of listArticles">
+            <ion-card *ngFor="let foodItem of listArticles" class="m0">
                 <div (click)="selectMeal(foodItem.id)" class='food-item'>
                     <ion-card-header class="product-header-information">
                         <span  class="delivery-lunch__name">{{foodItem.name}}</span>

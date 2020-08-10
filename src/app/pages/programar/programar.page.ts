@@ -89,7 +89,7 @@ export class ProgramarPage implements OnInit {
         };
 
     private deliveryParams: any;
-    isDelivery:boolean = false;
+    isDelivery: boolean = false;
     loading: any;
     constructor(public navCtrl: NavController,
         public events: Events,
@@ -163,7 +163,6 @@ export class ProgramarPage implements OnInit {
         this.translateService.get('DELIVERY_PROGRAM.DRINK').subscribe((value) => {
             this.deliveryDrinkTitle = value;
         });
-        this.loadDelivery();
         this.deliveryForm = formBuilder.group({
             lunch_type: ['', Validators.compose([Validators.required])],
             starter: [''],
@@ -171,6 +170,7 @@ export class ProgramarPage implements OnInit {
             main_dish: ['', Validators.compose([Validators.required])],
             description: ['']
         });
+        this.loadDelivery();
     }
 
     ngOnInit() {
@@ -281,12 +281,12 @@ export class ProgramarPage implements OnInit {
                     this.isDeposit = true;
                 }
             }
-        } 
+        }
         if (this.deliveryParams.provider) {
             this.isDelivery = true;
         }
     }
-    
+
     async openConversion() {
         this.navCtrl.navigateRoot('home');
         let addModal = await this.modalCtrl.create({
@@ -305,9 +305,9 @@ export class ProgramarPage implements OnInit {
                 console.log("Pushing login");
                 this.navCtrl.navigateForward('login');
             }
-        } 
+        }
     }
-    loadDelivery(){
+    loadDelivery() {
         this.hasStarter = true;
         this.hasDrink = false;
         this.shouldDrink = false;
@@ -331,6 +331,16 @@ export class ProgramarPage implements OnInit {
                     this.shouldDrink = true;
                 }
             }
+            if (!this.deliveryParams.details.dish) {
+                console.log("No dish clearing form");
+                this.deliveryForm.patchValue({lunch_type: ''});
+                this.saveDelivery.starter_id = '';
+                this.saveDelivery.type_id = '';
+                this.saveDelivery.main_id = '';
+                this.saveDelivery.drink_id = '';
+                this.deliveryForm.patchValue({main_dish:''});
+                this.scrollToTop();
+            }
             this.saveDelivery.delivery_id = this.deliveryParams.id;
         }
 
@@ -340,24 +350,29 @@ export class ProgramarPage implements OnInit {
             }
         } else if (this.deliveryParams.created_at) {
             let sdate = this.deliveryParams.start_date;
-            this.deliveryParams.delivery = sdate.getFullYear()+"/"+(sdate.getMonth()+1)+"/"+sdate.getDate()+" 12:00:00";
+            this.deliveryParams.delivery = sdate.getFullYear() + "/" + (sdate.getMonth() + 1) + "/" + sdate.getDate() + " 12:00:00";
         }
-        console.log("date1",this.deliveryParams.delivery);
+        console.log("date1", this.deliveryParams.delivery);
         let date = new Date(this.deliveryParams.delivery);
-        console.log("date2",date);
+        console.log("date2", date);
         let startDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-        console.log("date3",startDate);
+        console.log("date3", startDate);
         this.saveDelivery.date = startDate.toISOString();
-        console.log("date4",startDate.toISOString());
+        console.log("date4", startDate.toISOString());
         this.deliveryParams.delivery = date;
     }
-    ionViewDidEnter(){
+    ionViewDidEnter() {
         this.loadDelivery();
     }
 
     scrollToBottom() {
         setTimeout(() => {
             this.content.scrollToBottom(300);
+        }, 400);
+    }
+    scrollToTop() {
+        setTimeout(() => {
+            this.content.scrollToTop(300);
         }, 400);
     }
     selectMeal(item_id) {
@@ -704,7 +719,7 @@ export class ProgramarPage implements OnInit {
     }
 
     updateDelivery() {
-        console.log("Update Delivery",this.submitting);
+        console.log("Update Delivery", this.submitting);
         if (!this.submitting) {
             this.submitting = true;
         } else {

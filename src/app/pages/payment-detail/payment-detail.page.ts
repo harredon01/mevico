@@ -204,7 +204,7 @@ export class PaymentDetailPage implements OnInit {
     retryPaymentRedirect() {
         let container = {"payment": this.item};
         this.params.setParams(container);
-        this.navCtrl.navigateForward("tabs/mercado-pago-options");
+        this.navCtrl.navigateForward("tabs/settings/payments/"+this.item.id+"/payu/options");
     }
     retryPayment(item: Payment) {
         this.showLoader();

@@ -75,43 +75,43 @@ const routes: Routes = [
                                 ]
                             },
                             {
-                            path: 'payu',
-                            children: [
-                                {
-                                    path: 'credit',
-                                    children: [
-                                        {
-                                            path: 'buyer',
-                                            loadChildren: () => import('../checkout-buyer/checkout-buyer.module').then(m => m.CheckoutBuyerPageModule)
-                                        },
-                                        {
-                                            path: 'payer',
-                                            loadChildren: () => import('../checkout-payer/checkout-payer.module').then(m => m.CheckoutPayerPageModule)
-                                        },
-                                        {
-                                            path: 'card',
-                                            loadChildren: () => import('../checkout-card/checkout-card.module').then(m => m.CheckoutCardPageModule)
-                                        }
-                                    ]
-                                },
-                                {
-                                    path: 'cash',
-                                    loadChildren: () => import('../checkout-cash/checkout-cash.module').then(m => m.CheckoutCashPageModule)
-                                },
-                                {
-                                    path: 'banks',
-                                    loadChildren: () => import('../checkout-banks/checkout-banks.module').then(m => m.CheckoutBanksPageModule)
-                                },
-                                {
-                                    path: 'complete',
-                                    loadChildren: () => import('../payu-complete/payu-complete.module').then(m => m.PayuCompletePageModule)
-                                },
-                                {
-                                    path: 'options',
-                                    loadChildren: () => import('../checkout-options-payu/checkout-options-payu.module').then(m => m.CheckoutOptionsPayuPageModule)
-                                },
-                            ]
-                        },
+                                path: 'payu',
+                                children: [
+                                    {
+                                        path: 'credit',
+                                        children: [
+                                            {
+                                                path: 'buyer',
+                                                loadChildren: () => import('../checkout-buyer/checkout-buyer.module').then(m => m.CheckoutBuyerPageModule)
+                                            },
+                                            {
+                                                path: 'payer',
+                                                loadChildren: () => import('../checkout-payer/checkout-payer.module').then(m => m.CheckoutPayerPageModule)
+                                            },
+                                            {
+                                                path: 'card',
+                                                loadChildren: () => import('../checkout-card/checkout-card.module').then(m => m.CheckoutCardPageModule)
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        path: 'cash',
+                                        loadChildren: () => import('../checkout-cash/checkout-cash.module').then(m => m.CheckoutCashPageModule)
+                                    },
+                                    {
+                                        path: 'banks',
+                                        loadChildren: () => import('../checkout-banks/checkout-banks.module').then(m => m.CheckoutBanksPageModule)
+                                    },
+                                    {
+                                        path: 'complete',
+                                        loadChildren: () => import('../payu-complete/payu-complete.module').then(m => m.PayuCompletePageModule)
+                                    },
+                                    {
+                                        path: 'options',
+                                        loadChildren: () => import('../checkout-options-payu/checkout-options-payu.module').then(m => m.CheckoutOptionsPayuPageModule)
+                                    },
+                                ]
+                            },
                         ]
                     },
                     {
@@ -332,8 +332,69 @@ const routes: Routes = [
                             },
                             {
                                 path: ':objectId',
-                                loadChildren: () => import('../payment-detail/payment-detail.module').then(m => m.PaymentDetailPageModule)
-                            }
+                                children: [
+                                    {
+                                        path: '',
+                                        loadChildren: () => import('../payment-detail/payment-detail.module').then(m => m.PaymentDetailPageModule)
+                                    },
+                                    {
+                                        path: 'mercado-pago-options',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: () => import('../mercado-pago-options/mercado-pago-options.module').then(m => m.MercadoPagoOptionsPageModule)
+                                            },
+                                            {
+                                                path: 'card',
+                                                loadChildren: () => import('../mercado-pago/mercado-pago.module').then(m => m.MercadoPagoPageModule)
+                                            },
+                                            {
+                                                path: 'thankyou',
+                                                loadChildren: () => import('../mercado-pago-thankyou/mercado-pago-thankyou.module').then(m => m.MercadoPagoThankyouPageModule)
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        path: 'payu',
+                                        children: [
+                                            {
+                                                path: 'credit',
+                                                children: [
+                                                    {
+                                                        path: 'buyer',
+                                                        loadChildren: () => import('../checkout-buyer/checkout-buyer.module').then(m => m.CheckoutBuyerPageModule)
+                                                    },
+                                                    {
+                                                        path: 'payer',
+                                                        loadChildren: () => import('../checkout-payer/checkout-payer.module').then(m => m.CheckoutPayerPageModule)
+                                                    },
+                                                    {
+                                                        path: 'card',
+                                                        loadChildren: () => import('../checkout-card/checkout-card.module').then(m => m.CheckoutCardPageModule)
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                path: 'cash',
+                                                loadChildren: () => import('../checkout-cash/checkout-cash.module').then(m => m.CheckoutCashPageModule)
+                                            },
+                                            {
+                                                path: 'banks',
+                                                loadChildren: () => import('../checkout-banks/checkout-banks.module').then(m => m.CheckoutBanksPageModule)
+                                            },
+                                            {
+                                                path: 'complete',
+                                                loadChildren: () => import('../payu-complete/payu-complete.module').then(m => m.PayuCompletePageModule)
+                                            },
+                                            {
+                                                path: 'options',
+                                                loadChildren: () => import('../checkout-options-payu/checkout-options-payu.module').then(m => m.CheckoutOptionsPayuPageModule)
+                                            },
+                                        ]
+                                    },
+                                ]
+                            },
+
                         ]
                     },
                     {
