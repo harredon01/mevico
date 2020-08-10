@@ -117,6 +117,10 @@ export class LonchisPage implements OnInit {
             this.checkLogIn();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
+        this.events.subscribe('deviceSet', (data: any) => {
+            this.getCart();
+            // user and time are the same arguments passed in `events.publish(user, time)`
+        });
     }
 
     ngOnInit() {
@@ -211,7 +215,9 @@ export class LonchisPage implements OnInit {
                 this.navCtrl.navigateBack("home");
             }
         }
-        this.getCart();
+        if (this.userData.deviceSet){
+            this.getCart();
+        }
         this.getMerchants();
         //        console.log("dismiss");
         //        this.dismissLoader();

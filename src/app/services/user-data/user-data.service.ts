@@ -13,6 +13,7 @@ export class UserDataService {
     storage: any;
     useSecure: boolean = false;
     storageLoaded: boolean = false;
+    deviceSet: boolean = false;
     constructor(private secureStorageEcho: SecureStorageEcho, private events: Events, public storage2: Storage) {
         console.log("Building headers");
         this._headers = new HttpHeaders({
@@ -83,6 +84,8 @@ export class UserDataService {
 
     }
     setDevice(device_id: string) {
+        this.deviceSet = true;
+        this.events.publish('deviceSet', {});
         this._headers = this._headers.set('X-device-id', device_id);
         if (this.useSecure) {
             this.storage.set('device_id', device_id);
