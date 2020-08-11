@@ -42,46 +42,58 @@ export class HomePage implements OnInit {
         public cartProvider: CartService,
         public orderData: OrderDataService,
         private spinnerDialog: SpinnerDialog,
-        public events: Events) {}
+        public events: Events) {
+            let vm = this;
+            this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
+                vm.categoriesErrorGet = value;
+            });
+            this.translateService.get('USER.CEL_TITLE').subscribe((value) => {
+                vm.celTitle = value;
+            });
+            this.translateService.get('USER.CEL_DESC').subscribe((value) => {
+                vm.celDesc = value;
+            });
+            this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
+                vm.celError = value;
+            });
+            events.subscribe('cart:orderFinished', () => {
+                this.clearCart();
+                // user and time are the same arguments passed in `events.publish(user, time)`
+            });
+            events.subscribe('notification:received', (resp: any) => {
+                this.notifs++;
+                if (resp.type == "order_status") {
+                    if (resp.payload.order_status == "approved") {
+                        //this.getDeliveries(false);
+                    }
+                }
+                if (resp.type == "food_meal_started") {
+                    //this.getDeliveries(false);
+                }
+            });
+            this.events.subscribe('storageInitialized', (data: any) => {
+                this.checkLogIn();
+                // user and time are the same arguments passed in `events.publish(user, time)`
+            });
+            this.events.subscribe('deviceSet', (data: any) => {
+                this.getCart();
+                // user and time are the same arguments passed in `events.publish(user, time)`
+            });
+        }
 
     ngOnInit() {
 
-        let vm = this;
-        this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
-            vm.categoriesErrorGet = value;
-        });
-        this.translateService.get('USER.CEL_TITLE').subscribe((value) => {
-            vm.celTitle = value;
-        });
-        this.translateService.get('USER.CEL_DESC').subscribe((value) => {
-            vm.celDesc = value;
-        });
-        this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
-            vm.celError = value;
-        });
+        
 
         if (this.userData._user) {
-            this.routeNext();
-            this.events.publish("authenticated",{});
-            console.log("Counting unread")
-            this.alerts.countUnread().subscribe((resp: any) => {
-                console.log("Counting unread resp",resp);
-                this.notifs = resp.total;
-            }, (err) => {
-            });
+            
 
-        } else {
-            this.checkLogIn();
-        }
+        } 
 
-        this.events.subscribe('cart:orderFinished', (data:any) => {
-            this.clearCart();
-            // user and time are the same arguments passed in `events.publish(user, time)`
-        });
-        this.getItems();
+        
+        
     }
     ionViewDidEnter() {
-        this.getCart();
         
         if (document.URL.startsWith('http')) {
             let vm = this;
@@ -96,7 +108,18 @@ export class HomePage implements OnInit {
                 this.notifs = resp.total;
             }, (err) => {
             });
+            this.routeNext();
+            this.events.publish("authenticated",{});
+            console.log("Counting unread")
+            this.alerts.countUnread().subscribe((resp: any) => {
+                console.log("Counting unread resp",resp);
+                this.notifs = resp.total;
+            }, (err) => {
+            });
+        } else {
+            this.checkLogIn();
         }
+        this.getItems();
     }
     checkLogIn() {
         this.userData.getToken().then((value) => {
@@ -107,72 +130,7 @@ export class HomePage implements OnInit {
             }
         });
     }
-    /**
-       * Navigate to the detail page for this item.
-       */
-    checkPhone() {
-        if (this.userData._user.cellphone == "11") {
-            this.presentAlertPrompt();
-        }
-    }
 
-    async presentAlertPrompt() {
-        const alert = await this.alertController.create({
-            header: this.celTitle,
-            subHeader: this.celDesc,
-            inputs: [
-                {
-                    name: 'area_code',
-                    type: 'tel',
-                    placeholder: '57',
-                    value: '57',
-                },
-                {
-                    name: 'cellphone',
-                    type: 'tel',
-                    placeholder: '3101111111'
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: () => {
-                        console.log('Confirm Cancel');
-                    }
-                }, {
-                    text: 'Ok',
-                    handler: (data) => {
-                        console.log('Confirm Ok', data);
-                        this.savePhone(data);
-                    }
-                }
-            ]
-        });
-        await alert.present();
-    }
-    savePhone(data) {
-        this.showLoader();
-        let query = "merchants";
-        this.userS.registerPhone(data).subscribe((resp: any) => {
-            this.dismissLoader();
-            console.log("after registerPhone");
-            console.log(JSON.stringify(resp));
-            if (resp.status == "success") {
-                this.userS.postLogin();
-            }
-        }, (err) => {
-            this.dismissLoader();
-            // Unable to log in
-            let toast = this.toastCtrl.create({
-                message: this.celError,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
-            this.api.handleError(err);
-        });
-    }
     getItems() {
         this.showLoader();
         let query = "merchants";

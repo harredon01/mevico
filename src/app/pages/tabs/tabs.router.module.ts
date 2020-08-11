@@ -10,14 +10,14 @@ const routes: Routes = [
             {
                 path: 'home',
                 children: [
-                    //                    {
-                    //                        path: '',
-                    //                        loadChildren: '../home/home.module#HomePageModule'
-                    //                    },
                     {
                         path: '',
-                        loadChildren: () => import('../lonchis/lonchis.module').then(m => m.LonchisPageModule)
+                        loadChildren:  () => import('../home/home.module').then(m => m.HomePageModule)
                     },
+//                    {
+//                        path: '',
+//                        loadChildren: () => import('../lonchis/lonchis.module').then(m => m.LonchisPageModule)
+//                    },
                     {
                         path: 'calculadora',
                         loadChildren: () => import('../calculadora/calculadora.module').then(m => m.CalculadoraPageModule)
