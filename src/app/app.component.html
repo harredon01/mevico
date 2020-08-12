@@ -21,7 +21,8 @@
                             </div>             
                             <p class="right w80 mt0">
                                 {{p.subject}}
-                                <span class="menu__toggle tright">{{p.created_at | date}}</span>
+                                <span *ngIf="p.today">{{p.created_at | date:'shortTime'}}</span>
+                                <span *ngIf="!p.today">{{p.created_at | date}}</span><br/>
                             </p>
                             <div class="clear"></div>             
                         </div>
