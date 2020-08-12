@@ -43,76 +43,76 @@ export class HomePage implements OnInit {
         public orderData: OrderDataService,
         private spinnerDialog: SpinnerDialog,
         public events: Events) {
-            let vm = this;
-            this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
-                vm.categoriesErrorGet = value;
-            });
-            this.translateService.get('USER.CEL_TITLE').subscribe((value) => {
-                vm.celTitle = value;
-            });
-            this.translateService.get('USER.CEL_DESC').subscribe((value) => {
-                vm.celDesc = value;
-            });
-            this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
-                vm.celError = value;
-            });
-            events.subscribe('cart:orderFinished', () => {
-                this.clearCart();
-                // user and time are the same arguments passed in `events.publish(user, time)`
-            });
-            events.subscribe('notification:received', (resp: any) => {
-                this.notifs++;
-                if (resp.type == "order_status") {
-                    if (resp.payload.order_status == "approved") {
-                        //this.getDeliveries(false);
-                    }
-                }
-                if (resp.type == "food_meal_started") {
+        let vm = this;
+        this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
+            vm.categoriesErrorGet = value;
+        });
+        this.translateService.get('USER.CEL_TITLE').subscribe((value) => {
+            vm.celTitle = value;
+        });
+        this.translateService.get('USER.CEL_DESC').subscribe((value) => {
+            vm.celDesc = value;
+        });
+        this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
+            vm.celError = value;
+        });
+        events.subscribe('cart:orderFinished', () => {
+            this.clearCart();
+            // user and time are the same arguments passed in `events.publish(user, time)`
+        });
+        events.subscribe('notification:received', (resp: any) => {
+            this.notifs++;
+            if (resp.type == "order_status") {
+                if (resp.payload.order_status == "approved") {
                     //this.getDeliveries(false);
                 }
-            });
-            this.events.subscribe('storageInitialized', (data: any) => {
-                this.checkLogIn();
-                // user and time are the same arguments passed in `events.publish(user, time)`
-            });
-            this.events.subscribe('deviceSet', (data: any) => {
-                this.getCart();
-                // user and time are the same arguments passed in `events.publish(user, time)`
-            });
-        }
+            }
+            if (resp.type == "food_meal_started") {
+                //this.getDeliveries(false);
+            }
+        });
+        this.events.subscribe('storageInitialized', (data: any) => {
+            this.checkLogIn();
+            // user and time are the same arguments passed in `events.publish(user, time)`
+        });
+        this.events.subscribe('deviceSet', (data: any) => {
+            this.getCart();
+            // user and time are the same arguments passed in `events.publish(user, time)`
+        });
+    }
 
     ngOnInit() {
 
-        
+
 
         if (this.userData._user) {
-            
 
-        } 
 
-        
-        
+        }
+
+
+
     }
     ionViewDidEnter() {
-        
+
         if (document.URL.startsWith('http')) {
             let vm = this;
-            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 1000);
-            setTimeout(function(){ vm.dismissLoader();console.log("Retrying closing") }, 2000);
+            setTimeout(function () {vm.dismissLoader(); console.log("Retrying closing")}, 1000);
+            setTimeout(function () {vm.dismissLoader(); console.log("Retrying closing")}, 2000);
         }
-        
+
         if (this.userData._user) {
             console.log("Counting unread")
             this.alerts.countUnread().subscribe((resp: any) => {
-                console.log("Counting unread resp",resp);
+                console.log("Counting unread resp", resp);
                 this.notifs = resp.total;
             }, (err) => {
             });
             this.routeNext();
-            this.events.publish("authenticated",{});
+            this.events.publish("authenticated", {});
             console.log("Counting unread")
             this.alerts.countUnread().subscribe((resp: any) => {
-                console.log("Counting unread resp",resp);
+                console.log("Counting unread resp", resp);
                 this.notifs = resp.total;
             }, (err) => {
             });
@@ -229,7 +229,9 @@ export class HomePage implements OnInit {
         this.navCtrl.navigateForward('login');
     }
     routeNext() {
-        this.navCtrl.navigateForward(this.drouter.pages);
+        if (this.drouter.pages) {
+            this.navCtrl.navigateForward(this.drouter.pages);
+        }
     }
     clearCart() {
         this.cartProvider.clearCart().subscribe((resp) => {
