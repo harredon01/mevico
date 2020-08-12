@@ -9,7 +9,7 @@
 
 
 <ion-content class="my-account">
-    <form  class="my-account__form basic-form" (submit)="doUpdate()" [formGroup]="registrationForm">
+    <form  class="my-account__form pr20 pl20" (submit)="doUpdate()" [formGroup]="registrationForm">
         <input type="hidden" formControlName="id" />
         <ion-list>
             <ion-item class="ion-no-padding">
@@ -92,12 +92,10 @@
             <ion-item *ngIf="!registrationForm.controls.docNum.valid  && (registrationForm.controls.docNum.dirty || submitAttempt)">
                 <p class="error-message">{{ 'USER.ID_ERROR' | translate }}</p>
             </ion-item>
-            <ion-item  class="form__item button-wrapper">
-                <ion-button class="btn-secondary button__full" full type="submit">{{ 'INPUTS.UPDATE' | translate }}</ion-button>
-            </ion-item>
         </ion-list>
+        <ion-button class="btn-secondary right m10" type="submit">{{ 'INPUTS.UPDATE' | translate }}</ion-button>
     </form>
-    <br/><br/><br/>
+    <div class="clear"></div>
     <ion-item style="padding-left:17px">
         <p>{{ 'MY_ACCOUNT.LANGUAGE' | translate }}</p>
     </ion-item>
