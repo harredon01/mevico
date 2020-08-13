@@ -119,6 +119,9 @@ export class HomePage implements OnInit {
         } else {
             this.checkLogIn();
         }
+        if (this.userData.deviceSet){
+            this.getCart();
+        }
         this.getItems();
     }
     checkLogIn() {
@@ -231,6 +234,7 @@ export class HomePage implements OnInit {
     routeNext() {
         if (this.drouter.pages) {
             this.navCtrl.navigateForward(this.drouter.pages);
+            this.drouter.pages = null;
         }
     }
     clearCart() {

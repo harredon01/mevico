@@ -145,6 +145,9 @@ export class AppComponent {
             window.addEventListener('blur', (e: any) => {
                 this.events.publish('app:stopNotifsWeb',{});
             });
+            if (this.userData.storageLoaded && !this.userData.isDevice){
+                this.storeDeviceId();
+            }
             
         });
         this.alerts.getLanguage().then((value) => {
