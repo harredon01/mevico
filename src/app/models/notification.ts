@@ -7,32 +7,31 @@
  * The Items service manages creating instances of Item, so go ahead and rename
  * that something that fits your app as well.
  */
-export class Order {
+export class Notification {
     id: any;
-    status: string;
-    user_id: string;
-    subtotal: string;
-    shipping: string;
-    tax: string;
-    total: string;
-    payment_id: string;
-    recurring_type: any;
-    is_editable: any;
-    items: any[] = [];
-    order_conditions: any[] = [];
-    order_addresses: any[] = [];
-    attributes: any;
-    merchant_id: any;
+    notification_id:any;
+    user_id: any;
     created_at: any;
     updated_at: any;
-    split: boolean;
-
+    subject: any;
+    subject_es: any;
+    message: any;
+    today:any;
+    language:any;
+    type: any;
+    object:any;
+    user_status:any;
+    trigger_id:any;
+    status:any;
+    midnight: any;
+    payload: any;
     constructor(fields: any) {
-        if (fields.attributes) {
-            if (typeof fields.attributes === 'string' || fields.attributes instanceof String) {
-                fields.attributes = JSON.parse(fields.attributes);
+        if (fields.payload) {
+            if (typeof fields.payload === 'string' || fields.payload instanceof String) {
+                fields.payload = JSON.parse(fields.payload);
             }
         }
+        
         if (fields.created_at) {
             if (typeof fields.created_at === 'string' || fields.created_at instanceof String) {
                 fields.created_at = fields.created_at.replace(/-/g, '/');
@@ -56,10 +55,16 @@ export class Order {
                 }
             }
         }
-        fields.split = false;
-        if (fields.attributes.split_payment) {
-            if (fields.attributes.split_payment == true) {
-                fields.split = true;
+        if (fields.midnight && fields.created_at) {
+            if(fields.created_at > fields.midnnight){
+                fields.today = true;
+            } else {
+                fields.today = false;
+            }
+        }
+        if(fields.language){
+            if(fields.language = "es"){
+                fields.subject = fields.subject_es;
             }
         }
         // Quick and dirty extend/assign fields to this model
@@ -68,9 +73,17 @@ export class Order {
             this[f] = fields[f];
         }
     }
+    clean() {
+        delete this.options.users;
+        delete this.options.item_id;
+        delete this.options.session_id;
+        delete this.options.order_id;
+        delete this.options.payer;
+        delete this.options.paid;
+    }
 
 }
 
-export interface Order {
+export interface Notification {
     [prop: string]: any;
 }
