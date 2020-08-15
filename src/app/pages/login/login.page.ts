@@ -162,6 +162,7 @@ export class LoginPage implements OnInit {
                     alert('Send token to apple for verification: ' + succ.identityToken);
                     console.log(succ)
                     let userData = {
+                        id:succ.user,
                         firstName: succ.fullName.givenName,
                         lastName: succ.fullName.familyName,
                         name: succ.fullName.givenName + ' ' + succ.fullName.familyName,
