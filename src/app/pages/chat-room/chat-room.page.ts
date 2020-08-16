@@ -227,7 +227,7 @@ export class ChatRoomPage implements OnInit {
 
     scrollToBottom() {
         setTimeout(() => {
-            //this.content.scrollToBottom(300);
+            this.content.scrollToBottom(300);
         }, 400);
     }
 
