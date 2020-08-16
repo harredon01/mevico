@@ -19,7 +19,6 @@ import {ApiService} from '../../services/api/api.service';
     styleUrls: ['./merchant-products.page.scss'],
 })
 export class MerchantProductsPage implements OnInit {
-    products: Product[] = [];
     categories: any[] = [];
     options: any[];
     urlSearch: string = "";
@@ -107,7 +106,6 @@ export class MerchantProductsPage implements OnInit {
             let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
             this.urlSearch = 'tabs/home/categories/' + category + '/merchant/' + this.merchant;
         }
-        this.products = [];
         this.possibleAmounts = [];
         this.showLoader();
         this.loadProducts();
@@ -127,7 +125,6 @@ export class MerchantProductsPage implements OnInit {
         });
     }
     ionViewDidEnter() {
-        this.products = [];
         this.possibleAmounts = [];
         this.showLoader();
         this.loadProducts();
@@ -482,7 +479,7 @@ export class MerchantProductsPage implements OnInit {
                     let items = this.orderData.cartData.items;
                     for (let key in items) {
                         let contItem = items[key].attributes;
-                        if (contItem.type == "Product") {
+                        if (true) {
                             contItem.id = items[key].id;
                             contItem.quantity = items[key].quantity;
                             for (let k in this.categories) {
@@ -496,16 +493,6 @@ export class MerchantProductsPage implements OnInit {
                                         }
                                     }
 
-                                }
-                            }
-                            for (let j in this.products) {
-                                for (let i in this.products[j].variants) {
-                                    if (contItem.product_variant_id == this.products[j].variants[i].id) {
-                                        this.products[j].inCart = true;
-                                        this.products[j].item_id = contItem.id;
-                                        this.products[j].amount = contItem.quantity;
-                                        this.products[j] = this.productsServ.updateProductVisual(this.products[j].variants[i], this.products[j]);
-                                    }
                                 }
                             }
                         }
@@ -560,6 +547,9 @@ export class MerchantProductsPage implements OnInit {
         for (let i in item.variants) {
             let container = item.variants[i];
             if (container.id == item.variant_id) {
+                if(!item.amount){
+                    item.amount = container.min_quantity;
+                }
                 if (container.is_on_sale) {
                     console.log("selectVariantsale",container);
                     item.exprice = container.exprice;
@@ -591,9 +581,6 @@ export class MerchantProductsPage implements OnInit {
                         item.unitPrice = item.subtotal / (item.unitLunches * item.amount);
                     }
                 }
-                if (item.type == "delivery" || item.type == "catering") {
-                    item.amount = item.min_quantity;
-                }
             }
         }
         this.calculateTotals("select variant");
@@ -611,23 +598,12 @@ export class MerchantProductsPage implements OnInit {
         }
     }
     calculateTotalsProduct(product: Product) {
-        if (product.type == "meal-plan") {
-            if (product.amount > 0 && product.amount < 10) {
-                product.unitPrice = product.subtotal / (product.unitLunches * product.amount);
-            } else {
-                let counter2 = Math.floor(product.amount / 11);
-                product.subtotal = (product.price * product.amount) - (counter2 * product.unitLunches * 11000);
-                product.unitPrice = product.subtotal / (product.unitLunches * product.amount);
-            }
-        } else {
-            if (product.onsale) {
+        if (product.onsale) {
                 product.exsubtotal = product.exprice * product.amount;
                 product.subtotal = product.price * product.amount;
             } else {
                 product.subtotal = product.price * product.amount;
             }
-
-        }
     }
     getCart() {
         this.cart.getCart().subscribe((resp) => {
