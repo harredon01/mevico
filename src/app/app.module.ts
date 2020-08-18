@@ -31,6 +31,8 @@ import {ForgotPassPageModule} from './pages/forgot-pass/forgot-pass.module'
 import {ConversionPageModule} from './pages/conversion/conversion.module'
 import {AddressCreatePageModule} from './pages/address-create/address-create.module'
 import {AddressesPageModule} from './pages/addresses/addresses.module'
+import {BuyerSelectPageModule} from './pages/buyer-select/buyer-select.module'
+import {SelectContactsPageModule} from './pages/select-contacts/select-contacts.module'
 import {AvailabilityCreatePageModule} from './pages/availability-create/availability-create.module'
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -55,6 +57,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         AddressesPageModule,
         ConversionPageModule,
         ForgotPassPageModule,
+        BuyerSelectPageModule,
+        SelectContactsPageModule,
         BookingDetailPageModule,
         CommentsPageModule,
         AvailabilityCreatePageModule],
