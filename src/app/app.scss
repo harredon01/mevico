@@ -5,9 +5,9 @@
 // file can hold Sass mixins, functions, and placeholder classes to be imported 
 // and used throughout the application.
 @media (min-width: 800px) {
-  .app-root {
-    width: 800px;
-    margin: auto;
+  .webcont {
+    max-width: 1200px;
+    margin: 0 auto;
     position: relative;
   }
 

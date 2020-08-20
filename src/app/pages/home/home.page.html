@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content>
-    <div class="quick-link bg-white">
+    <div class="quick-link bg-white webcont">
         <div class="m15">
             <h2 *ngIf="userData._user">Hola {{userData._user.firstName}}!</h2>
             <h2 *ngIf="!userData._user">Hola!</h2>
@@ -33,15 +33,14 @@
                 </span>
             </div>
         </div>
-        <h2>Nuestras Tiendas</h2>
+        <h2 class="pl15">Nuestras Tiendas</h2>
         <div class="mainCategories">
             
             <div class="clear"></div>
-            <div (click)="openStore(item)" *ngFor="let item of stores;index as i;" class="mainCategories__list w50 left">
+            <div (click)="openStore(item,10)" *ngFor="let item of stores;index as i;" class="mainCategories__list w50 left">
                 <img src="assets/imgs/dentist-1.jpg" item-start>
                 <span class="mainCategories__list--text">
                     <span>Tienda {{i+1}}</span>
-                    <small>{{item.description}}</small>
                 </span>
             </div>
         </div>

@@ -6,10 +6,8 @@
         <ion-title>{{ 'CHECKOUT_SHIPPING.TITLE' | translate }}</ion-title>
     </ion-toolbar>
 </ion-header>
-
-
 <ion-content class="checkout-shipping">
-    <div class="checkout-shipping--wrapper">
+    <div class="checkout-shipping--wrapper webcont">
         <p class="checkout-shipping__description pdesc">{{ 'CHECKOUT_SHIPPING.DESCRIPTION' | translate }}</p>
         <ion-card *ngIf="showAddressCard">
             <ion-card-header>
@@ -33,7 +31,6 @@
                 </ion-item>
             </ion-item-sliding>
         </ion-list>
-
         <ion-button class="checkout-shipping__create" *ngIf="!showAddressCard" shape="round" (click)="createAddress()">{{
             'INPUTS.CREATE_ADDRESS' | translate }}</ion-button>
         <ion-button class="btn-primary" (click)="changeAddress()" *ngIf="showAddressCard">{{ 'INPUTS.CHANGE_ADDRESS' |
