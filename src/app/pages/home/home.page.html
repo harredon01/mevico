@@ -15,8 +15,8 @@
         <div class="m15">
             <h2 *ngIf="userData._user">Hola {{userData._user.firstName}}!</h2>
             <h2 *ngIf="!userData._user">Hola!</h2>
-            <h3>Bienvenido a PetWorld.</h3>
-            <p>Tu lugar número uno para todo lo que tiene que ver con tu mascota. Te invitamos a que visites los negocios y sus productos y servicios. </p>
+            <h3>Bienvenido a Healthy.</h3>
+            <p>Tu centro medico digital </p>
             <br/>
             <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="login()" size="small" *ngIf="!userData._user">
                 Entrar
@@ -29,6 +29,18 @@
                 <img src="assets/imgs/dentist-1.jpg" item-start>
                 <span class="mainCategories__list--text">
                     <span>{{item.name}}</span>
+                    <small>{{item.description}}</small>
+                </span>
+            </div>
+        </div>
+        <h2>Nuestras Tiendas</h2>
+        <div class="mainCategories">
+            
+            <div class="clear"></div>
+            <div (click)="openStore(item)" *ngFor="let item of stores;index as i;" class="mainCategories__list w50 left">
+                <img src="assets/imgs/dentist-1.jpg" item-start>
+                <span class="mainCategories__list--text">
+                    <span>Tienda {{i+1}}</span>
                     <small>{{item.description}}</small>
                 </span>
             </div>

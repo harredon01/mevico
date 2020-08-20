@@ -10,8 +10,10 @@ import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {UserService} from '../../services/user/user.service';
+import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ApiService} from '../../services/api/api.service';
 import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
+import {Merchant} from '../../models/merchant';
 @Component({
     selector: 'app-home',
     templateUrl: './home.page.html',
@@ -23,8 +25,10 @@ export class HomePage implements OnInit {
     celTitle: string = "";
     notifs: any = 0;
     celDesc: string = "";
+    merchantsErrorGet: string = "";
     celError: string = "";
     items: any[] = [];
+    stores: any[] = [];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
         public alertController: AlertController,
@@ -33,6 +37,7 @@ export class HomePage implements OnInit {
         public userData: UserDataService,
         public userS: UserService,
         public menu: MenuController,
+        public merchantsServ: MerchantsService,
         public api: ApiService,
         public drouter: DynamicRouterService,
         public toastCtrl: ToastController,
@@ -55,6 +60,9 @@ export class HomePage implements OnInit {
         });
         this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
             vm.celError = value;
+        });
+        this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
+            vm.merchantsErrorGet = value;
         });
         events.subscribe('cart:orderFinished', () => {
             this.clearCart();
@@ -82,15 +90,6 @@ export class HomePage implements OnInit {
     }
 
     ngOnInit() {
-
-
-
-        if (this.userData._user) {
-
-
-        }
-
-
 
     }
     ionViewDidEnter() {
@@ -123,6 +122,35 @@ export class HomePage implements OnInit {
             this.getCart();
         }
         this.getItems();
+        this.getMerchants();
+    }
+    getMerchants() {
+        this.showLoader();
+        let searchObj = null
+        let query = "page=1&category_id=10";
+            searchObj = this.merchantsServ.getMerchants(query);
+        searchObj.subscribe((data: any) => {
+            data.data = this.merchantsServ.prepareObjects(data.data);
+            let results = data.data;
+            for (let one in results) {
+                if (results[one].merchant_id) {
+                    results[one].id = results[one].merchant_id;
+                }
+                let container = new Merchant(results[one]);
+                this.stores.push(container);
+            }
+            this.dismissLoader();
+        }, (err) => {
+            console.log("Error getMerchantsFromServer");
+            this.dismissLoader();
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+                message: this.merchantsErrorGet,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
     }
     checkLogIn() {
         this.userData.getToken().then((value) => {
@@ -164,6 +192,16 @@ export class HomePage implements OnInit {
             this.navCtrl.navigateForward('home/' + item.id);
         }
 
+    }
+    openStore(item: any,category:any) {
+        this.params.setParams({
+            objectId: item.id
+        });
+        if (this.userData._user) {
+            this.navCtrl.navigateForward('tabs/home/categories/' + category+"/merchant/"+item.id+"/products");
+        } else {
+            this.navCtrl.navigateForward('home/' + category+"/merchant/"+item.id+"/products");
+        }
     }
     openMenu() {
         this.menu.enable(true, 'end');

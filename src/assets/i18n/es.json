@@ -576,7 +576,8 @@
     },
     "ITEM_DETAIL": {
         "TITLE": "Item",
-        "FULFILLED": "Entregado"
+        "FULFILLED": "Entregado",
+        "FULFILL":"Entregar"
     },
     "ITEMS": {
         "TITLE": "Items",
