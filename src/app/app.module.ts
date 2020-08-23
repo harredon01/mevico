@@ -33,7 +33,9 @@ import {AddressCreatePageModule} from './pages/address-create/address-create.mod
 import {AddressesPageModule} from './pages/addresses/addresses.module'
 import {BuyerSelectPageModule} from './pages/buyer-select/buyer-select.module'
 import {SelectContactsPageModule} from './pages/select-contacts/select-contacts.module'
-import {AvailabilityCreatePageModule} from './pages/availability-create/availability-create.module'
+import {AvailabilityCreatePageModule} from './pages/availability-create/availability-create.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment'
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
@@ -61,7 +63,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         SelectContactsPageModule,
         BookingDetailPageModule,
         CommentsPageModule,
-        AvailabilityCreatePageModule],
+        AvailabilityCreatePageModule,
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
     providers: [
         StatusBar,
         SplashScreen,

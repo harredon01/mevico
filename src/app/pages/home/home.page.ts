@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {NavController, ModalController, ToastController, LoadingController, MenuController, AlertController} from '@ionic/angular';
@@ -12,14 +12,18 @@ import {UserDataService} from '../../services/user-data/user-data.service';
 import {UserService} from '../../services/user/user.service';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ApiService} from '../../services/api/api.service';
+import {ArticlesService} from '../../services/articles/articles.service';
 import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
 import {Merchant} from '../../models/merchant';
+import {Article} from '../../models/article';
+import {IonSlides} from '@ionic/angular';
 @Component({
     selector: 'app-home',
     templateUrl: './home.page.html',
     styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+    @ViewChild('slideWithNav', {static: false}) slideWithNav: IonSlides;
     location: string = "n1";
     categoriesErrorGet: string = "";
     celTitle: string = "";
@@ -27,12 +31,21 @@ export class HomePage implements OnInit {
     celDesc: string = "";
     merchantsErrorGet: string = "";
     celError: string = "";
+    slideOpts = {
+        initialSlide: 0,
+        speed: 400,
+        autoplay: true,
+    };
     items: any[] = [];
     stores: any[] = [];
+    activeIndex = 0;
+    slidesItems: any[] = [];
+    newsItems: any[] = [];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
         public alertController: AlertController,
         public alerts: AlertsService,
+        public articles: ArticlesService,
         public params: ParamsService,
         public userData: UserDataService,
         public userS: UserService,
@@ -90,7 +103,9 @@ export class HomePage implements OnInit {
     }
 
     ngOnInit() {
-
+        this.getItems();
+        this.getMerchants();
+        this.getArticles();
     }
     ionViewDidEnter() {
 
@@ -118,17 +133,16 @@ export class HomePage implements OnInit {
         } else {
             this.checkLogIn();
         }
-        if (this.userData.deviceSet){
+        if (this.userData.deviceSet) {
             this.getCart();
         }
-        this.getItems();
-        this.getMerchants();
+        
     }
     getMerchants() {
         this.showLoader();
         let searchObj = null
         let query = "page=1&category_id=10";
-            searchObj = this.merchantsServ.getMerchants(query);
+        searchObj = this.merchantsServ.getMerchants(query);
         searchObj.subscribe((data: any) => {
             data.data = this.merchantsServ.prepareObjects(data.data);
             let results = data.data;
@@ -136,12 +150,45 @@ export class HomePage implements OnInit {
                 if (results[one].merchant_id) {
                     results[one].id = results[one].merchant_id;
                 }
+                if (results[one].categorizable_id) {
+                    results[one].id = results[one].categorizable_id;
+                }
                 let container = new Merchant(results[one]);
                 this.stores.push(container);
             }
             this.dismissLoader();
         }, (err) => {
             console.log("Error getMerchantsFromServer");
+            this.dismissLoader();
+            // Unable to log in
+            let toast = this.toastCtrl.create({
+                message: this.merchantsErrorGet,
+                duration: 3000,
+                position: 'top'
+            }).then(toast => toast.present());
+            this.api.handleError(err);
+        });
+    }
+    getArticles() {
+        this.showLoader();
+        let searchObj = null;
+        this.slidesItems = [];
+        this.newsItems = [];
+        let query = "category_id=22,23&includes=files&order_by=category_id,asc";
+        searchObj = this.articles.getArticles(query);
+        searchObj.subscribe((data: any) => {
+            let results = data.data;
+            for (let one in results) {
+                let container = new Article(results[one]);
+                if (container.category_id == 22) {
+                    this.slidesItems.push(results[one]);
+                } else if (container.category_id == 23) {
+                    this.newsItems.push(results[one]);
+                }
+            }
+            this.dismissLoader();
+        }, (err) => {
+            console.log("Error getArticles");
             this.dismissLoader();
             // Unable to log in
             let toast = this.toastCtrl.create({
@@ -193,14 +240,14 @@ export class HomePage implements OnInit {
         }
 
     }
-    openStore(item: any,category:any) {
+    openStore(item: any, category: any) {
         this.params.setParams({
             objectId: item.id
         });
         if (this.userData._user) {
-            this.navCtrl.navigateForward('tabs/home/categories/' + category+"/merchant/"+item.id+"/products");
+            this.navCtrl.navigateForward('tabs/home/categories/' + category + "/merchant/" + item.id + "/products");
         } else {
-            this.navCtrl.navigateForward('home/' + category+"/merchant/"+item.id+"/products");
+            this.navCtrl.navigateForward('home/' + category + "/merchant/" + item.id + "/products");
         }
     }
     openMenu() {
@@ -287,5 +334,29 @@ export class HomePage implements OnInit {
             this.api.handleError(err);
         });
     }
+
+    //Move to Next slide
+    slideNext() {
+        this.slideWithNav.slideNext();
+        this.slideWithNav.getActiveIndex().then((value) => {
+            console.log("Active index: ",value);
+            this.activeIndex = value;
+        });
+    }
+
+    //Move to previous slide
+    slidePrev() {
+        this.slideWithNav.slidePrev();
+        this.slideWithNav.getActiveIndex().then((value) => {
+            console.log("Active index: ",value);
+            this.activeIndex = value;
+        });
+    }
+    SlideDidChange() {
+    this.slideWithNav.getActiveIndex().then((value) => {
+            console.log("Active index: ",value);
+            this.activeIndex = value;
+        });
+  }
 
 }

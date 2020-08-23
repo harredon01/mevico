@@ -12,6 +12,22 @@
 
 <ion-content>
     <div class="quick-link bg-white webcont">
+        <div class="gallery">
+            <ion-slides pager="true" [options]="slideOpts" (ionSlideDidChange)="SlideDidChange()" #slideWithNav>
+                <ion-slide *ngFor="let item of slidesItems">
+                    <ion-img *ngIf="item.files.length > 0" [src]="item.files[0].file" class="w100"></ion-img>
+                    <!--h1 *ngIf="item.name">{{item.name}}</h1>
+                    <p *ngIf="item.description">{{item.description}}</p-->
+                </ion-slide>
+            </ion-slides>
+            <ion-button size="small" class="left-p" fill="clear" color="light" (click)="slidePrev()">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </ion-button>
+            <ion-button size="small" class="right-p" fill="clear" color="light" (click)="slideNext()" >
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+            </ion-button>
+        </div>
+
         <div class="m15">
             <h2 *ngIf="userData._user">Hola {{userData._user.firstName}}!</h2>
             <h2 *ngIf="!userData._user">Hola!</h2>
@@ -24,6 +40,7 @@
 
         </div>
         <div class="clear"></div>
+        <h2 class="pl15">Conoce un especialista</h2>
         <div class="mainCategories">
             <div (click)="openItem(item)" *ngFor="let item of items" class="mainCategories__list w50 left">
                 <img src="assets/imgs/dentist-1.jpg" item-start>
@@ -35,7 +52,7 @@
         </div>
         <h2 class="pl15">Nuestras Tiendas</h2>
         <div class="mainCategories">
-            
+
             <div class="clear"></div>
             <div (click)="openStore(item,10)" *ngFor="let item of stores;index as i;" class="mainCategories__list w50 left">
                 <img src="assets/imgs/dentist-1.jpg" item-start>
@@ -44,6 +61,22 @@
                 </span>
             </div>
         </div>
+        <ion-list class="news">
+            <ion-list-header>
+                Noticias
+            </ion-list-header>
+
+            <ion-item class="pr10 pl10" *ngFor="let item of newsItems">
+                <ion-thumbnail slot="start" *ngIf="item.files.length > 0" class="w30 h100">
+                    <ion-img [src]="item.files[0].file"></ion-img>
+                </ion-thumbnail>
+                <ion-label class="ion-text-wrap w70 h100">
+                    <h3 class="mt10 mb10" *ngIf="item.name">{{item.name}}</h3>
+                    <p class="mb5"><b>{{item.start_date | date:'M/d/yy'}}</b></p>
+                    <p *ngIf="item.description">{{item.description}}</p>
+                </ion-label>
+            </ion-item>
+        </ion-list>
     </div>
 
 </ion-content>

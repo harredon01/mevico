@@ -1,3 +1,36 @@
+@media (min-width: 800px) {
+    .news {
+        ion-item {
+            height:250px;
+            h3 {
+                font-size: 18px !important;
+            }
+        }
+    }
+}
+.gallery {
+    position:relative;
+    .left-p {
+        position:absolute;
+        left:0;
+        top:45%;
+        z-index:9999;
+    }
+    .right-p {
+        position:absolute;
+        right:0;
+        top:45%;
+        z-index: 9999;
+    }
+}
+.news {
+        ion-item {
+            padding: 0 15px;
+            h3 {
+                font-size: 14px;
+            }
+        }
+    }
 .toolbar-title {
     display: flex;
     align-items: center;
