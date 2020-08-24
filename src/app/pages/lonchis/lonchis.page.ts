@@ -221,6 +221,8 @@ export class LonchisPage implements OnInit {
             this.getCart();
         }
         this.getMerchants();
+        let vm = this
+        setTimeout(function () {vm.dismissLoader(); }, 2000);
         //        console.log("dismiss");
         //        this.dismissLoader();
         //        console.log("dismiss");
@@ -509,7 +511,12 @@ export class LonchisPage implements OnInit {
      */
     openCalc() {
         console.log("Opening calc");
-        this.navCtrl.navigateForward('tabs/home/calculadora');
+        if (this.userData._user) {
+            this.navCtrl.navigateForward('tabs/home/calculadora');
+        } else {
+            this.navCtrl.navigateForward('home/calculadora');
+        }
+
     }
 
     getDeliveries(showLoader: boolean) {

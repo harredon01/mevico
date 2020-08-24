@@ -1,6 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>home</ion-title>
+        <h2 *ngIf="userData._user" class="header-name">Hola {{userData._user.firstName}}!</h2>
         <ion-buttons slot="end" *ngIf="userData._user">
             <ion-button size="small" icon-only clear (click)="openMenu()">
                         <ion-icon name="notifications"></ion-icon>
@@ -29,7 +30,7 @@
         </div>
 
         <div class="m15">
-            <h2 *ngIf="userData._user">Hola {{userData._user.firstName}}!</h2>
+            <h2 *ngIf="userData._user" class="hello">Hola {{userData._user.firstName}}!</h2>
             <h2 *ngIf="!userData._user">Hola!</h2>
             <h3>Bienvenido a Healthy.</h3>
             <p>Tu centro medico digital </p>
@@ -72,7 +73,7 @@
                 </ion-thumbnail>
                 <ion-label class="ion-text-wrap w70 h100">
                     <h3 class="mt10 mb10" *ngIf="item.name">{{item.name}}</h3>
-                    <p class="mb5"><b>{{item.start_date | date:'M/d/yy'}}</b></p>
+                    <p class="mb5"><b>{{item.start_date | date:'mediumDate'}}</b></p>
                     <p *ngIf="item.description">{{item.description}}</p>
                 </ion-label>
             </ion-item>

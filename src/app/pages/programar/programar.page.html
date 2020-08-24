@@ -13,7 +13,7 @@
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
-    <div class="delivery-lunch" *ngIf="!isDeposit">
+    <div class="delivery-lunch webcont" *ngIf="!isDeposit">
         <p class="title pl15">{{ 'DELIVERY_PROGRAM.DESCRIPTION' | translate }} {{deliveryParams.delivery_text }}</p>
         <div *ngIf="!isProgrammed">
             <ion-card *ngFor="let foodItem of listArticles" class="m0">
@@ -70,7 +70,6 @@
                 <p><b>{{ 'DELIVERY_PROGRAM.ADDRESS' | translate }}: {{deliveryParams.address.address}}</b></p>
             </div>
             <ion-button class=" help btn-secondary submt" (click)="openChangeAddress()" style="margin-left:10px">{{ 'DELIVERY_PROGRAM.CHANGE_ADDRESS' | translate }}</ion-button>
-            <ion-button class=" help btn-secondary submt" (click)="openTutorials()" >{{ 'DELIVERY_PROGRAM.HELP' | translate }}</ion-button>
             <div style="clear:both"></div>
             <br/>
             <form  (submit)="updateDelivery()" [formGroup]="deliveryForm" >

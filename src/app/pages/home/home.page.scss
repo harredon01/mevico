@@ -3,10 +3,35 @@
         ion-item {
             height:250px;
             h3 {
+                font-size: 22px !important;
+            }
+            p {
                 font-size: 18px !important;
             }
         }
     }
+    .hello {
+        display:none;
+    }
+    .header-name {
+        display:block !important;
+        float: right;
+        margin-top: 0;
+        font-size: 18px;
+        margin-right: 37px;
+    }
+}
+@media (max-width: 426px) {
+    .news {
+        ion-item {
+            p {
+                max-height: 45px;
+            }
+        }
+    }
+}
+.header-name {
+    display:none;
 }
 .gallery {
     position:relative;
@@ -24,13 +49,16 @@
     }
 }
 .news {
-        ion-item {
-            padding: 0 15px;
-            h3 {
-                font-size: 14px;
-            }
+    ion-item {
+        padding: 0 15px;
+        h3 {
+            font-size: 14px;
+        }
+        p {
+            font-size: 12px;
         }
     }
+}
 .toolbar-title {
     display: flex;
     align-items: center;

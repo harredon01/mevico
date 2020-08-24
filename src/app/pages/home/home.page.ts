@@ -339,7 +339,6 @@ export class HomePage implements OnInit {
     slideNext() {
         this.slideWithNav.slideNext();
         this.slideWithNav.getActiveIndex().then((value) => {
-            console.log("Active index: ",value);
             this.activeIndex = value;
         });
     }
@@ -348,13 +347,11 @@ export class HomePage implements OnInit {
     slidePrev() {
         this.slideWithNav.slidePrev();
         this.slideWithNav.getActiveIndex().then((value) => {
-            console.log("Active index: ",value);
             this.activeIndex = value;
         });
     }
     SlideDidChange() {
     this.slideWithNav.getActiveIndex().then((value) => {
-            console.log("Active index: ",value);
             this.activeIndex = value;
         });
   }
