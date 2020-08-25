@@ -19,7 +19,7 @@
     <preference name="FadeSplashScreenDuration" value="300" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="WKWebViewOnly" value="true" />
-    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreen" value="screen.png" />
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyDDwPkLjnHj9rZ7M1hk9Z7HMi-ENu47sm4" />
     <preference name="GOOGLE_MAPS_IOS_API_KEY" value="AIzaSyBx9ykkz-m1-E-viMdFUh_Q9g0FaEP-K5I" />

@@ -43,7 +43,7 @@
         <div class="clear"></div>
         <h2 class="pl15">Conoce un especialista</h2>
         <div class="mainCategories">
-            <div (click)="openItem(item)" *ngFor="let item of items" class="mainCategories__list w50 left">
+            <div (click)="openItem(item,'none',false)" *ngFor="let item of items" class="mainCategories__list w50 left">
                 <img src="assets/imgs/dentist-1.jpg" item-start>
                 <span class="mainCategories__list--text">
                     <span>{{item.name}}</span>
@@ -51,12 +51,22 @@
                 </span>
             </div>
         </div>
-        <h2 class="pl15">Nuestras Tiendas</h2>
+        <h2 class="pl15">Centros de prueba</h2>
+        <div class="mainCategories">
+            <div class="clear"></div>
+            <div (click)="openItem(centerCat,'book',true)" class="mainCategories__list w50 left">
+                <img src="assets/imgs/laboratory.jpg" item-start>
+                <span class="mainCategories__list--text">
+                    <span></span>
+                </span>
+            </div>
+        </div>
+        <h2 class="pl15">Farmacias</h2>
         <div class="mainCategories">
 
             <div class="clear"></div>
             <div (click)="openStore(item,10)" *ngFor="let item of stores;index as i;" class="mainCategories__list w50 left">
-                <img src="assets/imgs/dentist-1.jpg" item-start>
+                <img src="assets/imgs/Pharmacy.jpg" item-start>
                 <span class="mainCategories__list--text">
                     <span>Tienda {{i+1}}</span>
                 </span>

@@ -28,6 +28,7 @@ export class HomePage implements OnInit {
     categoriesErrorGet: string = "";
     celTitle: string = "";
     notifs: any = 0;
+    centerCat: any = 0;
     celDesc: string = "";
     merchantsErrorGet: string = "";
     celError: string = "";
@@ -38,6 +39,7 @@ export class HomePage implements OnInit {
     };
     items: any[] = [];
     stores: any[] = [];
+    centers: any[] = [];
     activeIndex = 0;
     slidesItems: any[] = [];
     newsItems: any[] = [];
@@ -100,11 +102,12 @@ export class HomePage implements OnInit {
             this.getCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
+        this.centerCat = {id:13,name:"Centros de prueba",file:"https://picsum.photos/350/300"};
     }
 
     ngOnInit() {
         this.getItems();
-        this.getMerchants();
+        this.getMerchants('stores',24);
         this.getArticles();
     }
     ionViewDidEnter() {
@@ -138,10 +141,10 @@ export class HomePage implements OnInit {
         }
         
     }
-    getMerchants() {
+    getMerchants(arrayname,category) {
         this.showLoader();
         let searchObj = null
-        let query = "page=1&category_id=10";
+        let query = "page=1&category_id="+category;
         searchObj = this.merchantsServ.getMerchants(query);
         searchObj.subscribe((data: any) => {
             data.data = this.merchantsServ.prepareObjects(data.data);
@@ -154,7 +157,7 @@ export class HomePage implements OnInit {
                     results[one].id = results[one].categorizable_id;
                 }
                 let container = new Merchant(results[one]);
-                this.stores.push(container);
+                this[arrayname].push(container);
             }
             this.dismissLoader();
         }, (err) => {
@@ -231,8 +234,8 @@ export class HomePage implements OnInit {
     /**
      * Navigate to the detail page for this item.
      */
-    openItem(item: any) {
-        this.params.setParams({"item": item});
+    openItem(item: any,purpose:any,showAddress:any) {
+        this.params.setParams({"item": item,"purpose":purpose,'showAddress':showAddress});
         if (this.userData._user) {
             this.navCtrl.navigateForward('tabs/home/categories/' + item.id);
         } else {
