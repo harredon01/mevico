@@ -10,9 +10,9 @@ export class ProductsService {
 
     constructor(public api: ApiService) {}
 
-    getProductsMerchant(merchant: string, page: string) {
-        let endpoint = '/merchants/products/' + merchant + "/" + page;
-        let seq = this.api.get(endpoint);
+    getProductsMerchant(data:any) {
+        let endpoint = '/merchants/products';
+        let seq = this.api.get(endpoint,data);
         return seq;
 
     }
