@@ -5,6 +5,7 @@ import {NavController, ModalController, ToastController, LoadingController, Menu
 import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
 import {Events} from '../../services/events/events.service';
 import {AlertsService} from '../../services/alerts/alerts.service';
+import {ProductsService} from '../../services/products/products.service';
 import {CartService} from '../../services/cart/cart.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ParamsService} from '../../services/params/params.service';
@@ -16,7 +17,9 @@ import {ArticlesService} from '../../services/articles/articles.service';
 import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
 import {Merchant} from '../../models/merchant';
 import {Article} from '../../models/article';
+import {Product} from '../../models/product';
 import {IonSlides} from '@ionic/angular';
+import {CartPage} from '../cart/cart.page';
 @Component({
     selector: 'app-home',
     templateUrl: './home.page.html',
@@ -28,6 +31,8 @@ export class HomePage implements OnInit {
     categoriesErrorGet: string = "";
     celTitle: string = "";
     notifs: any = 0;
+    categoriesArr: any[] = [];
+    possibleAmounts: any[] = [];
     centerCat: any = 0;
     celDesc: string = "";
     merchantsErrorGet: string = "";
@@ -47,6 +52,7 @@ export class HomePage implements OnInit {
         public categories: CategoriesService,
         public alertController: AlertController,
         public alerts: AlertsService,
+        public productsServ: ProductsService,
         public articles: ArticlesService,
         public params: ParamsService,
         public userData: UserDataService,
@@ -102,13 +108,15 @@ export class HomePage implements OnInit {
             this.getCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
         });
-        this.centerCat = {id:13,name:"Centros de prueba",file:"https://picsum.photos/350/300"};
+        this.centerCat = {id: 13, name: "Centros de prueba", file: "https://picsum.photos/350/300"};
     }
 
     ngOnInit() {
         this.getItems();
-        this.getMerchants('stores',24);
+        this.getMerchants('stores', 24);
         this.getArticles();
+        this.loadProducts();
+        this.loadOptions();
     }
     ionViewDidEnter() {
 
@@ -139,12 +147,12 @@ export class HomePage implements OnInit {
         if (this.userData.deviceSet) {
             this.getCart();
         }
-        
+
     }
-    getMerchants(arrayname,category) {
+    getMerchants(arrayname, category) {
         this.showLoader();
         let searchObj = null
-        let query = "page=1&category_id="+category;
+        let query = "page=1&category_id=" + category;
         searchObj = this.merchantsServ.getMerchants(query);
         searchObj.subscribe((data: any) => {
             data.data = this.merchantsServ.prepareObjects(data.data);
@@ -234,8 +242,8 @@ export class HomePage implements OnInit {
     /**
      * Navigate to the detail page for this item.
      */
-    openItem(item: any,purpose:any,showAddress:any) {
-        this.params.setParams({"item": item,"purpose":purpose,'showAddress':showAddress});
+    openItem(item: any, purpose: any, showAddress: any) {
+        this.params.setParams({"item": item, "purpose": purpose, 'showAddress': showAddress});
         if (this.userData._user) {
             this.navCtrl.navigateForward('tabs/home/categories/' + item.id);
         } else {
@@ -354,9 +362,211 @@ export class HomePage implements OnInit {
         });
     }
     SlideDidChange() {
-    this.slideWithNav.getActiveIndex().then((value) => {
+        this.slideWithNav.getActiveIndex().then((value) => {
             this.activeIndex = value;
         });
-  }
+    }
 
+    loadProducts() {
+        this.categoriesArr = [];
+        let container = {"includes": "categories,files", "category_id": 25};
+        this.productsServ.getProductsMerchant(container).subscribe((resp) => {
+            if (resp.products_total > 0) {
+                this.categoriesArr = this.productsServ.buildProductInformation(resp, 1299);
+                console.log("Result build product", this.categories);
+                if (this.orderData.cartData) {
+                    let items = this.orderData.cartData.items;
+                    this.categoriesArr = this.productsServ.updateVisualWithCart(this.categoriesArr, items);
+                }
+                this.productsServ.calculateTotals("load products", this.categoriesArr);
+                //this.createSlides();
+            } else {
+                this.dismissLoader();
+            }
+        }, (err) => {
+            this.api.handleError(err);
+            // Unable to log in
+        });
+    }
+    async openCart() {
+        let container = {cart: this.orderData.cartData};
+        console.log("Opening Cart", container);
+        let addModal = await this.modalCtrl.create({
+            component: CartPage,
+            componentProps: container
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        this.params.setParams({"merchant_id": 1299});
+        if (data == "Shipping" || data == 'Prepare') {
+            if (this.userData._user) {
+                if (data == "Shipping") {
+                    this.navCtrl.navigateForward('tabs/home/checkout/shipping/' + 1299);
+                } else {
+                    this.navCtrl.navigateForward('tabs/home/checkout/prepare');
+                }
+            } else {
+                if (data == "Shipping") {
+                    this.drouter.addPages('tabs/home/checkout/shipping/' + 1299);
+                } else {
+                    this.drouter.addPages('tabs/home/checkout/prepare');
+                }
+                this.navCtrl.navigateForward('login');
+            }
+        }
+    }
+
+    loadOptions() {
+        for (let i = 1; i < 90; i++) {
+            let container = {"value": i};
+            this.possibleAmounts.push(container);
+        }
+    }
+    selectVariant(item: any) {
+        console.log(item);
+        this.productsServ.selectVariant(item);
+    }
+    addCart(item: any) {
+        console.log("Add cart item", item);
+        if (item.type == 'Booking') {
+            this.appointmentbook(item);
+        } else {
+            this.showLoader();
+            this.addCartItem(item);
+        }
+
+    }
+    appointmentbook(item: any) {
+        let questions = [];
+        let category_id = null;
+        let container = null;
+        console.log("variants", item.variants)
+        for (let i in item.variants) {
+            if (item.variant_id == item.variants[i].id) {
+                container = item.variants[i];
+                break;
+            }
+        }
+        console.log("Container", container);
+        if (container.attributes) {
+            if (container.attributes.questions) {
+                questions = container.attributes.questions;
+            }
+            if (container.attributes.category_id) {
+                category_id = container.attributes.category_id;
+            }
+        }
+        let params = {
+            "availabilities": null,
+            "type": "Merchant",
+            "objectId": 1308,
+            "objectName": "",
+            "objectDescription": "",
+            "objectIcon": "",
+            "expectedPrice": item.price,
+            "questions": questions,
+            "product_variant_id": item.variant_id,
+            "quantity": item.amount,
+            "purpose": "external_book"
+        }
+        console.log(params);
+        this.params.setParams(params);
+        if (category_id) {
+            if (this.userData._user) {
+                this.navCtrl.navigateForward("tabs/home/categories/" + category_id);
+            } else {
+                this.drouter.addPages("tabs/home/categories/" + category_id);
+                this.navCtrl.navigateForward('login');
+            }
+        } else {
+            if (this.userData._user) {
+                //this.navCtrl.navigateForward(this.urlSearch + "/book");
+            } else {
+                //this.drouter.addPages(this.urlSearch + "/book");
+                this.navCtrl.navigateForward('login');
+            }
+        }
+
+    }
+    addCartItem(item: any) {
+        this.cartProvider.addCart(item).then((resp: any) => {
+            console.log("updateCartItem", resp);
+            if (resp.status == "success") {
+                this.handleCartSuccess(resp, item);
+                if (resp.item) {
+                    return resp.item;
+                }
+            } else {
+                this.dismissLoader();
+                this.cartProvider.handleCartError(resp, item);
+            }
+        });
+    }
+
+    reduceCartItem(item: any) {
+        item.amount--;
+        this.addCartItem(item);
+
+    }
+    increaseCartItem(item: any) {
+        item.amount++;
+        this.addCartItem(item);
+    }
+    handleCartSuccess(resp: any, item: any) {
+        this.orderData.cartData = resp.cart;
+        let showPromt = false;
+        if (!item.inCart) {
+            showPromt = true;
+        }
+        if (resp.item) {
+            item.inCart = true;
+            item.item_id = resp.item.id;
+            item.amount = resp.item.quantity;
+        } else {
+            item.inCart = false;
+            item.item_id = null;
+            item.amount = 1;
+        }
+        this.productsServ.calculateTotals("update cart item", this.categoriesArr);
+        this.cartProvider.cartUpdateMessage();
+        if (showPromt) {
+            this.presentAlertPay(resp.item);
+        }
+    }
+    presentAlertPay(item: any) {
+        this.alertController.create({
+            header: "Quieres ir a pagar",
+            inputs: [],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        console.log('Confirm Cancel');
+                    }
+                }, {
+                    text: 'Ok',
+                    handler: (resp) => {
+                        console.log('Confirm Ok', item);
+                        this.params.setParams({"merchant_id": 1299});
+                        if (this.userData._user) {
+                            if (item.attributes.is_shippable == true) {
+                                this.navCtrl.navigateForward('tabs/home/checkout/shipping/' + 1299);
+                            } else {
+                                this.navCtrl.navigateForward('tabs/home/checkout/prepare');
+                            }
+                        } else {
+                            if (item.attributes.is_shippable == true) {
+                                this.drouter.addPages('tabs/home/checkout/shipping/' + 1299);
+                            } else {
+                                this.drouter.addPages('tabs/home/checkout/prepare');
+                            }
+                            this.navCtrl.navigateForward('login');
+                        }
+                    }
+                }
+            ]
+        }).then(toast => toast.present());
+    }
 }

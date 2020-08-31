@@ -324,6 +324,19 @@ const routes: Routes = [
                         loadChildren: () => import('../my-account/my-account.module').then(m => m.MyAccountPageModule)
                     },
                     {
+                        path: 'documents',
+                        children: [
+                            {
+                                path: '',
+                                loadChildren: () => import('../document-listing/document-listing.module').then(m => m.DocumentListingPageModule),
+                            },
+                            {
+                                path: ':objectId',
+                                loadChildren: () => import('../document-detail/document-detail.module').then(m => m.DocumentDetailPageModule),
+                            }
+                        ]
+                    },
+                    {
                         path: 'payments',
                         children: [
                             {

@@ -61,6 +61,69 @@
                 </span>
             </div>
         </div>
+        <div *ngFor="let cat of categoriesArr" class="prods-cont">
+    <h2 style="margin-left: 15px;" (click)="showMoreCat(cat)" *ngIf="cat.products.length > 0">{{cat.name}}</h2>
+    <div *ngIf="cat.products.length > 0">
+        <ion-card class="product__item left w50 m0" *ngFor="let item of cat.products">
+            <ion-card-header class="product-header__information" (click)="showMoreItem(item)" *ngIf="item.onsale">
+                <span>{{item.name}} <b class="price right pr5" *ngIf="!item.more">{{item.subtotal | currency }}</b><b class="exprice right pr5 pt5" *ngIf="!item.more">{{item.exsubtotal | currency }}</b></span><ion-icon name="caret-down-outline" *ngIf="!item.more"></ion-icon><ion-icon name="caret-up-outline" *ngIf="item.more"></ion-icon>
+            </ion-card-header>
+            <ion-card-header class="product-header__information" (click)="showMoreItem(item)" *ngIf="!item.onsale">
+                <span>{{item.name}} <b *ngIf="!item.more" class="right pr5">{{item.subtotal | currency }}</b></span><ion-icon name="caret-down-outline" *ngIf="!item.more"></ion-icon><ion-icon name="caret-up-outline" *ngIf="item.more"></ion-icon>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-slides>
+                    <ion-slide *ngFor="let img of item.imgs">
+                        <img [src]="img.file" class="image--large " alt="starters-html.jpg" style="max-height: 10em; width:100%;object-fit:fill">
+                    </ion-slide>
+                </ion-slides>
+                <div [innerHtml]="item.description" class="hide-text" [ngClass]="{'show' : item.description_more}"></div>
+                <a class="right" href='javascript:;' (click)="showMore(item)">{{  item.description_more ? showLessText: showMoreText}}
+                </a> 
+                <div class="clear"></div>
+                <ion-item style="padding:0">
+                    <ion-label *ngIf="item.id==80 || item.id==81">{{ 'PRODUCTS.VARIANTS2' | translate }}</ion-label> 
+                    <ion-label *ngIf="item.id!=80&&item.id!=81">{{ 'PRODUCTS.VARIANTS' | translate }}</ion-label> 
+                    <ion-select [(ngModel)]="item.variant_id" (ionChange)="selectVariant(item)">
+                        <ion-select-option *ngFor="let variant of item.variants" [value]='variant.id'>{{variant.description}} -
+                            {{variant.unitPrice | currency }}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item style="padding:0">
+                    <ion-label>{{ 'PRODUCTS.AMOUNT' | translate }}</ion-label>
+                    <ion-select [(ngModel)]="item.amount" (ionChange)="selectVariant(item)">
+                        <ion-select-option *ngFor="let option of possibleAmounts" [value]='option.value'>{{option.value}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <div class="left mt15 w50" *ngIf="item.onsale">
+                    <p><b class="exprice">{{item.exsubtotal | currency }}</b><br/><b class="price">{{item.subtotal | currency }}</b></p>
+                </div>
+                <div class="left mt15 w50" *ngIf="!item.onsale">
+                    <p class="price"><b>{{item.subtotal | currency }}</b></p>
+                </div>
+                <div *ngIf="isOwner" class="right mt10">
+                    <ion-button class="btn-primary" (click)="editProduct(item.id)">{{ 'INPUTS.EDIT' | translate }}
+                    </ion-button>
+                    <ion-button color="primary" (click)="editImages(item.id)">
+                        {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
+                    </ion-button>
+                </div>
+                <div *ngIf="!isOwner" class="right mt10">
+                    <ion-button color="primary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</ion-button>
+                    <ion-button color="primary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</ion-button>
+                    <div class="content-increment-product" *ngIf="item.inCart">
+                        <ion-button outline style="font-size:20px;" (click)="reduceCartItem(item)">-</ion-button>
+                        <label> {{item.amount}}</label>
+                        <ion-button outline style="font-size:20px;" (click)="increaseCartItem(item)">+</ion-button>
+                    </div> 
+                </div>
+                <div class="clear"></div>
+            </ion-card-content>
+        </ion-card>
+        <div class="clear"></div>
+    </div>
+    
+</div>
         <h2 class="pl15">Farmacias</h2>
         <div class="mainCategories">
 

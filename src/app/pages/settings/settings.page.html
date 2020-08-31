@@ -13,6 +13,12 @@
                     <h2>{{ 'SETTINGS.MY_ACCOUNT' | translate }}</h2>
                 </ion-label>
             </ion-item>
+            <ion-item (click)="openItem('/tabs/settings/documents')">
+                <ion-label>
+                    <img src="assets/icon/money.svg" />
+                    <h2>{{ 'SETTINGS.DOCUMENTS' | translate }}</h2>
+                </ion-label>
+            </ion-item>
             <ion-item (click)="openItem('/tabs/settings/merchants')">
                 <ion-label>
                     <img src="assets/icon/money.svg" />
