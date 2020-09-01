@@ -970,7 +970,9 @@
         "SHOW_LESS": "Esconder",
         "PASSWORD":"Clave",
         "BACK":"Volver",
-        "CHECK":"Verificar"
+        "CHECK":"Verificar",
+        "ERROR_GET":"Error buscando",
+        "ERROR_SAVE":"Error guardando"
     },
     "USER": {
         "NAME": "Nombre",

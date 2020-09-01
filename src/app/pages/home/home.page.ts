@@ -1,8 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
 import {CategoriesService} from '../../services/categories/categories.service';
-import {NavController, ModalController, ToastController, LoadingController, MenuController, AlertController} from '@ionic/angular';
-import {SpinnerDialog} from '@ionic-native/spinner-dialog/ngx';
+import {NavController, ModalController, MenuController, AlertController} from '@ionic/angular';
 import {Events} from '../../services/events/events.service';
 import {AlertsService} from '../../services/alerts/alerts.service';
 import {ProductsService} from '../../services/products/products.service';
@@ -28,15 +26,11 @@ import {CartPage} from '../cart/cart.page';
 export class HomePage implements OnInit {
     @ViewChild('slideWithNav', {static: false}) slideWithNav: IonSlides;
     location: string = "n1";
-    categoriesErrorGet: string = "";
     celTitle: string = "";
     notifs: any = 0;
     categoriesArr: any[] = [];
     possibleAmounts: any[] = [];
     centerCat: any = 0;
-    celDesc: string = "";
-    merchantsErrorGet: string = "";
-    celError: string = "";
     slideOpts = {
         initialSlide: 0,
         speed: 400,
@@ -61,30 +55,11 @@ export class HomePage implements OnInit {
         public merchantsServ: MerchantsService,
         public api: ApiService,
         public drouter: DynamicRouterService,
-        public toastCtrl: ToastController,
         public modalCtrl: ModalController,
-        public loadingCtrl: LoadingController,
-        public translateService: TranslateService,
         public cartProvider: CartService,
         public orderData: OrderDataService,
-        private spinnerDialog: SpinnerDialog,
         public events: Events) {
         let vm = this;
-        this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
-            vm.categoriesErrorGet = value;
-        });
-        this.translateService.get('USER.CEL_TITLE').subscribe((value) => {
-            vm.celTitle = value;
-        });
-        this.translateService.get('USER.CEL_DESC').subscribe((value) => {
-            vm.celDesc = value;
-        });
-        this.translateService.get('USER.CEL_ERROR').subscribe((value) => {
-            vm.celError = value;
-        });
-        this.translateService.get('CATEGORIES.ERROR_GET').subscribe((value) => {
-            vm.merchantsErrorGet = value;
-        });
         events.subscribe('cart:orderFinished', () => {
             this.clearCart();
             // user and time are the same arguments passed in `events.publish(user, time)`
@@ -122,8 +97,8 @@ export class HomePage implements OnInit {
 
         if (document.URL.startsWith('http')) {
             let vm = this;
-            setTimeout(function () {vm.dismissLoader(); console.log("Retrying closing")}, 1000);
-            setTimeout(function () {vm.dismissLoader(); console.log("Retrying closing")}, 2000);
+            setTimeout(function () {vm.api.dismissLoader();; console.log("Retrying closing")}, 1000);
+            setTimeout(function () {vm.api.dismissLoader();; console.log("Retrying closing")}, 2000);
         }
 
         if (this.userData._user) {
@@ -150,7 +125,7 @@ export class HomePage implements OnInit {
 
     }
     getMerchants(arrayname, category) {
-        this.showLoader();
+        this.api.loader();
         let searchObj = null
         let query = "page=1&category_id=" + category;
         searchObj = this.merchantsServ.getMerchants(query);
@@ -167,21 +142,17 @@ export class HomePage implements OnInit {
                 let container = new Merchant(results[one]);
                 this[arrayname].push(container);
             }
-            this.dismissLoader();
+            this.api.dismissLoader();
         }, (err) => {
             console.log("Error getMerchantsFromServer");
-            this.dismissLoader();
+            this.api.dismissLoader();
             // Unable to log in
-            let toast = this.toastCtrl.create({
-                message: this.merchantsErrorGet,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
+            this.api.toast('CATEGORIES.ERROR_GET');
             this.api.handleError(err);
         });
     }
     getArticles() {
-        this.showLoader();
+        this.api.loader();
         let searchObj = null;
         this.slidesItems = [];
         this.newsItems = [];
@@ -197,16 +168,12 @@ export class HomePage implements OnInit {
                     this.newsItems.push(results[one]);
                 }
             }
-            this.dismissLoader();
+            this.api.dismissLoader();
         }, (err) => {
             console.log("Error getArticles");
-            this.dismissLoader();
+            this.api.dismissLoader();
             // Unable to log in
-            let toast = this.toastCtrl.create({
-                message: this.merchantsErrorGet,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
+            this.api.toast('CATEGORIES.ERROR_GET');
             this.api.handleError(err);
         });
     }
@@ -221,21 +188,17 @@ export class HomePage implements OnInit {
     }
 
     getItems() {
-        this.showLoader();
+        this.api.loader();
         let query = "merchants";
         this.categories.getCategories(query).subscribe((data: any) => {
-            this.dismissLoader();
+            this.api.dismissLoader();
             console.log("after getCategories");
             this.items = data.categories;
             console.log(JSON.stringify(data));
         }, (err) => {
-            this.dismissLoader();
+            this.api.dismissLoader();
             // Unable to log in
-            let toast = this.toastCtrl.create({
-                message: this.categoriesErrorGet,
-                duration: 3000,
-                position: 'top'
-            }).then(toast => toast.present());
+            this.api.toast('CATEGORIES.ERROR_GET');
             this.api.handleError(err);
         });
     }
@@ -249,7 +212,14 @@ export class HomePage implements OnInit {
         } else {
             this.navCtrl.navigateForward('home/' + item.id);
         }
-
+    }
+    openArticle(item: any) {
+        this.params.setParams({"item": item});
+        if (this.userData._user) {
+            this.navCtrl.navigateForward('tabs/home/articles/' + item.id);
+        } else {
+            this.navCtrl.navigateForward('home/articles/' + item.id);
+        }
     }
     openStore(item: any, category: any) {
         this.params.setParams({
@@ -273,30 +243,6 @@ export class HomePage implements OnInit {
         // if the value is an empty string don't filter the items
         if (val && val.trim() != '') {
 
-        }
-    }
-    async dismissLoader() {
-        if (document.URL.startsWith('http')) {
-            let topLoader = await this.loadingCtrl.getTop();
-            while (topLoader) {
-                if (!(await topLoader.dismiss())) {
-                    console.log('Could not dismiss the topmost loader. Aborting...');
-                    return;
-                }
-                topLoader = await this.loadingCtrl.getTop();
-            }
-        } else {
-            this.spinnerDialog.hide();
-        }
-    }
-    showLoader() {
-        if (document.URL.startsWith('http')) {
-            this.loadingCtrl.create({
-                spinner: 'crescent',
-                backdropDismiss: true
-            }).then(toast => toast.present());
-        } else {
-            this.spinnerDialog.show(null, this.categoriesErrorGet);
         }
     }
     getCart() {
@@ -381,7 +327,7 @@ export class HomePage implements OnInit {
                 this.productsServ.calculateTotals("load products", this.categoriesArr);
                 //this.createSlides();
             } else {
-                this.dismissLoader();
+                this.api.dismissLoader();
             }
         }, (err) => {
             this.api.handleError(err);
@@ -431,7 +377,7 @@ export class HomePage implements OnInit {
         if (item.type == 'Booking') {
             this.appointmentbook(item);
         } else {
-            this.showLoader();
+            this.api.loader();
             this.addCartItem(item);
         }
 
@@ -497,7 +443,7 @@ export class HomePage implements OnInit {
                     return resp.item;
                 }
             } else {
-                this.dismissLoader();
+                this.api.dismissLoader();
                 this.cartProvider.handleCartError(resp, item);
             }
         });

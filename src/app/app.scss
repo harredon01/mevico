@@ -29,6 +29,21 @@
 * {
     font-family: var(--ion-font-family);
 }
+.gallery {
+    position:relative;
+    .left-p {
+        position:absolute;
+        left:0;
+        top:45%;
+        z-index:9999;
+    }
+    .right-p {
+        position:absolute;
+        right:0;
+        top:45%;
+        z-index: 9999;
+    }
+}
 
 .button-back {
     &--center {

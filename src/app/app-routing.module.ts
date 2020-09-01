@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'home/tutorial', loadChildren: () => import('./pages/tutorial/tutorial.module').then(m => m.TutorialPageModule) },
   { path: 'home/programar', loadChildren: () => import('./pages/programar/programar.module').then(m => m.ProgramarPageModule) },
   { path: 'home/products/:objectId', loadChildren: () => import('./pages/merchant-products/merchant-products.module').then(m => m.MerchantProductsPageModule) },
+  { path: 'home/articles/:objectId', loadChildren: () => import('./pages/article-detail/article-detail.module').then(m => m.ArticleDetailPageModule) },
   { path: 'home/:categoryId', loadChildren: () => import('./pages/merchant-listing/merchant-listing.module').then(m => m.MerchantListingPageModule) },
   { path: 'home/:categoryId/merchant/:objectId', loadChildren: () => import('./pages/merchant-detail/merchant-detail.module').then(m => m.MerchantDetailPageModule) },
   { path: 'home/:categoryId/merchant/:objectId/products', loadChildren: () => import('./pages/merchant-products/merchant-products.module').then(m => m.MerchantProductsPageModule) },
@@ -55,7 +56,8 @@ const routes: Routes = [
   { path: 'images', loadChildren: () => import('./pages/images/images.module').then(m => m.ImagesPageModule) },
   { path: 'availability-create', loadChildren: () => import('./pages/availability-create/availability-create.module').then(m => m.AvailabilityCreatePageModule) },
   { path: 'mercado-pago-options', loadChildren: () => import('./pages/mercado-pago-options/mercado-pago-options.module').then(m => m.MercadoPagoOptionsPageModule) },*/
-  { path: 'forgot-pass', loadChildren: () => import('./pages/forgot-pass/forgot-pass.module').then(m => m.ForgotPassPageModule) },  {
+  { path: 'forgot-pass', loadChildren: () => import('./pages/forgot-pass/forgot-pass.module').then(m => m.ForgotPassPageModule) },
+  {
     path: 'document-listing',
     loadChildren: () => import('./pages/document-listing/document-listing.module').then( m => m.DocumentListingPageModule)
   },
@@ -66,6 +68,10 @@ const routes: Routes = [
   {
     path: 'signature',
     loadChildren: () => import('./pages/signature/signature.module').then( m => m.SignaturePageModule)
+  },
+  {
+    path: 'article-detail',
+    loadChildren: () => import('./pages/article-detail/article-detail.module').then( m => m.ArticleDetailPageModule)
   },
 
   /*{ path: 'new-merchant', loadChildren: () => import('./pages/new-merchant/new-merchant.module').then(m => m.NewMerchantPageModule) },

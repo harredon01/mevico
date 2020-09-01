@@ -33,21 +33,7 @@
 .header-name {
     display:none;
 }
-.gallery {
-    position:relative;
-    .left-p {
-        position:absolute;
-        left:0;
-        top:45%;
-        z-index:9999;
-    }
-    .right-p {
-        position:absolute;
-        right:0;
-        top:45%;
-        z-index: 9999;
-    }
-}
+
 .news {
     ion-item {
         padding: 0 15px;

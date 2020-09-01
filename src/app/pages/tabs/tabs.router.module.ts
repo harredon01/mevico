@@ -43,6 +43,10 @@ const routes: Routes = [
                         loadChildren: () => import('../merchant-products/merchant-products.module').then(m => m.MerchantProductsPageModule),
                     },
                     {
+                        path: 'articles/:objectId',
+                        loadChildren: () => import('../article-detail/article-detail.module').then(m => m.ArticleDetailPageModule),
+                    },
+                    {
                         path: 'tutorial',
                         loadChildren: () => import('../tutorial/tutorial.module').then(m => m.TutorialPageModule),
                     },

@@ -136,11 +136,7 @@
             </div>
         </div>
         <ion-list class="news">
-            <ion-list-header>
-                Noticias
-            </ion-list-header>
-
-            <ion-item class="pr10 pl10" *ngFor="let item of newsItems">
+            <ion-item class="pr10 pl10" *ngFor="let item of newsItems" (click)="openArticle(item)">
                 <ion-thumbnail slot="start" *ngIf="item.files.length > 0" class="w30 h100">
                     <ion-img [src]="item.files[0].file"></ion-img>
                 </ion-thumbnail>
