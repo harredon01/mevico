@@ -1,0 +1,99 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>document-detail</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="webcont">
+        <div *ngIf="!editing">
+            <ion-card>
+                <ion-card-content>
+                    <h2>{{ 'DOCUMENT_DETAIL.TITLE2' | translate }}</h2>
+                    <ion-grid>
+                        <ion-row class="appot-detail">
+                            <ion-col size="2">
+                                <span>Id: {{documentD.id}}</span>
+                            </ion-col>
+                            <ion-col class="detail" size="5">
+                                <span>{{ documentD.created_at | date : 'mediumDate'}}</span>
+                                <span>{{ 'DOCUMENT_DETAIL.CREATED_AT' | translate }}:<b>{{ documentD.created_at | date : 'shortTime'}}</b></span>
+                                <span>{{ 'DOCUMENT_DETAIL.UPDATED_AT' | translate }}:<b>{{ documentD.updated_at | date : 'shortTime'}}</b></span>
+                            </ion-col>
+                            <ion-col class="detail tright"*ngIf="documentD.status == 'in_confirmation'" size="5">
+                                <h2>{{ 'DOCUMENT_DETAIL.UNAUTHORIZED' | translate }} </h2>
+                            </ion-col>
+                            <ion-col class="detail tright"*ngIf="documentD.status == 'PENDING'" size="5">
+                                <h2>{{ 'DOCUMENT_DETAIL.CONFIRMED' | translate }} </h2>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <div class="booking-details">
+                        <div *ngIf="documentD.body">
+                            <div *ngFor="let item of documentD.body" class="mb15">
+                                <p *ngIf="item.type=='text'|| item.type=='num'|| item.type=='radio'"><span>{{item.name}}</span>:<br/>{{item.value}}</p>
+                                <div *ngIf="item.type=='textarea'"><span>{{item.name}}</span>:<br/><p [innerHTML]="item.value"></p></div>
+                                <div *ngIf="item.type=='multiple'"><span>{{item.name}}</span>:<br/><div *ngFor="let mult of item.values"><p *ngIf="mult.value">{{mult.name}}</p></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+            <div class="mr5">
+                <ion-button *ngIf="documentD.author_id == userData._user.id  && !documentD.is_signed" full class="btn error right" (click)="editItem()">{{ 'INPUTS.EDIT' | translate }}</ion-button>
+                <ion-button color="success" *ngIf="documentD.author_id == userData._user.id  && !documentD.is_signed" full class="btn success right" (click)="signItem()">{{ 'DOCUMENT_DETAIL.SIGN' | translate }}</ion-button>
+                <ion-button color="danger" *ngIf="documentD.author_id == userData._user.id && !documentD.is_signed" full class="btn success right" (click)="deleteItem()">{{ 'INPUTS.DELETE' | translate }}</ion-button>
+            </div>
+            <div class="clear"></div> 
+        </div>
+        <div *ngIf="editing">
+            <ion-card class="m0">
+                <ion-card-header>
+                    <ion-card-title>{{ 'BOOKING.DETAILS' | translate }}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-item *ngFor="let item of questions">
+                        <ion-label *ngIf="item.type=='text' || item.type=='num' || item.type=='textarea'" position="floating">{{item.name}}</ion-label>
+                        <ion-input *ngIf="item.type=='text'" type="text" [(ngModel)]="item.value"></ion-input>
+                        <ion-input *ngIf="item.type=='num'" type="tel" [(ngModel)]="item.value"></ion-input>
+                        <ion-textarea *ngIf="item.type=='textarea'" class="mb20" [(ngModel)]="item.value"></ion-textarea>
+                        <ion-label class="ion-text-wrap" *ngIf="item.type=='radio'||item.type=='multiple' || item.type=='date'"  >
+                            <ion-radio-group *ngIf="item.type=='radio'" [(ngModel)]="item.value" lines="none">
+                                <ion-list lines="none">
+                                    <ion-list-header>
+                                        <ion-label>{{item.name}}</ion-label>
+                                    </ion-list-header>
+                                    <ion-item *ngFor="let question of item.values">
+                                        <ion-label>{{question.name}}</ion-label>
+                                        <ion-radio slot="start" [value]="question.value"></ion-radio>
+                                    </ion-item>
+                                </ion-list>
+                            </ion-radio-group>
+                            <ion-list  *ngIf="item.type=='multiple'" lines="none">
+                                <ion-list-header>
+                                    <ion-label>{{item.name}}</ion-label>
+                                </ion-list-header>
+                                <ion-item *ngFor="let question of item.values">
+                                    <ion-label>{{question.name}}</ion-label>
+                                    <ion-checkbox slot="end" [(ngModel)]="question.value"></ion-checkbox>
+                                </ion-item>
+                            </ion-list>
+                            <p *ngIf="item.type=='date'">{{item.name}}</p>
+                            <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[0].name" (keyup)="keytab($event,2)" [(ngModel)]="item.values[0].value"/>
+                            <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[1].name" (keyup)="keytab($event,2)" [(ngModel)]="item.values[1].value"/>
+                            <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[2].name" [(ngModel)]="item.values[2].value"/>
+                            <div class="clear" *ngIf="item.type=='date'"></div>
+                        </ion-label>
+
+                    </ion-item>
+                </ion-card-content>
+            </ion-card>
+
+            <div class="mr5">
+                <ion-button color="success" full class="btn success right" (click)="saveOrCreate()">{{ 'INPUTS.SAVE' | translate }}</ion-button>
+                <ion-button color="danger" full class="btn success right" (click)="cancelEdit()">{{ 'INPUTS.DELETE' | translate }}</ion-button>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</ion-content>

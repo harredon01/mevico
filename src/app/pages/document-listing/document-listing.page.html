@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>document-listing</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="webcont">
+        <p *ngIf="currentItems.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
+        <ion-list class="checkout-shipping__list pl15 pr15">
+                <ion-item (click)="openItem(item)" class="checkout-shipping__item" *ngFor="let item of currentItems">
+                    <ion-label class="ion-text-wrap">
+                        <h2>{{item.title}}</h2>
+                        <p>{{item.created_at}}</p>
+                    </ion-label>
+                </ion-item>
+        </ion-list>
+    </div>
+</ion-content>
