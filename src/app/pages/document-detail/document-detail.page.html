@@ -9,25 +9,24 @@
         <div *ngIf="!editing">
             <ion-card>
                 <ion-card-content>
-                    <h2>{{ 'DOCUMENT_DETAIL.TITLE2' | translate }}</h2>
+                    <h2>{{ 'DOCUMENT_DETAIL.TITLE' | translate }}:{{documentD.title}}</h2>
                     <ion-grid>
                         <ion-row class="appot-detail">
                             <ion-col size="2">
                                 <span>Id: {{documentD.id}}</span>
                             </ion-col>
-                            <ion-col class="detail" size="5">
-                                <span>{{ documentD.created_at | date : 'mediumDate'}}</span>
+                            <ion-col class="detail">
                                 <span>{{ 'DOCUMENT_DETAIL.CREATED_AT' | translate }}:<b>{{ documentD.created_at | date : 'shortTime'}}</b></span>
                                 <span>{{ 'DOCUMENT_DETAIL.UPDATED_AT' | translate }}:<b>{{ documentD.updated_at | date : 'shortTime'}}</b></span>
                             </ion-col>
-                            <ion-col class="detail tright"*ngIf="documentD.status == 'in_confirmation'" size="5">
-                                <h2>{{ 'DOCUMENT_DETAIL.UNAUTHORIZED' | translate }} </h2>
-                            </ion-col>
-                            <ion-col class="detail tright"*ngIf="documentD.status == 'PENDING'" size="5">
-                                <h2>{{ 'DOCUMENT_DETAIL.CONFIRMED' | translate }} </h2>
-                            </ion-col>
                         </ion-row>
                     </ion-grid>
+                    <h2 *ngIf="documentD.user">{{ 'DOCUMENT_DETAIL.USER' | translate }}</h2>
+                    <p *ngIf="documentD.user">{{documentD.user.name}} {{documentD.user.docType}} {{documentD.user.docNum}}</p>
+                    <h2 *ngIf="documentD.author">{{ 'DOCUMENT_DETAIL.AUTHOR' | translate }}</h2>
+                    <p *ngIf="documentD.author">{{documentD.author.name}} {{documentD.author.docType}} {{documentD.author.docNum}}</p>
+                    <h2>{{ 'DOCUMENT_DETAIL.DESCRIPTION' | translate }}</h2>
+                    <p [innerHTML]="documentD.description"></p>
                     <div class="booking-details">
                         <div *ngIf="documentD.body">
                             <div *ngFor="let item of documentD.body" class="mb15">
@@ -37,61 +36,134 @@
                             </div>
                         </div>
                     </div>
+                    <ion-list *ngIf="documentD.signatures.length>0">
+                        <ion-list-header>
+                            <ion-label>{{ 'DOCUMENT_DETAIL.SIGNATURES' | translate }}</ion-label>
+                        </ion-list-header>
+                        <ion-item *ngFor="let item of documentD.signatures">
+                            <ion-label class="ion-text-wrap">
+                                <h2>{{ 'DOCUMENT_DETAIL.SIGNER_NAME' | translate }}: {{item.name}}</h2>
+                                <p>{{ 'DOCUMENT_DETAIL.SIGNER_ID' | translate }}: {{item.identification}}</p>
+                                <p>{{ 'DOCUMENT_DETAIL.SIGN_DATE' | translate }}: {{ item.created_at | date : 'shortTime'}}</p>
+                            </ion-label>
+                        </ion-item>
+                    </ion-list>
                 </ion-card-content>
             </ion-card>
             <div class="mr5">
-                <ion-button *ngIf="documentD.author_id == userData._user.id  && !documentD.is_signed" full class="btn error right" (click)="editItem()">{{ 'INPUTS.EDIT' | translate }}</ion-button>
-                <ion-button color="success" *ngIf="documentD.author_id == userData._user.id  && !documentD.is_signed" full class="btn success right" (click)="signItem()">{{ 'DOCUMENT_DETAIL.SIGN' | translate }}</ion-button>
-                <ion-button color="danger" *ngIf="documentD.author_id == userData._user.id && !documentD.is_signed" full class="btn success right" (click)="deleteItem()">{{ 'INPUTS.DELETE' | translate }}</ion-button>
+                <ion-button *ngIf="documentD.author_id == userData._user.id  && !documentD.is_signed" full class="btn error right" (click)="editDocument()">{{ 'INPUTS.EDIT' | translate }}</ion-button>
+                <ion-button color="success" *ngIf="documentD.author_id == userData._user.id" full class="btn success right" (click)="signDocument()">{{ 'DOCUMENT_DETAIL.SIGN' | translate }}</ion-button>
+                <ion-button color="danger" *ngIf="documentD.author_id == userData._user.id && !documentD.is_signed" full class="btn success right" (click)="deleteDocument()">{{ 'INPUTS.DELETE' | translate }}</ion-button>
+                <ion-button color="success" *ngIf="documentD.is_signed" full class="btn success right" (click)="verifySignatures()">{{ 'DOCUMENT_DETAIL.VERIFY_SIGNATURES' | translate }}</ion-button>
             </div>
             <div class="clear"></div> 
         </div>
         <div *ngIf="editing">
             <ion-card class="m0">
                 <ion-card-header>
-                    <ion-card-title>{{ 'BOOKING.DETAILS' | translate }}</ion-card-title>
+                    <ion-card-title>{{ 'DOCUMENT_DETAIL.NAME' | translate }}</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-item *ngFor="let item of questions">
-                        <ion-label *ngIf="item.type=='text' || item.type=='num' || item.type=='textarea'" position="floating">{{item.name}}</ion-label>
-                        <ion-input *ngIf="item.type=='text'" type="text" [(ngModel)]="item.value"></ion-input>
-                        <ion-input *ngIf="item.type=='num'" type="tel" [(ngModel)]="item.value"></ion-input>
-                        <ion-textarea *ngIf="item.type=='textarea'" class="mb20" [(ngModel)]="item.value"></ion-textarea>
-                        <ion-label class="ion-text-wrap" *ngIf="item.type=='radio'||item.type=='multiple' || item.type=='date'"  >
-                            <ion-radio-group *ngIf="item.type=='radio'" [(ngModel)]="item.value" lines="none">
-                                <ion-list lines="none">
+                    <ion-list>
+                        <ion-item>
+                            <ion-label position="floating">{{ 'DOCUMENT_DETAIL.TITLE' | translate }}</ion-label>
+                            <ion-input type="text" [(ngModel)]="documentD.title"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">{{ 'DOCUMENT_DETAIL.DESCRIPTION' | translate }}</ion-label>
+                            <ion-textarea [(ngModel)]="documentD.description"></ion-textarea>
+                        </ion-item>
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>
+            <ion-card class="m0">
+                <ion-card-header>
+                    <ion-card-title>{{ 'DOCUMENT_DETAIL.INDEX' | translate }}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-list>
+                        <ion-item>
+                            <ion-label  class="ion-text-wrap">
+                                <p *ngFor="let item of documentD.body" style="border-bottom: 1px dotted"> {{item.name}}   <a href='javascript:;' class="right" (click)="delete(item)">Borrar</a></p>
+                                <br/>
+                                <ion-button color="primary" class="right" *ngIf="!addingField" (click)="addField()">{{ 'DOCUMENT_DETAIL.ADD_FIELD' | translate }}<ion-icon name="add-outline" slot="end"></ion-icon></ion-button>
+                            </ion-label>
+                        </ion-item>
+                        <ion-list *ngIf="addingField">
+                            <ion-list-header>
+                                <ion-label>{{ 'DOCUMENT_DETAIL.ADD_FIELD' | translate }}</ion-label>
+                            </ion-list-header>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'DOCUMENT_DETAIL.ADD_FIELD_CODE' | translate }}</ion-label>
+                                <ion-input type="text" [(ngModel)]="newField.code"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'DOCUMENT_DETAIL.ADD_FIELD_NAME' | translate }}</ion-label>
+                                <ion-input type="text" [(ngModel)]="newField.name"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">{{ 'DOCUMENT_DETAIL.ADD_FIELD_TYPE' | translate }}</ion-label>
+                                <ion-select [(ngModel)]="newField.type">
+                                    <ion-select-option value="text">{{ 'DOCUMENT_DETAIL.ADD_FIELD_TEXT' | translate }}</ion-select-option>
+                                    <ion-select-option value="num">{{ 'DOCUMENT_DETAIL.ADD_FIELD_NUM' | translate }}</ion-select-option>
+                                    <ion-select-option value="textarea">{{ 'DOCUMENT_DETAIL.ADD_FIELD_TEXTAREA' | translate }}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                            <ion-button color="success" full class="btn success right" (click)="saveField()">{{ 'INPUTS.SAVE' | translate }}</ion-button>
+                            <ion-button color="danger" full class="btn success right" (click)="cancelAddField()">{{ 'INPUTS.DELETE' | translate }}</ion-button>
+                        </ion-list>
+                    </ion-list>
+                </ion-card-content>
+            </ion-card>
+            <ion-card class="m0">
+                <ion-card-header>
+                    <ion-card-title>{{ 'DOCUMENT_DETAIL.BODY' | translate }}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-list>
+                        <ion-item *ngFor="let item of documentD.body">
+                            <ion-label *ngIf="item.type=='text' || item.type=='num' || item.type=='textarea'" position="floating">{{item.name}} </ion-label>
+                            <ion-input *ngIf="item.type=='text'" type="text" [(ngModel)]="item.value"></ion-input>
+                            <ion-input *ngIf="item.type=='num'" type="tel" [(ngModel)]="item.value"></ion-input>
+                            <ion-textarea *ngIf="item.type=='textarea'" class="mb20" [(ngModel)]="item.value"></ion-textarea>
+                            <ion-label class="ion-text-wrap" *ngIf="item.type=='radio'||item.type=='multiple' || item.type=='date'"  >
+                                <ion-radio-group *ngIf="item.type=='radio'" [(ngModel)]="item.value" lines="none">
+                                    <ion-list lines="none">
+                                        <ion-list-header>
+                                            <ion-label>{{item.name}}</ion-label>
+                                        </ion-list-header>
+                                        <ion-item *ngFor="let question of item.values">
+                                            <ion-label>{{question.name}}</ion-label>
+                                            <ion-radio slot="start" [value]="question.value"></ion-radio>
+                                        </ion-item>
+                                    </ion-list>
+                                </ion-radio-group>
+                                <ion-list  *ngIf="item.type=='multiple'" lines="none">
                                     <ion-list-header>
                                         <ion-label>{{item.name}}</ion-label>
                                     </ion-list-header>
                                     <ion-item *ngFor="let question of item.values">
                                         <ion-label>{{question.name}}</ion-label>
-                                        <ion-radio slot="start" [value]="question.value"></ion-radio>
+                                        <ion-checkbox slot="end" [(ngModel)]="question.value"></ion-checkbox>
                                     </ion-item>
                                 </ion-list>
-                            </ion-radio-group>
-                            <ion-list  *ngIf="item.type=='multiple'" lines="none">
-                                <ion-list-header>
-                                    <ion-label>{{item.name}}</ion-label>
-                                </ion-list-header>
-                                <ion-item *ngFor="let question of item.values">
-                                    <ion-label>{{question.name}}</ion-label>
-                                    <ion-checkbox slot="end" [(ngModel)]="question.value"></ion-checkbox>
-                                </ion-item>
-                            </ion-list>
-                            <p *ngIf="item.type=='date'">{{item.name}}</p>
-                            <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[0].name" (keyup)="keytab($event,2)" [(ngModel)]="item.values[0].value"/>
-                            <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[1].name" (keyup)="keytab($event,2)" [(ngModel)]="item.values[1].value"/>
-                            <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[2].name" [(ngModel)]="item.values[2].value"/>
-                            <div class="clear" *ngIf="item.type=='date'"></div>
-                        </ion-label>
+                                <p *ngIf="item.type=='date'">{{item.name}}</p>
+                                <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[0].name" (keyup)="keytab($event,2)" [(ngModel)]="item.values[0].value"/>
+                                <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[1].name" (keyup)="keytab($event,2)" [(ngModel)]="item.values[1].value"/>
+                                <input type="tel" class='left date-input' style="width:50px" *ngIf="item.type=='date'" [placeholder]="item.values[2].name" [(ngModel)]="item.values[2].value"/>
+                                <div class="clear" *ngIf="item.type=='date'"></div>
+                            </ion-label>
 
-                    </ion-item>
+                        </ion-item>
+                    </ion-list>
                 </ion-card-content>
             </ion-card>
 
             <div class="mr5">
-                <ion-button color="success" full class="btn success right" (click)="saveOrCreate()">{{ 'INPUTS.SAVE' | translate }}</ion-button>
-                <ion-button color="danger" full class="btn success right" (click)="cancelEdit()">{{ 'INPUTS.DELETE' | translate }}</ion-button>
+                <ion-button color="success" full class="btn success right" (click)="saveDocument()">{{ 'INPUTS.SAVE' | translate }}</ion-button>
+                <ion-button color="success" full class="btn success right" (click)="assignOwner()">{{ 'DOCUMENT_DETAIL.ASSIGN_OWNER' | translate }}</ion-button>
+                <ion-button color="danger" full class="btn success right" (click)="cancelEditing()">{{ 'INPUTS.CANCEL' | translate }}</ion-button>
+                <ion-button color="danger" full class="btn success right" (click)="clear()">{{ 'INPUTS.CLEAR' | translate }}</ion-button>
             </div>
             <div class="clear"></div>
         </div>

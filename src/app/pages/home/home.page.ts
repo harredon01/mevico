@@ -163,9 +163,9 @@ export class HomePage implements OnInit {
             for (let one in results) {
                 let container = new Article(results[one]);
                 if (container.category_id == 22) {
-                    this.slidesItems.push(results[one]);
+                    this.slidesItems.push(container);
                 } else if (container.category_id == 23) {
-                    this.newsItems.push(results[one]);
+                    this.newsItems.push(container);
                 }
             }
             this.api.dismissLoader();
@@ -426,9 +426,9 @@ export class HomePage implements OnInit {
             }
         } else {
             if (this.userData._user) {
-                //this.navCtrl.navigateForward(this.urlSearch + "/book");
+                this.navCtrl.navigateForward("/tabs/home/categories/10/merchant/1308/book");
             } else {
-                //this.drouter.addPages(this.urlSearch + "/book");
+                this.drouter.addPages("/tabs/home/categories/10/merchant/1308/book");
                 this.navCtrl.navigateForward('login');
             }
         }

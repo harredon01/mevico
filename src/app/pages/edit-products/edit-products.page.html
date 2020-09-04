@@ -44,7 +44,7 @@
                         <ion-button color="secondary" (click)="createVariant()" *ngIf="!isNew">
                             {{ 'EDIT_PRODUCTS.CREATE_VARIANT' | translate }}
                         </ion-button>
-                        <ion-button full type="submit" *ngIf="formP.controls.name.dirty||formP.controls.description.dirty">{{ 'MAP.DONE_SHIPPING' | translate}}</ion-button>
+                        <ion-button full type="submit" *ngIf="formP.controls.name.dirty||formP.controls.description.dirty">{{ 'INPUTS.SAVE' | translate}}</ion-button>
                     </ion-item>
                 </ion-list>
             </form>
@@ -142,6 +142,7 @@
 
         <div *ngIf="isNew">
             <p *ngIf="selectingCategory" class="mr10 ml10">{{ 'EDIT_PRODUCTS.SELECT_CATEGORY' | translate }}</p>
+            <ion-searchbar *ngIf="selectingCategory" (ionInput)="filterList($event)" ></ion-searchbar>
             <ion-list *ngIf="selectingCategory" class="mr10 ml10">
                 <ion-item-sliding *ngFor="let item of categories">
                     <ion-item (click)="selectCategory(item.id)" >
@@ -240,7 +241,7 @@
                         <p class="error-message">{{ 'EDIT_PRODUCTS.QUANTITY_ERROR' | translate }}</p>
                     </ion-item>
                     <ion-item class="right">
-                        <ion-button full type="submit" class="right">{{ 'INPUTS.SUBMIT' | translate}}</ion-button>
+                        <ion-button full type="submit" class="right">{{ 'INPUTS.SAVE' | translate}}</ion-button>
                     </ion-item>
                 </ion-list>
             </form>

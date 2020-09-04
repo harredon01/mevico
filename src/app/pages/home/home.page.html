@@ -51,6 +51,7 @@
                 </span>
             </div>
         </div>
+        <br/>
         <h2 class="pl15">Centros de prueba</h2>
         <div class="mainCategories">
             <div class="clear"></div>
@@ -61,6 +62,7 @@
                 </span>
             </div>
         </div>
+        <br/>
         <div *ngFor="let cat of categoriesArr" class="prods-cont">
     <h2 style="margin-left: 15px;" (click)="showMoreCat(cat)" *ngIf="cat.products.length > 0">{{cat.name}}</h2>
     <div *ngIf="cat.products.length > 0">
@@ -124,6 +126,7 @@
     </div>
     
 </div>
+        <br/>
         <h2 class="pl15">Farmacias</h2>
         <div class="mainCategories">
 
@@ -135,6 +138,7 @@
                 </span>
             </div>
         </div>
+        <br/>
         <ion-list class="news">
             <ion-item class="pr10 pl10" *ngFor="let item of newsItems" (click)="openArticle(item)">
                 <ion-thumbnail slot="start" *ngIf="item.files.length > 0" class="w30 h100">

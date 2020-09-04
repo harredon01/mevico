@@ -12,8 +12,11 @@ export class DocumentsService {
         let seq = this.api.get(endpoint );
         return seq;
     }
-    getDocuments() {
+    getDocuments(where?: string)  {
         let endpoint = '/documents';
+        if(where){
+            endpoint = '/documents?'+where;
+        }
         let seq = this.api.get(endpoint );
         return seq;
     }
@@ -22,15 +25,15 @@ export class DocumentsService {
         let seq = this.api.post(endpoint, data);
         return seq;
     }
-    signDocument(data: any) {
-        let endpoint = '/documents/sign';
+    signDocument(data: any,document_id: any) {
+        let endpoint = '/documents/' + document_id+"/sign";
         let seq = this.api.post(endpoint, data);
         return seq;
     }
 
-    changeStatusDocument(data: any) {
-        let endpoint = '/documents/status';
-        let seq = this.api.post(endpoint, data);
+    verifySignatures(document_id: any) {
+        let endpoint = '/documents/' + document_id+"/verify_signature";
+        let seq = this.api.post(endpoint, {});
         return seq;
     }
     deleteDocument(objectId: any) {

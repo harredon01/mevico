@@ -92,7 +92,7 @@ export class BuyerSelectPage implements OnInit {
         this.api.loader();
         let container = {
             "email": this.candidate,
-            "platform": "Food"
+            "platform": "Booking"
         }
         this.user.checkCredits(container).subscribe((resp: any) => {
             this.api.dismissLoader();
@@ -155,8 +155,8 @@ export class BuyerSelectPage implements OnInit {
      * back to the presenter.
      */
     done() {
-        this.orderData.clearOrderPayers(-1);
-        this.orderData.payers = [];
+        let users = []
+        console.log(this.totalNecessary);
         for (let item in this.payers) {
             let payer = this.payers[item];
             console.log("payer", payer);
@@ -164,12 +164,14 @@ export class BuyerSelectPage implements OnInit {
             console.log("formGet", formGet);
             if (formGet.value) {
                 this.totalNecessary--;
-                this.orderData.payers.push(payer);
+                users.push(payer);
             }
         }
-        console.log(this.orderData.payers);
+        console.log(this.totalNecessary);
+        console.log(users);
         if (this.totalNecessary < 1) {
-            this.modalCtrl.dismiss("done");
+            let container = {"status":"success","message":"done","users":users};
+            this.modalCtrl.dismiss(container);
         } else {
             this.api.toast('BUYER_SELECT.MISSING_PAYERS');
         }

@@ -5,28 +5,30 @@
 </ion-header>
 
 <ion-content>
-    <ion-card>
-        <div class="gallery">
-            <ion-slides pager="true" [options]="slideOpts" (ionSlideDidChange)="SlideDidChange()" #slideWithNav>
-                <ion-slide *ngFor="let file of item.files">
-                    <ion-img [src]="file.file" class="w100"></ion-img>
-                    <!--h1 *ngIf="item.name">{{item.name}}</h1>
-                    <p *ngIf="item.description">{{item.description}}</p-->
-                </ion-slide>
-            </ion-slides>
-            <ion-button size="small" class="left-p" fill="clear" color="light" (click)="slidePrev()">
-                <ion-icon name="chevron-back-outline"></ion-icon>
-            </ion-button>
-            <ion-button size="small" class="right-p" fill="clear" color="light" (click)="slideNext()" >
-                <ion-icon name="chevron-forward-outline"></ion-icon>
-            </ion-button>
-        </div>
-        <ion-card-header>
-            <ion-card-subtitle>{{item.start_date | date:'mediumDate'}}</ion-card-subtitle>
-            <ion-card-title>{{item.name}}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content [innerHTML]="item.body">
-            
-        </ion-card-content>
-    </ion-card>
+    <div class="webcont">
+        <ion-card>
+            <div class="gallery">
+                <ion-slides pager="true" [options]="slideOpts" (ionSlideDidChange)="SlideDidChange()" #slideWithNav>
+                    <ion-slide *ngFor="let file of item.files">
+                        <ion-img [src]="file.file" class="w100"></ion-img>
+                        <!--h1 *ngIf="item.name">{{item.name}}</h1>
+                        <p *ngIf="item.description">{{item.description}}</p-->
+                    </ion-slide>
+                </ion-slides>
+                <ion-button size="small" class="left-p" fill="clear" color="light" (click)="slidePrev()">
+                    <ion-icon name="chevron-back-outline"></ion-icon>
+                </ion-button>
+                <ion-button size="small" class="right-p" fill="clear" color="light" (click)="slideNext()" >
+                    <ion-icon name="chevron-forward-outline"></ion-icon>
+                </ion-button>
+            </div>
+            <ion-card-header>
+                <ion-card-subtitle>{{item.start_date | date:'mediumDate'}}</ion-card-subtitle>
+                <ion-card-title>{{item.name}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content [innerHTML]="item.body">
+
+            </ion-card-content>
+        </ion-card>
+    </div>
 </ion-content>

@@ -57,22 +57,7 @@ const routes: Routes = [
   { path: 'availability-create', loadChildren: () => import('./pages/availability-create/availability-create.module').then(m => m.AvailabilityCreatePageModule) },
   { path: 'mercado-pago-options', loadChildren: () => import('./pages/mercado-pago-options/mercado-pago-options.module').then(m => m.MercadoPagoOptionsPageModule) },*/
   { path: 'forgot-pass', loadChildren: () => import('./pages/forgot-pass/forgot-pass.module').then(m => m.ForgotPassPageModule) },
-  {
-    path: 'document-listing',
-    loadChildren: () => import('./pages/document-listing/document-listing.module').then( m => m.DocumentListingPageModule)
-  },
-  {
-    path: 'document-detail',
-    loadChildren: () => import('./pages/document-detail/document-detail.module').then( m => m.DocumentDetailPageModule)
-  },
-  {
-    path: 'signature',
-    loadChildren: () => import('./pages/signature/signature.module').then( m => m.SignaturePageModule)
-  },
-  {
-    path: 'article-detail',
-    loadChildren: () => import('./pages/article-detail/article-detail.module').then( m => m.ArticleDetailPageModule)
-  },
+
 
   /*{ path: 'new-merchant', loadChildren: () => import('./pages/new-merchant/new-merchant.module').then(m => m.NewMerchantPageModule) },
   { path: 'zoom-meeting', loadChildren: () => import('./pages/zoom-meeting/zoom-meeting.module').then(m => m.ZoomMeetingPageModule) },*/

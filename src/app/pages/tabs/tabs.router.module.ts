@@ -328,6 +328,10 @@ const routes: Routes = [
                         loadChildren: () => import('../my-account/my-account.module').then(m => m.MyAccountPageModule)
                     },
                     {
+                        path: 'faqs',
+                        loadChildren: () => import('../faq/faq.module').then(m => m.FaqPageModule)
+                    },
+                    {
                         path: 'documents',
                         children: [
                             {

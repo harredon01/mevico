@@ -49,6 +49,12 @@
                     <h2>{{ 'SETTINGS.BOOKINGS' | translate }}</h2>
                 </ion-label>
             </ion-item>
+            <ion-item (click)="openItem('/tabs/settings/faqs')">
+                <ion-label>
+                    <img src="assets/icon/calendar.svg" />
+                    <h2>{{ 'SETTINGS.FAQ' | translate }}</h2>
+                </ion-label>
+            </ion-item>
             <ion-item (click)="logout()">
                 <ion-label>
                     <img src="assets/icon/cerrar-sesion.svg" />

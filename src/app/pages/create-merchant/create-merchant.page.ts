@@ -422,10 +422,11 @@ export class CreateMerchantPage implements OnInit {
 
     getMerchant(merchant) {
         this.api.loader();
-        this.merchants.getMerchant(merchant).subscribe((resp: any) => {
+        let container = {"object_id":merchant,"includes":"availabilities,files,ratings"};
+        this.merchants.getMerchantPrivate(container).subscribe((resp: any) => {
             this.api.dismissLoader();
             console.log("getMerchant result", resp);
-            if (resp.status == "success") {
+            if (resp.merchant) {
                 let container = resp.merchant;
                 container.files = resp.files;
                 container.availabilities = resp.availabilities;

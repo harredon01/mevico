@@ -18,6 +18,7 @@ export class Article {
     category_id: any;
     metadescription: any;
     slug: any;
+    showMore: boolean = false;
     attributes: any;
     start_date: any;
     end_date: any;

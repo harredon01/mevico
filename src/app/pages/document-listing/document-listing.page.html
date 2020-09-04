@@ -1,19 +1,34 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>document-listing</ion-title>
+        <ion-title>{{ 'DOCUMENT_LISTING.TITLE' | translate }}</ion-title>
+        <ion-buttons class="my-addresses__button my-addresses__button--right" slot="primary">
+            <ion-button icon-only (click)="createDocument()">
+                <ion-icon class="add-button" name="add"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <div class="webcont">
+        <ion-item>
+            <ion-select (ionChange)="selectType()" [(ngModel)]="selectedSearch">
+                <ion-select-option value="Owner">{{ 'DOCUMENT_LISTING.USER' | translate }}</ion-select-option>
+                <ion-select-option value="Author">{{ 'DOCUMENT_LISTING.AUTHOR' | translate }}</ion-select-option>
+            </ion-select>
+        </ion-item>
         <p *ngIf="currentItems.length ==0">{{ 'INPUTS.NO_RESULTS' | translate }}</p>
         <ion-list class="checkout-shipping__list pl15 pr15">
-                <ion-item (click)="openItem(item)" class="checkout-shipping__item" *ngFor="let item of currentItems">
-                    <ion-label class="ion-text-wrap">
-                        <h2>{{item.title}}</h2>
-                        <p>{{item.created_at}}</p>
-                    </ion-label>
-                </ion-item>
+            <ion-item (click)="openItem(item)" class="checkout-shipping__item" *ngFor="let item of currentItems">
+                <ion-label class="ion-text-wrap">
+                    <h2>{{item.title}}</h2>
+                    <p>{{item.created_at | date : 'shortTime'}}</p>
+                </ion-label>
+            </ion-item>
         </ion-list>
+        <ion-infinite-scroll threshold="100px" (ionInfinite)="getItems($event)">
+                <ion-infinite-scroll-content loadingSpinner="bubbles">
+                </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
     </div>
 </ion-content>

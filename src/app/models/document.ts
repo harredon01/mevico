@@ -15,11 +15,15 @@ export class Document {
     body: any;
     status: any;
     user: any;
+    user_id: any;
     author: any;
     created_at: any;
     updated_at: any;
     files: any=[];
     constructor(fields: any) {
+        if(!fields.signatures){
+            fields.signatures = [];
+        }
         if (fields.created_at) {
             if (typeof fields.created_at === 'string' || fields.created_at instanceof String) {
                 fields.created_at = fields.created_at.replace(/-/g, '/');
@@ -49,6 +53,25 @@ export class Document {
             }
         } else {
             fields.body =[]
+        }
+        if (fields.signatures) {
+            if (typeof fields.signatures === 'string' || fields.signatures instanceof String) {
+                fields.signatures = JSON.parse(fields.signatures);
+            }
+            for(let i in fields.signatures){
+                let container = fields.signatures[i];
+                if (typeof container.created_at === 'string' || container.created_at instanceof String) {
+                    container.created_at = container.created_at.replace(/-/g, '/');
+                    if (container.created_at.includes("Z")) {
+                        container.created_at = container.created_at.replace("T", ' ');
+                        container.created_at = container.created_at.split(".")[0];
+                        container.created_at = new Date(container.created_at);
+                        container.created_at = new Date(container.created_at.getTime() - container.created_at.getTimezoneOffset() * 60000);
+                    }
+                }
+            }
+        } else {
+            fields.signatures =[]
         }
         // Quick and dirty extend/assign fields to this model
         for (const f in fields) {
