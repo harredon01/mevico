@@ -8,6 +8,8 @@ import {CartService} from '../../services/cart/cart.service';
 import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
+import {MapDataService} from '../../services/map-data/map-data.service';
+import {AddressesPage} from '../addresses/addresses.page';
 import {UserService} from '../../services/user/user.service';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ApiService} from '../../services/api/api.service';
@@ -50,6 +52,7 @@ export class HomePage implements OnInit {
         public articles: ArticlesService,
         public params: ParamsService,
         public userData: UserDataService,
+        public mapData: MapDataService,
         public userS: UserService,
         public menu: MenuController,
         public merchantsServ: MerchantsService,
@@ -94,7 +97,7 @@ export class HomePage implements OnInit {
         this.loadOptions();
     }
     ionViewDidEnter() {
-
+        this.api.hideMenu();
         if (document.URL.startsWith('http')) {
             let vm = this;
             setTimeout(function () {vm.api.dismissLoader();; console.log("Retrying closing")}, 1000);
@@ -103,11 +106,6 @@ export class HomePage implements OnInit {
 
         if (this.userData._user) {
             console.log("Counting unread")
-            this.alerts.countUnread().subscribe((resp: any) => {
-                console.log("Counting unread resp", resp);
-                this.notifs = resp.total;
-            }, (err) => {
-            });
             this.routeNext();
             this.events.publish("authenticated", {});
             console.log("Counting unread")
@@ -123,6 +121,63 @@ export class HomePage implements OnInit {
             this.getCart();
         }
 
+    }
+    createAddress() {
+        this.mapData.activeType = "Location";
+        this.mapData.activeId = "-1";
+        this.navCtrl.navigateForward('tabs/map');
+        console.log("createAddress");
+    }
+    async queryLocation() {
+        const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: 'Radio',
+            inputs: [
+                {
+                    name: 'radio1',
+                    type: 'radio',
+                    label: 'Mi ubicacion actual',
+                    value: 'mi-ubicacion',
+                    checked: true
+                },
+                {
+                    name: 'radio2',
+                    type: 'radio',
+                    label: 'Otra ubicacion',
+                    value: 'mapa'
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        console.log('Confirm Cancel');
+                    }
+                }, {
+                    text: 'Ok',
+                    handler: () => {
+                        console.log('Confirm Ok');
+                    }
+                }
+            ]
+        });
+        await alert.present();
+    }
+    async openChangeAddress() {
+        let container = {"select": "shipping"};
+        this.params.setParams(container);
+        let addModal = await this.modalCtrl.create({
+            component: AddressesPage,
+            componentProps: container
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        console.log("Cart closing", data);
+        if (data) {
+            this.mapData.address = data;
+        }
     }
     getMerchants(arrayname, category) {
         this.api.loader();
@@ -190,10 +245,13 @@ export class HomePage implements OnInit {
     getItems() {
         this.api.loader();
         let query = "merchants";
-        this.categories.getCategories(query).subscribe((data: any) => {
+        let cont = {type: "App\\Models\\Merchant", 'name': "Gen"}
+        this.categories.getCategories(cont).subscribe((data: any) => {
             this.api.dismissLoader();
             console.log("after getCategories");
-            this.items = data.categories;
+            if (data.status == 'success') {
+                this.items = data.data;
+            }
             console.log(JSON.stringify(data));
         }, (err) => {
             this.api.dismissLoader();
@@ -207,29 +265,17 @@ export class HomePage implements OnInit {
      */
     openItem(item: any, purpose: any, showAddress: any) {
         this.params.setParams({"item": item, "purpose": purpose, 'showAddress': showAddress});
-        if (this.userData._user) {
-            this.navCtrl.navigateForward('tabs/home/categories/' + item.id);
-        } else {
-            this.navCtrl.navigateForward('home/' + item.id);
-        }
+        this.navCtrl.navigateForward('tabs/home/categories/' + item.id);
     }
     openArticle(item: any) {
         this.params.setParams({"item": item});
-        if (this.userData._user) {
-            this.navCtrl.navigateForward('tabs/home/articles/' + item.id);
-        } else {
-            this.navCtrl.navigateForward('home/articles/' + item.id);
-        }
+        this.navCtrl.navigateForward('tabs/home/articles/' + item.id);
     }
     openStore(item: any, category: any) {
         this.params.setParams({
             objectId: item.id
         });
-        if (this.userData._user) {
-            this.navCtrl.navigateForward('tabs/home/categories/' + category + "/merchant/" + item.id + "/products");
-        } else {
-            this.navCtrl.navigateForward('home/' + category + "/merchant/" + item.id + "/products");
-        }
+        this.navCtrl.navigateForward('tabs/home/categories/' + category + "/merchant/" + item.id + "/products");
     }
     openMenu() {
         this.menu.enable(true, 'end');

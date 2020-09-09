@@ -140,8 +140,8 @@ export class CreateMerchantPage implements OnInit {
     addLocation() {
         console.log("Adding location");
         this.mapData.hideAll();
-        this.mapData.activeType = "Address";
-        this.mapData.activeId = "2";
+        this.mapData.activeType = "Location";
+        this.mapData.activeId = "-1";
         this.mapData.merchantId = null;
         this.navCtrl.navigateForward('tabs/map');
     }
@@ -441,30 +441,6 @@ export class CreateMerchantPage implements OnInit {
             this.api.toast('INPUTS.ERROR_GET');
         });
     }
-
-    /**
-     * Prompt the user to add a new item. This shows our ItemCreatePage in a
-     * modal and then adds the new item to our data source if the user created one.
-     */
-    addShippingAddress() {
-        let typeSel = this.form.get('type').value;
-        console.log("Type selected", typeSel);
-        if (typeSel == "location" || typeSel == "medical") {
-            this.mapData.hideAll();
-            this.mapData.activeType = "Location";
-            this.mapData.activeId = "-1";
-            this.mapData.merchantId = null;
-            this.navCtrl.navigateForward('tabs/map');
-        } else {
-            let values = this.form.value;
-            values.address = "";
-            values.lat = 0;
-            values.long = 0;
-            this.form.setValue(values);
-        }
-
-    }
-
 
     /**
      * The user cancelled, so we dismiss without sending data back.

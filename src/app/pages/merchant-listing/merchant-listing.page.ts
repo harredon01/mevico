@@ -47,32 +47,28 @@ export class MerchantListingPage implements OnInit {
         let container = this.params.getParams();
         if (container) {
             if (container.purpose) {
-                if (container.purpose=='none') {
+                if (container.purpose == 'none') {
                     this.purpose = "";
                 } else {
                     this.purpose = container.purpose;
                 }
-                
+
             }
             if (container.showAddress) {
                 this.showAddress = container.showAddress;
             }
         }
-        if (this.userData._user) {
-            let activeView = this.router.url;
-            console.log("getActive", activeView);
-            if (activeView.includes("settings")) {
-                this.typeSearch = "own";
-                this.urlSearch = 'tabs/settings/merchants/';
-            } else {
-                this.urlSearch = 'tabs/home/categories/' + this.category + '/merchant/';
-            }
-
+        let activeView = this.router.url;
+        console.log("getActive", activeView);
+        if (activeView.includes("settings")) {
+            this.typeSearch = "own";
+            this.urlSearch = 'tabs/settings/merchants/';
         } else {
-            this.urlSearch = 'home/' + this.category + '/merchant/';
+            this.urlSearch = 'tabs/home/categories/' + this.category + '/merchant/';
         }
     }
     ionViewDidEnter() {
+        this.api.hideMenu();
         if (document.URL.startsWith('http')) {
             let vm = this;
             setTimeout(function () {vm.api.dismissLoader(); console.log("Retrying closing")}, 1000);
@@ -138,10 +134,10 @@ export class MerchantListingPage implements OnInit {
         } else if (this.purpose == 'external_book') {
             params = this.params.getParams();
             params.objectId = item.id,
-            params.objectName = item.name,
-            params.objectDescription = item.description,
-            params.objectIcon = item.icon,
-            this.purpose = 'book';
+                params.objectName = item.name,
+                params.objectDescription = item.description,
+                params.objectIcon = item.icon,
+                this.purpose = 'book';
         } else {
             if (this.typeSearch == "own") {
                 params = {"item": item, "category": this.category, "owner": true};
@@ -151,8 +147,8 @@ export class MerchantListingPage implements OnInit {
         }
         this.params.setParams(params);
         console.log("Entering merchant", item);
-        if(this.purpose.length > 0 ){
-             this.navCtrl.navigateForward(this.urlSearch + item.id + "/" + this.purpose);
+        if (this.purpose.length > 0) {
+            this.navCtrl.navigateForward(this.urlSearch + item.id + "/" + this.purpose);
         } else {
             this.navCtrl.navigateForward(this.urlSearch + item.id);
         }

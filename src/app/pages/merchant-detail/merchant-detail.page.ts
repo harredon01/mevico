@@ -45,11 +45,7 @@ export class MerchantDetailPage implements OnInit {
         let merchantId = this.activatedRoute.snapshot.paramMap.get('objectId');
         let theParams = this.params.getParams();
         let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-        if (this.userData._user) {
-            this.urlSearch = 'tabs/home/categories/' + category + '/merchant/' + merchantId;
-        } else {
-            this.urlSearch = 'home/' + category + '/merchant/' + merchantId;
-        }
+        this.urlSearch = 'tabs/home/categories/' + category + '/merchant/' + merchantId;
 
         let vm = this
         this.translateService.get('BOOKING.NOT_AVAILABLE').subscribe(function (value) {
@@ -133,6 +129,7 @@ export class MerchantDetailPage implements OnInit {
         this.navCtrl.navigateForward(this.urlSearch + "/chat");
     }
     ionViewDidEnter() {
+        this.api.hideMenu();
         let container = this.params.getParams();
         if(container){
             if (container.hasChanged) {
