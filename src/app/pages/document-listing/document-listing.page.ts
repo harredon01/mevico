@@ -62,12 +62,12 @@ export class DocumentListingPage implements OnInit {
         console.log("Open document", item);
         let param = {"item": item};
         this.params.setParams(param);
-        this.navCtrl.navigateForward('tabs/settings/documents/' + item.id);
+        this.navCtrl.navigateForward('shop/settings/documents/' + item.id);
     }
     createDocument() {
         console.log("Open document", null);
         let param = {"item": null,"is_new":true};
         this.params.setParams(param);
-        this.navCtrl.navigateForward('tabs/settings/documents/-1');
+        this.navCtrl.navigateForward('shop/settings/documents/-1');
     }
 }

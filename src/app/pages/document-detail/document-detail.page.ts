@@ -138,7 +138,7 @@ export class DocumentDetailPage implements OnInit {
             console.log("building booking");
             this.documentD = new Document(result);
         } else if (data.status == "denied") {
-            this.navCtrl.navigateBack("tabs/settings/bookings");
+            this.navCtrl.navigateBack("shop/settings/bookings");
         }
 
     }
