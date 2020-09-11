@@ -1,0 +1,18 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>FAQ</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="webcont">
+        <ion-card class="product__item" *ngFor="let item of currentItems">
+            <ion-card-header class="product-header__information" (click)="showMoreItem(item)">
+                <span>{{item.name}} </span><ion-icon name="caret-down-outline" *ngIf="!item.more"></ion-icon><ion-icon name="caret-up-outline" *ngIf="item.more"></ion-icon>
+            </ion-card-header>
+            <ion-card-content  *ngIf="item.more">
+                <p [innerHTML]="item.body"></p>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>
