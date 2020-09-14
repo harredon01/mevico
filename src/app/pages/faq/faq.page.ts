@@ -28,7 +28,7 @@ export class FaqPage implements OnInit {
         this.api.loader();
         let searchObj = null;
         this.currentItems = [];
-        let query = "category_id=27&includes=files&order_by=category_id,asc";
+        let query = "category_id=27,10&includes=files&order_by=category_id,asc";
         searchObj = this.articles.getArticles(query);
         searchObj.subscribe((data: any) => {
             let results = data.data;

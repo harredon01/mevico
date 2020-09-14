@@ -52,12 +52,10 @@
     "chart.js": "^2.9.3",
     "compare-func": "^2.0.0",
     "cordova-android": "^9.0.0",
-    "cordova-browser": "^6.0.0",
     "cordova-plugin-androidx": "^2.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-device": "^2.0.3",
-    "cordova-plugin-facebook4": "^6.4.0",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-googlemaps": "^2.7.1",
     "cordova-plugin-googleplus": "^8.5.0",
@@ -93,6 +91,7 @@
     "@types/jasmine": "~3.5.12",
     "@types/jasminewd2": "^2.0.8",
     "@types/node": "^14.6.0",
+    "cordova-browser": "^6.0.0",
     "cordova-ios": "^6.1.0",
     "cordova-plugin-secure-storage-echo": "^5.1.1",
     "jasmine-core": "~3.6.0",
@@ -139,12 +138,6 @@
         "UPDATE_API": "https://api.ionicjs.com"
       },
       "onesignal-cordova-plugin": {},
-      "cordova-plugin-facebook4": {
-        "APP_ID": "1484133631742390",
-        "APP_NAME": "Petworld",
-        "FACEBOOK_HYBRID_APP_EVENTS": "false",
-        "FACEBOOK_ANDROID_SDK_VERSION": "5.13.0"
-      },
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.650065312777-pme9rmfq9mp5ppiisjoemrf6d3np6cof",
         "WEB_APPLICATION_CLIENT_ID": "650065312777-h6sq9leehcqo7732m0r8ot3gek1btig9.apps.googleusercontent.com",
@@ -154,10 +147,15 @@
       "cordova-plugin-androidx": {},
       "cordova-plugin-androidx-adapter": {},
       "cordova-plugin-sign-in-with-apple": {},
-      "cordova-plugin-secure-storage-echo": {}
+      "cordova-plugin-secure-storage-echo": {},
+      "cordova-plugin-facebook4": {
+        "APP_ID": "1484133631742390",
+        "APP_NAME": "Petworld",
+        "FACEBOOK_HYBRID_APP_EVENTS": "false",
+        "FACEBOOK_ANDROID_SDK_VERSION": "5.13.0"
+      }
     },
     "platforms": [
-      "browser",
       "android",
       "ios"
     ]

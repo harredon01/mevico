@@ -142,12 +142,6 @@
         <variable name="UPDATE_API" value="https://api.ionicjs.com" />
     </plugin>
     <plugin name="onesignal-cordova-plugin" spec="^2.9.0" />
-    <plugin name="cordova-plugin-facebook4" spec="^6.4.0">
-        <variable name="APP_ID" value="1484133631742390" />
-        <variable name="APP_NAME" value="Petworld" />
-        <variable name="FACEBOOK_HYBRID_APP_EVENTS" value="false" />
-        <variable name="FACEBOOK_ANDROID_SDK_VERSION" value="5.13.0" />
-    </plugin>
     <plugin name="cordova-plugin-googleplus" spec="^8.4.0">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.650065312777-pme9rmfq9mp5ppiisjoemrf6d3np6cof" />
         <variable name="WEB_APPLICATION_CLIENT_ID" value="650065312777-h6sq9leehcqo7732m0r8ot3gek1btig9.apps.googleusercontent.com" />
@@ -156,5 +150,4 @@
     <plugin name="cordova-plugin-uniquedeviceid" spec="^1.3.2" />
     <plugin name="cordova-plugin-androidx" spec="^1.0.2" />
     <plugin name="cordova-plugin-androidx-adapter" spec="^1.1.0" />
-    <engine name="browser" spec="^6.0.0" />
 </widget>
