@@ -159,8 +159,6 @@ export class ProductsService {
     }
     updateProductVisual(container: any, productInfo: Product) {
         if (container.is_on_sale) {
-            console.log("updateProductVisualsale", productInfo);
-            console.log("updateProductVisualsale2", container);
             productInfo.price = container.price;
             productInfo.onsale = true;
             productInfo.exprice = container.exprice;
@@ -170,7 +168,6 @@ export class ProductsService {
         }
 
         productInfo.variant_id = container.id;
-        console.log("Update Prod Vis1", container);
         if (container.attributes) {
             let attributes = container.attributes;
             if (attributes.buyers) {

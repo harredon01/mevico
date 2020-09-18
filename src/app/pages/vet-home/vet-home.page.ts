@@ -12,10 +12,12 @@ import {MapDataService} from '../../services/map-data/map-data.service';
 import {AddressesPage} from '../addresses/addresses.page';
 import {UserService} from '../../services/user/user.service';
 import {MerchantsService} from '../../services/merchants/merchants.service';
+import {ReportsService} from '../../services/reports/reports.service';
 import {ApiService} from '../../services/api/api.service';
 import {ArticlesService} from '../../services/articles/articles.service';
 import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
 import {Merchant} from '../../models/merchant';
+import {Report} from '../../models/report';
 import {Article} from '../../models/article';
 import {Product} from '../../models/product';
 import {IonSlides} from '@ionic/angular';
@@ -30,7 +32,7 @@ export class VetHomePage implements OnInit {
     location: string = "n1";
     celTitle: string = "";
     notifs: any = 0;
-    categoriesArr: any[] = [];
+    productCategories: any[] = [];
     possibleAmounts: any[] = [];
     centerCat: any = 0;
     slideOpts = {
@@ -38,9 +40,12 @@ export class VetHomePage implements OnInit {
         speed: 400,
         autoplay: true,
     };
-    items: any[] = [];
+    merchant_categories: any[] = [];
+    category_array_map: any = {};
+    report_categories: any[] = [];
     stores: any[] = [];
     centers: any[] = [];
+    latest_reports: any[] = [];
     activeIndex = 0;
     slidesItems: any[] = [];
     newsItems: any[] = [];
@@ -56,6 +61,7 @@ export class VetHomePage implements OnInit {
         public userS: UserService,
         public menu: MenuController,
         public merchantsServ: MerchantsService,
+        public reportsServ: ReportsService,
         public api: ApiService,
         public drouter: DynamicRouterService,
         public modalCtrl: ModalController,
@@ -90,9 +96,12 @@ export class VetHomePage implements OnInit {
     }
 
     ngOnInit() {
-        this.getItems();
-        this.getMerchants('stores', 24);
-        this.getArticles();
+        this.getMerchantCategories();
+        this.getReportCategories();
+
+        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant");
+        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report");
+        this.getObjects(['slidesItems', 'newsItems'], ['14', '15'], "page=1&category_id=14,15&order_by=articles.id,asc", "Article");
         this.loadProducts();
         this.loadOptions();
     }
@@ -179,23 +188,38 @@ export class VetHomePage implements OnInit {
             this.mapData.address = data;
         }
     }
-    getMerchants(arrayname, category) {
+    getObjects(arrayname, categories, query, object_type) {
         this.api.loader();
+        for (let item in categories) {
+            this.category_array_map[categories[item] + ""] = arrayname[item];
+        }
+        console.log("Getting objects: " + object_type, arrayname, categories);
+        console.log("Map: ", this.category_array_map);
         let searchObj = null
-        let query = "page=1&category_id=" + category;
-        searchObj = this.merchantsServ.getMerchants(query);
+        if (object_type == "Merchant") {
+            searchObj = this.merchantsServ.getMerchants(query);
+        } else if (object_type == "Report") {
+            searchObj = this.reportsServ.getReports(query);
+        } else if (object_type == "Article") {
+            searchObj = this.articles.getArticles(query);
+        }
+
         searchObj.subscribe((data: any) => {
-            data.data = this.merchantsServ.prepareObjects(data.data);
             let results = data.data;
             for (let one in results) {
-                if (results[one].merchant_id) {
-                    results[one].id = results[one].merchant_id;
+                let container = null;
+                if (object_type == "Merchant") {
+                    container = new Merchant(results[one]);
+                } else if (object_type == "Report") {
+                    container = new Report(results[one]);
+                } else if (object_type == "Article") {
+                    container = new Article(results[one]);
                 }
-                if (results[one].categorizable_id) {
-                    results[one].id = results[one].categorizable_id;
+
+                if (results[one].category_id) {
+                    this[this.category_array_map[results[one].category_id + ""]].push(container);
                 }
-                let container = new Merchant(results[one]);
-                this[arrayname].push(container);
+
             }
             this.api.dismissLoader();
         }, (err) => {
@@ -242,15 +266,33 @@ export class VetHomePage implements OnInit {
         });
     }
 
-    getItems() {
+    getMerchantCategories() {
         this.api.loader();
         let query = "merchants";
-        let cont = {type: "App\\Models\\Merchant", 'name': "Gen"}
+        let cont = {type: "App\\Models\\Merchant"}
         this.categories.getCategories(cont).subscribe((data: any) => {
             this.api.dismissLoader();
             console.log("after getCategories");
             if (data.status == 'success') {
-                this.items = data.data;
+                this.merchant_categories = data.data;
+            }
+            console.log(JSON.stringify(data));
+        }, (err) => {
+            this.api.dismissLoader();
+            // Unable to log in
+            this.api.toast('CATEGORIES.ERROR_GET');
+            this.api.handleError(err);
+        });
+    }
+    getReportCategories() {
+        this.api.loader();
+        let query = "reports";
+        let cont = {type: "App\\Models\\Report"}
+        this.categories.getCategories(cont).subscribe((data: any) => {
+            this.api.dismissLoader();
+            console.log("after getCategories");
+            if (data.status == 'success') {
+                this.report_categories = data.data;
             }
             console.log(JSON.stringify(data));
         }, (err) => {
@@ -263,9 +305,32 @@ export class VetHomePage implements OnInit {
     /**
      * Navigate to the detail page for this item.
      */
-    openItem(item: any, purpose: any, showAddress: any) {
+    openItem2(item: any, purpose: any, showAddress: any) {
         this.params.setParams({"item": item, "purpose": purpose, 'showAddress': showAddress});
         this.navCtrl.navigateForward('shop/home/categories/' + item.id);
+    }
+    openItem(item: any, category: any, type_object: any, purpose: any, showAddress: any) {
+        let destinationUrl = 'shop/home/categories/' + item.id;
+        let params = null;
+        if (type_object == "Merchant") {
+            if (purpose.length > 0) {
+                destinationUrl = 'shop/home/categories/' + category + '/merchant/' + item.id + '/' + purpose;
+            } else {
+                destinationUrl = 'shop/home/categories/' + category + '/merchant/' + item.id;
+            }
+        }
+        if (type_object == "Report") {
+            destinationUrl = 'shop/home/categories/' + item.id + '/reports/' + item.id;
+        } else if (type_object == "CategoryReport") {
+            destinationUrl = 'shop/home/categories/' + item.id + '/reports';
+        } else if (type_object == "CategoryMerchant") {
+            destinationUrl = 'shop/home/categories/' + item.id + '/merchant';
+        }else if (type_object == "Article") {
+            destinationUrl = 'shop/home/articles/' + item.id;
+        }
+        params = {"item": item, "purpose": purpose, 'showAddress': showAddress}
+        this.params.setParams(params);
+        this.navCtrl.navigateForward(destinationUrl);
     }
     openArticle(item: any) {
         this.params.setParams({"item": item});
@@ -321,7 +386,9 @@ export class VetHomePage implements OnInit {
     }
     routeNext() {
         if (this.drouter.pages) {
-            this.navCtrl.navigateForward(this.drouter.pages);
+            if(this.drouter.pages.length>0){
+                this.navCtrl.navigateForward(this.drouter.pages);
+            }
             this.drouter.pages = null;
         }
     }
@@ -360,17 +427,17 @@ export class VetHomePage implements OnInit {
     }
 
     loadProducts() {
-        this.categoriesArr = [];
-        let container = {"includes": "categories,files", "category_id": 25};
+        this.productCategories = [];
+        let container = {"includes": "categories,files", "category_id": 8};
         this.productsServ.getProductsMerchant(container).subscribe((resp) => {
             if (resp.products_total > 0) {
-                this.categoriesArr = this.productsServ.buildProductInformation(resp, 1299);
+                this.productCategories = this.productsServ.buildProductInformation(resp, 1299);
                 console.log("Result build product", this.categories);
                 if (this.orderData.cartData) {
                     let items = this.orderData.cartData.items;
-                    this.categoriesArr = this.productsServ.updateVisualWithCart(this.categoriesArr, items);
+                    this.productCategories = this.productsServ.updateVisualWithCart(this.productCategories, items);
                 }
-                this.productsServ.calculateTotals("load products", this.categoriesArr);
+                this.productsServ.calculateTotals("load products", this.productCategories);
                 //this.createSlides();
             } else {
                 this.api.dismissLoader();
@@ -519,7 +586,7 @@ export class VetHomePage implements OnInit {
             item.item_id = null;
             item.amount = 1;
         }
-        this.productsServ.calculateTotals("update cart item", this.categoriesArr);
+        this.productsServ.calculateTotals("update cart item", this.productCategories);
         this.cartProvider.cartUpdateMessage();
         if (showPromt) {
             this.presentAlertPay(resp.item);

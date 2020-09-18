@@ -12,8 +12,12 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren:  () => import('../home/home.module').then(m => m.HomePageModule)
+                        loadChildren:  () => import('../vet-home/vet-home.module').then(m => m.VetHomePageModule)
                     },
+//                    {
+//                        path: '',
+//                        loadChildren:  () => import('../home/home.module').then(m => m.HomePageModule)
+//                    },
 //                    {
 //                        path: '',
 //                        loadChildren: () => import('../lonchis/lonchis.module').then(m => m.LonchisPageModule)
@@ -125,7 +129,7 @@ const routes: Routes = [
                                 path: ':categoryId',
                                 children: [
                                     {
-                                        path: '',
+                                        path: 'merchant',
                                         loadChildren: () => import('../merchant-listing/merchant-listing.module').then(m => m.MerchantListingPageModule),
                                     },
                                     {
@@ -151,6 +155,19 @@ const routes: Routes = [
                                             {
                                                 path: 'book',
                                                 loadChildren: () => import('../booking/booking.module').then(m => m.BookingPageModule),
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        path: 'reports',
+                                        loadChildren: () => import('../report-listing/report-listing.module').then(m => m.ReportListingPageModule),
+                                    },
+                                    {
+                                        path: 'reports/:objectId',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: () => import('../report-detail/report-detail.module').then(m => m.ReportDetailPageModule),
                                             }
                                         ]
                                     }

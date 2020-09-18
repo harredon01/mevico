@@ -5,19 +5,19 @@ import {ActivatedRoute} from '@angular/router';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {MapDataService} from '../../services/map-data/map-data.service';
 import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
-import {MerchantsService} from '../../services/merchants/merchants.service';
+import {ReportsService} from '../../services/reports/reports.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {CategoriesService} from '../../services/categories/categories.service';
-import {Merchant} from '../../models/merchant';
+import {Report} from '../../models/report';
 import {ApiService} from '../../services/api/api.service';
 import {Router} from '@angular/router';
 @Component({
-    selector: 'app-merchant-listing',
-    templateUrl: './merchant-listing.page.html',
-    styleUrls: ['./merchant-listing.page.scss'],
+    selector: 'app-report-listing',
+    templateUrl: './report-listing.page.html',
+    styleUrls: ['./report-listing.page.scss'],
 })
-export class MerchantListingPage implements OnInit {
+export class ReportListingPage implements OnInit {
     @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
     location: any;
     typeSearch: string = "category";
@@ -27,7 +27,7 @@ export class MerchantListingPage implements OnInit {
     purpose: string = "";
     showAddress: boolean = false;
     category: any;
-    merchants: Merchant[] = [];
+    reports: Report[] = [];
     categoryItems: any[] = [];
     page: any = 0;
     loadMore: boolean;
@@ -39,7 +39,7 @@ export class MerchantListingPage implements OnInit {
         public geolocation: Geolocation,
         public mapData: MapDataService,
         public categories: CategoriesService,
-        public merchantsServ: MerchantsService,
+        public reportsServ: ReportsService,
         public router: Router,
         public modalCtrl: ModalController,
         public api: ApiService) {
@@ -47,7 +47,12 @@ export class MerchantListingPage implements OnInit {
         let container = this.params.getParams();
         if (container) {
             if (container.purpose) {
-                this.purpose = container.purpose;
+                if (container.purpose == 'none') {
+                    this.purpose = "";
+                } else {
+                    this.purpose = container.purpose;
+                }
+
             }
             if (container.showAddress) {
                 this.showAddress = container.showAddress;
@@ -57,9 +62,9 @@ export class MerchantListingPage implements OnInit {
         console.log("getActive", activeView);
         if (activeView.includes("settings")) {
             this.typeSearch = "own";
-            this.urlSearch = 'shop/settings/merchants/';
+            this.urlSearch = 'shop/settings/reports/';
         } else {
-            this.urlSearch = 'shop/home/categories/' + this.category + '/merchant/';
+            this.urlSearch = 'shop/home/categories/' + this.category + '/reports/';
         }
     }
     ionViewDidEnter() {
@@ -94,11 +99,11 @@ export class MerchantListingPage implements OnInit {
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
         if (data) {
-            this.getMerchants(null);
+            this.getReports(null);
         }
     }
     getItems() {
-        let query = "merchants";
+        let query = "reports";
         this.categories.getCategories(query).subscribe((data: any) => {
             console.log("after getCategories");
             this.categoryItems = data.categories;
@@ -114,31 +119,12 @@ export class MerchantListingPage implements OnInit {
     /**
      * Navigate to the detail page for this item.
      */
-    openItem(item: Merchant) {
+    openItem(item: Report) {
         let params = null;
-        if (this.purpose == 'book') {
-            params = {
-                "availabilities": item.availabilities,
-                "type": "Merchant",
-                "objectId": item.id,
-                "objectName": item.name,
-                "objectDescription": item.description,
-                "objectIcon": item.icon,
-                "expectedPrice": item.unit_cost
-            }
-        } else if (this.purpose == 'external_book') {
-            params = this.params.getParams();
-            params.objectId = item.id,
-            params.objectName = item.name,
-            params.objectDescription = item.description,
-            params.objectIcon = item.icon,
-            this.purpose = 'book';
+        if (this.typeSearch == "own") {
+            params = {"item": item, "category": this.category, "owner": true};
         } else {
-            if (this.typeSearch == "own") {
-                params = {"item": item, "category": this.category, "owner": true};
-            } else {
-                params = {"item": item, "category": this.category};
-            }
+            params = {"item": item, "category": this.category};
         }
         this.params.setParams(params);
         console.log("Entering merchant", item);
@@ -167,11 +153,11 @@ export class MerchantListingPage implements OnInit {
             // resp.coords.latitude
             // resp.coords.longitude
             this.typeSearch = "nearby";
-            this.merchants = [];
+            this.reports = [];
             this.page = 0;
             this.location = {lat: resp.coords.latitude, long: resp.coords.longitude, category: this.category};
             this.api.dismissLoader();
-            this.getMerchants(null);
+            this.getReports(null);
         }).catch((error) => {
             console.log('Error getting location', error);
 
@@ -193,38 +179,38 @@ export class MerchantListingPage implements OnInit {
      */
     searchText() {
         if (this.textSearch.length > 0) {
-            this.merchants = [];
+            this.reports = [];
             this.page = 0;
             this.typeSearch = "text";
-            this.getMerchants(null);
+            this.getReports(null);
         }
     }
     searchCategory() {
-        this.merchants = [];
+        this.reports = [];
         this.page = 0;
         this.typeSearch = "category";
-        this.getMerchants(null);
+        this.getReports(null);
     }
-    getMerchants(event) {
+    getReports(event) {
         this.api.loader();
         this.page++;
 
         let searchObj = null
         if (this.typeSearch == "category") {
             let query = "includes=availabilities&page=" + this.page + "&category_id=" + this.category;
-            searchObj = this.merchantsServ.getMerchants(query);
+            searchObj = this.reportsServ.getReports(query);
         } else if (this.typeSearch == "text") {
-            searchObj = this.merchantsServ.searchMerchants(this.textSearch + "&includes=availabilities&page=" + this.page);
+            searchObj = this.reportsServ.searchReports(this.textSearch + "&includes=availabilities&page=" + this.page);
         } else if (this.typeSearch == "nearby") {
             this.location.includes = 'availabilities';
-            searchObj = this.merchantsServ.getNearbyMerchants(this.location);
+            searchObj = this.reportsServ.getNearbyReports(this.location);
         } else if (this.typeSearch == "own") {
             let query = "includes=availabilities&page=" + this.page + "&owner_id=" + this.userData._user.id;
-            searchObj = this.merchantsServ.getMerchantsPrivate(query);
+            searchObj = this.reportsServ.getReportsPrivate(query);
         }
         searchObj.subscribe((data: any) => {
             if (this.page == 1) {
-                this.merchants = [];
+                this.reports = [];
             }
             if (data.total) {
                 this.totalResults = data.total;
@@ -234,15 +220,15 @@ export class MerchantListingPage implements OnInit {
                 this.infiniteScroll.disabled = true;
             }
             for (let one in results) {
-                let container = new Merchant(results[one]);
-                this.merchants.push(container);
+                let container = new Report(results[one]);
+                this.reports.push(container);
             }
             if (event) {
                 event.target.complete();
             }
             this.api.dismissLoader();
         }, (err) => {
-            console.log("Error getMerchantsFromServer");
+            console.log("Error getReportsFromServer");
             this.api.dismissLoader();
             // Unable to log in
             this.api.toast('INPUTS.ERROR_GET');
@@ -252,12 +238,12 @@ export class MerchantListingPage implements OnInit {
 
     categoryFilterChange() {
         this.page = 0;
-        this.getMerchants(null);
+        this.getReports(null);
     }
 
     ngOnInit() {
-        this.merchants = [];
-        this.getMerchants(null);
+        this.reports = [];
+        this.getReports(null);
         this.getItems();
     }
 

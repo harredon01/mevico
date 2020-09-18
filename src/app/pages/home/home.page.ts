@@ -185,15 +185,8 @@ export class HomePage implements OnInit {
         let query = "page=1&category_id=" + category;
         searchObj = this.merchantsServ.getMerchants(query);
         searchObj.subscribe((data: any) => {
-            data.data = this.merchantsServ.prepareObjects(data.data);
             let results = data.data;
             for (let one in results) {
-                if (results[one].merchant_id) {
-                    results[one].id = results[one].merchant_id;
-                }
-                if (results[one].categorizable_id) {
-                    results[one].id = results[one].categorizable_id;
-                }
                 let container = new Merchant(results[one]);
                 this[arrayname].push(container);
             }

@@ -11,9 +11,9 @@ import {Router} from '@angular/router';
 })
 export class ApiService {
     loading:any;
-    url: string = 'https://dev.lonchis.com.co/api';
-    urlraw: string = 'dev.lonchis.com.co';
-    urlsite: string = 'https://dev.lonchis.com.co';
+    url: string = 'https://pets.lonchis.com.co/api';
+    urlraw: string = 'pets.lonchis.com.co';
+    urlsite: string = 'https://pets.lonchis.com.co';
     constructor(public http: HttpClient,
         private toastCtrl: ToastController,
         private router: Router,

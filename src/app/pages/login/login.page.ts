@@ -47,6 +47,10 @@ export class LoginPage implements OnInit {
         public events: Events,
         public userData: UserDataService) {
         this.isUpdating = false;
+        if (this.api.urlraw=='pets.lonchis.com.co'){
+                this.account.client_id = 2;
+                this.account.client_secret = 'pYZ6L7KzZoDEoN0kCf048M24RZvOZ7GeXKZ9Q5su';
+            }
         this.events.subscribe('storageInitialized', (data: any) => {
             this.checkLogIn();
             // user and time are the same arguments passed in `events.publish(user, time)`
