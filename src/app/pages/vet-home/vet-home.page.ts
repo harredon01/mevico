@@ -9,6 +9,7 @@ import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {MapDataService} from '../../services/map-data/map-data.service';
+import {GeolocationService} from '../../services/geolocation/geolocation.service';
 import {AddressesPage} from '../addresses/addresses.page';
 import {UserService} from '../../services/user/user.service';
 import {MerchantsService} from '../../services/merchants/merchants.service';
@@ -51,6 +52,7 @@ export class VetHomePage implements OnInit {
     newsItems: any[] = [];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
+        public gs : GeolocationService,
         public alertController: AlertController,
         public alerts: AlertsService,
         public productsServ: ProductsService,
@@ -98,14 +100,16 @@ export class VetHomePage implements OnInit {
     ngOnInit() {
         this.getMerchantCategories();
         this.getReportCategories();
-
-        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant");
-        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report");
-        this.getObjects(['slidesItems', 'newsItems'], ['14', '15'], "page=1&category_id=14,15&order_by=articles.id,asc", "Article");
+        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant",false);
+        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report",false);
+        this.getObjects(['slidesItems', 'newsItems'], ['14', '15'], "page=1&category_id=14,15&order_by=articles.id,asc", "Article",false);
         this.loadProducts();
         this.loadOptions();
     }
     ionViewDidEnter() {
+        let used = false;
+
+        
         this.api.hideMenu();
         if (document.URL.startsWith('http')) {
             let vm = this;
@@ -115,7 +119,7 @@ export class VetHomePage implements OnInit {
 
         if (this.userData._user) {
             console.log("Counting unread")
-            this.routeNext();
+            used = this.routeNext();
             this.events.publish("authenticated", {});
             console.log("Counting unread")
             this.alerts.countUnread().subscribe((resp: any) => {
@@ -129,7 +133,27 @@ export class VetHomePage implements OnInit {
         if (this.userData.deviceSet) {
             this.getCart();
         }
+        let container = this.params.getParams();
+        if (container) {
+            let mapLocation = container.mapLocation;
+            if (mapLocation) {
+                this.orderData.shippingAddress.lat = this.mapData.address.lat;
+                this.orderData.shippingAddress.long = this.mapData.address.long;
+                if(this.mapData.address.address.length>0){
+                    this.orderData.shippingAddress.address = this.mapData.address.address;
+                }
+                if(!used){
+                    this.getLocationAware();
+                }
+            }
+        }
+        
 
+    }
+    getLocationAware(){
+        this.loadProducts();
+        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant",true);
+        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report",true);
     }
     createAddress() {
         this.mapData.activeType = "Location";
@@ -185,10 +209,11 @@ export class VetHomePage implements OnInit {
         const {data} = await addModal.onDidDismiss();
         console.log("Cart closing", data);
         if (data) {
-            this.mapData.address = data;
+            this.orderData.shippingAddress = data;
+            this.getLocationAware();
         }
     }
-    getObjects(arrayname, categories, query, object_type) {
+    getObjects(arrayname, categories, query, object_type,locationAware) {
         this.api.loader();
         for (let item in categories) {
             this.category_array_map[categories[item] + ""] = arrayname[item];
@@ -196,6 +221,13 @@ export class VetHomePage implements OnInit {
         console.log("Getting objects: " + object_type, arrayname, categories);
         console.log("Map: ", this.category_array_map);
         let searchObj = null
+        if(locationAware){
+            if(this.orderData.shippingAddress.lat){
+                query += "&lat="+this.orderData.shippingAddress.lat+"&long="+this.orderData.shippingAddress.long;
+            } else {
+                this.presentAlertLocation();
+            }
+        }
         if (object_type == "Merchant") {
             searchObj = this.merchantsServ.getMerchants(query);
         } else if (object_type == "Report") {
@@ -312,8 +344,19 @@ export class VetHomePage implements OnInit {
     openItem(item: any, category: any, type_object: any, purpose: any, showAddress: any) {
         let destinationUrl = 'shop/home/categories/' + item.id;
         let params = null;
+        params = {"item": item, "purpose": purpose, 'showAddress': showAddress}
         if (type_object == "Merchant") {
             if (purpose.length > 0) {
+                if(purpose == "book"){
+                    params = {
+                        "availabilities": null,
+                        "type": "Merchant",
+                        "objectId": item.id,
+                        "objectName": item.name,
+                        "objectDescription": item.description,
+                        "objectIcon":item.icon,
+                    };
+                }
                 destinationUrl = 'shop/home/categories/' + category + '/merchant/' + item.id + '/' + purpose;
             } else {
                 destinationUrl = 'shop/home/categories/' + category + '/merchant/' + item.id;
@@ -328,7 +371,7 @@ export class VetHomePage implements OnInit {
         }else if (type_object == "Article") {
             destinationUrl = 'shop/home/articles/' + item.id;
         }
-        params = {"item": item, "purpose": purpose, 'showAddress': showAddress}
+        
         this.params.setParams(params);
         this.navCtrl.navigateForward(destinationUrl);
     }
@@ -385,12 +428,15 @@ export class VetHomePage implements OnInit {
         this.navCtrl.navigateForward('login');
     }
     routeNext() {
+        let used = false;
         if (this.drouter.pages) {
             if(this.drouter.pages.length>0){
+                used = true;
                 this.navCtrl.navigateForward(this.drouter.pages);
             }
             this.drouter.pages = null;
         }
+        return used;
     }
     clearCart() {
         this.cartProvider.clearCart().subscribe((resp) => {
@@ -428,10 +474,15 @@ export class VetHomePage implements OnInit {
 
     loadProducts() {
         this.productCategories = [];
-        let container = {"includes": "categories,files", "category_id": 8};
+        let container = null;
+        if(this.orderData.shippingAddress.lat){
+            container = {"includes": "files,merchant", "category_id": 9,"lat":this.orderData.shippingAddress.lat,"long":this.orderData.shippingAddress.long};
+        } else {
+            container = {"includes": "files,merchant", "category_id": 9};
+        }
         this.productsServ.getProductsMerchant(container).subscribe((resp) => {
             if (resp.products_total > 0) {
-                this.productCategories = this.productsServ.buildProductInformation(resp, 1299);
+                this.productCategories = this.productsServ.buildProductInformation(resp);
                 console.log("Result build product", this.categories);
                 if (this.orderData.cartData) {
                     let items = this.orderData.cartData.items;
@@ -539,24 +590,28 @@ export class VetHomePage implements OnInit {
             }
         } else {
             if (this.userData._user) {
-                this.navCtrl.navigateForward("/shop/home/categories/10/merchant/1308/book");
+                this.navCtrl.navigateForward("/shop/home/categories/9/merchant/"+item.merchant_id+"/book");
             } else {
-                this.drouter.addPages("/shop/home/categories/10/merchant/1308/book");
+                this.drouter.addPages("/shop/home/categories/9/merchant/"+item.merchant_id+"/book");
                 this.navCtrl.navigateForward('login');
             }
         }
 
     }
+    checkLocation(){
+        
+    }
     addCartItem(item: any) {
         this.cartProvider.addCart(item).then((resp: any) => {
             console.log("updateCartItem", resp);
+            this.api.dismissLoader();
             if (resp.status == "success") {
                 this.handleCartSuccess(resp, item);
                 if (resp.item) {
                     return resp.item;
                 }
             } else {
-                this.api.dismissLoader();
+                
                 this.cartProvider.handleCartError(resp, item);
             }
         });
@@ -603,21 +658,22 @@ export class VetHomePage implements OnInit {
                     cssClass: 'secondary',
                     handler: () => {
                         console.log('Confirm Cancel');
+                        this.navCtrl.navigateForward("/shop/home/categories/9/merchant/" + item.merchant_id+"/products");
                     }
                 }, {
                     text: 'Ok',
                     handler: (resp) => {
                         console.log('Confirm Ok', item);
-                        this.params.setParams({"merchant_id": 1299});
+                        this.params.setParams({"merchant_id": item.merchant_id});
                         if (this.userData._user) {
                             if (item.attributes.is_shippable == true) {
-                                this.navCtrl.navigateForward('shop/home/checkout/shipping/' + 1299);
+                                this.navCtrl.navigateForward('shop/home/checkout/shipping/' + item.merchant_id);
                             } else {
                                 this.navCtrl.navigateForward('shop/home/checkout/prepare');
                             }
                         } else {
                             if (item.attributes.is_shippable == true) {
-                                this.drouter.addPages('shop/home/checkout/shipping/' + 1299);
+                                this.drouter.addPages('shop/home/checkout/shipping/' + item.merchant_id);
                             } else {
                                 this.drouter.addPages('shop/home/checkout/prepare');
                             }
@@ -628,4 +684,96 @@ export class VetHomePage implements OnInit {
             ]
         }).then(toast => toast.present());
     }
+
+    presentAlertLocation(item: any) {
+        let inputs = [{
+          name: 'gps',
+          type: 'radio',
+          label: 'Mi ubicacion actual',
+          value: 'gps',
+          checked: true
+        },
+        {
+          name: 'mapa',
+          type: 'radio',
+          label: 'Ubicar en el mapa',
+          value: 'mapa'
+        }];
+        if(this.userData._user){
+            let container = {
+                name: 'shipping',
+                type: 'radio',
+                label: 'Direccion guardada',
+                value: 'shipping'
+              };
+              inputs.push(container);
+
+        }
+        this.alertController.create({
+            header: "Direccion de envio",
+            inputs: inputs,
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        console.log('Confirm Cancel');
+                    }
+                }, {
+                    text: 'Ok',
+                    handler: (resp) => {
+                        console.log('Confirm Ok', item);
+                        if(resp.value=='map'){
+                            this.mapData.hideAll();
+                            this.mapData.activeType = "Location";
+                            this.mapData.activeId = "-1";
+                            this.mapData.merchantId = null;
+                            this.navCtrl.navigateForward('shop/map');
+                        } else if(resp.value=='shipping'){
+                            this.openChangeAddress();
+                        } else if(resp.value =='gps'){
+                            this.api.showLoader();
+                            this.geolocation.getCurrentPosition().then((resp) => {
+                                console.log("Getting current position result", resp);
+                                // resp.coords.latitude
+                                // resp.coords.longitude
+                                this.orderData.address.lat = resp.coords.latitude;
+                                this.orderData.address.long = resp.coords.longitude;
+                                this.gs.getAddressFromLat(resp.coords.latitude,resp.coords.longitude).then((resp) => {
+                                    console.log("getAddressFromLat", resp);
+                                    this.orderData.shippingAddress.address = this.gs.decodeAddressFromLatResult(resp);
+                                    this.orderData.shippingAddress.postal = this.gs.decodePostalFromLatResult(resp);
+                                    this.getLocationAware();
+                                    this.api.dismissLoader();
+                                }).catch((error) => {
+                                    console.log('Error getting location', error);
+
+                                });
+                                this.api.dismissLoader();
+                            }).catch((error) => {
+                                console.log('Error getting location', error);
+
+                            });
+                        }
+                }
+            ]
+        }).then(toast => toast.present());
+    }
+    async openChangeAddress() {
+        let container = {"select": "shipping"};
+        this.params.setParams(container);
+        let addModal = await this.modalCtrl.create({
+            component: AddressesPage,
+            componentProps: container
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        console.log("Cart closing", data);
+        if (data) {
+            this.orderData.shippingAddress = data;
+            this.getLocationAware();
+        }
+    }
+
 }

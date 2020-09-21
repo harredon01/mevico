@@ -382,7 +382,7 @@ export class MerchantProductsPage implements OnInit {
         }
         query.subscribe((resp: any) => {
             if (resp.products_total > 0) {
-                this.categories = this.productsServ.buildProductInformation(resp, this.merchant);
+                this.categories = this.productsServ.buildProductInformation(resp);
                 console.log("Result build product", this.categories);
                 this.merchantObj.merchant_name = this.categories[0].products[0].merchant_name;
                 this.merchantObj.merchant_description = this.categories[0].products[0].merchant_description;

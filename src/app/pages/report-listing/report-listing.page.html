@@ -28,10 +28,10 @@
                 <ion-select-option [value]="category.id" *ngFor="let category of categoryItems">{{category.name}}
             </ion-select-option>
         </ion-select--><div style="clear:both"></div> 
-            <p class="total-result" style="float: left;margin-bottom: 0">{{totalResults}} {{ 'REPORT_LISTING.RESULTS_FOUND' | translate }}</p>
+            <p class="total-result" style="float: left;margin-bottom: 0">{{totalResults}} {{ 'MERCHANT_LISTING.RESULTS_FOUND' | translate }}</p>
             <div class="block--right right" >
                 <ion-button clear size="small" class="btn success" (click)="searchNearby()" *ngIf="typeSearch!='own'|| false">
-                            {{ 'REPORT_LISTING.NEARBY' | translate }}</ion-button> 
+                            {{ 'MERCHANT_LISTING.NEARBY' | translate }}</ion-button> 
             </div>
             <div style="clear:both"></div>  
         </div>
@@ -48,34 +48,23 @@
                     <div class="card-component__stats">
                         <ion-grid>
                             <ion-row>
-                                <ion-col><div class="card-component__stats-item" *ngIf="item.attributes.years_experience">
-                                        <strong>
-                                            {{ 'REPORT_LISTING.EXPERIENCE' | translate }}:</strong>
-                                        {{item.attributes.years_experience }}
-                                        {{ 'REPORT_LISTING.YEARS' | translate }}
-                                    </div>
-                                    <div class="card-component__stats-item" *ngIf="item.unit_cost">
-                                        <strong> 
-                                            {{ 'REPORT_LISTING.FEE' | translate }}:
-                                        </strong>
-                                        {{item.unit_cost | currency}}
-                                    </div> 
+                                <ion-col>
                                     <div class="card-component__stats-item" *ngIf="item.Distance">
                                         <strong> 
-                                            {{ 'REPORT_LISTING.DISTANCE' | translate }}:
+                                            {{ 'MERCHANT_LISTING.DISTANCE' | translate }}:
                                         </strong>
                                         {{item.Distance}}
                                     </div> 
                                     <div class="card-component__stats-item" *ngIf="showAddress">
                                         <strong> 
-                                            {{ 'REPORT_LISTING.ADDRESS' | translate }}:
+                                            {{ 'MERCHANT_LISTING.ADDRESS' | translate }}:
                                         </strong>
                                         {{item.address}}
                                     </div> 
                                 </ion-col>
                                 <ion-col *ngIf="item.rating"><div class="card-component__stats-item">
                                         <strong>
-                                            {{ 'REPORT_LISTING.FEEDBACK' | translate }}:
+                                            {{ 'MERCHANT_LISTING.FEEDBACK' | translate }}:
                                         </strong>
                                         <div class="rating-container">
                                             <div class="rating-box" [style.width]="(item.rating*20)+'%'">
@@ -89,16 +78,14 @@
                                         <span>{{item.rating }} de ({{item.rating_count }})</span>
                                     </div></ion-col>
                             </ion-row>
-                            <ion-row *ngFor="let i of item.availabilitiesNext">
-                                <ion-col><strong>{{ 'REPORT_LISTING.NEXT_APPOINTMENT' | translate }}:</strong><br/>{{'DAYS.'+i.range.toUpperCase()|translate}}: {{i.from}}-{{i.to}}</ion-col>
-                            </ion-row>
+                           
                         </ion-grid>
                     </div>
                     <ion-card-content class="card-component__content" [innerHtml]="item.description" style="max-height: 100px;overflow: hidden;">
                     </ion-card-content>
                     <div class="block--right">
                         <ion-button clear size="small" class="btn success" (click)="openItem(item)">
-                            {{ 'REPORT_LISTING.VIEW' | translate }}
+                            {{ 'MERCHANT_LISTING.VIEW' | translate }}
                         </ion-button>
                     </div>
                 </ion-card>

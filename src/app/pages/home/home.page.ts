@@ -357,7 +357,7 @@ export class HomePage implements OnInit {
         let container = {"includes": "categories,files", "category_id": 25};
         this.productsServ.getProductsMerchant(container).subscribe((resp) => {
             if (resp.products_total > 0) {
-                this.categoriesArr = this.productsServ.buildProductInformation(resp, 1299);
+                this.categoriesArr = this.productsServ.buildProductInformation(resp);
                 console.log("Result build product", this.categories);
                 if (this.orderData.cartData) {
                     let items = this.orderData.cartData.items;
