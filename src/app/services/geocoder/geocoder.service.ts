@@ -15,17 +15,18 @@ export class GeocoderService {
   constructor() { 
         if (document.URL.startsWith('http')) {
             console.log("Setting env2");
-            Environment.setEnv({
+            /*Environment.setEnv({
                 API_KEY_FOR_BROWSER_RELEASE: "AIzaSyCOmrFtRJ7CPSZwP2Ym4xFt4myqh_xFd4Q",
                 API_KEY_FOR_BROWSER_DEBUG: "AIzaSyCOmrFtRJ7CPSZwP2Ym4xFt4myqh_xFd4Q"
             });
+            */
         }
     }
 
     getAddressFromLat(lat, long) {
         return new Promise((resolve, reject) => {
             let position = new LatLng(lat, long);
-            console.log("getAddressFromLat before geocode");
+            console.log("getAddressFromLat before geocode",);
             // latitude,longitude -> address
             Geocoder.geocode({
                 "position": position

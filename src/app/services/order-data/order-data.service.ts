@@ -172,4 +172,9 @@ export class OrderDataService {
 
             }, (err) => console.error(err));
     }
+    checkOrInitShipping(){
+        if(!this.shippingAddress){
+            this.shippingAddress = new Address({});
+        }
+    }
 }

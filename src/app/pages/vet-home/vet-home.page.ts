@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {NavController, ModalController, MenuController, AlertController} from '@ionic/angular';
+import { AlertInput } from '@ionic/core/dist/types/components/alert/alert-interface';
 import {Events} from '../../services/events/events.service';
 import {AlertsService} from '../../services/alerts/alerts.service';
 import {ProductsService} from '../../services/products/products.service';
@@ -9,7 +10,8 @@ import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {MapDataService} from '../../services/map-data/map-data.service';
-import {GeolocationService} from '../../services/geolocation/geolocation.service';
+import {GeocoderService} from '../../services/geocoder/geocoder.service';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {AddressesPage} from '../addresses/addresses.page';
 import {UserService} from '../../services/user/user.service';
 import {MerchantsService} from '../../services/merchants/merchants.service';
@@ -52,7 +54,8 @@ export class VetHomePage implements OnInit {
     newsItems: any[] = [];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
-        public gs : GeolocationService,
+        public gs : GeocoderService,
+        public geolocation:Geolocation,
         public alertController: AlertController,
         public alerts: AlertsService,
         public productsServ: ProductsService,
@@ -222,19 +225,32 @@ export class VetHomePage implements OnInit {
         console.log("Map: ", this.category_array_map);
         let searchObj = null
         if(locationAware){
-            if(this.orderData.shippingAddress.lat){
-                query += "&lat="+this.orderData.shippingAddress.lat+"&long="+this.orderData.shippingAddress.long;
-            } else {
+            if(!this.orderData.shippingAddress.lat){
                 this.presentAlertLocation();
             }
+            let categoriesS = "";
+            for(let i in categories){
+                categoriesS += categories[i]+",";
+            }
+            categoriesS = categoriesS.slice(0, categoriesS.length - 1);
+            let location = {"lat":this.orderData.shippingAddress.lat,"long":this.orderData.shippingAddress.long, "category":categoriesS};
+            if (object_type == "Merchant") {
+                searchObj = this.merchantsServ.getNearbyMerchants(location);
+            } else if (object_type == "Report") {
+                searchObj = this.reportsServ.getNearbyReports(location);
+            } else if (object_type == "Article") {
+                searchObj = this.articles.getArticles(query);
+            }
+        } else {
+            if (object_type == "Merchant") {
+                searchObj = this.merchantsServ.getMerchants(query);
+            } else if (object_type == "Report") {
+                searchObj = this.reportsServ.getReports(query);
+            } else if (object_type == "Article") {
+                searchObj = this.articles.getArticles(query);
+            }
         }
-        if (object_type == "Merchant") {
-            searchObj = this.merchantsServ.getMerchants(query);
-        } else if (object_type == "Report") {
-            searchObj = this.reportsServ.getReports(query);
-        } else if (object_type == "Article") {
-            searchObj = this.articles.getArticles(query);
-        }
+        
 
         searchObj.subscribe((data: any) => {
             let results = data.data;
@@ -334,14 +350,15 @@ export class VetHomePage implements OnInit {
             this.api.handleError(err);
         });
     }
-    /**
-     * Navigate to the detail page for this item.
-     */
-    openItem2(item: any, purpose: any, showAddress: any) {
-        this.params.setParams({"item": item, "purpose": purpose, 'showAddress': showAddress});
-        this.navCtrl.navigateForward('shop/home/categories/' + item.id);
-    }
-    openItem(item: any, category: any, type_object: any, purpose: any, showAddress: any) {
+
+    openItem(item: any, category: any, type_object: any, purpose: any, showAddress: any,checkLocationAction:boolean) {
+        let locationApproved = true;
+        if(checkLocationAction){
+            locationApproved = this.checkLocation();
+        }
+        if(!locationApproved){
+            return;
+        }
         let destinationUrl = 'shop/home/categories/' + item.id;
         let params = null;
         params = {"item": item, "purpose": purpose, 'showAddress': showAddress}
@@ -475,7 +492,7 @@ export class VetHomePage implements OnInit {
     loadProducts() {
         this.productCategories = [];
         let container = null;
-        if(this.orderData.shippingAddress.lat){
+        if(this.orderData.shippingAddress){
             container = {"includes": "files,merchant", "category_id": 9,"lat":this.orderData.shippingAddress.lat,"long":this.orderData.shippingAddress.long};
         } else {
             container = {"includes": "files,merchant", "category_id": 9};
@@ -599,7 +616,15 @@ export class VetHomePage implements OnInit {
 
     }
     checkLocation(){
-        
+        if(!this.orderData.shippingAddress){
+            this.presentAlertLocation();
+            return false;
+        }
+        if(!this.orderData.shippingAddress.lat){
+            this.presentAlertLocation();
+            return false;
+        }
+        return true;
     }
     addCartItem(item: any) {
         this.cartProvider.addCart(item).then((resp: any) => {
@@ -685,8 +710,9 @@ export class VetHomePage implements OnInit {
         }).then(toast => toast.present());
     }
 
-    presentAlertLocation(item: any) {
-        let inputs = [{
+    presentAlertLocation() {
+        this.orderData.checkOrInitShipping(); 
+        let inputs: AlertInput[] = [{
           name: 'gps',
           type: 'radio',
           label: 'Mi ubicacion actual',
@@ -700,14 +726,13 @@ export class VetHomePage implements OnInit {
           value: 'mapa'
         }];
         if(this.userData._user){
-            let container = {
+            let container:AlertInput = {
                 name: 'shipping',
                 type: 'radio',
                 label: 'Direccion guardada',
                 value: 'shipping'
-              };
-              inputs.push(container);
-
+            };
+            inputs.push(container);
         }
         this.alertController.create({
             header: "Direccion de envio",
@@ -723,23 +748,24 @@ export class VetHomePage implements OnInit {
                 }, {
                     text: 'Ok',
                     handler: (resp) => {
-                        console.log('Confirm Ok', item);
-                        if(resp.value=='map'){
+                        console.log('Confirm Ok', resp);
+                        
+                        if(resp=='map'){
                             this.mapData.hideAll();
                             this.mapData.activeType = "Location";
                             this.mapData.activeId = "-1";
                             this.mapData.merchantId = null;
                             this.navCtrl.navigateForward('shop/map');
-                        } else if(resp.value=='shipping'){
+                        } else if(resp=='shipping'){
                             this.openChangeAddress();
-                        } else if(resp.value =='gps'){
-                            this.api.showLoader();
+                        } else if(resp =='gps'){
+                            this.api.loader();
                             this.geolocation.getCurrentPosition().then((resp) => {
                                 console.log("Getting current position result", resp);
                                 // resp.coords.latitude
                                 // resp.coords.longitude
-                                this.orderData.address.lat = resp.coords.latitude;
-                                this.orderData.address.long = resp.coords.longitude;
+                                this.orderData.shippingAddress.lat = resp.coords.latitude;
+                                this.orderData.shippingAddress.long = resp.coords.longitude;
                                 this.gs.getAddressFromLat(resp.coords.latitude,resp.coords.longitude).then((resp) => {
                                     console.log("getAddressFromLat", resp);
                                     this.orderData.shippingAddress.address = this.gs.decodeAddressFromLatResult(resp);
@@ -756,24 +782,9 @@ export class VetHomePage implements OnInit {
 
                             });
                         }
+                    }
                 }
             ]
         }).then(toast => toast.present());
     }
-    async openChangeAddress() {
-        let container = {"select": "shipping"};
-        this.params.setParams(container);
-        let addModal = await this.modalCtrl.create({
-            component: AddressesPage,
-            componentProps: container
-        });
-        await addModal.present();
-        const {data} = await addModal.onDidDismiss();
-        console.log("Cart closing", data);
-        if (data) {
-            this.orderData.shippingAddress = data;
-            this.getLocationAware();
-        }
-    }
-
 }
