@@ -137,21 +137,30 @@ export class VetHomePage implements OnInit {
             this.getCart();
         }
         let container = this.params.getParams();
+        let saveParams = false;
         if (container) {
             let mapLocation = container.mapLocation;
             if (mapLocation) {
+                saveParams = true;
                 this.orderData.shippingAddress.lat = this.mapData.address.lat;
                 this.orderData.shippingAddress.long = this.mapData.address.long;
                 if(this.mapData.address.address.length>0){
                     this.orderData.shippingAddress.address = this.mapData.address.address;
                 }
-                if(!used){
-                    this.getLocationAware();
-                }
+                let containerItem = container.openItem;
+                if(containerItem){
+                    this.openItem(containerItem.item, containerItem.category, containerItem.type_object, containerItem.purpose, containerItem.showAddress,containerItem.checkLocationAction);
+                    container.openItem = null;
+                } else {
+                    if(!used){
+                        this.getLocationAware();
+                    }
+                }                
+            }
+            if(saveParams){
+                this.params.setParams(container);
             }
         }
-        
-
     }
     getLocationAware(){
         this.loadProducts();
@@ -392,16 +401,7 @@ export class VetHomePage implements OnInit {
         this.params.setParams(params);
         this.navCtrl.navigateForward(destinationUrl);
     }
-    openArticle(item: any) {
-        this.params.setParams({"item": item});
-        this.navCtrl.navigateForward('shop/home/articles/' + item.id);
-    }
-    openStore(item: any, category: any) {
-        this.params.setParams({
-            objectId: item.id
-        });
-        this.navCtrl.navigateForward('shop/home/categories/' + category + "/merchant/" + item.id + "/products");
-    }
+
     openMenu() {
         this.menu.enable(true, 'end');
         this.menu.open('end');
