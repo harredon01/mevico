@@ -46,6 +46,7 @@ export class VetHomePage implements OnInit {
     merchant_categories: any[] = [];
     category_array_map: any = {};
     report_categories: any[] = [];
+    product_categories: any[] = [];
     stores: any[] = [];
     centers: any[] = [];
     latest_reports: any[] = [];
@@ -101,8 +102,9 @@ export class VetHomePage implements OnInit {
     }
 
     ngOnInit() {
-        this.getMerchantCategories();
-        this.getReportCategories();
+        this.getObjectCategories('report_categories',"App\\Models\\Report");
+        this.getObjectCategories('merchant_categories',"App\\Models\\Merchant");
+        this.getObjectCategories('product_categories',"App\\Models\\Product");
         this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant",false);
         this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report",false);
         this.getObjects(['slidesItems', 'newsItems'], ['14', '15'], "page=1&category_id=14,15&order_by=articles.id,asc", "Article",false);
@@ -287,32 +289,6 @@ export class VetHomePage implements OnInit {
             this.api.handleError(err);
         });
     }
-    getArticles() {
-        this.api.loader();
-        let searchObj = null;
-        this.slidesItems = [];
-        this.newsItems = [];
-        let query = "category_id=22,23&includes=files&order_by=category_id,asc";
-        searchObj = this.articles.getArticles(query);
-        searchObj.subscribe((data: any) => {
-            let results = data.data;
-            for (let one in results) {
-                let container = new Article(results[one]);
-                if (container.category_id == 22) {
-                    this.slidesItems.push(container);
-                } else if (container.category_id == 23) {
-                    this.newsItems.push(container);
-                }
-            }
-            this.api.dismissLoader();
-        }, (err) => {
-            console.log("Error getArticles");
-            this.api.dismissLoader();
-            // Unable to log in
-            this.api.toast('CATEGORIES.ERROR_GET');
-            this.api.handleError(err);
-        });
-    }
     checkLogIn() {
         this.userData.getToken().then((value) => {
             console.log("getToken");
@@ -322,36 +298,16 @@ export class VetHomePage implements OnInit {
             }
         });
     }
-
-    getMerchantCategories() {
+    
+    getObjectCategories(arrayName,typeCat) {
         this.api.loader();
-        let query = "merchants";
-        let cont = {type: "App\\Models\\Merchant"}
+        let cont = {type: typeCat}
         this.categories.getCategories(cont).subscribe((data: any) => {
             this.api.dismissLoader();
-            console.log("after getCategories");
+            console.log("after getCategories typeCat: "+typeCat,data);
             if (data.status == 'success') {
-                this.merchant_categories = data.data;
+                this[arrayName] = data.data;
             }
-            console.log(JSON.stringify(data));
-        }, (err) => {
-            this.api.dismissLoader();
-            // Unable to log in
-            this.api.toast('CATEGORIES.ERROR_GET');
-            this.api.handleError(err);
-        });
-    }
-    getReportCategories() {
-        this.api.loader();
-        let query = "reports";
-        let cont = {type: "App\\Models\\Report"}
-        this.categories.getCategories(cont).subscribe((data: any) => {
-            this.api.dismissLoader();
-            console.log("after getCategories");
-            if (data.status == 'success') {
-                this.report_categories = data.data;
-            }
-            console.log(JSON.stringify(data));
         }, (err) => {
             this.api.dismissLoader();
             // Unable to log in
@@ -394,7 +350,9 @@ export class VetHomePage implements OnInit {
             destinationUrl = 'shop/home/categories/' + item.id + '/reports';
         } else if (type_object == "CategoryMerchant") {
             destinationUrl = 'shop/home/categories/' + item.id + '/merchant';
-        }else if (type_object == "Article") {
+        } else if (type_object == "CategoryProduct") {
+            destinationUrl = 'shop/home/categories/' + item.id + '/products';
+        } else if (type_object == "Article") {
             destinationUrl = 'shop/home/articles/' + item.id;
         }
         
@@ -528,13 +486,13 @@ export class VetHomePage implements OnInit {
         if (data == "Shipping" || data == 'Prepare') {
             if (this.userData._user) {
                 if (data == "Shipping") {
-                    this.navCtrl.navigateForward('shop/home/checkout/shipping/' + 1299);
+                    this.navCtrl.navigateForward('shop/home/checkout/shipping');
                 } else {
                     this.navCtrl.navigateForward('shop/home/checkout/prepare');
                 }
             } else {
                 if (data == "Shipping") {
-                    this.drouter.addPages('shop/home/checkout/shipping/' + 1299);
+                    this.drouter.addPages('shop/home/checkout/shipping');
                 } else {
                     this.drouter.addPages('shop/home/checkout/prepare');
                 }
@@ -692,13 +650,13 @@ export class VetHomePage implements OnInit {
                         this.params.setParams({"merchant_id": item.merchant_id});
                         if (this.userData._user) {
                             if (item.attributes.is_shippable == true) {
-                                this.navCtrl.navigateForward('shop/home/checkout/shipping/' + item.merchant_id);
+                                this.navCtrl.navigateForward('shop/home/checkout/shipping');
                             } else {
                                 this.navCtrl.navigateForward('shop/home/checkout/prepare');
                             }
                         } else {
                             if (item.attributes.is_shippable == true) {
-                                this.drouter.addPages('shop/home/checkout/shipping/' + item.merchant_id);
+                                this.drouter.addPages('shop/home/checkout/shipping');
                             } else {
                                 this.drouter.addPages('shop/home/checkout/prepare');
                             }
@@ -735,7 +693,7 @@ export class VetHomePage implements OnInit {
             inputs.push(container);
         }
         this.alertController.create({
-            header: "Direccion de envio",
+            header: "A donde recibes?",
             inputs: inputs,
             buttons: [
                 {

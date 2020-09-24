@@ -36,7 +36,7 @@ export class ReportsService {
         return seq;
     }
     getNearbyReports(data: any) {
-        let url = "/reports/coverage";
+        let url = "/reports/nearby";
         let seq = this.api.get(url, data);
         return seq;
     }

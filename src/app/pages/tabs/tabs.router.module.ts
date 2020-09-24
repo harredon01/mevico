@@ -12,16 +12,16 @@ const routes: Routes = [
                 children: [
                     {
                         path: '',
-                        loadChildren:  () => import('../vet-home/vet-home.module').then(m => m.VetHomePageModule)
+                        loadChildren: () => import('../vet-home/vet-home.module').then(m => m.VetHomePageModule)
                     },
-//                    {
-//                        path: '',
-//                        loadChildren:  () => import('../home/home.module').then(m => m.HomePageModule)
-//                    },
-//                    {
-//                        path: '',
-//                        loadChildren: () => import('../lonchis/lonchis.module').then(m => m.LonchisPageModule)
-//                    },
+                    //                    {
+                    //                        path: '',
+                    //                        loadChildren:  () => import('../home/home.module').then(m => m.HomePageModule)
+                    //                    },
+                    //                    {
+                    //                        path: '',
+                    //                        loadChildren: () => import('../lonchis/lonchis.module').then(m => m.LonchisPageModule)
+                    //                    },
                     {
                         path: 'calculadora',
                         loadChildren: () => import('../calculadora/calculadora.module').then(m => m.CalculadoraPageModule)
@@ -170,7 +170,16 @@ const routes: Routes = [
                                                 loadChildren: () => import('../report-detail/report-detail.module').then(m => m.ReportDetailPageModule),
                                             }
                                         ]
-                                    }
+                                    },
+                                    {
+                                        path: 'products',
+                                        children: [
+                                            {
+                                                path: '',
+                                                loadChildren: () => import('../merchant-products/merchant-products.module').then(m => m.MerchantProductsPageModule),
+                                            }
+                                        ]
+                                    },
                                 ]
                             }
                         ]

@@ -20,6 +20,7 @@ import {ApiService} from '../../services/api/api.service';
 })
 export class MerchantProductsPage implements OnInit {
     categories: any[] = [];
+    category: any;
     options: any[];
     urlSearch: string = "";
     payTitle: string = "";
@@ -54,7 +55,7 @@ export class MerchantProductsPage implements OnInit {
         public modalCtrl: ModalController,
         public alertCtrl: AlertController,
         public cart: CartService,
-        public route:Router,
+        public route: Router,
         public events: Events,
         public params: ParamsService,
         public userData: UserDataService,
@@ -75,32 +76,47 @@ export class MerchantProductsPage implements OnInit {
         this.page = 1;
         this.slides = [];
         let paramsSent = this.params.getParams();
-        let merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
-        if (merchant) {
-            this.merchant = merchant;
-        } else {
-            if (paramsSent) {
-                if (paramsSent.objectId) {
-                    this.merchant = paramsSent.objectId;
+        let activeView = this.route.url;
+        console.log("getActive", activeView);
+        if (activeView.includes("merchant")) {
+            let merchant = this.activatedRoute.snapshot.paramMap.get('objectId');
+            if (merchant) {
+                this.merchant = merchant;
+            } else {
+                if (paramsSent) {
+                    if (paramsSent.objectId) {
+                        this.merchant = paramsSent.objectId;
+                    }
                 }
             }
-        }
-        if (paramsSent) {
-            if (paramsSent.owner) {
-                this.isOwner = paramsSent.owner;
+            if (paramsSent) {
+                if (paramsSent.owner) {
+                    this.isOwner = paramsSent.owner;
+                }
             }
-        }
-        let loadedSettings = false;
-        if (paramsSent) {
-            if (paramsSent.settings) {
-                this.urlSearch = "shop/settings/merchants/" + this.merchant;
-                loadedSettings = true;
-            }
+            let loadedSettings = false;
+            if (paramsSent) {
+                if (paramsSent.settings) {
+                    this.urlSearch = "shop/settings/merchants/" + this.merchant;
+                    loadedSettings = true;
+                }
 
+            }
+            if (!loadedSettings) {
+                let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+                this.urlSearch = 'shop/home/categories/' + category + '/merchant/' + this.merchant;
+            }
         }
-        if (!loadedSettings) {
-            let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
-            this.urlSearch = 'shop/home/categories/' + category + '/merchant/' + this.merchant;
+
+        let category = this.activatedRoute.snapshot.paramMap.get('categoryId');
+        if (category) {
+            this.category = category;
+        } else {
+            if (paramsSent) {
+                if (paramsSent.categoryId) {
+                    this.category = paramsSent.categoryId;
+                }
+            }
         }
         this.possibleAmounts = [];
         this.api.loader();
@@ -164,10 +180,10 @@ export class MerchantProductsPage implements OnInit {
         let params = {
             "availabilities": null,
             "type": "Merchant",
-            "objectId": this.merchant,
-            "objectName": this.merchantObj.merchant_name,
-            "objectDescription": this.merchantObj.merchant_description,
-            "objectIcon": this.merchantObj.src,
+            "objectId": item.merchant_id,
+            "objectName": item.merchant_name,
+            "objectDescription": item.merchant_description,
+            "objectIcon": item.merchant_icon,
             "expectedPrice": item.price,
             "questions": questions,
             "product_variant_id": item.variant_id,
@@ -221,16 +237,16 @@ export class MerchantProductsPage implements OnInit {
                     text: 'Ok',
                     handler: (resp) => {
                         console.log('Confirm Ok', item);
-                        this.params.setParams({"merchant_id": this.merchant});
+                        this.params.setParams({"merchant_id": item.merchant_id});
                         if (this.userData._user) {
                             if (item.attributes.is_shippable == true) {
-                                this.navCtrl.navigateForward('shop/home/checkout/shipping/' + this.merchant);
+                                this.navCtrl.navigateForward('shop/home/checkout/shipping');
                             } else {
                                 this.navCtrl.navigateForward('shop/home/checkout/prepare');
                             }
                         } else {
                             if (item.attributes.is_shippable == true) {
-                                this.drouter.addPages('shop/home/checkout/shipping/' + this.merchant);
+                                this.drouter.addPages('shop/home/checkout/shipping');
                             } else {
                                 this.drouter.addPages('shop/home/checkout/prepare');
                             }
@@ -371,7 +387,13 @@ export class MerchantProductsPage implements OnInit {
     }
 
     loadProducts() {
-        let container = {"includes": "categories,files,merchant", "merchant_id": this.merchant, "page": this.page};
+        let container:any = {"includes": "categories,files,merchant", "page": this.page};
+        if (this.merchant) {
+            container['merchant_id'] = this.merchant
+        }
+        if (this.categories) {
+            container['category_id'] = this.category
+        }
         let activeView = this.route.url;
         console.log("getActive", activeView);
         let query = null;
@@ -426,13 +448,13 @@ export class MerchantProductsPage implements OnInit {
         if (data == "Shipping" || data == 'Prepare') {
             if (this.userData._user) {
                 if (data == "Shipping") {
-                    this.navCtrl.navigateForward('shop/home/checkout/shipping/' + this.merchant);
+                    this.navCtrl.navigateForward('shop/home/checkout/shipping');
                 } else {
                     this.navCtrl.navigateForward('shop/home/checkout/prepare');
                 }
             } else {
                 if (data == "Shipping") {
-                    this.drouter.addPages('shop/home/checkout/shipping/' + this.merchant);
+                    this.drouter.addPages('shop/home/checkout/shipping');
                 } else {
                     this.drouter.addPages('shop/home/checkout/prepare');
                 }

@@ -33,7 +33,6 @@ export class CheckoutShippingPage implements OnInit {
         public orderData: OrderDataService,
         public params: ParamsService,
         private activatedRoute: ActivatedRoute) {
-        this.merchant = this.activatedRoute.snapshot.paramMap.get('merchant_id');
         this.showAddressCard = false;
         this.currentItems = [];
     }
@@ -104,6 +103,16 @@ export class CheckoutShippingPage implements OnInit {
             }
             if (!newAddress) {
                 this.getAddresses();
+            }
+        }
+        if (this.orderData.cartData){
+            console.log("Cart items: ",this.orderData.cartData.items)
+            for(let item in this.orderData.cartData.items){
+                let container = this.orderData.cartData.items[item];
+                console.log("cart item",container);
+                this.merchant = container.attributes.merchant_id;
+                console.log("merchant_id",this.merchant);
+                break;
             }
         }
     }

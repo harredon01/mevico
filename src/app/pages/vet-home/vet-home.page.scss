@@ -30,6 +30,11 @@
         }
     }
 }
+@media (min-width: 800px) {
+    ion-card.product__item {
+        max-width:50%;
+    }
+}
 .header-name {
     display:none;
 }

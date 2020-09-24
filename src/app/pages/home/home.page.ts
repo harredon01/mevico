@@ -386,13 +386,13 @@ export class HomePage implements OnInit {
         if (data == "Shipping" || data == 'Prepare') {
             if (this.userData._user) {
                 if (data == "Shipping") {
-                    this.navCtrl.navigateForward('shop/home/checkout/shipping/' + 1299);
+                    this.navCtrl.navigateForward('shop/home/checkout/shipping');
                 } else {
                     this.navCtrl.navigateForward('shop/home/checkout/prepare');
                 }
             } else {
                 if (data == "Shipping") {
-                    this.drouter.addPages('shop/home/checkout/shipping/' + 1299);
+                    this.drouter.addPages('shop/home/checkout/shipping');
                 } else {
                     this.drouter.addPages('shop/home/checkout/prepare');
                 }
@@ -537,13 +537,13 @@ export class HomePage implements OnInit {
                         this.params.setParams({"merchant_id": 1299});
                         if (this.userData._user) {
                             if (item.attributes.is_shippable == true) {
-                                this.navCtrl.navigateForward('shop/home/checkout/shipping/' + 1299);
+                                this.navCtrl.navigateForward('shop/home/checkout/shipping' );
                             } else {
                                 this.navCtrl.navigateForward('shop/home/checkout/prepare');
                             }
                         } else {
                             if (item.attributes.is_shippable == true) {
-                                this.drouter.addPages('shop/home/checkout/shipping/' + 1299);
+                                this.drouter.addPages('shop/home/checkout/shipping');
                             } else {
                                 this.drouter.addPages('shop/home/checkout/prepare');
                             }
