@@ -36,6 +36,6 @@
             'INPUTS.CREATE_ADDRESS' | translate }}</ion-button>
         <ion-button class="btn-primary" (click)="changeAddress()" *ngIf="showAddressCard">{{ 'INPUTS.CHANGE_ADDRESS' |
                 translate }}</ion-button>
-        <ion-button class="btn-secondary" (click)="prepareOrder()" *ngIf="showAddressCard"> {{ 'INPUTS.CONTINUE' | translate }}</ion-button>
+        <ion-button class="btn-secondary" (click)="submitOrder()" *ngIf="showAddressCard"> {{ 'INPUTS.CONTINUE' | translate }}</ion-button>
     </div>
 </ion-content>

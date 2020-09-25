@@ -107,17 +107,14 @@ export class VetHomePage implements OnInit {
         this.loadOptions();
     }
     ionViewDidEnter() {
+        console.log("ionViewDidEnter",this.userData._user)
         let container = this.params.getParams();
         let saveParams = false;
         if (container) {
             let mapLocation = container.mapLocation;
             if (mapLocation) {
                 saveParams = true;
-                this.orderData.shippingAddress.lat = this.mapData.address.lat;
-                this.orderData.shippingAddress.long = this.mapData.address.long;
-                if (this.mapData.address.address.length > 0) {
-                    this.orderData.shippingAddress.address = this.mapData.address.address;
-                }
+                this.orderData.setShipping(this.mapData.address);
             }
             if (saveParams) {
                 this.params.setParams(container);
@@ -142,9 +139,10 @@ export class VetHomePage implements OnInit {
 
     }
     loggedInProcedure() {
-        console.log("Counting unread");
+        console.log("loggedInProcedure");
         this.events.publish("authenticated", {});
-        console.log("Counting unread")
+        console.log("Counting unread");
+        this.orderData.loadShipping();
         this.alerts.countUnread().subscribe((resp: any) => {
             console.log("Counting unread resp", resp);
             this.notifs = resp.total;
@@ -173,7 +171,7 @@ export class VetHomePage implements OnInit {
         const {data} = await addModal.onDidDismiss();
         console.log("Cart closing", data);
         if (data) {
-            this.orderData.shippingAddress = data;
+            this.orderData.setShipping(data);
             this.postLocation();
         }
     }

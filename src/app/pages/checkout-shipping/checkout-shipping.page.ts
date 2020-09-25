@@ -39,13 +39,13 @@ export class CheckoutShippingPage implements OnInit {
 
     saveShipping(item: Address) {
         console.log("SaveShipping", item);
-        let container = {"address_id": item.id, "merchant_id": this.merchant};
+        let container:any = {"address_id": item.id, "merchant_id": this.merchant};
         this.api.loader('ADDRESS_FIELDS.STARTING_GET');
         this.order.setShippingAddress(container).subscribe((data: any) => {
             this.api.dismissLoader();
             console.log("after get addresses");
             if (data.status == "success") {
-                this.orderData.shippingAddress = item;
+                this.orderData.setShipping(item);
                 this.showAddressCard = true;
                 this.selectedAddress = item;
                 this.orderData.currentOrder = data.order;
@@ -83,6 +83,13 @@ export class CheckoutShippingPage implements OnInit {
         if (this.orderData.shippingAddress) {
             this.showAddressCard = true;
             this.selectedAddress = this.orderData.shippingAddress;
+            if (!this.orderData.shippingAddress.name) {
+                this.completeAddressData(this.orderData.shippingAddress);
+            } else {
+                if (this.orderData.shippingAddress.name.length < 1) {
+                    this.completeAddressData(this.orderData.shippingAddress);
+                }
+            }
         } else {
             this.showAddressCard = false;
             let container: any = this.params.getParams();
@@ -96,7 +103,7 @@ export class CheckoutShippingPage implements OnInit {
                         let container = new Address(this.mapData.address);
                         this.saveShipping(container);
                     } else {
-                        this.completeAddressData();
+                        this.completeAddressData(this.mapData.address);
                     }
 
                 }
@@ -105,13 +112,13 @@ export class CheckoutShippingPage implements OnInit {
                 this.getAddresses();
             }
         }
-        if (this.orderData.cartData){
-            console.log("Cart items: ",this.orderData.cartData.items)
-            for(let item in this.orderData.cartData.items){
+        if (this.orderData.cartData) {
+            console.log("Cart items: ", this.orderData.cartData.items)
+            for (let item in this.orderData.cartData.items) {
                 let container = this.orderData.cartData.items[item];
-                console.log("cart item",container);
+                console.log("cart item", container);
                 this.merchant = container.attributes.merchant_id;
-                console.log("merchant_id",this.merchant);
+                console.log("merchant_id", this.merchant);
                 break;
             }
         }
@@ -134,6 +141,9 @@ export class CheckoutShippingPage implements OnInit {
         console.log("Prepare order", params);
         this.params.setParams(params)
         this.navCtrl.navigateForward('shop/home/checkout/prepare');
+    }
+    submitOrder() {
+        this.saveShipping(this.orderData.shippingAddress);
     }
     getAddresses() {
         this.currentItems = [];
@@ -163,15 +173,15 @@ export class CheckoutShippingPage implements OnInit {
         this.showAddressCard = false;
     }
 
-    async completeAddressData() {
-        console.log("completeAddressData", this.mapData.address);
+    async completeAddressData(address: any) {
+        console.log("completeAddressData", address);
         let container;
         container = {
-            lat: this.mapData.address.lat,
-            long: this.mapData.address.long,
-            address: this.mapData.address.address,
+            lat: address.lat,
+            long: address.long,
+            address: address.address,
             notes: "",
-            postal: this.mapData.address.postal,
+            postal: address.postal,
             type: "shipping"
         }
         var addModal = await this.modalCtrl.create({
