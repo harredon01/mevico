@@ -70,7 +70,7 @@
         <h2 class="pl15 category-title">Compras</h2>
         <div class="mainCategories">
             <div class="clear"></div>
-            <div (click)="openItem(item,1,'CategoryProduct','',false,false)" *ngFor="let item of product_categories" class="cat-item">
+            <div (click)="openItem(item,1,'CategoryProduct','',false,true)" *ngFor="let item of product_categories" class="cat-item">
                 <div class="mainCategories__list ">
                     <img [src]="item.icon" item-start>
                 </div>

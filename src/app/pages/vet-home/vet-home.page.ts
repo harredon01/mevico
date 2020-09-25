@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {NavController, ModalController, MenuController, AlertController} from '@ionic/angular';
-import { AlertInput } from '@ionic/core/dist/types/components/alert/alert-interface';
 import {Events} from '../../services/events/events.service';
 import {AlertsService} from '../../services/alerts/alerts.service';
 import {ProductsService} from '../../services/products/products.service';
@@ -10,8 +9,6 @@ import {OrderDataService} from '../../services/order-data/order-data.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
 import {MapDataService} from '../../services/map-data/map-data.service';
-import {GeocoderService} from '../../services/geocoder/geocoder.service';
-import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {AddressesPage} from '../addresses/addresses.page';
 import {UserService} from '../../services/user/user.service';
 import {MerchantsService} from '../../services/merchants/merchants.service';
@@ -55,8 +52,6 @@ export class VetHomePage implements OnInit {
     newsItems: any[] = [];
     constructor(public navCtrl: NavController,
         public categories: CategoriesService,
-        public gs : GeocoderService,
-        public geolocation:Geolocation,
         public alertController: AlertController,
         public alerts: AlertsService,
         public productsServ: ProductsService,
@@ -102,42 +97,16 @@ export class VetHomePage implements OnInit {
     }
 
     ngOnInit() {
-        this.getObjectCategories('report_categories',"App\\Models\\Report");
-        this.getObjectCategories('merchant_categories',"App\\Models\\Merchant");
-        this.getObjectCategories('product_categories',"App\\Models\\Product");
-        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant",false);
-        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report",false);
-        this.getObjects(['slidesItems', 'newsItems'], ['14', '15'], "page=1&category_id=14,15&order_by=articles.id,asc", "Article",false);
+        this.getObjectCategories('report_categories', "App\\Models\\Report");
+        this.getObjectCategories('merchant_categories', "App\\Models\\Merchant");
+        this.getObjectCategories('product_categories', "App\\Models\\Product");
+        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", false);
+        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", false);
+        this.getObjects(['slidesItems', 'newsItems'], ['14', '15'], "page=1&category_id=14,15&order_by=articles.id,asc", "Article", false);
         this.loadProducts();
         this.loadOptions();
     }
     ionViewDidEnter() {
-        let used = false;
-
-        
-        this.api.hideMenu();
-        if (document.URL.startsWith('http')) {
-            let vm = this;
-            setTimeout(function () {vm.api.dismissLoader();; console.log("Retrying closing")}, 1000);
-            setTimeout(function () {vm.api.dismissLoader();; console.log("Retrying closing")}, 2000);
-        }
-
-        if (this.userData._user) {
-            console.log("Counting unread")
-            used = this.routeNext();
-            this.events.publish("authenticated", {});
-            console.log("Counting unread")
-            this.alerts.countUnread().subscribe((resp: any) => {
-                console.log("Counting unread resp", resp);
-                this.notifs = resp.total;
-            }, (err) => {
-            });
-        } else {
-            this.checkLogIn();
-        }
-        if (this.userData.deviceSet) {
-            this.getCart();
-        }
         let container = this.params.getParams();
         let saveParams = false;
         if (container) {
@@ -146,71 +115,52 @@ export class VetHomePage implements OnInit {
                 saveParams = true;
                 this.orderData.shippingAddress.lat = this.mapData.address.lat;
                 this.orderData.shippingAddress.long = this.mapData.address.long;
-                if(this.mapData.address.address.length>0){
+                if (this.mapData.address.address.length > 0) {
                     this.orderData.shippingAddress.address = this.mapData.address.address;
                 }
-                let containerItem = container.openItem;
-                if(containerItem){
-                    this.openItem(containerItem.item, containerItem.category, containerItem.type_object, containerItem.purpose, containerItem.showAddress,containerItem.checkLocationAction);
-                    container.openItem = null;
-                } else {
-                    if(!used){
-                        this.getLocationAware();
-                    }
-                }                
             }
-            if(saveParams){
+            if (saveParams) {
                 this.params.setParams(container);
             }
         }
+
+        this.api.hideMenu();
+        if (document.URL.startsWith('http')) {
+            let vm = this;
+            setTimeout(function () {vm.api.dismissLoader();; console.log("Retrying closing")}, 1000);
+            setTimeout(function () {vm.api.dismissLoader();; console.log("Retrying closing")}, 2000);
+        }
+        if (this.userData._user) {
+            this.loggedInProcedure();
+        } else {
+            this.checkLogIn();
+        }
+        if (this.userData.deviceSet) {
+            this.getCart();
+        }
+        this.routeNext();
+
     }
-    getLocationAware(){
+    loggedInProcedure() {
+        console.log("Counting unread");
+        this.events.publish("authenticated", {});
+        console.log("Counting unread")
+        this.alerts.countUnread().subscribe((resp: any) => {
+            console.log("Counting unread resp", resp);
+            this.notifs = resp.total;
+        }, (err) => {
+        });
+    }
+    getLocationAware() {
         this.loadProducts();
-        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant",true);
-        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report",true);
+        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", true);
+        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", true);
     }
     createAddress() {
         this.mapData.activeType = "Location";
         this.mapData.activeId = "-1";
         this.navCtrl.navigateForward('shop/map');
         console.log("createAddress");
-    }
-    async queryLocation() {
-        const alert = await this.alertController.create({
-            cssClass: 'my-custom-class',
-            header: 'Radio',
-            inputs: [
-                {
-                    name: 'radio1',
-                    type: 'radio',
-                    label: 'Mi ubicacion actual',
-                    value: 'mi-ubicacion',
-                    checked: true
-                },
-                {
-                    name: 'radio2',
-                    type: 'radio',
-                    label: 'Otra ubicacion',
-                    value: 'mapa'
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: () => {
-                        console.log('Confirm Cancel');
-                    }
-                }, {
-                    text: 'Ok',
-                    handler: () => {
-                        console.log('Confirm Ok');
-                    }
-                }
-            ]
-        });
-        await alert.present();
     }
     async openChangeAddress() {
         let container = {"select": "shipping"};
@@ -224,10 +174,10 @@ export class VetHomePage implements OnInit {
         console.log("Cart closing", data);
         if (data) {
             this.orderData.shippingAddress = data;
-            this.getLocationAware();
+            this.postLocation();
         }
     }
-    getObjects(arrayname, categories, query, object_type,locationAware) {
+    getObjects(arrayname, categories, query, object_type, locationAware) {
         this.api.loader();
         for (let item in categories) {
             this.category_array_map[categories[item] + ""] = arrayname[item];
@@ -235,16 +185,16 @@ export class VetHomePage implements OnInit {
         console.log("Getting objects: " + object_type, arrayname, categories);
         console.log("Map: ", this.category_array_map);
         let searchObj = null
-        if(locationAware){
-            if(!this.orderData.shippingAddress.lat){
+        if (locationAware) {
+            if (!this.orderData.shippingAddress.lat) {
                 this.presentAlertLocation();
             }
             let categoriesS = "";
-            for(let i in categories){
-                categoriesS += categories[i]+",";
+            for (let i in categories) {
+                categoriesS += categories[i] + ",";
             }
             categoriesS = categoriesS.slice(0, categoriesS.length - 1);
-            let location = {"lat":this.orderData.shippingAddress.lat,"long":this.orderData.shippingAddress.long, "category":categoriesS};
+            let location = {"lat": this.orderData.shippingAddress.lat, "long": this.orderData.shippingAddress.long, "category": categoriesS};
             if (object_type == "Merchant") {
                 searchObj = this.merchantsServ.getNearbyMerchants(location);
             } else if (object_type == "Report") {
@@ -261,7 +211,7 @@ export class VetHomePage implements OnInit {
                 searchObj = this.articles.getArticles(query);
             }
         }
-        
+
 
         searchObj.subscribe((data: any) => {
             let results = data.data;
@@ -298,13 +248,13 @@ export class VetHomePage implements OnInit {
             }
         });
     }
-    
-    getObjectCategories(arrayName,typeCat) {
+
+    getObjectCategories(arrayName, typeCat) {
         this.api.loader();
         let cont = {type: typeCat}
         this.categories.getCategories(cont).subscribe((data: any) => {
             this.api.dismissLoader();
-            console.log("after getCategories typeCat: "+typeCat,data);
+            console.log("after getCategories typeCat: " + typeCat, data);
             if (data.status == 'success') {
                 this[arrayName] = data.data;
             }
@@ -316,27 +266,21 @@ export class VetHomePage implements OnInit {
         });
     }
 
-    openItem(item: any, category: any, type_object: any, purpose: any, showAddress: any,checkLocationAction:boolean) {
-        let locationApproved = true;
-        if(checkLocationAction){
-            locationApproved = this.checkLocation();
-        }
-        if(!locationApproved){
-            return;
-        }
+    openItem(item: any, category: any, type_object: any, purpose: any, showAddress: any, checkLocationAction: boolean) {
+
         let destinationUrl = 'shop/home/categories/' + item.id;
         let params = null;
         params = {"item": item, "purpose": purpose, 'showAddress': showAddress}
         if (type_object == "Merchant") {
             if (purpose.length > 0) {
-                if(purpose == "book"){
+                if (purpose == "book") {
                     params = {
                         "availabilities": null,
                         "type": "Merchant",
                         "objectId": item.id,
                         "objectName": item.name,
                         "objectDescription": item.description,
-                        "objectIcon":item.icon,
+                        "objectIcon": item.icon,
                     };
                 }
                 destinationUrl = 'shop/home/categories/' + category + '/merchant/' + item.id + '/' + purpose;
@@ -355,7 +299,15 @@ export class VetHomePage implements OnInit {
         } else if (type_object == "Article") {
             destinationUrl = 'shop/home/articles/' + item.id;
         }
-        
+        let locationApproved = true;
+        if (checkLocationAction) {
+            locationApproved = this.checkLocation();
+        }
+        if (!locationApproved) {
+            this.drouter.addPages(destinationUrl);
+            return;
+        }
+
         this.params.setParams(params);
         this.navCtrl.navigateForward(destinationUrl);
     }
@@ -405,7 +357,7 @@ export class VetHomePage implements OnInit {
     routeNext() {
         let used = false;
         if (this.drouter.pages) {
-            if(this.drouter.pages.length>0){
+            if (this.drouter.pages.length > 0) {
                 used = true;
                 this.navCtrl.navigateForward(this.drouter.pages);
             }
@@ -450,8 +402,8 @@ export class VetHomePage implements OnInit {
     loadProducts() {
         this.productCategories = [];
         let container = null;
-        if(this.orderData.shippingAddress){
-            container = {"includes": "files,merchant", "category_id": 9,"lat":this.orderData.shippingAddress.lat,"long":this.orderData.shippingAddress.long};
+        if (this.orderData.shippingAddress) {
+            container = {"includes": "files,merchant", "category_id": 9, "lat": this.orderData.shippingAddress.lat, "long": this.orderData.shippingAddress.long};
         } else {
             container = {"includes": "files,merchant", "category_id": 9};
         }
@@ -565,20 +517,20 @@ export class VetHomePage implements OnInit {
             }
         } else {
             if (this.userData._user) {
-                this.navCtrl.navigateForward("/shop/home/categories/9/merchant/"+item.merchant_id+"/book");
+                this.navCtrl.navigateForward("/shop/home/categories/9/merchant/" + item.merchant_id + "/book");
             } else {
-                this.drouter.addPages("/shop/home/categories/9/merchant/"+item.merchant_id+"/book");
+                this.drouter.addPages("/shop/home/categories/9/merchant/" + item.merchant_id + "/book");
                 this.navCtrl.navigateForward('login');
             }
         }
 
     }
-    checkLocation(){
-        if(!this.orderData.shippingAddress){
+    checkLocation() {
+        if (!this.orderData.shippingAddress) {
             this.presentAlertLocation();
             return false;
         }
-        if(!this.orderData.shippingAddress.lat){
+        if (!this.orderData.shippingAddress.lat) {
             this.presentAlertLocation();
             return false;
         }
@@ -594,7 +546,7 @@ export class VetHomePage implements OnInit {
                     return resp.item;
                 }
             } else {
-                
+
                 this.cartProvider.handleCartError(resp, item);
             }
         });
@@ -641,7 +593,7 @@ export class VetHomePage implements OnInit {
                     cssClass: 'secondary',
                     handler: () => {
                         console.log('Confirm Cancel');
-                        this.navCtrl.navigateForward("/shop/home/categories/9/merchant/" + item.merchant_id+"/products");
+                        this.navCtrl.navigateForward("/shop/home/categories/9/merchant/" + item.merchant_id + "/products");
                     }
                 }, {
                     text: 'Ok',
@@ -667,82 +619,62 @@ export class VetHomePage implements OnInit {
             ]
         }).then(toast => toast.present());
     }
+    postLocation() {
+        let used = this.routeNext();
+        if (!used) {
+            this.getLocationAware();
+        }
+    }
 
     presentAlertLocation() {
-        this.orderData.checkOrInitShipping(); 
-        let inputs: AlertInput[] = [{
-          name: 'gps',
-          type: 'radio',
-          label: 'Mi ubicacion actual',
-          value: 'gps',
-          checked: true
-        },
-        {
-          name: 'mapa',
-          type: 'radio',
-          label: 'Ubicar en el mapa',
-          value: 'mapa'
-        }];
-        if(this.userData._user){
-            let container:AlertInput = {
-                name: 'shipping',
-                type: 'radio',
-                label: 'Direccion guardada',
-                value: 'shipping'
-            };
-            inputs.push(container);
-        }
-        this.alertController.create({
-            header: "A donde recibes?",
-            inputs: inputs,
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: () => {
-                        console.log('Confirm Cancel');
-                    }
+        this.orderData.checkOrInitShipping();
+        if (!this.userData._user) {
+            this.mapData.hideAll();
+            this.mapData.activeType = "Location";
+            this.mapData.activeId = "-1";
+            this.mapData.merchantId = null;
+            this.navCtrl.navigateForward('shop/map');
+            let vm = this;
+            setTimeout(function () {vm.api.toast("Donde Recibes tu compra?");}, 800);
+        } else {
+            this.alertController.create({
+                header: "Donde recibes tu compra?",
+                inputs: [{
+                    name: 'mapa',
+                    type: 'radio',
+                    label: 'Ubicar en el mapa',
+                    value: 'map'
                 }, {
-                    text: 'Ok',
-                    handler: (resp) => {
-                        console.log('Confirm Ok', resp);
-                        
-                        if(resp=='map'){
-                            this.mapData.hideAll();
-                            this.mapData.activeType = "Location";
-                            this.mapData.activeId = "-1";
-                            this.mapData.merchantId = null;
-                            this.navCtrl.navigateForward('shop/map');
-                        } else if(resp=='shipping'){
-                            this.openChangeAddress();
-                        } else if(resp =='gps'){
-                            this.api.loader();
-                            this.geolocation.getCurrentPosition().then((resp) => {
-                                console.log("Getting current position result", resp);
-                                // resp.coords.latitude
-                                // resp.coords.longitude
-                                this.orderData.shippingAddress.lat = resp.coords.latitude;
-                                this.orderData.shippingAddress.long = resp.coords.longitude;
-                                this.gs.getAddressFromLat(resp.coords.latitude,resp.coords.longitude).then((resp) => {
-                                    console.log("getAddressFromLat", resp);
-                                    this.orderData.shippingAddress.address = this.gs.decodeAddressFromLatResult(resp);
-                                    this.orderData.shippingAddress.postal = this.gs.decodePostalFromLatResult(resp);
-                                    this.getLocationAware();
-                                    this.api.dismissLoader();
-                                }).catch((error) => {
-                                    console.log('Error getting location', error);
-
-                                });
-                                this.api.dismissLoader();
-                            }).catch((error) => {
-                                console.log('Error getting location', error);
-
-                            });
+                    name: 'shipping',
+                    type: 'radio',
+                    label: 'Direccion guardada',
+                    value: 'shipping'
+                }],
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        handler: () => {
+                            console.log('Confirm Cancel');
+                        }
+                    }, {
+                        text: 'Ok',
+                        handler: (resp) => {
+                            console.log('Confirm Ok', resp);
+                            if (resp == 'map') {
+                                this.mapData.hideAll();
+                                this.mapData.activeType = "Location";
+                                this.mapData.activeId = "-1";
+                                this.mapData.merchantId = null;
+                                this.navCtrl.navigateForward('shop/map');
+                            } else if (resp == 'shipping') {
+                                this.openChangeAddress();
+                            }
                         }
                     }
-                }
-            ]
-        }).then(toast => toast.present());
+                ]
+            }).then(toast => toast.present());
+        }
     }
 }

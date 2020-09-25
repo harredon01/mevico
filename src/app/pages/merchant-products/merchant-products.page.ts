@@ -120,7 +120,6 @@ export class MerchantProductsPage implements OnInit {
         }
         this.possibleAmounts = [];
         this.api.loader();
-        this.loadProducts();
         this.loadOptions();
         if (!this.orderData.cartData) {
             this.getCart();
@@ -393,6 +392,10 @@ export class MerchantProductsPage implements OnInit {
         }
         if (this.categories) {
             container['category_id'] = this.category
+        }
+        if (this.orderData.shippingAddress && !this.merchant ){
+            container['lat'] = this.orderData.shippingAddress.lat;
+            container['long'] = this.orderData.shippingAddress.long;
         }
         let activeView = this.route.url;
         console.log("getActive", activeView);
