@@ -197,15 +197,15 @@ export class ReportListingPage implements OnInit {
 
         let searchObj = null
         if (this.typeSearch == "category") {
-            let query = "includes=availabilities&page=" + this.page + "&category_id=" + this.category;
+            let query = "page=" + this.page + "&category_id=" + this.category;
             searchObj = this.reportsServ.getReports(query);
         } else if (this.typeSearch == "text") {
-            searchObj = this.reportsServ.searchReports(this.textSearch + "&includes=availabilities&page=" + this.page);
+            searchObj = this.reportsServ.searchReports(this.textSearch + "&page=" + this.page);
         } else if (this.typeSearch == "nearby") {
-            this.location.includes = 'availabilities';
+            this.location.includes = '';
             searchObj = this.reportsServ.getNearbyReports(this.location);
         } else if (this.typeSearch == "own") {
-            let query = "includes=availabilities&page=" + this.page + "&owner_id=" + this.userData._user.id;
+            let query = "page=" + this.page + "&owner_id=" + this.userData._user.id;
             searchObj = this.reportsServ.getReportsPrivate(query);
         }
         searchObj.subscribe((data: any) => {

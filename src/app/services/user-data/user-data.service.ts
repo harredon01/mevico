@@ -110,6 +110,32 @@ export class UserDataService {
 
     }
 
+    setShipping(address_object: string) {
+        if (this.useSecure) {
+            this.storage.set('address_object', address_object);
+        } else {
+            this.storage2.set('address_object', address_object);
+        }
+
+    }
+    getShipping() {
+        if (this.useSecure) {
+            return this.storage.get('address_object').then((value) => {
+                return value;
+            }, (error) => {
+                return "";
+            });
+        } else {
+            return this.storage2.get('address_object').then((value) => {
+                return value;
+            });
+        }
+
+    }
+    clearShipping() {
+        this.storage2.set('shipping','');
+    }
+
     /**
      * get username from local storage.
      */
@@ -318,6 +344,7 @@ export class UserDataService {
             this.storage2.remove('token');
             this.storage2.set('token', "");
         }
+        this.clearShipping();
     }
 
     /**
