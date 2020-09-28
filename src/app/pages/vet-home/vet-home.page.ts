@@ -40,6 +40,14 @@ export class VetHomePage implements OnInit {
         speed: 400,
         autoplay: true,
     };
+    setcategories: any[] = [
+        {"title": "Servicios Veterinarios", "members": [1, 2, 3, 4], "categories": []},
+        {"title": "Alimentos, Medicamentos y accesorios", "members": [5,6,7,8], "categories": []},
+        {"title": "Aseo y belleza", "members": [9,10], "categories": []},
+        {"title": "Servicios Sociales", "members": [11, 12 ], "categories": []},
+        {"title": "Servicios Especiales", "members": [14, 15, 16, 17, 18], "categories": []},
+    ];
+
     merchant_categories: any[] = [];
     category_array_map: any = {};
     report_categories: any[] = [];
@@ -97,17 +105,18 @@ export class VetHomePage implements OnInit {
     }
 
     ngOnInit() {
-        this.getObjectCategories('report_categories', "App\\Models\\Report");
-        this.getObjectCategories('merchant_categories', "App\\Models\\Merchant");
-        this.getObjectCategories('product_categories', "App\\Models\\Product");
-        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", false);
-        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", false);
+        this.getHomeCategories();
+//        this.getObjectCategories('report_categories', "App\\Models\\Report");
+//        this.getObjectCategories('merchant_categories', "App\\Models\\Merchant");
+//        this.getObjectCategories('product_categories', "App\\Models\\Product");
+//        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", false);
+//        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", false);
         this.getObjects(['slidesItems', 'newsItems'], ['14', '15'], "page=1&category_id=14,15&order_by=articles.id,asc", "Article", false);
-        this.loadProducts();
-        this.loadOptions();
+//        this.loadProducts();
+//        this.loadOptions();
     }
     ionViewDidEnter() {
-        console.log("ionViewDidEnter",this.userData._user)
+        console.log("ionViewDidEnter", this.userData._user)
         let container = this.params.getParams();
         let saveParams = false;
         if (container) {
@@ -150,9 +159,9 @@ export class VetHomePage implements OnInit {
         });
     }
     getLocationAware() {
-        this.loadProducts();
-        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", true);
-        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", true);
+//        this.loadProducts();
+//        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", true);
+//        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", true);
     }
     createAddress() {
         this.mapData.activeType = "Location";
@@ -161,11 +170,12 @@ export class VetHomePage implements OnInit {
         console.log("createAddress");
     }
     async openChangeAddress() {
-        let container = {"select": "shipping"};
-        this.params.setParams(container);
+        let params:any = this.params.getParams();
+        params.select = "shipping"
+        this.params.setParams(params);
         let addModal = await this.modalCtrl.create({
             component: AddressesPage,
-            componentProps: container
+            componentProps: params
         });
         await addModal.present();
         const {data} = await addModal.onDidDismiss();
@@ -263,6 +273,30 @@ export class VetHomePage implements OnInit {
             this.api.handleError(err);
         });
     }
+    getHomeCategories() {
+        this.api.loader();
+        let cont = {level: 1}
+        this.categories.getCategories(cont).subscribe((data: any) => {
+            this.api.dismissLoader();
+            console.log("after getCategories: ", data);
+            if (data.status == 'success') {
+                let results = data.data;
+                for (let item in results) {
+                    let container = results[item];
+                    for (let i in this.setcategories){
+                        if (this.setcategories[i].members.includes(container.id)){
+                            this.setcategories[i].categories.push(container);
+                        }
+                    }
+                }
+            }
+        }, (err) => {
+            this.api.dismissLoader();
+            // Unable to log in
+            this.api.toast('CATEGORIES.ERROR_GET');
+            this.api.handleError(err);
+        });
+    }
 
     openItem(item: any, category: any, type_object: any, purpose: any, showAddress: any, checkLocationAction: boolean) {
 
@@ -307,6 +341,46 @@ export class VetHomePage implements OnInit {
         }
 
         this.params.setParams(params);
+        this.navCtrl.navigateForward(destinationUrl);
+    }
+    
+    openCategory(item: any) {
+        console.log("openCategory: ",item);
+        let checkLocationAction = false;
+        let destinationUrl = 'shop/home/categories/' + item.id;
+        let params:any = {"item": item, "purpose": null}
+        if(item.type.includes('report')){
+            destinationUrl = 'shop/home/categories/' + item.id + '/reports';
+        } else if(item.type.includes('merchant')){
+            destinationUrl = 'shop/home/categories/' + item.id + '/merchant';
+        }
+        if(item.type.includes('nearby')){
+            params.showAddress = true;
+            params.typeSearch = 'nearby';
+            checkLocationAction = true;
+        }
+        if(item.type.includes('booking')){
+            params.purpose = 'booking';
+        }
+        if(item.type.includes('products')){
+            params.purpose = 'products';
+            checkLocationAction = true;
+        }
+        if(item.type.includes('coverage')){
+            checkLocationAction = true;
+            params.typeSearch = 'coverage';
+        }
+        console.log("Sending params: ",params)
+        this.params.setParams(params);
+        let locationApproved = true;
+        if (checkLocationAction) {
+            locationApproved = this.checkLocation();
+        }
+        if (!locationApproved) {
+            this.drouter.addPages(destinationUrl);
+            return;
+        }
+        
         this.navCtrl.navigateForward(destinationUrl);
     }
 

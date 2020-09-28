@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-title class="tcenter"><span *ngIf="!orderData.shippingAddress">home</span><a *ngIf="orderData.shippingAddress" href="javascript:;" (click)="presentAlertLocation()" style="color:white">{{orderData.shippingAddress.address}}</a><h2 *ngIf="userData._user" class="header-name">Hola {{userData._user.firstName}}!</h2></ion-title>
-        
+
         <ion-buttons slot="end" *ngIf="userData._user">
             <ion-button size="small" icon-only clear (click)="openMenu()">
                 <ion-icon name="notifications"></ion-icon>
@@ -41,48 +41,62 @@
 
         </div>
         <div class="clear"></div>
-        <h2 class="pl15 category-title">Conoce un especialista</h2>
-        <div class="mainCategories">
+        <div *ngFor="let item of setcategories">
+            <h2 class="pl15 category-title">{{item.title}}</h2>
+            <div class="mainCategories">
+                <div class="clear"></div>
+                <div (click)="openCategory(category)" *ngFor="let category of item.categories" class="cat-item">
+                    <div class="mainCategories__list ">
+                        <img [src]="category.icon" item-start>
+                    </div>
+                    <span class="mainCategories__list--text">
+                        <span>{{category.name}}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <h2 class="pl15 category-title" *ngIf="merchant_categories.length>0">Conoce un especialista</h2>
+        <div class="mainCategories" *ngIf="merchant_categories.length>0">
             <div (click)="openItem(item,1,'CategoryMerchant','',false,false)" *ngFor="let item of merchant_categories" class="cat-item">
                 <div class="mainCategories__list ">
                     <img [src]="item.icon" item-start>
                 </div>
-                
+
                 <span class="mainCategories__list--text">
                     <span>{{item.name}}</span>
                 </span>
             </div>
         </div>
         <br/>
-        <h2 class="pl15 category-title">Adopcion</h2>
-        <div class="mainCategories">
+        <h2 class="pl15 category-title" *ngIf="report_categories.length>0">Adopcion</h2>
+        <div class="mainCategories" *ngIf="report_categories.length>0">
             <div class="clear"></div>
             <div (click)="openItem(item,1,'CategoryReport','',true,false)" *ngFor="let item of report_categories" class="cat-item">
                 <div class="mainCategories__list ">
                     <img [src]="item.icon" item-start>
                 </div>
-                
+
                 <span class="mainCategories__list--text">
                     <span>{{item.name}}</span>
                 </span>
             </div>
         </div>
-        <h2 class="pl15 category-title">Compras</h2>
-        <div class="mainCategories">
+        <h2 class="pl15 category-title" *ngIf="product_categories.length>0">Compras</h2>
+        <div class="mainCategories" *ngIf="product_categories.length>0">
             <div class="clear"></div>
             <div (click)="openItem(item,1,'CategoryProduct','',false,true)" *ngFor="let item of product_categories" class="cat-item">
                 <div class="mainCategories__list ">
                     <img [src]="item.icon" item-start>
                 </div>
-                
+
                 <span class="mainCategories__list--text">
                     <span>{{item.name}}</span>
                 </span>
             </div>
         </div>
         <br/>
-        <h2 class="pl15">Ultimos Amigos para adoptar</h2>
-        <div class="mainCategories">
+        <h2 class="pl15" *ngIf="latest_reports.length>0">Ultimos Amigos para adoptar</h2>
+        <div class="mainCategories" *ngIf="latest_reports.length>0">
             <div class="clear"></div>
             <ion-card class="product__item left m0 w100" *ngFor="let item of latest_reports">
 
@@ -100,36 +114,36 @@
                     </ion-slides>
                     <div [innerHtml]="item.description" class="hide-text" [ngClass]="{'show' : item.description_more}"></div>
                     <ion-button color="primary" (click)="openItem(item,11,'Report','',true,false)" class='mb10 right'>
-                                Mas
-                            </ion-button>
+                        Mas
+                    </ion-button>
                 </ion-card-content>
             </ion-card>
         </div>
         <br/>
-        <h2 class="pl15 category-title">tiendas</h2>
-        <div class="mainCategories">
+        <h2 class="pl15 category-title" *ngIf="stores.length>0">tiendas</h2>
+        <div class="mainCategories" *ngIf="stores.length>0">
 
             <div class="clear"></div>
             <div (click)="openItem(item,7,'Merchant','products',false,true)" *ngFor="let item of stores" class="cat-item">
                 <div class="mainCategories__list ">
                     <img [src]="item.icon" item-start>
                 </div>
-                
+
                 <span class="mainCategories__list--text">
                     <span>{{item.name}}</span>
                 </span>
             </div>
         </div>
         <br/>
-        <h2 class="pl15 category-title">Servicios</h2>
-        <div class="mainCategories">
+        <h2 class="pl15 category-title" *ngIf="centers.length>0">Servicios</h2>
+        <div class="mainCategories" *ngIf="centers.length>0">
 
             <div class="clear"></div>
             <div (click)="openItem(item,5,'Merchant','book',false,false)" *ngFor="let item of centers" class="cat-item">
                 <div class="mainCategories__list ">
                     <img [src]="item.icon" item-start>
                 </div>
-                
+
                 <span class="mainCategories__list--text">
                     <span>{{item.name}}</span>
                 </span>

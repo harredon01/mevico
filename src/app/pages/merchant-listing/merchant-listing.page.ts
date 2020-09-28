@@ -8,6 +8,7 @@ import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
 import {MerchantsService} from '../../services/merchants/merchants.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {Merchant} from '../../models/merchant';
 import {ApiService} from '../../services/api/api.service';
@@ -26,6 +27,7 @@ export class MerchantListingPage implements OnInit {
     textSearch: string = "";
     purpose: string = "";
     showAddress: boolean = false;
+    getLocation: boolean = false;
     category: any;
     merchants: Merchant[] = [];
     categoryItems: any[] = [];
@@ -38,6 +40,7 @@ export class MerchantListingPage implements OnInit {
         public userData: UserDataService,
         public geolocation: Geolocation,
         public mapData: MapDataService,
+        public orderData: OrderDataService,
         public categories: CategoriesService,
         public merchantsServ: MerchantsService,
         public router: Router,
@@ -45,6 +48,7 @@ export class MerchantListingPage implements OnInit {
         public api: ApiService) {
         this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
         let container = this.params.getParams();
+        console.log("Received params: ",container);
         if (container) {
             if (container.purpose) {
                 this.purpose = container.purpose;
@@ -129,10 +133,10 @@ export class MerchantListingPage implements OnInit {
         } else if (this.purpose == 'external_book') {
             params = this.params.getParams();
             params.objectId = item.id,
-            params.objectName = item.name,
-            params.objectDescription = item.description,
-            params.objectIcon = item.icon,
-            this.purpose = 'book';
+                params.objectName = item.name,
+                params.objectDescription = item.description,
+                params.objectIcon = item.icon,
+                this.purpose = 'book';
         } else {
             if (this.typeSearch == "own") {
                 params = {"item": item, "category": this.category, "owner": true};
@@ -161,12 +165,15 @@ export class MerchantListingPage implements OnInit {
      * Navigate to the detail page for this item.
      */
     searchNearby() {
+        this.typeSearch = "nearby";
+        this.getLocationAndSearch();
+    }
+    getLocationAndSearch() {
         this.api.loader();
         this.geolocation.getCurrentPosition().then((resp) => {
             console.log("Getting current position after call", resp);
             // resp.coords.latitude
             // resp.coords.longitude
-            this.typeSearch = "nearby";
             this.merchants = [];
             this.page = 0;
             this.location = {lat: resp.coords.latitude, long: resp.coords.longitude, category: this.category};
@@ -208,7 +215,7 @@ export class MerchantListingPage implements OnInit {
     getMerchants(event) {
         this.api.loader();
         this.page++;
-
+        console.log("Show address", this.showAddress);
         let searchObj = null
         if (this.typeSearch == "category") {
             let query = "includes=availabilities&page=" + this.page + "&category_id=" + this.category;
@@ -218,6 +225,9 @@ export class MerchantListingPage implements OnInit {
         } else if (this.typeSearch == "nearby") {
             this.location.includes = 'availabilities';
             searchObj = this.merchantsServ.getNearbyMerchants(this.location);
+        } else if (this.typeSearch == "coverage") {
+            this.location.includes = 'availabilities';
+            searchObj = this.merchantsServ.getCoverageMerchants(this.location);
         } else if (this.typeSearch == "own") {
             let query = "includes=availabilities&page=" + this.page + "&owner_id=" + this.userData._user.id;
             searchObj = this.merchantsServ.getMerchantsPrivate(query);
@@ -257,8 +267,33 @@ export class MerchantListingPage implements OnInit {
 
     ngOnInit() {
         this.merchants = [];
-        this.getMerchants(null);
-        this.getItems();
+        let hasSearched = false;
+        let latFound = false;
+        if (this.orderData.shippingAddress) {
+            if (this.orderData.shippingAddress.lat) {
+                latFound = true;
+                this.location = {lat: this.orderData.shippingAddress.lat, long: this.orderData.shippingAddress.long, category: this.category};
+            }
+        }
+        let container = this.params.getParams();
+        if (container) {
+            if (container.purpose) {
+                this.purpose = container.purpose;
+            }
+            if (container.showAddress) {
+                this.showAddress = container.showAddress;
+            }
+            if (container.typeSearch) {
+                this.typeSearch = container.typeSearch;
+                if ((this.typeSearch == 'nearby' || this.typeSearch == 'coverage') && !latFound){
+                    hasSearched = true;
+                    this.getLocationAndSearch();
+                }
+            }
+        }
+        if (!hasSearched) {
+            this.getMerchants(null);
+        }
     }
 
 }

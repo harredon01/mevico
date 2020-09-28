@@ -46,14 +46,6 @@ export class ReportListingPage implements OnInit {
         this.category = this.activatedRoute.snapshot.paramMap.get('categoryId');
         let container = this.params.getParams();
         if (container) {
-            if (container.purpose) {
-                if (container.purpose == 'none') {
-                    this.purpose = "";
-                } else {
-                    this.purpose = container.purpose;
-                }
-
-            }
             if (container.showAddress) {
                 this.showAddress = container.showAddress;
             }
@@ -128,11 +120,7 @@ export class ReportListingPage implements OnInit {
         }
         this.params.setParams(params);
         console.log("Entering merchant", item);
-        if (this.purpose.length > 0) {
-            this.navCtrl.navigateForward(this.urlSearch + item.id + "/" + this.purpose);
-        } else {
-            this.navCtrl.navigateForward(this.urlSearch + item.id);
-        }
+        this.navCtrl.navigateForward(this.urlSearch + item.id);
     }
     /**
      * Navigate to the detail page for this item.
