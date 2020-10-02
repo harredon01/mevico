@@ -384,13 +384,17 @@ export class MerchantProductsPage implements OnInit {
             cat.more = true;
         }
     }
+    clearFilter(){
+        this.category = null;
+        this.loadProducts();
+    }
 
     loadProducts() {
         let container:any = {"includes": "categories,files,merchant", "page": this.page};
         if (this.merchant) {
             container['merchant_id'] = this.merchant
         }
-        if (this.categories) {
+        if (this.category) {
             container['category_id'] = this.category
         }
         if (this.orderData.shippingAddress && !this.merchant ){

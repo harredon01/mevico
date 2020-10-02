@@ -32,8 +32,7 @@
         <div class="m15">
             <h2 *ngIf="userData._user" class="hello">Hola {{userData._user.firstName}}!</h2>
             <h2 *ngIf="!userData._user">Hola!</h2>
-            <h3>Bienvenido a Healthy.</h3>
-            <p>Tu centro medico digital </p>
+            <h3>Bienvenido a Petworld.</h3>
             <br/>
             <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="login()" size="small" *ngIf="!userData._user">
                 Entrar
@@ -49,7 +48,7 @@
                     <div class="mainCategories__list ">
                         <img [src]="category.icon" item-start>
                     </div>
-                    <span class="mainCategories__list--text">
+                    <span class="mainCategories__list--text" *ngIf="false">
                         <span>{{category.name}}</span>
                     </span>
                 </div>

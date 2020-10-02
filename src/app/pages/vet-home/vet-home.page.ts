@@ -43,9 +43,9 @@ export class VetHomePage implements OnInit {
     setcategories: any[] = [
         {"title": "Servicios Veterinarios", "members": [1, 2, 3, 4], "categories": []},
         {"title": "Alimentos, Medicamentos y accesorios", "members": [5,6,7,8], "categories": []},
-        {"title": "Aseo y belleza", "members": [9,10], "categories": []},
-        {"title": "Servicios Sociales", "members": [11, 12 ], "categories": []},
-        {"title": "Servicios Especiales", "members": [14, 15, 16, 17, 18], "categories": []},
+        {"title": "Aseo y belleza", "members": [9], "categories": []},
+        {"title": "Servicios Sociales", "members": [10,11], "categories": []},
+        {"title": "Servicios Especiales", "members": [12,14, 15, 16, 17, 18], "categories": []},
     ];
 
     merchant_categories: any[] = [];
@@ -111,7 +111,7 @@ export class VetHomePage implements OnInit {
 //        this.getObjectCategories('product_categories', "App\\Models\\Product");
 //        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", false);
 //        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", false);
-        this.getObjects(['slidesItems', 'newsItems'], ['14', '15'], "page=1&category_id=14,15&order_by=articles.id,asc", "Article", false);
+        this.getObjects(['slidesItems', 'newsItems'], ['20', '21'], "page=1&category_id=20,21&order_by=articles.id,asc", "Article", false);
 //        this.loadProducts();
 //        this.loadOptions();
     }
