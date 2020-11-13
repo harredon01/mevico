@@ -302,6 +302,30 @@ export class EditProductsPage implements OnInit {
             this.api.handleError(err);
         });
     }
+    
+    toggleVariant(variant: any) {
+        if (variant.isActive) {
+            variant.isActive = false;
+        } else {
+            variant.isActive = true;
+        }
+        let container = {
+            "id":variant.id,
+            "isActive":variant.isActive
+        }
+        this.productsServ.saveOrCreateVariant(container).subscribe((data: any) => {
+            if (data.status == "success") {
+                this.api.toast('INPUTS.SUCCESS_SAVE');
+            } else {
+                this.api.toast('INPUTS.ERROR_SAVE');
+            }
+        }, (err) => {
+            this.api.dismissLoader();
+            // Unable to log in
+            this.api.toast('INPUTS.ERROR_SAVE');
+            this.api.handleError(err);
+        });
+    }
     editVariant(variant: any) {
         this.editingVariant = true;
         let container = {

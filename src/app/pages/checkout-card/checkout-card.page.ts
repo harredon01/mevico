@@ -60,6 +60,7 @@ export class CheckoutCardPage implements OnInit {
             cc_expiration_month: ['', Validators.compose([Validators.maxLength(2), Validators.pattern('[0-9]*'), Validators.required, Validators.min(1), Validators.max(12)])],
             cc_expiration_year: ['', Validators.compose([Validators.maxLength(2), Validators.pattern('[0-9]*'), Validators.required, Validators.min(c.getFullYear() - 2000), Validators.max(2040)])],
         });
+        this.mockData();
         let paramSent = this.params.getParams();
         if (paramSent.token && paramSent.method) {
             this.token = paramSent.token;
@@ -75,7 +76,7 @@ export class CheckoutCardPage implements OnInit {
        * The view loaded, let's query our items for the list
        */
     ionViewDidEnter() {
-        //this.mockData();
+        this.mockData();
     }
     creditTab(event) {
         let target = event.target || event.srcElement;
@@ -205,7 +206,7 @@ export class CheckoutCardPage implements OnInit {
             cc_security_code: contForm.cc_security_code,
             save_card: contForm.save_card,
             payment_id: this.orderData.payment.id,
-            platform: "Food"
+            platform: "Booking"
         };
         this.billing.payCreditCard(container, "Payu").subscribe((data: any) => {
             let transaction = data.response.transactionResponse;
@@ -260,11 +261,12 @@ export class CheckoutCardPage implements OnInit {
     mockData() {
         let container = {
             cc_branch: "VISA",
-            cc_expiration_month: "VISA",
+            cc_expiration_month: "11",
             cc_expiration_year: "22",
             cc_name: "APPROVED",
             cc_number: "4111111111111111",
-            cc_security_code: "123"
+            cc_security_code: "123",
+            save_card:false
         };
         this.payerForm.setValue(container);
     }

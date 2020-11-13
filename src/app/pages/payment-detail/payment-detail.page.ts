@@ -189,7 +189,7 @@ export class PaymentDetailPage implements OnInit {
         let container = {
             quick: true,
             payment_id: this.orderData.payment.id,
-            platform: "Food"
+            platform: "Booking"
         };
         console.log("before payCreditCard token", container);
         this.billing.payCreditCard(container, "PayU").subscribe((data: any) => {

@@ -74,6 +74,16 @@ export class MerchantsService {
         let seq = this.api.post(url, merchant);
         return seq;
     }
+    exportOrders(data: any) {
+        let url = "/admin/merchant/orders";
+        let seq = this.api.post(url, data);
+        return seq;
+    }
+    exportContent(data: any) {
+        let url = "/admin/merchant/content";
+        let seq = this.api.post(url, data);
+        return seq;
+    }
     getMerchantHash(merchantId: string) {
         let url = "/merchant/hash/" + merchantId;
         let seq = this.api.get(url);

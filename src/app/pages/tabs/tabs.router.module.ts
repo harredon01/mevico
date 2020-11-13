@@ -371,6 +371,23 @@ const routes: Routes = [
                         ]
                     },
                     {
+                        path: 'reports',
+                        children: [
+                            {
+                                path: '',
+                                loadChildren: () => import('../report-listing/report-listing.module').then(m => m.ReportListingPageModule),
+                            },
+                            {
+                                path: 'create-report',
+                                loadChildren: () => import('../new-report/new-report.module').then(m => m.NewReportPageModule),
+                            },
+                            {
+                                path: ':objectId',
+                                loadChildren: () => import('../create-report/create-report.module').then(m => m.CreateReportPageModule),
+                            }
+                        ]
+                    },
+                    {
                         path: 'payments',
                         children: [
                             {

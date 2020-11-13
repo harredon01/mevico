@@ -22,6 +22,7 @@ export class CreateMerchantPage implements OnInit {
     item: any;
     merchant: Merchant;
     type: any;
+    exportDate: any;
     galPage: any = 1;
     editYears_experience: boolean = false;
     editName: boolean = false;
@@ -32,7 +33,7 @@ export class CreateMerchantPage implements OnInit {
     editSpecialties: boolean = false;
     editExperience: boolean = false;
     saveAddress: boolean = false;
-
+    activeMonths: any[] = [];
     countries: any[] = [];
     regions: any[] = [];
     cities: any[] = [];
@@ -81,6 +82,7 @@ export class CreateMerchantPage implements OnInit {
             region_id: ['', Validators.required],
             country_id: ['', Validators.required],
         });
+        this.loadMonths()
 
         console.log("Form", this.form.errors)
         // Watch the form for changes, and
@@ -213,6 +215,26 @@ export class CreateMerchantPage implements OnInit {
             }
         }
     }
+    loadMonths(){
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth()+1;
+        for (let i = 0; i < 24; i++) {
+            let container = {
+                "value": year+"-"+month,
+                "name": month+"/"+year
+            };
+            this.activeMonths.push(container);
+            month--;
+            if(month<1){
+                month = 12;
+                year--;
+            }
+            if(i==23){
+                this.exportDate = container.value
+            }
+        }
+    }
     editField(field: any) {
         if (this["edit" + field]) {
             this["edit" + field] = false;
@@ -337,6 +359,31 @@ export class CreateMerchantPage implements OnInit {
             this.countries = resp.data;
             this.form.patchValue({country_id: 1});
             console.log("getCountries result", resp);
+
+        }, (err) => {
+
+        });
+    }
+    getOrders() {
+        let container = {
+            "merchant_id": this.merchant.id,
+            "from":this.exportDate+"/01 00:00:00",
+            "to":this.exportDate+"/31 23:59:59",
+        }
+        this.merchants.exportOrders(container).subscribe((resp: any) => {
+            console.log("exportOrders result", resp);
+
+        }, (err) => {
+
+        });
+    }
+    getContent(typeCont) {
+        let container = {
+            "merchant_id": this.merchant.id,
+            "type":typeCont
+        }
+        this.merchants.exportContent(container).subscribe((resp: any) => {
+            console.log("exportContent result", resp);
 
         }, (err) => {
 

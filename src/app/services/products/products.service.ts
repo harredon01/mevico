@@ -67,6 +67,7 @@ export class ProductsService {
         productInfo.id = container.product_id;
         productInfo.name = container.prod_name;
         productInfo.description = container.prod_desc;
+        productInfo.isActive = container.isActive;
         productInfo.description_more = false;
         productInfo.more = false;
         productInfo.type = container.type;
@@ -75,6 +76,7 @@ export class ProductsService {
             productInfo.merchant_name = merchant.merchant_name;
             productInfo.merchant_id = merchant.merchant_id;
             productInfo.merchant_description = merchant.merchant_description;
+            productInfo.merchant_attributes = merchant.merchant_attributes;
             productInfo.src = merchant.merchant_icon;
 
             productInfo.merchant_type = merchant.merchant_type;

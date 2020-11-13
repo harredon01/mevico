@@ -127,9 +127,9 @@ export class ReportListingPage implements OnInit {
      */
     createItem() {
         if (this.typeSearch == "own") {
-            this.navCtrl.navigateForward(this.urlSearch + "create-merchant");
+            this.navCtrl.navigateForward(this.urlSearch + "create-report");
         }
-        console.log("Creating merchant");
+        console.log("Creating report",this.urlSearch + "create-report");
     }
     /**
      * Navigate to the detail page for this item.
@@ -182,8 +182,9 @@ export class ReportListingPage implements OnInit {
     getReports(event) {
         this.api.loader();
         this.page++;
-
+        
         let searchObj = null
+        console.log("typesearch", this.typeSearch);
         if (this.typeSearch == "category") {
             let query = "page=" + this.page + "&category_id=" + this.category;
             searchObj = this.reportsServ.getReports(query);

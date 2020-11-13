@@ -10,9 +10,9 @@ import {MapDataService} from '../../services/map-data/map-data.service';
 import {ReportsService} from '../../services/reports/reports.service';
 import {Report} from '../../models/report';
 @Component({
-  selector: 'app-create-report',
-  templateUrl: './create-report.page.html',
-  styleUrls: ['./create-report.page.scss'],
+    selector: 'app-create-report',
+    templateUrl: './create-report.page.html',
+    styleUrls: ['./create-report.page.scss'],
 })
 export class CreateReportPage implements OnInit {
     @ViewChild('slides') slides: IonSlides;
@@ -23,14 +23,10 @@ export class CreateReportPage implements OnInit {
     report: Report;
     type: any;
     galPage: any = 1;
-    editYears_experience: boolean = false;
     editName: boolean = false;
     editType: boolean = false;
     editDescription: boolean = false;
     editUnit_cost: boolean = false;
-    editServices: boolean = false;
-    editSpecialties: boolean = false;
-    editExperience: boolean = false;
     saveAddress: boolean = false;
 
     countries: any[] = [];
@@ -49,7 +45,7 @@ export class CreateReportPage implements OnInit {
         public locations: LocationsService,
         public params: ParamsService,
         public userData: UserDataService) {
-        this.report = new Report({files: [], availabilities: [], attributes: {}});
+        this.report = new Report({files: [], attributes: {}});
         this.submitAttempt = false;
         this.getCountries();
         this.form = formBuilder.group({
@@ -60,23 +56,9 @@ export class CreateReportPage implements OnInit {
             email: ['', Validators.required],
             telephone: ['', Validators.required],
             address: [''],
-            years_experience: ['', Validators.required],
             unit_cost: [''],
-            booking_requires_auth: [''],
-            max_per_hour: [''],
             lat: [''],
-            virtual_meeting: [''],
-            virtual_provider: [''],
             long: [''],
-            service1: [''],
-            service2: [''],
-            service3: [''],
-            specialty1: [''],
-            specialty2: [''],
-            specialty3: [''],
-            experience1: [''],
-            experience2: [''],
-            experience3: [''],
             city_id: ['', Validators.required],
             region_id: ['', Validators.required],
             country_id: ['', Validators.required],
@@ -157,10 +139,6 @@ export class CreateReportPage implements OnInit {
         this.editType = value;
         this.editDescription = value;
         this.editUnit_cost = value;
-        this.editServices = value;
-        this.editSpecialties = value;
-        this.editExperience = value;
-        this.editYears_experience = value;
     }
     resetEditsForm() {
         let keys = Object.keys(this.form.value);
@@ -168,16 +146,8 @@ export class CreateReportPage implements OnInit {
             if (!this.form.controls[keys[item]].valid) {
                 let name = keys[item];
                 let nameCapitalized = "edit" + name.charAt(0).toUpperCase() + name.slice(1);
-                if (nameCapitalized.includes("Service")) {
-                    this.editServices = true;
-                } else if (nameCapitalized.includes("Experience")) {
-                    this.editExperience = true;
-                } else if (nameCapitalized.includes("Specialt")) {
-                    this.editSpecialties = true;
-                } else {
-                    if (this[nameCapitalized] == false) {
-                        this[nameCapitalized] = true;
-                    }
+                if (this[nameCapitalized] == false) {
+                    this[nameCapitalized] = true;
                 }
                 console.log("Invalid", keys[item]);
             }
@@ -191,7 +161,7 @@ export class CreateReportPage implements OnInit {
         }
     }
     loadReport(editingReport: any) {
-        let container = {
+        let container: any = {
             id: editingReport.id,
             type: editingReport.type,
             name: editingReport.name,
@@ -199,7 +169,6 @@ export class CreateReportPage implements OnInit {
             email: editingReport.email,
             telephone: editingReport.telephone,
             address: editingReport.address,
-            unit_cost: editingReport.unit_cost,
             lat: editingReport.lat,
             long: editingReport.long,
             city_id: editingReport.city_id,
@@ -208,73 +177,13 @@ export class CreateReportPage implements OnInit {
         };
 
         let attributes = editingReport.attributes;
-        let services = [];
         console.log("Attributes", attributes);
-        if (attributes.service) {
-            services = attributes.service;
+        if (attributes.unit_cost) {
+            container['unit_cost'] = attributes.unit_cost;
+        } else {
+            container['unit_cost'] = 0;
+        }
 
-        }
-        if (attributes.virtual_meeting) {
-            container['virtual_meeting'] = attributes.virtual_meeting;
-        } else {
-            container['virtual_meeting'] = false;
-        }
-        if (attributes.virtual_provider) {
-            container['virtual_provider'] = attributes.virtual_provider;
-        } else {
-            container['virtual_provider'] = false;
-        }
-        for (let i = 0; i < 3; i++) {
-            let indicator = i + 1;
-            let property = "service" + indicator;
-            if (services[i]) {
-                container[property] = services[i].name;
-            } else {
-                container[property] = "";
-            }
-        }
-        let specialties = [];
-        if (attributes.specialty) {
-            specialties = attributes.specialty;
-        }
-        for (let i = 0; i < 3; i++) {
-            let indicator = i + 1;
-            let property = "specialty" + indicator;
-            if (specialties[i]) {
-                container[property] = specialties[i].name;
-            } else {
-                container[property] = "";
-            }
-        }
-        let experience = [];
-        if (attributes.experience) {
-            experience = attributes.experience;
-
-        }
-        for (let i = 0; i < 3; i++) {
-            let indicator = i + 1;
-            let property = "experience" + indicator;
-            if (experience[i]) {
-                container[property] = experience[i].name;
-            } else {
-                container[property] = "";
-            }
-        }
-        if (attributes.booking_requires_auth) {
-            container['booking_requires_auth'] = attributes.booking_requires_auth;
-        } else {
-            container['booking_requires_auth'] = false;
-        }
-        if (attributes.max_per_hour) {
-            container['max_per_hour'] = attributes.max_per_hour;
-        } else {
-            container['max_per_hour'] = false;
-        }
-        if (attributes.years_experience) {
-            container['years_experience'] = attributes.years_experience;
-        } else {
-            container['years_experience'] = 0;
-        }
         if (this.saveAddress) {
             if (this.mapData.address.lat) {
                 container.lat = this.mapData.address.lat
@@ -373,8 +282,7 @@ export class CreateReportPage implements OnInit {
                 let data = resp.object;
                 let container = data.report;
                 container.files = data.files;
-                container.availabilities = data.availabilities;
-                container.ratings = data.availabilities;
+                container.ratings = data.ratings;
                 this.report = new Report(container);
                 this.loadReport(container);
                 this.resetEdits(false);
@@ -392,15 +300,14 @@ export class CreateReportPage implements OnInit {
 
     getReport(report) {
         this.api.loader();
-        let container = {"object_id":report,"includes":"availabilities,files,ratings"};
+        let container = {"object_id": report, "includes": "files,ratings"};
         this.reports.getReportPrivate(container).subscribe((resp: any) => {
             this.api.dismissLoader();
             console.log("getReport result", resp);
             if (resp.report) {
                 let container = resp.report;
                 container.files = resp.files;
-                container.availabilities = resp.availabilities;
-                container.ratings = resp.availabilities;
+                container.ratings = resp.ratings;
                 this.report = new Report(container);
                 this.loadReport(container);
             } else {

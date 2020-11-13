@@ -25,6 +25,7 @@ export class MerchantProductsPage implements OnInit {
     urlSearch: string = "";
     payTitle: string = "";
     isOwner: boolean = false;
+    storeActive: boolean = false;
     slides: any[];
     loading: any;
     merchantObj: {
@@ -215,6 +216,31 @@ export class MerchantProductsPage implements OnInit {
         console.log("Entering edit prod", this.urlSearch + "/products/edit/" + productId);
         this.navCtrl.navigateForward(this.urlSearch + "/products/edit/" + productId);
     }
+    toggleProduct(product: any) {
+        if (product.isActive) {
+            product.isActive = false;
+        } else {
+            product.isActive = true;
+        }
+        let container = {
+            "id":product.id,
+            "isActive":product.isActive,
+            "merchant_id":product.merchant_id
+        }
+        this.productsServ.saveOrCreateProduct(container).subscribe((data: any) => {
+            this.api.dismissLoader();
+            if (data.status == "success") {
+                this.api.toast('INPUTS.SUCCESS_SAVE');
+            } else {
+                this.api.toast('INPUTS.ERROR_SAVE');
+            }
+        }, (err) => {
+            this.api.dismissLoader();
+            // Unable to log in
+            this.api.toast('INPUTS.ERROR_SAVE');
+            this.api.handleError(err);
+        });
+    }
     editImages(productId: any) {
         let container = {"type": "Product", "objectId": productId};
         this.params.setParams(container);
@@ -384,20 +410,20 @@ export class MerchantProductsPage implements OnInit {
             cat.more = true;
         }
     }
-    clearFilter(){
+    clearFilter() {
         this.category = null;
         this.loadProducts();
     }
 
     loadProducts() {
-        let container:any = {"includes": "categories,files,merchant", "page": this.page};
+        let container: any = {"includes": "categories,files,merchant", "page": this.page};
         if (this.merchant) {
             container['merchant_id'] = this.merchant
         }
         if (this.category) {
             container['category_id'] = this.category
         }
-        if (this.orderData.shippingAddress && !this.merchant ){
+        if (this.orderData.shippingAddress && !this.merchant) {
             container['lat'] = this.orderData.shippingAddress.lat;
             container['long'] = this.orderData.shippingAddress.long;
         }
@@ -405,6 +431,7 @@ export class MerchantProductsPage implements OnInit {
         console.log("getActive", activeView);
         let query = null;
         if (activeView.includes("settings")) {
+            container.isAdmin = true;
             query = this.productsServ.getProductsMerchantPrivate(container);
         } else {
             query = this.productsServ.getProductsMerchant(container);
@@ -413,6 +440,16 @@ export class MerchantProductsPage implements OnInit {
             if (resp.products_total > 0) {
                 this.categories = this.productsServ.buildProductInformation(resp);
                 console.log("Result build product", this.categories);
+                let attributes = this.categories[0].products[0].merchant_attributes;
+                if(typeof attributes == "string"){
+                    attributes = JSON.parse(attributes);
+                } 
+                
+                if (attributes.store_active) {
+                    if (attributes.store_active==1) {
+                        this.storeActive = true;
+                    }
+                }
                 this.merchantObj.merchant_name = this.categories[0].products[0].merchant_name;
                 this.merchantObj.merchant_description = this.categories[0].products[0].merchant_description;
                 this.merchantObj.src = this.categories[0].products[0].src;

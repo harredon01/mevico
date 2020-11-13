@@ -707,10 +707,10 @@ export class VetHomePage implements OnInit {
             this.mapData.merchantId = null;
             this.navCtrl.navigateForward('shop/map');
             let vm = this;
-            setTimeout(function () {vm.api.toast("Donde Recibes tu compra?");}, 800);
+            setTimeout(function () {vm.api.toast("Donde estas?");}, 800);
         } else {
             this.alertController.create({
-                header: "Donde recibes tu compra?",
+                header: "Donde estas?",
                 inputs: [{
                     name: 'mapa',
                     type: 'radio',

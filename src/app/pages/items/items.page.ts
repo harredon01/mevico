@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemsService} from '../../services/items/items.service';
+import {OrderService} from '../../services/order/order.service';
 import {TranslateService} from '@ngx-translate/core';
 import {NavController} from '@ionic/angular';
 import {Item} from '../../models/item';
@@ -22,6 +23,7 @@ export class ItemsPage implements OnInit {
     private loadMore: boolean = false;
     constructor(public itemsServ: ItemsService,
         public params: ParamsService,
+        public orderServ: OrderService,
         public activatedRoute: ActivatedRoute,
         public api: ApiService,
         public translateService: TranslateService,
@@ -34,14 +36,14 @@ export class ItemsPage implements OnInit {
             vm.queries.push(container);
         });
         this.translateService.get('ITEMS.UNFULFILLED').subscribe(function (value) {
-            let container = {"name": value, "value": "unfulfilled"};
+            let container = {"name": value, "value": "pending"};
             vm.queries.push(container);
         });
 
         let container = this.params.getParams();
         this.merchant = container.objectId;
         this.urlSearch = "shop/settings/merchants/" + this.merchant;
-        this.status = "unfulfilled"
+        this.status = "pending"
     }
     ngOnInit() {
     }
@@ -68,8 +70,9 @@ export class ItemsPage implements OnInit {
     getItems() {
         this.api.loader();
         this.page++;
-        let where = "merchant_id=" + this.merchant + "&fulfillment=" + this.status + "&page=" + this.page + "&paid_status=paid&includes=order.orderAddresses&order_by=id,desc";
-        this.itemsServ.getItems(where).subscribe((data: any) => {
+        let where = "merchant_id=" + this.merchant + "&execution_status=" + this.status + "&page=" + this.page
+         + "&includes=items,orderAddresses&order_by=id,asc";
+        this.orderServ.getOrders(where).subscribe((data: any) => {
             let results = data.data;
             if (data.page == data.last_page) {
                 this.loadMore = false;
@@ -77,22 +80,8 @@ export class ItemsPage implements OnInit {
                 this.loadMore = true;
             }
             for (let item in results) {
-                if (results[item].order) {
-                    let order = this.getOrder(results[item].order.id); 
-                    let newItem = new Item(results[item]);
-                    newItem.clean();
-                    if (order) {
-                        order.items.push(newItem);
-                    } else {
-                        results[item].order.created_at = results[item].order.created_at.replace(/-/g, '/');
-                        results[item].order.updated_at = results[item].order.updated_at.replace(/-/g, '/');
-                        results[item].order.created_at = new Date(results[item].order.created_at);
-                        results[item].order.updated_at = new Date(results[item].order.updated_at);
-                        order = new Order(results[item].order);
-                        order.items.push(newItem);
-                        this.orders.push(order);
-                    }
-                }
+                let order = new Order(results[item]);
+                this.orders.push(order);
             }
             this.api.dismissLoader();
         }, (err) => {

@@ -161,6 +161,7 @@ export class CheckoutBanksPage implements OnInit {
        */
     ionViewDidEnter() {
         this.getBanks();
+        this.mockData();
     }
     payBank() {
         this.submitAttempt = true;

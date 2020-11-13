@@ -67,6 +67,10 @@
                         <ion-button color="primary" class="right" (click)="editVariant(item)">
                             {{ 'INPUTS.EDIT' | translate }}
                         </ion-button>
+                        <ion-button color="primary" *ngIf="item.isActive" (click)="toggleVariant(item)">ON
+                        </ion-button>
+                        <ion-button color="danger" *ngIf="!item.isActive" (click)="toggleVariant(item)">OFF
+                        </ion-button>
                         <div class="clear"></div>
                     </ion-card-content>
                 </ion-card>

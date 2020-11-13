@@ -585,7 +585,14 @@ export class BookingPage implements OnInit {
     checkFilledDate(container: any) {
         for (let item in this.selectedSpots) {
             let checking = this.selectedSpots[item];
-            if (container.start.getTime() == checking.starts_at.getTime() && this.bookingObj.id != checking.id) {
+            console.log("Test")
+            console.log("comparing: ", container.start.getTime(), " ", container.end.getTime())
+            console.log("comparing: ", checking.starts_at.getTime(), " ", checking.ends_at.getTime())
+            console.log("difference: ", container.start.getTime() - checking.starts_at.getTime(), " ", container.end.getTime() - checking.ends_at.getTime())
+            if ((container.start.getTime() == checking.starts_at.getTime()) ||
+                (container.start.getTime() > checking.starts_at.getTime() && container.start.getTime() < checking.ends_at.getTime()) ||
+                (container.start.getTime() < checking.starts_at.getTime() && container.end.getTime() > checking.starts_at.getTime())) {
+                console.log("True");
                 return true;
             }
         }
