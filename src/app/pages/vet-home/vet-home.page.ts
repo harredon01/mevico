@@ -32,6 +32,9 @@ export class VetHomePage implements OnInit {
     location: string = "n1";
     celTitle: string = "";
     notifs: any = 0;
+    searchCategory: any;
+    searchText: any;
+    searchError: boolean = false;
     productCategories: any[] = [];
     possibleAmounts: any[] = [];
     centerCat: any = 0;
@@ -42,10 +45,10 @@ export class VetHomePage implements OnInit {
     };
     setcategories: any[] = [
         {"title": "Servicios Veterinarios", "members": [1, 2, 3, 4], "categories": []},
-        {"title": "Alimentos, Medicamentos y accesorios", "members": [5,6,7,8], "categories": []},
-        {"title": "Aseo y belleza", "members": [9], "categories": []},
-        {"title": "Servicios Sociales", "members": [10,11], "categories": []},
-        {"title": "Servicios Especiales", "members": [12,14, 15, 16, 17, 18], "categories": []},
+        {"title": "Alimentos, Medicamentos y accesorios", "members": [5, 7, 8, 9, 10], "categories": []},
+        {"title": "Aseo y belleza", "members": [6], "categories": []},
+        {"title": "Servicios Sociales", "members": [11, 12, 13], "categories": []},
+        {"title": "Servicios Especiales", "members": [14, 15, 16, 17, 18, 19], "categories": []},
     ];
 
     merchant_categories: any[] = [];
@@ -106,14 +109,14 @@ export class VetHomePage implements OnInit {
 
     ngOnInit() {
         this.getHomeCategories();
-//        this.getObjectCategories('report_categories', "App\\Models\\Report");
-//        this.getObjectCategories('merchant_categories', "App\\Models\\Merchant");
-//        this.getObjectCategories('product_categories', "App\\Models\\Product");
-//        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", false);
-//        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", false);
+        //        this.getObjectCategories('report_categories', "App\\Models\\Report");
+        //        this.getObjectCategories('merchant_categories', "App\\Models\\Merchant");
+        //        this.getObjectCategories('product_categories', "App\\Models\\Product");
+        //        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", false);
+        //        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", false);
         this.getObjects(['slidesItems', 'newsItems'], ['20', '21'], "page=1&category_id=20,21&order_by=articles.id,asc", "Article", false);
-//        this.loadProducts();
-//        this.loadOptions();
+        //        this.loadProducts();
+        //        this.loadOptions();
     }
     ionViewDidEnter() {
         console.log("ionViewDidEnter", this.userData._user)
@@ -159,9 +162,9 @@ export class VetHomePage implements OnInit {
         });
     }
     getLocationAware() {
-//        this.loadProducts();
-//        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", true);
-//        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", true);
+        //        this.loadProducts();
+        //        this.getObjects(['centers', 'stores'], ['5', '7'], "page=1&category_id=5,7", "Merchant", true);
+        //        this.getObjects(['latest_reports'], ['11'], "page=1&category_id=11", "Report", true);
     }
     createAddress() {
         this.mapData.activeType = "Location";
@@ -170,7 +173,7 @@ export class VetHomePage implements OnInit {
         console.log("createAddress");
     }
     async openChangeAddress() {
-        let params:any = this.params.getParams();
+        let params: any = this.params.getParams();
         params.select = "shipping"
         this.params.setParams(params);
         let addModal = await this.modalCtrl.create({
@@ -283,8 +286,8 @@ export class VetHomePage implements OnInit {
                 let results = data.data;
                 for (let item in results) {
                     let container = results[item];
-                    for (let i in this.setcategories){
-                        if (this.setcategories[i].members.includes(container.id)){
+                    for (let i in this.setcategories) {
+                        if (this.setcategories[i].members.includes(container.id)) {
                             this.setcategories[i].categories.push(container);
                         }
                     }
@@ -343,34 +346,65 @@ export class VetHomePage implements OnInit {
         this.params.setParams(params);
         this.navCtrl.navigateForward(destinationUrl);
     }
-    
+    search() {
+        console.log("Search: ", this.searchText, " Category: ", this.searchCategory);
+        if (this.searchCategory && this.searchCategory.length > 0) {
+            let results = this.searchCategory.split("|");
+            let typeS = "";
+            if (results[0] == "merchants") {
+                typeS = "merchant";
+            } else if (results[0] == "reports") {
+                typeS = "report";
+            } else if (results[0] == "products") {
+                typeS = "prodsrc";
+            }
+            typeS += "-search"
+            let item = {
+                id:results[1],
+                type:typeS
+            }
+            this.openCategory(item);
+            //console.log("Url",url);
+        } else {
+            this.searchError = true;
+        }
+    }
     openCategory(item: any) {
-        console.log("openCategory: ",item);
-        let checkLocationAction = false;
+        console.log("openCategory: ", item);
+        let params: any = {"item": item, "purpose": null}
         let destinationUrl = 'shop/home/categories/' + item.id;
-        let params:any = {"item": item, "purpose": null}
-        if(item.type.includes('report')){
+        
+        if (item.type.includes('report')) {
             destinationUrl = 'shop/home/categories/' + item.id + '/reports';
-        } else if(item.type.includes('merchant')){
+        } else if (item.type.includes('merchant')) {
             destinationUrl = 'shop/home/categories/' + item.id + '/merchant';
         }
-        if(item.type.includes('nearby')){
+        
+        let checkLocationAction = false;
+        if (item.type.includes('nearby')) {
             params.showAddress = true;
             params.typeSearch = 'nearby';
             checkLocationAction = true;
         }
-        if(item.type.includes('booking')){
+        if (item.type.includes('booking')) {
             params.purpose = 'booking';
         }
-        if(item.type.includes('products')){
+        if (item.type.includes('products')) {
             params.purpose = 'products';
             checkLocationAction = true;
         }
-        if(item.type.includes('coverage')){
+        if (item.type.includes('coverage')) {
             checkLocationAction = true;
             params.typeSearch = 'coverage';
         }
-        console.log("Sending params: ",params)
+        if (item.type.includes('search')) {
+            params.typeSearch = 'text';
+            params.textSearch = this.searchText;
+        }
+        if (item.type.includes('prodsrc')) {
+            destinationUrl = 'shop/home/categories/' + item.id + '/merchant/0/products';
+        }
+        console.log("Sending params: ", params)
         this.params.setParams(params);
         let locationApproved = true;
         if (checkLocationAction) {
@@ -380,7 +414,7 @@ export class VetHomePage implements OnInit {
             this.drouter.addPages(destinationUrl);
             return;
         }
-        
+        console.log("destinationUrls: ", destinationUrl)
         this.navCtrl.navigateForward(destinationUrl);
     }
 

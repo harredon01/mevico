@@ -44,7 +44,7 @@ export class ReportsService {
         let url = "/reports/search";
 
         if (search) {
-            url = url + "?search=" + search;
+            url = url + "?q=" + search;
         }
         let seq = this.api.get(url);
         return seq;

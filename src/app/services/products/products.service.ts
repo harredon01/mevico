@@ -16,6 +16,12 @@ export class ProductsService {
         return seq;
 
     }
+    textSearch(data: any) {
+        let endpoint = '/products/search';
+        let seq = this.api.get(endpoint, data);
+        return seq;
+
+    }
     getProductsMerchantPrivate(data: any) {
         let endpoint = '/private/merchants/products';
         let seq = this.api.get(endpoint, data);
@@ -63,7 +69,7 @@ export class ProductsService {
     }
     buildProduct(container: any, merchant: any) {
         let productInfo = new Product({});
-
+        container.inventory = container.quantity;
         productInfo.id = container.product_id;
         productInfo.name = container.prod_name;
         productInfo.description = container.prod_desc;
@@ -172,6 +178,7 @@ export class ProductsService {
         }
 
         productInfo.variant_id = container.id;
+        productInfo.inventory = container.inventory;
         if (container.attributes) {
             let attributes = container.attributes;
             if (attributes.buyers) {
@@ -267,6 +274,7 @@ export class ProductsService {
         }
         variant.is_on_sale = container.is_on_sale;
         variant.min_quantity = container.min_quantity;
+        variant.inventory = container.quantity;
         return variant;
     }
     getCategory(variant, arrayCategories) {

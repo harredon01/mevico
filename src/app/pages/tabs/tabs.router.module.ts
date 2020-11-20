@@ -269,7 +269,8 @@ const routes: Routes = [
                     },
 
                 ]
-            }, {
+            },
+            {
                 path: 'groups',
                 children: [
                     {

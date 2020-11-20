@@ -11,6 +11,7 @@ import {UserDataService} from '../../services/user-data/user-data.service';
 import {CartService} from '../../services/cart/cart.service';
 import {DynamicRouterService} from '../../services/dynamic-router/dynamic-router.service';
 import {Product} from '../../models/product';
+import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
 import {CartPage} from '../cart/cart.page';
 import {ApiService} from '../../services/api/api.service';
 @Component({
@@ -24,6 +25,7 @@ export class MerchantProductsPage implements OnInit {
     options: any[];
     urlSearch: string = "";
     payTitle: string = "";
+    typeSearch: string = "";
     isOwner: boolean = false;
     storeActive: boolean = false;
     slides: any[];
@@ -139,8 +141,16 @@ export class MerchantProductsPage implements OnInit {
     ionViewDidEnter() {
         this.api.hideMenu();
         this.possibleAmounts = [];
+        let params = this.params.getParams();
+        console.log("Entering params", params);
         this.api.loader();
-        this.loadProducts();
+        if (params.typeSearch && params.typeSearch == "text") {
+            this.searchProducts(params.textSearch);
+        } else {
+            this.loadProducts();
+        }
+
+
         this.loadOptions();
         if (document.URL.startsWith('http')) {
             let vm = this;
@@ -223,9 +233,9 @@ export class MerchantProductsPage implements OnInit {
             product.isActive = true;
         }
         let container = {
-            "id":product.id,
-            "isActive":product.isActive,
-            "merchant_id":product.merchant_id
+            "id": product.id,
+            "isActive": product.isActive,
+            "merchant_id": product.merchant_id
         }
         this.productsServ.saveOrCreateProduct(container).subscribe((data: any) => {
             this.api.dismissLoader();
@@ -441,12 +451,12 @@ export class MerchantProductsPage implements OnInit {
                 this.categories = this.productsServ.buildProductInformation(resp);
                 console.log("Result build product", this.categories);
                 let attributes = this.categories[0].products[0].merchant_attributes;
-                if(typeof attributes == "string"){
+                if (typeof attributes == "string") {
                     attributes = JSON.parse(attributes);
-                } 
-                
+                }
+
                 if (attributes.store_active) {
-                    if (attributes.store_active==1) {
+                    if (attributes.store_active == 1) {
                         this.storeActive = true;
                     }
                 }
@@ -473,6 +483,50 @@ export class MerchantProductsPage implements OnInit {
                 this.productsServ.calculateTotals("load products", this.categories);
                 //this.createSlides();
             }
+            this.api.dismissLoader();
+        }, (err) => {
+            this.api.handleError(err);
+            // Unable to log in
+        });
+    }
+    searchProducts(textSearch) {
+        let container: any = {"page": this.page};
+        if (this.category) {
+            container['category_id'] = this.category
+        }
+        if (this.orderData.shippingAddress) {
+            container['lat'] = this.orderData.shippingAddress.lat;
+            container['long'] = this.orderData.shippingAddress.long;
+        }
+        container['q'] = textSearch;
+        this.productsServ.textSearch(container).subscribe((resp: any) => {
+            this.categories = resp.categories;
+            if (this.categories.length > 0) {
+                this.categories[0].more = true;
+                if (this.categories[0].products.length > 0) {
+                    this.categories[0].products[0].more = true;
+                }
+                if (this.categories[0].products.length > 1) {
+                    this.categories[0].products[1].more = true;
+                }
+                for(let i in this.categories[0].products){
+                    this.categories[0].products[i].variant_id = this.categories[0].products[i].variants[0].id;
+                    if(this.categories[0].products[i].variants[0].is_on_sale){
+                        this.categories[0].products[i].price = this.categories[0].products[i].variants[0].sale;
+                    } else {
+                        this.categories[0].products[i].price = this.categories[0].products[i].variants[0].price;
+                    }
+                    
+                    this.categories[0].products[i].inventory = this.categories[0].products[i].variants[0].quantity;
+                    this.categories[0].products[i].amount = this.categories[0].products[i].variants[0].min_quantity;
+                    this.categories[0].products[i].merchant_id = this.categories[0].products[i].merchants[0].id;
+                }
+            }
+            if (this.orderData.cartData) {
+                let items = this.orderData.cartData.items;
+                this.categories = this.productsServ.updateVisualWithCart(this.categories, items);
+            }
+            this.productsServ.calculateTotals("load products", this.categories);
             this.api.dismissLoader();
         }, (err) => {
             this.api.handleError(err);
@@ -528,6 +582,29 @@ export class MerchantProductsPage implements OnInit {
             this.orderData.cartData = null;
             this.api.handleError(err);
         });
+    }
+    async filter() {
+        let container;
+        container = {
+            lat: "",
+            long: "",
+            address: "",
+            id: "",
+            phone: "",
+            name: "",
+            postal: "",
+            notes: "",
+            type: "billing"
+        }
+        let addModal = await this.modalCtrl.create({
+            component: SearchFilteringPage,
+            componentProps: container
+        });
+        await addModal.present();
+        const {data} = await addModal.onDidDismiss();
+        if (data) {
+            //this.getReports(null);
+        }
     }
 
     ngOnInit() {

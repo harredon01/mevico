@@ -49,7 +49,7 @@ export class MerchantsService {
         let url = "/merchants/search";
 
         if (search) {
-            url = url + "?search=" + search;
+            url = url + "?q=" + search;
         }
         let seq = this.api.get(url);
         return seq;

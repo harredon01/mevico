@@ -36,6 +36,9 @@
             <div class="profile__main-info">
                 <h2 class="text-white text--bold">{{merchant.name}}</h2>
                 <p class="text--italic text-white">{{merchant.type}}</p> 
+                <p class="text--italic text-white"><a href="tel:{{merchant.telephone}}">{{merchant.telephone}}</a></p> 
+                <p class="text--italic text-white"><a href="mailto:{{merchant.email}}">{{merchant.email}}</a></p> 
+                <p class="text--italic text-white">{{merchant.address}}</p> 
                 <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
                 <span class="text--block">{{ merchant.unit_cost | currency }}</span>
                 <p class="text--bold">{{ 'MERCHANT_LISTING.EXPERIENCE' | translate }}:</p>
