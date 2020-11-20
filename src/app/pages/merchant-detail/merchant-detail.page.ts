@@ -24,6 +24,8 @@ export class MerchantDetailPage implements OnInit {
     category: string = "";
     urlSearch: string = "";
     fromSettings: boolean = false;
+    bookingActive: boolean = false;
+    hasStore: boolean = false;
     merchant: Merchant;
     notAvailable: string;
     maxReached: string;
@@ -104,8 +106,8 @@ export class MerchantDetailPage implements OnInit {
         }
     }
 
-    getMerchant(merchant_id:any) {
-        let container = {"object_id":merchant_id,"includes":"availabilities,files,ratings"};
+    getMerchant(merchant_id: any) {
+        let container = {"object_id": merchant_id, "includes": "availabilities,files,ratings"};
         this.merchantsServ.getMerchant(container).subscribe((data: any) => {
             let container = data.merchant;
             container.availabilities = data.availabilities;
@@ -113,6 +115,16 @@ export class MerchantDetailPage implements OnInit {
             container.files = data.files;
             this.merchant = new Merchant(container);
             console.log("attributes", this.merchant.attributes);
+            if (this.merchant.attributes.has_store) {
+                if (this.merchant.attributes.has_store==1) {
+                    this.hasStore = true
+                }
+            }
+            if (this.merchant.attributes.booking_active) {
+                if (this.merchant.attributes.booking_active==1) {
+                    this.bookingActive = true
+                }
+            }
         }, (err) => {
             console.log("Error getMerchant");
             this.api.handleError(err);
@@ -131,15 +143,15 @@ export class MerchantDetailPage implements OnInit {
     ionViewDidEnter() {
         this.api.hideMenu();
         let container = this.params.getParams();
-        if(container){
+        if (container) {
             if (container.hasChanged) {
                 this.getMerchant(this.merchant.id);
             }
         }
         if (document.URL.startsWith('http')) {
             let vm = this;
-            setTimeout(function(){ vm.api.dismissLoader();console.log("Retrying closing") }, 1000);
-            setTimeout(function(){ vm.api.dismissLoader();console.log("Retrying closing") }, 2000);
+            setTimeout(function () {vm.api.dismissLoader(); console.log("Retrying closing")}, 1000);
+            setTimeout(function () {vm.api.dismissLoader(); console.log("Retrying closing")}, 2000);
         }
     }
     slidePrev() {

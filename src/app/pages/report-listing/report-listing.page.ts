@@ -8,6 +8,7 @@ import {SearchFilteringPage} from '../search-filtering/search-filtering.page';
 import {ReportsService} from '../../services/reports/reports.service';
 import {ParamsService} from '../../services/params/params.service';
 import {UserDataService} from '../../services/user-data/user-data.service';
+import {OrderDataService} from '../../services/order-data/order-data.service';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {Report} from '../../models/report';
 import {ApiService} from '../../services/api/api.service';
@@ -40,6 +41,7 @@ export class ReportListingPage implements OnInit {
         public mapData: MapDataService,
         public categories: CategoriesService,
         public reportsServ: ReportsService,
+        public orderData: OrderDataService,
         public router: Router,
         public modalCtrl: ModalController,
         public api: ApiService) {
@@ -58,6 +60,22 @@ export class ReportListingPage implements OnInit {
         } else {
             this.urlSearch = 'shop/home/categories/' + this.category + '/reports/';
         }
+    }
+    getLocationAndSearch() {
+        this.api.loader();
+        this.geolocation.getCurrentPosition().then((resp) => {
+            console.log("Getting current position after call", resp);
+            // resp.coords.latitude
+            // resp.coords.longitude
+            this.reports = [];
+            this.page = 0;
+            this.location = {lat: resp.coords.latitude, long: resp.coords.longitude, category: this.category};
+            this.api.dismissLoader();
+            this.getReports(null);
+        }).catch((error) => {
+            console.log('Error getting location', error);
+
+        });
     }
     ionViewDidEnter() {
         this.api.hideMenu();
@@ -127,9 +145,9 @@ export class ReportListingPage implements OnInit {
      */
     createItem() {
         if (this.typeSearch == "own") {
-            this.navCtrl.navigateForward(this.urlSearch + "create-merchant");
+            this.navCtrl.navigateForward(this.urlSearch + "create-report");
         }
-        console.log("Creating merchant");
+        console.log("Creating report", this.urlSearch + "create-report");
     }
     /**
      * Navigate to the detail page for this item.
@@ -184,11 +202,16 @@ export class ReportListingPage implements OnInit {
         this.page++;
 
         let searchObj = null
+        console.log("typesearch", this.typeSearch);
         if (this.typeSearch == "category") {
             let query = "page=" + this.page + "&category_id=" + this.category;
             searchObj = this.reportsServ.getReports(query);
         } else if (this.typeSearch == "text") {
-            searchObj = this.reportsServ.searchReports(this.textSearch + "&page=" + this.page);
+            let url = this.textSearch + "&page=" + this.page;
+            if (this.category && this.category != "0") {
+                url += url + "&categories=" + this.category;
+            }
+            searchObj = this.reportsServ.searchReports(url);
         } else if (this.typeSearch == "nearby") {
             this.location.includes = '';
             searchObj = this.reportsServ.getNearbyReports(this.location);
@@ -231,8 +254,30 @@ export class ReportListingPage implements OnInit {
 
     ngOnInit() {
         this.reports = [];
-        this.getReports(null);
-        this.getItems();
+        let hasSearched = false;
+        let latFound = false;
+        if (this.orderData.shippingAddress) {
+            if (this.orderData.shippingAddress.lat) {
+                latFound = true;
+                this.location = {lat: this.orderData.shippingAddress.lat, long: this.orderData.shippingAddress.long, category: this.category};
+            }
+        }
+        let container = this.params.getParams();
+        if (container) {
+            if (container.typeSearch) {
+                this.typeSearch = container.typeSearch;
+                if (this.typeSearch == 'nearby' && !latFound) {
+                    hasSearched = true;
+                    this.getLocationAndSearch();
+                }
+                if (this.typeSearch == 'text') {
+                    this.textSearch = container.textSearch;
+                }
+            }
+        }
+        if (!hasSearched) {
+            this.getReports(null);
+        }
     }
 
 }

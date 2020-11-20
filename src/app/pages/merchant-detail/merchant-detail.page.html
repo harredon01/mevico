@@ -36,6 +36,9 @@
             <div class="profile__main-info">
                 <h2 class="text-white text--bold">{{merchant.name}}</h2>
                 <p class="text--italic text-white">{{merchant.type}}</p> 
+                <p class="text--italic text-white"><a href="tel:{{merchant.telephone}}">{{merchant.telephone}}</a></p> 
+                <p class="text--italic text-white"><a href="mailto:{{merchant.email}}">{{merchant.email}}</a></p> 
+                <p class="text--italic text-white">{{merchant.address}}</p> 
                 <p class="text--bold">{{ 'MERCHANT_DETAIL.HOURLY' | translate }}:</p>
                 <span class="text--block">{{ merchant.unit_cost | currency }}</span>
                 <p class="text--bold">{{ 'MERCHANT_LISTING.EXPERIENCE' | translate }}:</p>
@@ -78,13 +81,13 @@
         <div class="doctor-detail__booking profile__booking">
             <div class="doctor-menu-client">
                 <ion-list class="profile__options">
-                    <ion-item lines="none" class="profile__options-item ion-no-padding">
+                    <ion-item lines="none" class="profile__options-item ion-no-padding" *ngIf="hasStore">
                         <div class="profile__options-wrapper" (click)="showProducts()">
                             <img src="assets/icon/store.svg" alt="">
                             {{ 'MERCHANT_DETAIL.STORE' | translate }}<br/>{{ 'MERCHANT_DETAIL.STORE2' | translate }}
                         </div>
                     </ion-item>
-                    <ion-item lines="none" class="profile__options-item ion-no-padding">
+                    <ion-item lines="none" class="profile__options-item ion-no-padding" *ngIf="bookingActive">
                         <div class="profile__options-wrapper" (click)="appointmentbook()">
                             <img src="assets/icon/reservation.svg" alt="">
                             {{ 'MERCHANT_DETAIL.BOOKING' | translate }} <br/>{{ 'MERCHANT_DETAIL.BOOKING2' | translate }}
@@ -130,7 +133,7 @@
                             </ion-col>
                         </ion-row>
                     </ion-grid>
-                    <ion-button  (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0" class="right">
+                    <ion-button  (click)="appointmentbook()" *ngIf="merchant.availabilities.length>0 && bookingActive" class="right">
                         <ion-icon name="md-calendar"></ion-icon>{{ 'MERCHANT_DETAIL.BOOK_APPOINTMENT' | translate }}
                     </ion-button>
                 </ion-card-content>

@@ -55,6 +55,9 @@
                 </a> 
                 <div class="clear"></div>
                 <ion-item >
+                    <p>Quedan: {{item.inventory}}</p>
+                </ion-item>
+                <ion-item >
                     <ion-label *ngIf="item.id==80 || item.id==81">{{ 'PRODUCTS.VARIANTS2' | translate }}</ion-label> 
                     <ion-label *ngIf="item.id!=80&&item.id!=81">{{ 'PRODUCTS.VARIANTS' | translate }}</ion-label> 
                     <ion-select [(ngModel)]="item.variant_id" (ionChange)="selectVariant(item)">
@@ -77,12 +80,16 @@
                 <div *ngIf="isOwner" class="right mt10">
                     <ion-button class="btn-primary" (click)="editProduct(item.id)">{{ 'INPUTS.EDIT' | translate }}
                     </ion-button>
+                    <ion-button color="primary" *ngIf="item.isActive" (click)="toggleProduct(item)">ON
+                    </ion-button>
+                    <ion-button color="danger" *ngIf="!item.isActive" (click)="toggleProduct(item)">OFF
+                    </ion-button>
                     <ion-button color="primary" (click)="editImages(item.id)">
                         {{ 'EDIT_PRODUCTS.IMAGES' | translate }}
                     </ion-button>
                 </div>
                 <div *ngIf="!isOwner" class="right mt10">
-                    <ion-button color="primary" full (click)="addCart(item)" *ngIf="!item.inCart">{{ 'PRODUCTS.ADD' | translate }}</ion-button>
+                    <ion-button color="primary" full (click)="addCart(item)" *ngIf="!item.inCart && (item.price>0 && item.inventory>0)">{{ 'PRODUCTS.ADD' | translate }}</ion-button>
                     <ion-button color="primary" full (click)="addCart(item)" *ngIf="false" disabled>{{ 'PRODUCTS.ADD' | translate }}</ion-button>
                     <div class="content-increment-product" *ngIf="item.inCart">
                         <ion-button outline style="font-size:20px;" (click)="reduceCartItem(item)">-</ion-button>

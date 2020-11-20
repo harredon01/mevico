@@ -157,7 +157,9 @@ export class CheckoutPayerPage implements OnInit {
         console.log("valid",this.payerForm.valid)
         console.log("value",this.payerForm.value)
         if (!this.payerForm.valid) {return;}
-        this.orderData.payerInfo = this.payerForm.value;
+        let container = this.payerForm.value;
+        this.userData._user.docNum = container.payer_id;
+        this.orderData.payerInfo = container;
         this.checkAdvance();
 
     }

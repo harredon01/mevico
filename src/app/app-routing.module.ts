@@ -69,6 +69,10 @@ const routes: Routes = [
     path: 'create-report',
     loadChildren: () => import('./pages/create-report/create-report.module').then( m => m.CreateReportPageModule)
   },
+  {
+    path: 'new-report',
+    loadChildren: () => import('./pages/new-report/new-report.module').then( m => m.NewReportPageModule)
+  },
 
 
 

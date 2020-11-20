@@ -49,7 +49,7 @@ export class MerchantsService {
         let url = "/merchants/search";
 
         if (search) {
-            url = url + "?search=" + search;
+            url = url + "?q=" + search;
         }
         let seq = this.api.get(url);
         return seq;
@@ -72,6 +72,16 @@ export class MerchantsService {
             return seq;
         }
         let seq = this.api.post(url, merchant);
+        return seq;
+    }
+    exportOrders(data: any) {
+        let url = "/admin/merchant/orders";
+        let seq = this.api.post(url, data);
+        return seq;
+    }
+    exportContent(data: any) {
+        let url = "/admin/merchant/content";
+        let seq = this.api.post(url, data);
         return seq;
     }
     getMerchantHash(merchantId: string) {

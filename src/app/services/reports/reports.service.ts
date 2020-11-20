@@ -27,7 +27,7 @@ export class ReportsService {
         return seq;
     }
     getReportsPrivate(where: string) {
-        let url = "/private/reports";
+        let url = "/reports";
 
         if (where) {
             url = url + "?" + where;
@@ -44,7 +44,7 @@ export class ReportsService {
         let url = "/reports/search";
 
         if (search) {
-            url = url + "?search=" + search;
+            url = url + "?q=" + search;
         }
         let seq = this.api.get(url);
         return seq;
@@ -55,7 +55,7 @@ export class ReportsService {
         return seq;
     }
     getReportPrivate(data: any) {
-        let url = "/private/reports/detail" ;
+        let url = "/reports/detail" ;
         let seq = this.api.get(url, data);
         return seq;
     }

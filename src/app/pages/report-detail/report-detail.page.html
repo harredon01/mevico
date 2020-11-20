@@ -36,10 +36,8 @@
             <div class="profile__main-info">
                 <h2 class="text-white text--bold">{{report.name}}</h2>
                 <p class="text--italic text-white">{{report.type}}</p> 
-                <p class="text--bold">{{ 'REPORT_DETAIL.HOURLY' | translate }}:</p>
+                <p class="text--bold">{{ 'REPORT_DETAIL.COST' | translate }}:</p>
                 <span class="text--block">{{ report.unit_cost | currency }}</span>
-                <p class="text--bold">{{ 'MERCHANT_LISTING.EXPERIENCE' | translate }}:</p>
-                <span class="text--block">{{ report.attributes.years_experience }} {{ 'MERCHANT_LISTING.YEARS' | translate }}</span>
                 <div class="rating-container">
 
                     <div class="rating-box">
@@ -89,58 +87,12 @@
         </div>
         <div class="profile__tab defult-tab bg-white">
             <ion-segment [(ngModel)]="doctor">
-                <ion-segment-button value="about" color="primary" class="text-white profile__tab-item">
-                    {{ 'REPORT_DETAIL.INFO' | translate }}
-                </ion-segment-button>
                 <ion-segment-button value="feedback" class="text-white profile__tab-item">
                     {{ 'REPORT_DETAIL.RATINGS' | translate }}
                 </ion-segment-button>
             </ion-segment>
         </div>
         <div [ngSwitch]="doctor" class="bg-light mb">
-            <ion-list class="doctor__wrapper" *ngSwitchCase="'about'">
-                <div class="bg-white overview">
-                    <!-- <div class="map-location">//Descomentar cuando yo lo aclare
-                        <img src="assets/imgs/map-location.png" style="position: absolute;height: 100%;bottom: 0;z-index: 0;">
-                        <div class="profile-img active" style="top: 42%; left: 45%"><img src="assets/imgs/dentist-1.jpg"></div>
-                    </div> -->
-                </div>
-                <div class="profile__overview bg-white overview" *ngIf="report.attributes.experience">
-                    <ion-card class="profile__overview-card">
-                        <ion-card-header class="profile__overview-header">
-                            <ion-card-title class="profile__overview-title">{{ 'REPORT_DETAIL.EXPERIENCE' | translate }}
-                            </ion-card-title>
-                        </ion-card-header>
-                        <ion-card-content class="profile__overview-content">
-                            <p *ngFor="let experience of report.attributes.experience" [innerHTML]="experience.name"> </p>
-                        </ion-card-content>
-                    </ion-card>
-                </div>
-                <div class="bg-white overview" *ngIf="report.attributes.service">
-                    <ion-card class="profile__overview-card">
-                        <ion-card-header class="profile__overview-header">
-                            <ion-card-title class="profile__overview-title">{{ 'REPORT_DETAIL.SERVICES' | translate }}
-                            </ion-card-title>
-                        </ion-card-header>
-
-                        <ion-card-content class="profile__overview-content">
-                            <p *ngFor="let service of report.attributes.service" [innerHTML]="service.name"> </p>
-                        </ion-card-content>
-                    </ion-card>
-                </div>
-                <div class="bg-white overview" *ngIf="report.attributes.specialty">
-                    <ion-card class="profile__overview-card">
-                        <ion-card-header class="profile__overview-header">
-                            <ion-card-title class="profile__overview-title">
-                                {{ 'REPORT_DETAIL.SPECIALIZATIONS' | translate }}</ion-card-title>
-                        </ion-card-header>
-
-                        <ion-card-content class="profile__overview-content">
-                            <p *ngFor="let specialization of report.attributes.specialty" [innerHTML]="specialization.name"> </p>
-                        </ion-card-content>
-                    </ion-card>
-                </div>
-            </ion-list>
             <ion-list *ngSwitchCase="'feedback'">
                 <div class="bg-white rate-over-all">
                     <div class="rate rate--left">

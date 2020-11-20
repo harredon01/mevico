@@ -78,10 +78,9 @@ export class ReportDetailPage implements OnInit {
     }
 
     getReport(report_id:any) {
-        let container = {"object_id":report_id,"includes":"availabilities,files,ratings"};
+        let container = {"object_id":report_id,"includes":"files,ratings"};
         this.reportsServ.getReport(container).subscribe((data: any) => {
             let container = data.report;
-            container.availabilities = data.availabilities;
             container.ratings = data.ratings;
             container.files = data.files;
             this.report = new Report(container);

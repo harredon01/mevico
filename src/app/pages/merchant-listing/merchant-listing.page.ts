@@ -221,7 +221,11 @@ export class MerchantListingPage implements OnInit {
             let query = "includes=availabilities&page=" + this.page + "&category_id=" + this.category;
             searchObj = this.merchantsServ.getMerchants(query);
         } else if (this.typeSearch == "text") {
-            searchObj = this.merchantsServ.searchMerchants(this.textSearch + "&includes=availabilities&page=" + this.page);
+            let url = this.textSearch + "&page=" + this.page;
+            if(this.category && this.category !="0"){
+                url += url+"&categories="+this.category;
+            }
+            searchObj = this.merchantsServ.searchMerchants(url);
         } else if (this.typeSearch == "nearby") {
             this.location.includes = 'availabilities';
             searchObj = this.merchantsServ.getNearbyMerchants(this.location);
@@ -288,6 +292,9 @@ export class MerchantListingPage implements OnInit {
                 if ((this.typeSearch == 'nearby' || this.typeSearch == 'coverage') && !latFound){
                     hasSearched = true;
                     this.getLocationAndSearch();
+                }
+                if (this.typeSearch == 'text'){
+                    this.textSearch = container.textSearch;
                 }
             }
         }

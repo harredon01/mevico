@@ -39,6 +39,34 @@
             </ion-button>
 
         </div>
+        <div class="search-form__group search-form__group--select w100">
+            <select name="category " id="searchCategory" [(ngModel)]="searchCategory" class="search-form__select nice-select">
+                <option value="">Selecciona una categoria</option>
+                <optgroup label="Negocios">
+                    <option value="merchants|0|coverage">Todos</option>
+                    <option value="merchants|24|nearby">Veterinarias</option>
+                    <option value="merchants|25|coverage">Tiendas</option>
+                    <option value="merchants|27|list">Otros servicios</option>
+                </optgroup>
+                <optgroup label="Productos">
+                    <option value="products|0|coverage">Todos</option>
+                    <option value="products|7|coverage">Perros</option>
+                    <option value="products|8|coverage">Gatos</option>
+                    <option value="products|5|coverage">Farmacia</option>
+                </optgroup>
+                <optgroup label="Publicaciones">
+                    <option value="reports|0|list">Todos</option>
+                    <option value="reports|11|list">Adopcion</option>
+                    <option value="reports|12|list">Mascotas perdidas</option>
+                    <option value="reports|13|list">Compra</option>
+                </optgroup>
+            </select>
+
+        </div>
+        <p class="error-message" *ngIf="searchError" >Porfavor selecciona una categoría</p>
+        <ion-searchbar [(ngModel)]="searchText"></ion-searchbar>
+        
+        <ion-button size="small" class='right' (click)='search()' >Buscar</ion-button>
         <div class="clear"></div>
         <div *ngFor="let item of setcategories">
             <h2 class="pl15 category-title">{{item.title}}</h2>
@@ -174,7 +202,7 @@
                             <ion-label *ngIf="item.id!=80&&item.id!=81">{{ 'PRODUCTS.VARIANTS' | translate }}</ion-label> 
                             <ion-select [(ngModel)]="item.variant_id" (ionChange)="selectVariant(item)">
                                 <ion-select-option *ngFor="let variant of item.variants" [value]='variant.id'>{{variant.description}} -
-                                    {{variant.unitPrice | currency }}</ion-select-option>
+                                    {{variant.unitPrice| currency }}</ion-select-option>
                             </ion-select>
                         </ion-item>
                         <ion-item style="padding:0">
@@ -184,10 +212,10 @@
                             </ion-select>
                         </ion-item>
                         <div class="left mt15 w50" *ngIf="item.onsale">
-                            <p><b class="exprice">{{item.exsubtotal | currency }}</b><br/><b class="price">{{item.subtotal | currency }}</b></p>
+                            <p><b class="exprice">{{item.exsubtotal| currency }}</b><br/><b class="price">{{item.subtotal| currency }}</b></p>
                         </div>
                         <div class="left mt15 w50" *ngIf="!item.onsale">
-                            <p class="price"><b>{{item.subtotal | currency }}</b></p>
+                            <p class="price"><b>{{item.subtotal| currency }}</b></p>
                         </div>
                         <div *ngIf="isOwner" class="right mt10">
                             <ion-button class="btn-primary" (click)="editProduct(item.id)">{{ 'INPUTS.EDIT' | translate }}
@@ -221,7 +249,7 @@
                 </ion-thumbnail>
                 <ion-label class="ion-text-wrap w70 h100">
                     <h3 class="mt10 mb10" *ngIf="item.name">{{item.name}}</h3>
-                    <p class="mb5"><b>{{item.start_date | date:'mediumDate'}}</b></p>
+                    <p class="mb5"><b>{{item.start_date| date:'mediumDate'}}</b></p>
                     <p *ngIf="item.description">{{item.description}}</p>
                 </ion-label>
             </ion-item>

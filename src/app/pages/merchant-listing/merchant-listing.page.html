@@ -54,7 +54,7 @@
                                         {{item.attributes.years_experience }}
                                         {{ 'MERCHANT_LISTING.YEARS' | translate }}
                                     </div>
-                                    <div class="card-component__stats-item" *ngIf="item.unit_cost">
+                                    <div class="card-component__stats-item" *ngIf="item.unit_cost && item.unit_cost > 0">
                                         <strong> 
                                             {{ 'MERCHANT_LISTING.FEE' | translate }}:
                                         </strong>
@@ -72,6 +72,7 @@
                                         </strong>
                                         {{item.address}}
                                     </div> 
+                               
                                 </ion-col>
                                 <ion-col *ngIf="item.rating"><div class="card-component__stats-item">
                                         <strong>

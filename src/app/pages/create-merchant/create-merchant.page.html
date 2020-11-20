@@ -113,6 +113,20 @@
                 <div class="clear"></div>
                 <ion-button (click)="myItems()" class="right">{{ 'MERCHANT_DETAIL.ITEMS' | translate }}</ion-button>
                 <div class="clear"></div>
+                <ion-item>
+                    <ion-label position="floating">{{ 'MERCHANT_CREATE.EXPORT_MONTH' | translate }}</ion-label>
+                    <ion-select [(ngModel)]="exportDate" [ngModelOptions]="{standalone: true}">
+                        <ion-select-option *ngFor="let item of activeMonths" value="{{item.value}}">{{item.name}}</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-button (click)="getOrders()" class="right">{{ 'MERCHANT_CREATE.EXPORT_ORDERS' | translate }}</ion-button>
+                <div class="clear"></div>
+                <ion-button (click)="getContent('products')" class="right">{{ 'MERCHANT_CREATE.EXPORT_PRODUCTS' | translate }}</ion-button>
+                <div class="clear"></div>
+                <ion-button (click)="getContent('quick')" class="right">{{ 'MERCHANT_CREATE.EXPORT_QUICK' | translate }}</ion-button>
+                <div class="clear"></div>
+                <ion-button (click)="getContent('availabilities')" class="right">{{ 'MERCHANT_CREATE.EXPORT_AVAILABILITIES' | translate }}</ion-button>
+                <div class="clear"></div>
             </div>
             <div class="bg-white overview practics" >
                 <ion-card class="profile__overview-card">
