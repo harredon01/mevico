@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { SignaturePage } from './signature.page';
@@ -7,7 +7,7 @@ describe('SignaturePage', () => {
   let component: SignaturePage;
   let fixture: ComponentFixture<SignaturePage>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SignaturePage ],
       imports: [IonicModule.forRoot()]
