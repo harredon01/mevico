@@ -93,7 +93,7 @@ export class MapPage implements OnInit {
         let page = 1;
         if (!this.sharedLocationsFetched) {
             this.sharedLocationsFetched = true;
-            this.getSharedLocationsPage(page);
+            //this.getSharedLocationsPage(page);
         }
 
     }

@@ -37,10 +37,12 @@
             <ion-button class="button merchant-categories__header-button right" style="padding:0" (click)="login()" size="small" *ngIf="!userData._user">
                 Entrar
             </ion-button>
+            <br *ngIf="!userData._user"/>
+            <br *ngIf="!userData._user"/>
 
         </div>
         <div class="search-form__group search-form__group--select w100">
-            <select name="category " id="searchCategory" [(ngModel)]="searchCategory" class="search-form__select nice-select">
+            <select name="category " id="searchCategory" [(ngModel)]="searchCategory" class="search-form__select nice-select w100">
                 <option value="">Selecciona una categoria</option>
                 <optgroup label="Negocios">
                     <option value="merchants|0|coverage">Todos</option>

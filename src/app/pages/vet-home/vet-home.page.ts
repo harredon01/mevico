@@ -44,8 +44,8 @@ export class VetHomePage implements OnInit {
         autoplay: true,
     };
     setcategories: any[] = [
-        {"title": "Servicios Veterinarios", "members": [1, 2, 3, 4], "categories": []},
-        {"title": "Alimentos, Medicamentos y accesorios", "members": [5, 7, 8, 9, 10], "categories": []},
+        {"title": "Servicios Veterinarios", "members": [1, 2, 3, 4,5], "categories": []},
+        {"title": "Alimentos, Medicamentos y accesorios", "members": [7, 8, 9, 10], "categories": []},
         {"title": "Aseo y belleza", "members": [6], "categories": []},
         {"title": "Servicios Sociales", "members": [11, 12, 13], "categories": []},
         {"title": "Servicios Especiales", "members": [14, 15, 16, 17, 18, 19], "categories": []},
