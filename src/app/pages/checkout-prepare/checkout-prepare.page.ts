@@ -382,7 +382,8 @@ export class CheckoutPreparePage implements OnInit {
         return new Promise((resolve, reject) => {
             console.log("Setting shipping condition", platform);
             this.api.loader();
-            this.orderProvider.setPlatformShippingCondition(this.orderData.currentOrder.id, platform).subscribe((resp: any) => {
+            let container = {"provider":platform.className,"provider_id":platform.id};
+            this.orderProvider.setPlatformShippingCondition(this.orderData.currentOrder.id, container).subscribe((resp: any) => {
                 console.log(JSON.stringify(resp));
                 this.orderData.cartData = resp.cart;
                 this.selectShipping = false;
@@ -403,9 +404,15 @@ export class CheckoutPreparePage implements OnInit {
     getPlatformShippingPrice(order, platform) {
         return new Promise((resolve, reject) => {
             console.log("getting shipping price");
+            let description = platform.desc;
+            delete platform.desc;
             this.orderProvider.getPlatformShippingPrice(order, platform).subscribe((resp: any) => {
                 if (resp.status == "success") {
-                    let container = {platform: platform, price: resp.price}
+                    let name = platform.provider;
+                    if (platform.provider == "MerchantShipping") {
+                        name = "Domicilio del Establecimiento"
+                    }
+                    let container = {platform: name,className:platform.provider, price: resp.price, desc: description, id: platform.provider_id}
                     this.shipping.push(container);
                 }
                 this.expectedProviders--;
@@ -446,8 +453,8 @@ export class CheckoutPreparePage implements OnInit {
             if (this.shipping.length == 0) {
                 this.expectedProviders = 0;
                 let attributes = JSON.parse(this.orderData.currentOrder.attributes);
-                if(attributes.providers){
-                    for(let item in attributes.providers){
+                if (attributes.providers) {
+                    for (let item in attributes.providers) {
                         this.expectedProviders++;
                         this.getPlatformShippingPrice(resp.order.id, attributes.providers[item]);
                     }

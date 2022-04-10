@@ -30,8 +30,7 @@ export class OrderService {
       * the user entered on the form.
       */
     setPlatformShippingCondition(order: any,platform:any) {
-        let shipping = {};
-        let seq = this.api.post('/orders/platform/shipping/'+order+"/"+platform, shipping);
+        let seq = this.api.post('/orders/platform/shipping/'+order, platform);
         return seq;
     }
     /**
@@ -39,8 +38,7 @@ export class OrderService {
       * the user entered on the form.
       */
     getPlatformShippingPrice(order: any,platform:any) {
-        let shipping = {};
-        let seq = this.api.get('/orders/platform/shipping/'+order+"/"+platform, shipping);
+        let seq = this.api.get('/orders/platform/shipping/'+order, platform);
         return seq;
     }
     /**

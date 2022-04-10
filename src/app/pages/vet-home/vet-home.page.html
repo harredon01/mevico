@@ -41,34 +41,38 @@
             <br *ngIf="!userData._user"/>
 
         </div>
-        <div class="search-form__group search-form__group--select w100">
-            <select name="category " id="searchCategory" [(ngModel)]="searchCategory" class="search-form__select nice-select w100">
-                <option value="">Selecciona una categoria</option>
-                <optgroup label="Negocios">
-                    <option value="merchants|0|coverage">Todos</option>
-                    <option value="merchants|24|nearby">Veterinarias</option>
-                    <option value="merchants|25|coverage">Tiendas</option>
-                    <option value="merchants|27|list">Otros servicios</option>
-                </optgroup>
-                <optgroup label="Productos">
-                    <option value="products|0|coverage">Todos</option>
-                    <option value="products|7|coverage">Perros</option>
-                    <option value="products|8|coverage">Gatos</option>
-                    <option value="products|5|coverage">Farmacia</option>
-                </optgroup>
-                <optgroup label="Publicaciones">
-                    <option value="reports|0|list">Todos</option>
-                    <option value="reports|11|list">Adopcion</option>
-                    <option value="reports|12|list">Mascotas perdidas</option>
-                    <option value="reports|13|list">Compra</option>
-                </optgroup>
-            </select>
+        <p (click)="showSearchF()" style="float: right;cursor:pointer;font-size: 23px;color:var(--ion-color-primary)"><ion-icon name="search-circle-outline"></ion-icon> Buscador </p>
+        <div *ngIf="showSearch">
+            <div class="search-form__group search-form__group--select w100">
+                <select name="category " id="searchCategory" [(ngModel)]="searchCategory" style="border-radius: .25em;padding: 9px;margin-bottom: 8px;" class="search-form__select nice-select w100">
+                    <option value="">Selecciona una categoria</option>
+                    <optgroup label="Negocios">
+                        <option value="merchants|0|coverage">Todos</option>
+                        <option value="merchants|24|nearby">Veterinarias</option>
+                        <option value="merchants|25|coverage">Tiendas</option>
+                        <option value="merchants|27|list">Otros servicios</option>
+                    </optgroup>
+                    <optgroup label="Productos">
+                        <option value="products|0|coverage">Todos</option>
+                        <option value="products|7|coverage">Perros</option>
+                        <option value="products|8|coverage">Gatos</option>
+                        <option value="products|5|coverage">Farmacia</option>
+                    </optgroup>
+                    <optgroup label="Publicaciones">
+                        <option value="reports|0|list">Todos</option>
+                        <option value="reports|11|list">Adopcion</option>
+                        <option value="reports|12|list">Mascotas perdidas</option>
+                        <option value="reports|13|list">Compra</option>
+                    </optgroup>
+                </select>
 
+            </div>
+            <p class="error-message" *ngIf="searchError" >Porfavor selecciona una categoría</p>
+            <ion-searchbar placeholder="Palabra clave" [(ngModel)]="searchText"></ion-searchbar>
+
+            <ion-button size="small" class='right' (click)='search()' >Buscar</ion-button>
         </div>
-        <p class="error-message" *ngIf="searchError" >Porfavor selecciona una categoría</p>
-        <ion-searchbar [(ngModel)]="searchText"></ion-searchbar>
-        
-        <ion-button size="small" class='right' (click)='search()' >Buscar</ion-button>
+
         <div class="clear"></div>
         <div *ngFor="let item of setcategories">
             <h2 class="pl15 category-title">{{item.title}}</h2>

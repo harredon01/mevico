@@ -32,9 +32,10 @@ export class VetHomePage implements OnInit {
     location: string = "n1";
     celTitle: string = "";
     notifs: any = 0;
-    searchCategory: any;
+    searchCategory: string = "";
     searchText: any;
     searchError: boolean = false;
+    showSearch: boolean = false;
     productCategories: any[] = [];
     possibleAmounts: any[] = [];
     centerCat: any = 0;
@@ -149,6 +150,13 @@ export class VetHomePage implements OnInit {
         }
         this.routeNext();
 
+    }
+    showSearchF(){
+        if (this.showSearch){
+            this.showSearch = false;
+        } else {
+            this.showSearch = true;
+        }
     }
     loggedInProcedure() {
         console.log("loggedInProcedure");
