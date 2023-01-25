@@ -21,8 +21,6 @@
     <preference name="WKWebViewOnly" value="true" />
     <preference name="SplashScreen" value="screen.png" />
     <preference name="SplashScreenDelay" value="3000" />
-    <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyDDwPkLjnHj9rZ7M1hk9Z7HMi-ENu47sm4" />
-    <preference name="GOOGLE_MAPS_IOS_API_KEY" value="AIzaSyBx9ykkz-m1-E-viMdFUh_Q9g0FaEP-K5I" />
     <platform name="android">
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
@@ -128,9 +126,6 @@
     <plugin name="cordova-plugin-googlemaps" spec="^2.7.1">
         <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.0.1" />
-        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyDDwPkLjnHj9rZ7M1hk9Z7HMi-ENu47sm4" />
-        <variable name="API_KEY_FOR_IOS" value="AIzaSyBx9ykkz-m1-E-viMdFUh_Q9g0FaEP-K5I" />
-        <variable name="WEB_APPLICATION_CLIENT_ID" value="AIzaSyAPP_zCViWdEHS5C36dNi7ezSCw-DkiXSg" />
     </plugin>
     <plugin name="cordova-plugin-contacts" spec="^3.0.1" />
     <plugin name="cordova-plugin-ionic" spec="^5.4.7">
